@@ -1,0 +1,10 @@
+{
+  "name": "checksync",
+  "version": "0.0.1",
+  "description": "A handy tool for syncing code",
+  "main": "index.js",
+  "repository": "https://github.com/somewhatabstract/checksync",
+  "author": "Jeff Yates <jeff@somewhatabstract.com>",
+  "license": "MIT",
+  "private": false
+}
