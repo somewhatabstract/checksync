@@ -1,10 +1,61 @@
 {
-  "name": "checksync",
-  "version": "0.0.1",
-  "description": "A handy tool for syncing code",
-  "main": "index.js",
-  "repository": "https://github.com/somewhatabstract/checksync",
-  "author": "Jeff Yates <jeff@somewhatabstract.com>",
-  "license": "MIT",
-  "private": false
+    "name": "checksync",
+    "version": "0.0.1",
+    "description": "A tool that allows code to be annotated across different files to ensure they remain in sync.",
+    "main": "lib/index.js",
+    "bin": {
+        "checksync": "./bin/checksync.js"
+    },
+    "repository": "https://github.com/somewhatabstract/code-sync",
+    "author": "Jeff Yates <jeff@somewhatabstract.com>",
+    "license": "MIT",
+    "private": false,
+    "engines": {
+        "node": ">= 8"
+    },
+    "files": [
+        "bin/checksync.js",
+        "dist"
+    ],
+    "dependencies": {
+        "chalk": "^2.4.2",
+        "glob": "^7.1.4",
+        "lodash": "^4.17.15",
+        "minimist": "^1.2.0"
+    },
+    "devDependencies": {
+        "@babel/cli": "^7.5.5",
+        "@babel/core": "^7.5.5",
+        "@babel/plugin-proposal-class-properties": "^7.5.5",
+        "@babel/preset-env": "^7.5.5",
+        "@babel/preset-flow": "^7.0.0",
+        "@babel/register": "^7.5.5",
+        "babel-eslint": "^10.0.2",
+        "babel-jest": "^24.9.0",
+        "eslint": "^6.2.2",
+        "eslint-plugin-flowtype": "^4.2.0",
+        "flow-bin": "^0.106.1",
+        "flow-typed": "^2.6.1",
+        "jest": "^24.9.0",
+        "pre-commit": "^1.2.2",
+        "prettier": "1.18.2",
+        "pretty-quick": "^1.11.1"
+    },
+    "resolutions": {
+        "babel-eslint/eslint-scope": "^5.0.0"
+    },
+    "scripts": {
+        "prepublishOnly": "yarn clean && yarn test && yarn build",
+        "clean": "rm -rf dist",
+        "build": "babel --out-dir dist lib",
+        "test": "jest --colors --config jest.config.js",
+        "coverage": "jest --colors --config jest.config.js --coverage",
+        "pretty-quick": "pretty-quick --staged",
+        "lint": "flow && eslint --report-unused-disable-directives --config .eslintrc.json '{lib,bin,__{tests,mocks}__}/**/*.js'"
+    },
+    "pre-commit": [
+        "pretty-quick",
+        "lint",
+        "test"
+    ]
 }
