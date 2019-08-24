@@ -6,10 +6,10 @@
 <PROJECT_ROOT>/dist
 <PROJECT_ROOT>/.vscode
 <PROJECT_ROOT>/bin
-.*/__tests__/.*
 
 [include]
 <PROJECT_ROOT>/lib
+.*/__tests__/.*
 
 [libs]
 
