@@ -11,10 +11,6 @@
 <PROJECT_ROOT>/lib
 .*/__tests__/.*
 
-[libs]
-
-[lints]
-
 [options]
 emoji=true
 exact_by_default=true

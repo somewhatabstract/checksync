@@ -1,8 +1,9 @@
 {
-    "trailingComma": "es5",
+    "trailingComma": "all",
     "tabWidth": 4,
     "printWidth": 80,
     "proseWrap": "always",
     "semi": true,
-    "bracketSpacing": false
+    "bracketSpacing": false,
+    "parser": "babel-flow"
 }
