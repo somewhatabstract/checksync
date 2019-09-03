@@ -1007,6 +1007,11 @@ acorn@^7.0.0:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.0.0.tgz#26b8d1cd9a9b700350b71c0905546f64d1284e7a"
   integrity sha512-PaF/MduxijYYt7unVGRuds1vBC9bFxbNf+VWqhOClfdgy7RlVkQqt610ig1/yxTgsDIfW1cWDel5EBbOy3jdtQ==
 
+adler32@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/adler32/-/adler32-0.1.7.tgz#5052acb02c02650d7d58bb8c4ec057be77135690"
+  integrity sha1-UFKssCwCZQ19WLuMTsBXvncTVpA=
+
 agent-base@4, agent-base@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/agent-base/-/agent-base-4.3.0.tgz#8165f01c436009bccad0b1d122f05ed770efc6ee"
