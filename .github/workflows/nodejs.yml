@@ -38,6 +38,7 @@ jobs:
         CI: true
     - name: Upload coverage
       run: yarn codecov --token ${CODECOV_TOKEN}
+      if: matrix.coverage
       env:
         CI: true
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
