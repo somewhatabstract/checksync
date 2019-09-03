@@ -37,7 +37,7 @@ jobs:
       env:
         CI: true
     - name: Upload coverage
-      run: yarn codecov --token ${CODECOV_TOKEN}
+      run: yarn codecov --token "${CODECOV_TOKEN}"
       if: matrix.coverage
       env:
         CI: true
