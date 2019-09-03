@@ -1,0 +1,37 @@
+{
+    "env": {
+        "node": true,
+        "browser": false,
+        "commonjs": true,
+        "es6": true,
+        "jest": true
+    },
+    "extends": ["eslint:recommended", "plugin:flowtype/recommended"],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly"
+    },
+    "plugins": ["flowtype"],
+    "parser": "babel-eslint",
+    "parserOptions": {
+        "sourceType": "module"
+    },
+    "settings": {
+        "flowtype": {
+            "onlyFilesWithFlowAnnotation": true
+        }
+    },
+    "rules": {
+        "no-unused-vars": [
+            2,
+            {
+                "args": "none",
+                "varsIgnorePattern": "^_*$"
+            }
+        ],
+        "indent": ["error", 4],
+        "linebreak-style": ["error", "unix"],
+        "quotes": ["error", "double"],
+        "semi": ["error", "always"]
+    }
+}
