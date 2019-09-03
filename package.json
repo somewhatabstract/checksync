@@ -34,7 +34,7 @@
         "babel-jest": "^24.9.0",
         "eslint": "^6.2.2",
         "eslint-plugin-flowtype": "^4.2.0",
-        "flow-bin": "^0.106.1",
+        "flow-bin": "^0.106.3",
         "flow-typed": "^2.6.1",
         "jest": "^24.9.0",
         "pre-commit": "^1.2.2",
