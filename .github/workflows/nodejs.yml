@@ -13,18 +13,25 @@ jobs:
     strategy:
       matrix:
         node-version: [8.x, 10.x, 12.x]
+        coverage: true
 
     steps:
+    - env:
+        CI: true
     - uses: actions/checkout@v1
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - name: yarn install, build, lint, and test
-      run: |
-        yarn install
-        yarn build
-        yarn lint
-        yarn test
-      env:
-        CI: true
+    - name: Install dependencies
+      run: yarn install
+    - name: Lint
+      run: yarn lint
+    - name: Run tests
+      run: yarn test
+      if: matrix.coverage != true
+    - name: Run tests with coverage
+      run: yarn coverage
+      if: matrix.coverage
+    - name: Upload coverage
+      run: yarn codecov --token ${secrets.CODECOV_TOKEN}
