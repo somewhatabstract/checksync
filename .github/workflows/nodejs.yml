@@ -7,10 +7,7 @@ on:
 
 jobs:
   test:
-
     runs-on: ubuntu-latest
-    env:
-      CI: true
 
     strategy:
       matrix:
@@ -30,10 +27,15 @@ jobs:
     - name: Run tests
       run: yarn test
       if: matrix.coverage != true
+      env:
+        CI: true
     - name: Run tests with coverage
       run: yarn coverage
       if: matrix.coverage
+      env:
+        CI: true
     - name: Upload coverage
       run: yarn codecov --token ${CODECOV_TOKEN}
       env:
+        CI: true
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
