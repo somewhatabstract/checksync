@@ -1,6 +1,6 @@
 # checksync
 
-![Node CI](https://github.com/somewhatabstract/checksync/workflows/Node%20CI/badge.svg) [![codecov](https://codecov.io/gh/somewhatabstract/checksync/branch/master/graph/badge.svg)](https://codecov.io/gh/somewhatabstract/checksync)
+[![Node CI](https://github.com/somewhatabstract/checksync/workflows/Node%20CI/badge.svg)](https://github.com/somewhatabstract/checksync/actions) [![codecov](https://codecov.io/gh/somewhatabstract/checksync/branch/master/graph/badge.svg)](https://codecov.io/gh/somewhatabstract/checksync)
 
 ## Development
 
