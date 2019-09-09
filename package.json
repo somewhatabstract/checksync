@@ -2,7 +2,7 @@
     "name": "checksync",
     "version": "0.0.1",
     "description": "A tool that allows code to be annotated across different files to ensure they remain in sync.",
-    "main": "dist/check-sync.js",
+    "main": "dist/cli.js",
     "bin": {
         "checksync": "./bin/checksync.js"
     },
@@ -34,6 +34,7 @@
         "@babel/register": "^7.5.5",
         "babel-eslint": "^10.0.2",
         "babel-jest": "^24.9.0",
+        "babelrc-rollup": "^3.0.0",
         "codecov": "^3.5.0",
         "eslint": "^6.2.2",
         "eslint-plugin-flowtype": "^4.2.0",
@@ -43,7 +44,12 @@
         "jest-extended": "^0.11.2",
         "pre-commit": "^1.2.2",
         "prettier": "1.18.2",
-        "pretty-quick": "^1.11.1"
+        "pretty-quick": "^1.11.1",
+        "rollup": "^1.21.0",
+        "rollup-plugin-babel": "^4.3.3",
+        "rollup-plugin-babel-minify": "^9.0.0",
+        "rollup-plugin-commonjs": "^10.1.0",
+        "rollup-plugin-node-resolve": "^5.2.0"
     },
     "resolutions": {
         "babel-eslint/eslint-scope": "^5.0.0"
@@ -51,7 +57,7 @@
     "scripts": {
         "prepublishOnly": "yarn clean && yarn test && yarn build",
         "clean": "rm -rf dist",
-        "build": "babel --out-dir dist lib/*.js",
+        "build": "rollup -c",
         "test": "jest --colors --config jest.config.js",
         "coverage": "jest --colors --config jest.config.js --coverage",
         "pretty-quick": "pretty-quick --staged",
