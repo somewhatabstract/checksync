@@ -2,7 +2,7 @@
     "name": "checksync",
     "version": "0.0.1",
     "description": "A tool that allows code to be annotated across different files to ensure they remain in sync.",
-    "main": "lib/index.js",
+    "main": "dist/check-sync.js",
     "bin": {
         "checksync": "./bin/checksync.js"
     },
