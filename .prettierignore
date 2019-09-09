@@ -5,3 +5,4 @@ dist
 *.json
 *.yml
 *.md
+*.py

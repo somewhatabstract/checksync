@@ -6,7 +6,7 @@
 
 Run `yarn install` to get all the dependencies installed.
 
-Then run `./bin/checksync.dev.js lib/__testdata__` to try the tool locally on some examples.
+Then run `./bin/checksync.dev.js __testdata__` to try the tool locally on some examples.
 
 ### Build
 
