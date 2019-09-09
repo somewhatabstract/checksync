@@ -1,14 +1,16 @@
 # checksync
 
+![Node CI](https://github.com/somewhatabstract/checksync/workflows/Node%20CI/badge.svg) [![codecov](https://codecov.io/gh/somewhatabstract/checksync/branch/master/graph/badge.svg)](https://codecov.io/gh/somewhatabstract/checksync)
+
 ## Development
 
 Run `yarn install` to get all the dependencies installed.
 
-Then run `./bin/checksync.dev.js` to run the locally.
+Then run `./bin/checksync.dev.js lib/__testdata__` to try the tool locally on some examples.
 
 ### Build
 
-Run `yarn build` and then `./bin/checksync.js` to run the built version locally.
+Run `yarn build` to build the distributed code. This can then be executed locally using `./bin/checksync.js`.
 
 ### Test
 

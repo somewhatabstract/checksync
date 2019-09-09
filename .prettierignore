@@ -4,3 +4,4 @@ flow-typed
 dist
 *.json
 *.yml
+*.md
