@@ -58,7 +58,7 @@
     "scripts": {
         "prepublishOnly": "yarn clean && yarn test && yarn build",
         "clean": "rm -rf dist",
-        "build": "rollup -c",
+        "build": "yarn test && rollup -c",
         "test": "jest --colors --config jest.config.js",
         "coverage": "jest --colors --config jest.config.js --coverage",
         "pretty-quick": "pretty-quick --staged",
