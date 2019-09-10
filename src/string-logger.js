@@ -2,6 +2,13 @@
 import type {ILog} from "./types.js";
 import Logger from "./logger.js";
 
+/**
+ * Rather than directly use this implementation, we wrap it with the main
+ * Logger class so that we also capture the format calls as part of the
+ * captured output. This allows us to have standardized format whether it is
+ * invoked by the Logger implementation or someone calling Format/chalk before
+ * passing it to a log call.
+ */
 class StringLoggerInternal implements ILog {
     _buffer: Array<string> = [];
     _errorsLogged: boolean = false;
