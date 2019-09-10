@@ -1,8 +1,11 @@
 // @flow
+import path from "path";
+import chalk from "chalk";
 import * as GetFiles from "../get-files.js";
 import * as GetMarkersFromFiles from "../get-markers-from-files.js";
 import * as HandleViolations from "../handle-violations.js";
 import Logger from "../logger.js";
+import StringLogger from "../string-logger.js";
 
 import checkSync from "../check-sync.js";
 import ErrorCodes from "../error-codes.js";
@@ -12,6 +15,14 @@ jest.mock("../get-markers-from-files.js");
 jest.mock("../handle-violations.js");
 
 describe("#checkSync", () => {
+    beforeAll(() => {
+        chalk.enabled = false;
+    });
+
+    afterAll(() => {
+        chalk.enabled = true;
+    });
+
     it("should expand the globs to files", async () => {
         // Arrange
         const NullLogger = new Logger();
@@ -209,5 +220,34 @@ describe("#checkSync", () => {
             "checksync --fix violation1 violation2",
             true,
         );
+    });
+
+    it("should report errors properly for __examples__", async () => {
+        // Arrange
+        jest.spyOn(GetFiles, "default").mockImplementation((...args) =>
+            jest.requireActual("../get-files.js").default(...args),
+        );
+        jest.spyOn(HandleViolations, "default").mockImplementation((...args) =>
+            jest.requireActual("../handle-violations.js").default(...args),
+        );
+        jest.spyOn(GetMarkersFromFiles, "default").mockImplementation(
+            (...args) =>
+                jest
+                    .requireActual("../get-markers-from-files.js")
+                    .default(...args),
+        );
+        const stringLogger = new StringLogger();
+
+        // Act
+        await checkSync(
+            [path.join(__dirname, "../../__examples__")],
+            false,
+            ["//", "#"],
+            stringLogger,
+        );
+        const result = stringLogger.getLog();
+
+        // Assert
+        expect(result).toMatchSnapshot("__examples__");
     });
 });

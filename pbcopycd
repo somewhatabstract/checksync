@@ -1,0 +1,22 @@
+Update flow to 0.107.0
+
+Do not load files that don't exist
+
+Add some more examples
+
+Make build run tests first
+
+Standardize error language and existence check
+
+Rename lib to src
+
+Add scoped logger to keep output clean
+
+Add error code output
+
+Add test coverage for normalization fn
+
+Implement loop to find bad syncs and call violation handlers
+
+Move examples
+

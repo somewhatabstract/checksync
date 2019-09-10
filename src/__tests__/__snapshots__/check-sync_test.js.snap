@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`#checkSync should report errors properly for __examples__: __examples__ 1`] = `
+"<group> INFO  /Users/jeffyates/git/checksync/__examples__/content_after_start/c.js
+   ERROR  Sync-tag \\"content_after_start\\" target found after content started
+<end_group>
+<group> INFO  /Users/jeffyates/git/checksync/__examples__/directory_target/example.js
+   ERROR  Sync-tag \\"directory_target\\" points to \\"./a_directory\\", which does not exist or is a directory
+<end_group>
+<group> INFO  /Users/jeffyates/git/checksync/__examples__/end_with_no_start/example.js
+   ERROR  Sync-tag \\"end_with_no_start\\" end found, but sync-tag never started
+<end_group>
+<group> INFO  /Users/jeffyates/git/checksync/__examples__/missing_target/example.js
+   ERROR  Sync-tag \\"missing_target\\" points to \\"./missing_target.py\\", which does not exist or is a directory
+<end_group>
+<group> INFO  /Users/jeffyates/git/checksync/__examples__/no_self_reference/example.js
+   ERROR  Sync-tag \\"example_three\\" cannot target itself
+<end_group>
+<group> INFO  /Users/jeffyates/git/checksync/__examples__/unterminated_marker/example_two-b.py
+  <group> ERROR  Unterminated markers
+    example_two
+  <end_group>
+<end_group>
+ ERROR  Aborting due to errors"
+`;
