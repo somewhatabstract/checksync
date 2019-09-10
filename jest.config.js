@@ -2,7 +2,7 @@
 // https://jestjs.io/docs/en/configuration.html
 
 module.exports = {
-    // Automatically reset mocks between every test
+    // Automatically restore mocks between every test
     resetMocks: true,
 
     // The directory where Jest should output its coverage files
@@ -14,7 +14,7 @@ module.exports = {
     // Setting this value to "fake" allows the use of fake timers for functions such as "setTimeout"
     timers: "fake",
 
-    setupFiles: ["./lib/shims.js"],
+    setupFiles: ["./src/shims.js"],
 
     setupFilesAfterEnv: ["jest-extended"],
 };

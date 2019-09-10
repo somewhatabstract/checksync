@@ -1,5 +1,5 @@
 [version]
-0.106.3
+0.107.0
 
 [ignore]
 <PROJECT_ROOT>/coverage
@@ -8,7 +8,7 @@
 <PROJECT_ROOT>/bin
 
 [include]
-<PROJECT_ROOT>/lib
+<PROJECT_ROOT>/src
 .*/__tests__/.*
 
 [options]

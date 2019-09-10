@@ -5,7 +5,7 @@ import minify from "rollup-plugin-babel-minify";
 import analyzer from "rollup-plugin-analyzer";
 
 export default {
-    input: "./lib/cli.js",
+    input: "./src/cli.js",
     output: {
         file: "./dist/cli.js",
         format: "cjs",
