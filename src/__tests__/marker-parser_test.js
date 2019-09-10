@@ -138,7 +138,7 @@ describe("MarkerParser", () => {
 
             // Assert
             expect(warnSpy.mock.calls[0][0]).toMatchInlineSnapshot(
-                `"Ignoring duplicate target \\"target1\\" for sync-tag \\"markerid\\""`,
+                `"Duplicate target \\"target1\\" for sync-tag \\"markerid\\""`,
             );
         });
 

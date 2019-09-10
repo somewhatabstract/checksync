@@ -7,4 +7,8 @@ export default {
     info: (text: string) => `${chalk.black.bgBlue(" INFO ")} ${text}`,
     warn: (text: string) =>
         `${chalk.bold.black.bgYellow(" WARNING ")} ${chalk.yellow(text)}`,
+    violation: (text: string) =>
+        `${chalk.bold.black.bgYellowBright(" MISMATCH ")} ${chalk.yellow(
+            text,
+        )}`,
 };

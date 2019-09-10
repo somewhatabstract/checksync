@@ -85,7 +85,7 @@ describe("#checkSync", () => {
         );
     });
 
-    it("should log error if there were errors during cache build", async () => {
+    it("should log error if there were errors during cache build with autoFix", async () => {
         // Arrange
         const NullLogger = new Logger();
         jest.spyOn(GetFiles, "default").mockReturnValue(["filea", "fileb"]);
@@ -99,7 +99,9 @@ describe("#checkSync", () => {
         await checkSync([], true, ["//"], NullLogger);
 
         // Assert
-        expect(errorSpy).toHaveBeenCalledWith("Aborting due to errors");
+        expect(errorSpy).toHaveBeenCalledWith(
+            "Aborting fix due to parse errors. Fix errors and try again.",
+        );
     });
 
     it("should return PARSE_ERRORS when there are no matching files", async () => {
@@ -222,7 +224,7 @@ describe("#checkSync", () => {
         );
     });
 
-    it("should report errors properly for __examples__", async () => {
+    it("should report __examples__ violations", async () => {
         // Arrange
         jest.spyOn(GetFiles, "default").mockImplementation((...args) =>
             jest.requireActual("../get-files.js").default(...args),
@@ -249,5 +251,34 @@ describe("#checkSync", () => {
 
         // Assert
         expect(result).toMatchSnapshot("__examples__");
+    });
+
+    it("should report __examples__ parse errors with autoFix", async () => {
+        // Arrange
+        jest.spyOn(GetFiles, "default").mockImplementation((...args) =>
+            jest.requireActual("../get-files.js").default(...args),
+        );
+        jest.spyOn(HandleViolations, "default").mockImplementation((...args) =>
+            jest.requireActual("../handle-violations.js").default(...args),
+        );
+        jest.spyOn(GetMarkersFromFiles, "default").mockImplementation(
+            (...args) =>
+                jest
+                    .requireActual("../get-markers-from-files.js")
+                    .default(...args),
+        );
+        const stringLogger = new StringLogger();
+
+        // Act
+        await checkSync(
+            [path.join(__dirname, "../../__examples__")],
+            true,
+            ["//", "#"],
+            stringLogger,
+        );
+        const result = stringLogger.getLog();
+
+        // Assert
+        expect(result).toMatchSnapshot("__examples__ autofix");
     });
 });

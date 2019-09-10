@@ -59,6 +59,7 @@ export default function parseFile(
                     )
                 ) {
                     scopedLogger.error(`Sync-tag "${id}" cannot target itself`);
+                    return;
                 }
 
                 markers[id] = {fixable, checksum, targets};

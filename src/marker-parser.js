@@ -159,12 +159,11 @@ export default class MarkerParser {
             this._log.error(
                 `Sync-tag "${id}" points to "${file}", which does not exist or is a directory`,
             );
+            return;
         }
 
         if (this._openMarkers[id].targets[normalized.file]) {
-            this._log.warn(
-                `Ignoring duplicate target "${file}" for sync-tag "${id}"`,
-            );
+            this._log.warn(`Duplicate target "${file}" for sync-tag "${id}"`);
             return;
         }
 

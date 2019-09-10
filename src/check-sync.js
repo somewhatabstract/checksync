@@ -32,8 +32,10 @@ export default async function checkSync(
 
     const cache = await getMarkersFromFiles(files, comments, log);
 
-    if (log.errorsLogged) {
-        log.error("Aborting due to errors");
+    if (log.errorsLogged && autoFix) {
+        log.error(
+            "Aborting fix due to parse errors. Fix errors and try again.",
+        );
         return ErrorCodes.PARSE_ERRORS;
     }
 
