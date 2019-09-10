@@ -161,9 +161,9 @@ describe("#fromFiles", () => {
 
         // Assert
         expect(result).toStrictEqual({
-            "a.js": {},
+            "a.js": null,
             "b.js": "b.js",
-            "c.js": {},
+            "c.js": null,
         });
     });
 });

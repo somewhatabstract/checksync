@@ -221,7 +221,7 @@ describe("#parseFile", () => {
 
         // Assert
         expect(mockScopedLogger.error).toHaveBeenCalledWith(
-            "File marker cannot target source file: MARKER_ID1",
+            'Sync-tag "MARKER_ID1" cannot target itself',
         );
     });
 
@@ -282,7 +282,7 @@ describe("#parseFile", () => {
 
         // Assert
         expect(mockScopedLogger.error).toHaveBeenCalledWith(
-            "Marker declared multiple times: MARKER_ID1",
+            'Sync-tag "MARKER_ID1" declared multiple times',
         );
     });
 

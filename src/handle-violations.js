@@ -14,6 +14,12 @@ export default function handleViolations(
     const violationFiles = {};
     for (const file of Object.keys(cache)) {
         const markers = cache[file];
+        if (markers == null) {
+            // This means a target reference that couldn't be found and we can
+            // totally ignore it at this level.
+            continue;
+        }
+
         for (const markerID of Object.keys(markers)) {
             const marker = markers[markerID];
             if (!marker.fixable) {
@@ -26,7 +32,15 @@ export default function handleViolations(
             for (const line of Object.keys(marker.targets)) {
                 const lineNumber = parseInt(line);
                 const targetRef = marker.targets[lineNumber];
-                const targetMarker = cache[targetRef.file][markerID];
+
+                const target = cache[targetRef.file];
+                if (target == null) {
+                    // Target doesn't exist if we get null.
+                    // We already indicated this error elsewhere, so just skip
+                    // along.
+                    continue;
+                }
+                const targetMarker = target[markerID];
                 if (targetMarker.checksum !== marker.checksum) {
                     violationFiles[file] = true;
                     violationHandler(

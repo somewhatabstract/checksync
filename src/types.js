@@ -88,7 +88,7 @@ export type MarkerCache = {
     /**
      * A file path mapped to the markers within it.
      */
-    [file: string]: Markers,
+    [file: string]: ?Markers,
 };
 
 /**
@@ -103,3 +103,10 @@ export type ViolationHandler = (
     fixable: boolean,
     log: ILog,
 ) => void;
+
+export type normalizePathFn = (
+    relativeFile: string,
+) => ?{
+    file: string,
+    exists: boolean,
+};

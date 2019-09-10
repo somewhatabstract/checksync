@@ -3,7 +3,7 @@ import escapeRegExp from "lodash/escapeRegExp";
 
 import calcChecksum from "./checksum.js";
 
-import type {ILog, Targets} from "./types.js";
+import type {ILog, Targets, normalizePathFn} from "./types.js";
 
 type TrackedTarget = {
     /**
@@ -13,6 +13,7 @@ type TrackedTarget = {
      * @type {string}
      */
     checksum: string,
+
     /**
      * 0-based index of line where this target was described.
      *
@@ -46,7 +47,6 @@ type TrackedMarkers = {
 };
 
 type addMarkerFn = (id: string, checksum: string, targets: Targets) => void;
-type normalizePathFn = (relativeFile: string) => ?string;
 
 /**
  * Convert our tracked targets object into a regular targets object.
@@ -148,30 +148,34 @@ export default class MarkerParser {
             targets: ({}: any),
         };
 
-        const normalizedFile = this._normalizePath(file);
+        const normalized = this._normalizePath(file);
 
-        if (normalizedFile == null) {
+        if (normalized == null) {
             // We're not logging targets for this marker.
             return;
         }
 
-        if (this._openMarkers[id].targets[file]) {
-            this._log
-                .warn(`Target listed multiple times for same marker - ignoring:
-    Marker: ${id}
-    Target: ${normalizedFile}`);
+        if (!normalized.exists) {
+            this._log.error(
+                `Sync-tag "${id}" points to "${file}", which does not exist or is a directory`,
+            );
+        }
+
+        if (this._openMarkers[id].targets[normalized.file]) {
+            this._log.warn(
+                `Ignoring duplicate target "${file}" for sync-tag "${id}"`,
+            );
             return;
         }
 
         if (this._openMarkers[id].content.length !== 0) {
-            this._log
-                .warn(`Additional target found for marker after content started - ignoring:
-    Marker: ${id}
-    Target: ${normalizedFile}`);
+            this._log.error(
+                `Sync-tag "${id}" target found after content started`,
+            );
             return;
         }
 
-        this._openMarkers[id].targets[normalizedFile] = {
+        this._openMarkers[id].targets[normalized.file] = {
             line,
             checksum,
         };
@@ -180,14 +184,14 @@ export default class MarkerParser {
     _recordMarkerEnd = (id: string) => {
         const marker = this._openMarkers[id];
         if (marker == null) {
-            this._log.warn(`Marker end found, but marker never started:
-    Marker: ${id}`);
+            this._log.warn(
+                `Sync-tag "${id}" end found, but sync-tag never started`,
+            );
             return;
         }
 
         if (marker.content.length === 0) {
-            this._log.warn(`Marker has no content:
-    Marker: ${id}`);
+            this._log.warn(`Sync-tag "${id}" has no content`);
         }
 
         const checksum = calcChecksum(marker.content);

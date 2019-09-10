@@ -9,7 +9,7 @@ describe("MarkerParser", () => {
         it("should give empty array when no markers parsed", () => {
             // Arrange
             const parser = new MarkerParser(
-                target => target,
+                target => ({file: target, exists: true}),
                 jest.fn(),
                 [],
                 NullLogger,
@@ -25,7 +25,7 @@ describe("MarkerParser", () => {
         it("should list open IDs when markers have not been terminated", () => {
             // Arrange
             const parser = new MarkerParser(
-                target => target,
+                target => ({file: target, exists: true}),
                 jest.fn(),
                 [],
                 NullLogger,
@@ -44,7 +44,7 @@ describe("MarkerParser", () => {
         it("should give empty array when all markers have been terminated", () => {
             // Arrange
             const parser = new MarkerParser(
-                target => target,
+                target => ({file: target, exists: true}),
                 jest.fn(),
                 [],
                 NullLogger,
@@ -67,7 +67,7 @@ describe("MarkerParser", () => {
             // Arrange
             const warnSpy = jest.spyOn(NullLogger, "warn");
             const parser = new MarkerParser(
-                target => target,
+                target => ({file: target, exists: true}),
                 jest.fn(),
                 [],
                 NullLogger,
@@ -77,17 +77,35 @@ describe("MarkerParser", () => {
             parser.parseLine("sync-end:notstarted");
 
             // Assert
-            expect(warnSpy.mock.calls[0][0]).toMatchInlineSnapshot(`
-                "Marker end found, but marker never started:
-                    Marker: notstarted"
-            `);
+            expect(warnSpy.mock.calls[0][0]).toMatchInlineSnapshot(
+                `"Sync-tag \\"notstarted\\" end found, but sync-tag never started"`,
+            );
         });
 
-        it("should warn if marker started after marker content", () => {
+        it("should error if target does not exist", () => {
             // Arrange
-            const warnSpy = jest.spyOn(NullLogger, "warn");
+            const errorSpy = jest.spyOn(NullLogger, "error");
             const parser = new MarkerParser(
-                target => target,
+                target => ({file: target, exists: false}),
+                jest.fn(),
+                [],
+                NullLogger,
+            );
+
+            // Act
+            parser.parseLine("sync-start:markerid target1");
+
+            // Assert
+            expect(errorSpy.mock.calls[0][0]).toMatchInlineSnapshot(
+                `"Sync-tag \\"markerid\\" points to \\"target1\\", which does not exist or is a directory"`,
+            );
+        });
+
+        it("should error if marker started after marker content", () => {
+            // Arrange
+            const errorSpy = jest.spyOn(NullLogger, "error");
+            const parser = new MarkerParser(
+                target => ({file: target, exists: true}),
                 jest.fn(),
                 [],
                 NullLogger,
@@ -99,18 +117,16 @@ describe("MarkerParser", () => {
             parser.parseLine("sync-start:markerid target2");
 
             // Assert
-            expect(warnSpy.mock.calls[0][0]).toMatchInlineSnapshot(`
-                "Additional target found for marker after content started - ignoring:
-                    Marker: markerid
-                    Target: target2"
-            `);
+            expect(errorSpy.mock.calls[0][0]).toMatchInlineSnapshot(
+                `"Sync-tag \\"markerid\\" target found after content started"`,
+            );
         });
 
         it("should warn if target repeated for same marker", () => {
             // Arrange
             const warnSpy = jest.spyOn(NullLogger, "warn");
             const parser = new MarkerParser(
-                target => target,
+                target => ({file: target, exists: true}),
                 jest.fn(),
                 [],
                 NullLogger,
@@ -121,11 +137,9 @@ describe("MarkerParser", () => {
             parser.parseLine("sync-start:markerid target1");
 
             // Assert
-            expect(warnSpy.mock.calls[0][0]).toMatchInlineSnapshot(`
-                "Target listed multiple times for same marker - ignoring:
-                    Marker: markerid
-                    Target: target1"
-            `);
+            expect(warnSpy.mock.calls[0][0]).toMatchInlineSnapshot(
+                `"Ignoring duplicate target \\"target1\\" for sync-tag \\"markerid\\""`,
+            );
         });
 
         it("should warn if marker is empty", () => {
@@ -143,17 +157,16 @@ describe("MarkerParser", () => {
             parser.parseLine("sync-end:markerid");
 
             // Assert
-            expect(warnSpy.mock.calls[0][0]).toMatchInlineSnapshot(`
-                "Marker has no content:
-                    Marker: markerid"
-            `);
+            expect(warnSpy.mock.calls[0][0]).toMatchInlineSnapshot(
+                `"Sync-tag \\"markerid\\" has no content"`,
+            );
         });
 
         it("should call addMarker for parsed markers", () => {
             // Arrange
             const addMarker = jest.fn();
             const parser = new MarkerParser(
-                target => target,
+                target => ({file: target, exists: true}),
                 addMarker,
                 ["//", "#"],
                 NullLogger,

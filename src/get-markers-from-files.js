@@ -2,6 +2,7 @@
 /**
  * Cache in which we store our knowledge of existing markers.
  */
+import fs from "fs";
 import path from "path";
 import uniq from "lodash/uniq";
 import parseFile from "./parse-file.js";
@@ -24,8 +25,11 @@ export default async function getMarkersFromFiles(
     const referencedFiles: Array<string> = [];
     const logFileRef = (file, fileRef) => {
         const normalizedFileRef = path.resolve(path.dirname(file), fileRef);
+        const exists =
+            fs.existsSync(normalizedFileRef) &&
+            fs.lstatSync(normalizedFileRef).isFile();
         referencedFiles.push(normalizedFileRef);
-        return normalizedFileRef;
+        return {file: normalizedFileRef, exists};
     };
 
     for (const file of files) {
@@ -36,7 +40,7 @@ export default async function getMarkersFromFiles(
             log,
             fileRef => logFileRef(file, fileRef),
         );
-        cacheData[file] = fileMarkers || {};
+        cacheData[file] = fileMarkers;
     }
 
     /**
@@ -46,12 +50,12 @@ export default async function getMarkersFromFiles(
      * loaded would be a mode folks might want).
      */
     for (const fileRef of uniq(referencedFiles)) {
-        if (cacheData[fileRef] != null) {
+        if (cacheData[fileRef] !== undefined) {
             continue;
         }
 
         const fileMarkers = await parseFile(fileRef, false, comments, log);
-        cacheData[fileRef] = fileMarkers || {};
+        cacheData[fileRef] = fileMarkers;
     }
 
     return cacheData;

@@ -11,7 +11,7 @@ import Format from "./format.js";
 import MarkerParser from "./marker-parser.js";
 import ScopedLogger from "./scoped-logger.js";
 
-import type {ILog, Markers, Targets, Target} from "./types.js";
+import type {ILog, Markers, Targets, Target, normalizePathFn} from "./types.js";
 
 /**
  * Parse the given file and extract sync markers.
@@ -25,14 +25,15 @@ import type {ILog, Markers, Targets, Target} from "./types.js";
  * @param {ILog} log The interface through which to log user feedback.
  * @param {(fileRef: string) => mixed} [logFileRef] A callback to register any
  * target files that are referenced by markers in this file.
- * @returns {Promise<Markers>} The promise of the markers this file contains.
+ * @returns {Promise<?Markers>} The promise of the markers this file contains or
+ * null if there were no markers or errors.
  */
 export default function parseFile(
     file: string,
     fixable: boolean,
     comments: Array<string>,
     log: ILog,
-    normalizeFileRef?: (fileRef: string) => ?string,
+    normalizeFileRef?: normalizePathFn,
 ): Promise<?Markers> {
     const scopedLogger = new ScopedLogger(Format.info(file), log);
 
@@ -46,7 +47,9 @@ export default function parseFile(
                 targets: Targets,
             ): void => {
                 if (markers[id]) {
-                    scopedLogger.error(`Marker declared multiple times: ${id}`);
+                    scopedLogger.error(
+                        `Sync-tag "${id}" declared multiple times`,
+                    );
                     return;
                 }
 
@@ -55,9 +58,7 @@ export default function parseFile(
                         (t: any) => (t: Target).file === file,
                     )
                 ) {
-                    scopedLogger.error(
-                        `File marker cannot target source file: ${id}`,
-                    );
+                    scopedLogger.error(`Sync-tag "${id}" cannot target itself`);
                 }
 
                 markers[id] = {fixable, checksum, targets};
