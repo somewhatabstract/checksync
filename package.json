@@ -62,7 +62,7 @@
         "test": "jest --colors --config jest.config.js",
         "coverage": "jest --colors --config jest.config.js --coverage",
         "pretty-quick": "pretty-quick --staged",
-        "lint": "flow && eslint --report-unused-disable-directives --config .eslintrc.json '{lib,bin,__{tests,mocks}__}/**/*.js'"
+        "lint": "flow && eslint --report-unused-disable-directives --config .eslintrc.json '{src,bin,__{tests,mocks}__}/**/*.js'"
     },
     "pre-commit": [
         "pretty-quick",
