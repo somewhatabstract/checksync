@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Integration Tests should report __examples__ parse errors with autoFix: __examples__ autofix 1`] = `
+"<group> INFO  __examples__/content_after_start/c.js
+   ERROR  Sync-tag \\"content_after_start\\" target found after content started
+<end_group>
+<group> INFO  __examples__/directory_target/example.js
+   ERROR  Sync-tag \\"directory_target\\" points to \\"./a_directory\\", which does not exist or is a directory
+<end_group>
+<group> INFO  __examples__/end_with_no_start/example.js
+   ERROR  Sync-tag \\"end_with_no_start\\" end found, but sync-tag never started
+<end_group>
+<group> INFO  __examples__/missing_target/example.js
+   ERROR  Sync-tag \\"missing_target\\" points to \\"./missing_target.py\\", which does not exist or is a directory
+<end_group>
+<group> INFO  __examples__/no_self_reference/example.js
+   ERROR  Sync-tag \\"example_three\\" cannot target itself
+<end_group>
+<group> INFO  __examples__/unterminated_marker/example_two-b.py
+  <group> ERROR  Unterminated markers
+    example_two
+  <end_group>
+<end_group>
+ ERROR  Aborting fix due to parse errors. Fix errors and try again."
+`;
+
+exports[`Integration Tests should report __examples__ violations: __examples__ 1`] = `
+"<group> INFO  __examples__/content_after_start/c.js
+   ERROR  Sync-tag \\"content_after_start\\" target found after content started
+<end_group>
+<group> INFO  __examples__/directory_target/example.js
+   ERROR  Sync-tag \\"directory_target\\" points to \\"./a_directory\\", which does not exist or is a directory
+<end_group>
+<group> INFO  __examples__/end_with_no_start/example.js
+   ERROR  Sync-tag \\"end_with_no_start\\" end found, but sync-tag never started
+<end_group>
+<group> INFO  __examples__/missing_target/example.js
+   ERROR  Sync-tag \\"missing_target\\" points to \\"./missing_target.py\\", which does not exist or is a directory
+<end_group>
+<group> INFO  __examples__/no_self_reference/example.js
+   ERROR  Sync-tag \\"example_three\\" cannot target itself
+<end_group>
+<group> INFO  __examples__/unterminated_marker/example_two-b.py
+  <group> ERROR  Unterminated markers
+    example_two
+  <end_group>
+<end_group>
+ MISMATCH  __examples__/content_after_start/a.js:3:0
+ MISMATCH  __examples__/content_after_start/b.py:3:0
+ MISMATCH  __examples__/content_after_start/c.js:3:0
+ MISMATCH  __examples__/no_checksums/example_one-a.js:3:0
+ MISMATCH  __examples__/no_checksums/example_one-b.py:3:0
+<group> ERROR  Desynchronized blocks detected and parsing errors found. Fix the errors, update the blocks, then try:
+  checksync --fix __examples__/content_after_start/a.js __examples__/content_after_start/b.py __examples__/content_after_start/c.js __examples__/no_checksums/example_one-a.js __examples__/no_checksums/example_one-b.py
+<end_group>"
+`;

@@ -10,6 +10,7 @@ import util from "util";
 import Format from "./format.js";
 import MarkerParser from "./marker-parser.js";
 import ScopedLogger from "./scoped-logger.js";
+import cwdRelativePath from "./cwd-relative-path.js";
 
 import type {ILog, Markers, Targets, Target, normalizePathFn} from "./types.js";
 
@@ -35,7 +36,10 @@ export default function parseFile(
     log: ILog,
     normalizeFileRef?: normalizePathFn,
 ): Promise<?Markers> {
-    const scopedLogger = new ScopedLogger(Format.info(file), log);
+    const scopedLogger = new ScopedLogger(
+        Format.info(cwdRelativePath(file)),
+        log,
+    );
 
     const promise = new Promise((resolve, reject) => {
         try {

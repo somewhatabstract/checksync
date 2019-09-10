@@ -1,11 +1,10 @@
 // @flow
-import path from "path";
-
 import getMarkersFromFiles from "./get-markers-from-files.js";
 import getFiles from "./get-files.js";
 import Format from "./format.js";
 import ErrorCodes from "./error-codes.js";
 import handleViolations from "./handle-violations.js";
+import cwdRelativePath from "./cwd-relative-path.js";
 
 import type {ILog} from "./types.js";
 import type {ErrorCode} from "./error-codes.js";
@@ -39,8 +38,8 @@ export default async function checkSync(
         return ErrorCodes.PARSE_ERRORS;
     }
 
-    const violationFileNames = handleViolations(cache, autoFix, log).map(f =>
-        path.relative(process.cwd(), f),
+    const violationFileNames = handleViolations(cache, autoFix, log).map(
+        cwdRelativePath,
     );
     if (violationFileNames.length > 0) {
         if (autoFix) {
@@ -49,11 +48,10 @@ export default async function checkSync(
         } else {
             // Output how to fix any violations we found if we're not running
             // autofix.
-            log.group(
-                Format.error(
-                    "Desynchronized blocks detected. Check them and update as required before resynchronizing:",
-                ),
-            );
+            const errorMsg = log.errorsLogged
+                ? "Desynchronized blocks detected and parsing errors found. Fix the errors, update the blocks, then try:"
+                : "Desynchronized blocks detected. Check them and update as required before resynchronizing:";
+            log.group(Format.error(errorMsg));
             log.error(`checksync --fix ${violationFileNames.join(" ")}`, true);
             log.groupEnd();
             return ErrorCodes.DESYNCHRONIZED_BLOCKS;

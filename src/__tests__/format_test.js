@@ -46,4 +46,16 @@ describe("Format", () => {
             expect(result).toBe(" WARNING  Test");
         });
     });
+
+    describe("#violation", () => {
+        it("should prefix with _MISMATCH__", () => {
+            // Arrange
+
+            // Act
+            const result = Format.violation("Test");
+
+            // Assert
+            expect(result).toBe(" MISMATCH  Test");
+        });
+    });
 });

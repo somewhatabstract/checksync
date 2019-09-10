@@ -31,12 +31,12 @@ jobs:
     - name: Lint
       run: yarn lint
     - name: Run tests
-      run: yarn test
+      run: yarn test && yarn test:integration
       if: matrix.coverage != true
       env:
         CI: true
     - name: Run tests with coverage
-      run: yarn coverage
+      run: yarn coverage && yarn test:integration
       if: matrix.coverage
       env:
         CI: true

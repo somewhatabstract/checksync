@@ -59,8 +59,10 @@
         "prepublishOnly": "yarn clean && yarn test && yarn build",
         "clean": "rm -rf dist",
         "build": "yarn test && rollup -c",
-        "test": "jest --colors --config jest.config.js",
-        "coverage": "jest --colors --config jest.config.js --coverage",
+        "test": "jest --colors --config jest.config.js --testPathIgnorePatterns integration_test.js",
+        "test:integration": "jest --colors --config jest.config.js integration_test.js",
+        "coverage": "jest --colors --config jest.config.js --coverage --testPathIgnorePatterns integration_test.js",
+        "coverage:integration": "jest --colors --config jest.config.js --coverage integration_test.js",
         "pretty-quick": "pretty-quick --staged",
         "lint": "flow && eslint --report-unused-disable-directives --config .eslintrc.json '{src,bin,__{tests,mocks}__}/**/*.js'"
     },
