@@ -1,4 +1,5 @@
 // @flow
+import fs from "fs";
 import path from "path";
 import getMarkersFromFiles from "../get-markers-from-files.js";
 import * as ParseFile from "../parse-file.js";
@@ -6,6 +7,7 @@ import Logger from "../logger.js";
 
 jest.mock("../parse-file.js");
 jest.mock("path");
+jest.mock("fs");
 
 const NullLogger = new Logger();
 
@@ -36,7 +38,7 @@ describe("#fromFiles", () => {
         );
     });
 
-    it("should parse each referenced file as unfixable", async () => {
+    it("should parse each existing referenced file as unfixable", async () => {
         // Arrange
         const parseSpy = jest
             .spyOn(ParseFile, "default")
@@ -46,6 +48,8 @@ describe("#fromFiles", () => {
                 }
                 return Promise.resolve(file);
             });
+        jest.spyOn(fs, "existsSync").mockReturnValue(true);
+        jest.spyOn(fs, "lstatSync").mockReturnValue({isFile: () => true});
         const pathResolveSpy = jest
             .spyOn(path, "resolve")
             .mockReturnValue("resolved.path");
@@ -78,6 +82,8 @@ describe("#fromFiles", () => {
                 }
                 return Promise.resolve(file);
             });
+        jest.spyOn(fs, "existsSync").mockReturnValue(true);
+        jest.spyOn(fs, "lstatSync").mockReturnValue({isFile: () => true});
         jest.spyOn(path, "resolve").mockImplementation((a, b) => b);
         jest.spyOn(path, "dirname").mockReturnValue("");
 
@@ -149,6 +155,8 @@ describe("#fromFiles", () => {
                 return Promise.resolve(file);
             },
         );
+        jest.spyOn(fs, "existsSync").mockReturnValue(true);
+        jest.spyOn(fs, "lstatSync").mockReturnValue({isFile: () => true});
         jest.spyOn(path, "resolve").mockImplementation((a, b) => b);
         jest.spyOn(path, "dirname").mockReturnValue("");
 
@@ -165,5 +173,42 @@ describe("#fromFiles", () => {
             "b.js": "b.js",
             "c.js": null,
         });
+    });
+
+    it("should not try to load files that do not exist", async () => {
+        // Arrange
+        const parseSpy = jest
+            .spyOn(ParseFile, "default")
+            .mockImplementation((file, fixable, comments, logger, logCb) => {
+                if (file !== "b.js") {
+                    return null;
+                }
+                logCb("c.js");
+                return Promise.resolve(file);
+            });
+        jest.spyOn(fs, "existsSync").mockImplementation(f => f === "a.js");
+        jest.spyOn(fs, "lstatSync").mockReturnValue({isFile: () => true});
+        jest.spyOn(path, "resolve").mockImplementation((a, b) => b);
+        jest.spyOn(path, "dirname").mockReturnValue("");
+
+        // Act
+        await getMarkersFromFiles(["a.js", "b.js"], ["//"], NullLogger);
+
+        // Assert
+        expect(parseSpy).toHaveBeenCalledTimes(2);
+        expect(parseSpy).toHaveBeenCalledWith(
+            "a.js",
+            true,
+            ["//"],
+            NullLogger,
+            expect.any(Function),
+        );
+        expect(parseSpy).toHaveBeenCalledWith(
+            "b.js",
+            true,
+            ["//"],
+            NullLogger,
+            expect.any(Function),
+        );
     });
 });

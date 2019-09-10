@@ -28,7 +28,9 @@ export default async function getMarkersFromFiles(
         const exists =
             fs.existsSync(normalizedFileRef) &&
             fs.lstatSync(normalizedFileRef).isFile();
-        referencedFiles.push(normalizedFileRef);
+        if (exists) {
+            referencedFiles.push(normalizedFileRef);
+        }
         return {file: normalizedFileRef, exists};
     };
 
