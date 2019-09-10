@@ -2,7 +2,7 @@
 // https://jestjs.io/docs/en/configuration.html
 
 module.exports = {
-    // Automatically reset mocks between every test
+    // Automatically restore mocks between every test
     resetMocks: true,
 
     // The directory where Jest should output its coverage files

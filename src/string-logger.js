@@ -1,5 +1,4 @@
 // @flow
-import type {ILog} from "./types.js";
 import Logger from "./logger.js";
 
 /**
@@ -9,14 +8,10 @@ import Logger from "./logger.js";
  * invoked by the Logger implementation or someone calling Format/chalk before
  * passing it to a log call.
  */
-class StringLoggerInternal implements ILog {
+class StringLoggerInternal {
     _buffer: Array<string> = [];
     _errorsLogged: boolean = false;
     _groupIndent: number = 0;
-
-    get errorsLogged(): boolean {
-        return this._errorsLogged;
-    }
 
     _log = (...args: Array<string>) => {
         this._buffer.push(`${"  ".repeat(this._groupIndent)}${args.join("")}`);
@@ -30,16 +25,16 @@ class StringLoggerInternal implements ILog {
     };
 
     groupEnd = () => {
+        if (this._groupIndent < 1) {
+            return;
+        }
         this._groupIndent--;
         this._log("<end_group>");
     };
 
     log = (message: string): void => this._log(message);
     info = (message: string): void => this._log(message);
-    error = (message: string, skipFormat?: boolean): void => {
-        this._errorsLogged = true;
-        this._log(message);
-    };
+    error = (message: string): void => this._log(message);
     warn = (message: string): void => this._log(message);
 }
 

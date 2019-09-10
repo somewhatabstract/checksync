@@ -28,7 +28,7 @@ export default class ScopedLogger implements ILog {
         this.log = this._logBind(this._log.log);
         this.info = this._logBind(this._log.info);
         this.error = this._logBind(this._log.error);
-        this.warn = this._logBind(this._log.error);
+        this.warn = this._logBind(this._log.warn);
         this.group = this._logBind(this._log.group);
         this.groupEnd = this._logBind(this._log.groupEnd);
     }

@@ -8,7 +8,7 @@ exports[`Integration Tests should report __examples__ parse errors with autoFix:
    ERROR  Sync-tag \\"directory_target\\" points to \\"./a_directory\\", which does not exist or is a directory
 <end_group>
 <group> INFO  __examples__/end_with_no_start/example.js
-   ERROR  Sync-tag \\"end_with_no_start\\" end found, but sync-tag never started
+   WARNING  Sync-tag \\"end_with_no_start\\" end found, but sync-tag never started
 <end_group>
 <group> INFO  __examples__/missing_target/example.js
    ERROR  Sync-tag \\"missing_target\\" points to \\"./missing_target.py\\", which does not exist or is a directory
@@ -32,7 +32,7 @@ exports[`Integration Tests should report __examples__ violations: __examples__ 1
    ERROR  Sync-tag \\"directory_target\\" points to \\"./a_directory\\", which does not exist or is a directory
 <end_group>
 <group> INFO  __examples__/end_with_no_start/example.js
-   ERROR  Sync-tag \\"end_with_no_start\\" end found, but sync-tag never started
+   WARNING  Sync-tag \\"end_with_no_start\\" end found, but sync-tag never started
 <end_group>
 <group> INFO  __examples__/missing_target/example.js
    ERROR  Sync-tag \\"missing_target\\" points to \\"./missing_target.py\\", which does not exist or is a directory

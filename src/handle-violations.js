@@ -41,13 +41,18 @@ export default function handleViolations(
                     continue;
                 }
                 const targetMarker = target[markerID];
-                if (targetMarker.checksum !== marker.checksum) {
+
+                // Now compare the actual target marker checksum with the one
+                // in our reference, and if they don't match, do something
+                // about it.
+                if (targetMarker.checksum !== targetRef.checksum) {
                     violationFiles[file] = true;
                     violationHandler(
                         file,
                         lineNumber,
-                        targetRef.file,
                         markerID,
+                        targetRef.checksum,
+                        targetRef.file,
                         targetMarker.checksum,
                         marker.fixable,
                         log,

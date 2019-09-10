@@ -97,9 +97,10 @@ export type MarkerCache = {
 export type ViolationHandler = (
     sourceFile: string,
     sourceLine: number,
-    targetFile: string,
     markerID: string,
-    correctChecksum: string,
+    refChecksum: string,
+    targetFile: string,
+    targetChecksum: string,
     fixable: boolean,
     log: ILog,
 ) => void;
