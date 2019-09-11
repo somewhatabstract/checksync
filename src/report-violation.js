@@ -30,8 +30,6 @@ const violationReporter: ViolationHandler = function(
     log.log(
         Format.violation(`${cwdRelativePath(sourceFile)}:${sourceLine + 1}:0`),
     );
-    // TODO: Can we sync a marker within the same file? Not really since there could be multiple;
-    //       how would we manage that? Let's ban it.
 };
 
 export default violationReporter;
