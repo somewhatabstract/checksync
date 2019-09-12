@@ -4,6 +4,27 @@ import commonjs from "rollup-plugin-commonjs";
 import minify from "rollup-plugin-babel-minify";
 import analyzer from "rollup-plugin-analyzer";
 import visualizer from "rollup-plugin-visualizer";
+import graph from "rollup-plugin-graph";
+
+const getOptionalPlugins = () => {
+    if (process.env.NODE_ENV === "CI") {
+        // We don't need any of these when running on CI.
+        return [];
+    }
+
+    return [
+        // NOTE: The analysis is of the pre-minified output.
+        // So the reported bundle size is the non-minified size that includes
+        // comments and full code.
+        analyzer({summaryOnly: true, filter: module => module.size !== 0}),
+        visualizer({
+            title: "checksync bundle rollup",
+            filename: "obj/stats.html",
+            open: true,
+        }),
+        graph(),
+    ];
+};
 
 export default {
     input: "./src/cli.js",
@@ -21,14 +42,6 @@ export default {
             namedExports: {"promise.prototype.finally": ["shim"]},
         }),
         minify({comments: false, sourceMap: false}),
-        // NOTE: The analysis is of the pre-minified output.
-        // So the reported bundle size is the non-minified size that includes
-        // comments and full code.
-        analyzer({summaryOnly: true, filter: module => module.size !== 0}),
-        visualizer({
-            title: "checksync bundle rollup",
-            filename: "obj/stats.html",
-            open: process.env.NODE_ENV !== "CI",
-        }),
+        ...getOptionalPlugins(),
     ],
 };
