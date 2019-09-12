@@ -6,7 +6,18 @@
     "bin": {
         "checksync": "./bin/checksync.js"
     },
-    "repository": "https://github.com/somewhatabstract/code-sync",
+    "keywords": [
+        "lint",
+        "linter",
+        "synchronize",
+        "sync",
+        "synchronise",
+        "checksum"
+    ],
+    "bugs": {
+        "url": "https://github.com/somewhatabstract/checksync/issues"
+    },
+    "repository": "https://github.com/somewhatabstract/checksync",
     "author": "Jeff Yates <jeff@somewhatabstract.com>",
     "license": "MIT",
     "private": false,
