@@ -11,6 +11,7 @@ import Format from "./format.js";
 import MarkerParser from "./marker-parser.js";
 import ScopedLogger from "./scoped-logger.js";
 import cwdRelativePath from "./cwd-relative-path.js";
+import {makeNew} from "./types.js";
 
 import type {ILog, Markers, Targets, Target, normalizePathFn} from "./types.js";
 
@@ -43,7 +44,7 @@ export default function parseFile(
 
     const promise = new Promise((resolve, reject) => {
         try {
-            const markers: Markers = ({}: any);
+            const markers = makeNew<Markers>();
 
             const addMarker = (
                 id: string,
@@ -109,7 +110,7 @@ export default function parseFile(
             scopedLogger.closeScope();
             return res;
         },
-        reason => {
+        (reason: Error) => {
             scopedLogger.error(`Could not parse file: ${reason.message}`);
             scopedLogger.closeScope();
             return null;

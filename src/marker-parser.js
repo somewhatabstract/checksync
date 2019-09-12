@@ -2,6 +2,7 @@
 import escapeRegExp from "lodash/escapeRegExp";
 
 import calcChecksum from "./checksum.js";
+import {makeNew} from "./types.js";
 
 import type {ILog, Targets, normalizePathFn} from "./types.js";
 
@@ -52,7 +53,7 @@ type addMarkerFn = (id: string, checksum: string, targets: Targets) => void;
  * Convert our tracked targets object into a regular targets object.
  */
 const targetsFromTrackedTargets = (trackedTargets: TrackedTargets): Targets => {
-    const targets: Targets = ({}: any);
+    const targets = makeNew<Targets>();
 
     for (const file of Object.keys(trackedTargets)) {
         const {line, checksum} = trackedTargets[file];
@@ -78,7 +79,7 @@ const targetsFromTrackedTargets = (trackedTargets: TrackedTargets): Targets => {
  */
 export default class MarkerParser {
     _log: ILog;
-    _openMarkers: TrackedMarkers = ({}: any);
+    _openMarkers: TrackedMarkers = makeNew<TrackedMarkers>();
     _addMarker: addMarkerFn;
     _normalizePath: normalizePathFn;
     _startTagRegExp: RegExp;
@@ -145,7 +146,7 @@ export default class MarkerParser {
     ) => {
         this._openMarkers[id] = this._openMarkers[id] || {
             content: [],
-            targets: ({}: any),
+            targets: makeNew<TrackedTargets>(),
         };
 
         const normalized = this._normalizePath(file);

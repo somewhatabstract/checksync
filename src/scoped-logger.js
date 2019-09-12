@@ -1,6 +1,9 @@
 // @flow
 import type {ILog} from "./types.js";
 
+type LogFn = (
+    message: string,
+) => void | ((message: string, skipFormat?: boolean) => void);
 /**
  * Output log entries inside a scoped group, but only if something is logged.
  *
@@ -33,7 +36,7 @@ export default class ScopedLogger implements ILog {
         this.groupEnd = this._logBind(this._log.groupEnd);
     }
 
-    _logBind = (logFn: Function) => (...args: Array<any>) => {
+    _logBind = (logFn: LogFn) => (...args: Array<any>) => {
         if (!this._groupOpened) {
             this._groupOpened = true;
             this._log.group(this._scope);

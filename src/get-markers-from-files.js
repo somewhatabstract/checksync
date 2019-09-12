@@ -6,6 +6,7 @@ import fs from "fs";
 import path from "path";
 import uniq from "lodash/uniq";
 import parseFile from "./parse-file.js";
+import {makeNew} from "./types.js";
 
 import type {ILog, MarkerCache} from "./types.js";
 
@@ -21,7 +22,7 @@ export default async function getMarkersFromFiles(
     comments: Array<string>,
     log: ILog,
 ): Promise<MarkerCache> {
-    const cacheData: MarkerCache = ({}: any);
+    const cacheData = makeNew<MarkerCache>();
     const referencedFiles: Array<string> = [];
     const logFileRef = (file, fileRef) => {
         const normalizedFileRef = path.resolve(path.dirname(file), fileRef);

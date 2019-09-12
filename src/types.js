@@ -111,3 +111,5 @@ export type normalizePathFn = (
     file: string,
     exists: boolean,
 };
+
+export const makeNew = <T>(): T => (({}: any): T);
