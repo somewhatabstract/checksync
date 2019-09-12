@@ -49,6 +49,7 @@ export type Target = {
  */
 export type Targets = {
     [line: number]: Target,
+    ...,
 };
 
 /**
@@ -79,6 +80,7 @@ export type Markers = {
      * Marker id to the marker details.
      */
     [id: string]: Marker,
+    ...,
 };
 
 /**
@@ -89,6 +91,7 @@ export type MarkerCache = {
      * A file path mapped to the markers within it.
      */
     [file: string]: ?Markers,
+    ...,
 };
 
 /**
@@ -111,5 +114,3 @@ export type normalizePathFn = (
     file: string,
     exists: boolean,
 };
-
-export const makeNew = <T>(): T => (({}: any): T);
