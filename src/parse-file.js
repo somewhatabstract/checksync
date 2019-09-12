@@ -104,10 +104,15 @@ export default function parseFile(
         }
     });
 
-    return promise
-        .then(null, reason => {
+    return promise.then(
+        res => {
+            scopedLogger.closeScope();
+            return res;
+        },
+        reason => {
             scopedLogger.error(`Could not parse file: ${reason.message}`);
+            scopedLogger.closeScope();
             return null;
-        })
-        .finally(() => scopedLogger.closeScope());
+        },
+    );
 }

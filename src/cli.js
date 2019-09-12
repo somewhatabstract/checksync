@@ -7,8 +7,6 @@ import minimist from "minimist";
 import checkSync from "./check-sync.js";
 import Logger from "./logger.js";
 
-import "./shims.js";
-
 /**
  * Run the command line.
  *

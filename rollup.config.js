@@ -16,9 +16,10 @@ export default {
             exclude: "node_modules/**", // only transpile our source code
         }),
         commonjs({
+            sourceMap: false,
             namedExports: {"promise.prototype.finally": ["shim"]},
         }),
-        minify(),
+        minify({comments: false, sourceMap: false}),
         analyzer({summaryOnly: true, filter: module => module.size !== 0}),
     ],
 };
