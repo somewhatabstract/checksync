@@ -1,6 +1,7 @@
 // @flow
 import fixViolation from "./fix-violation.js";
 import reportViolation from "./report-violation.js";
+import cwdRelativePath from "./cwd-relative-path.js";
 
 import type {MarkerCache, ILog, Target} from "./types";
 
@@ -34,14 +35,7 @@ export default function handleViolations(
                 const targetRef = marker.targets[lineNumber];
 
                 const target = cache[targetRef.file];
-                if (target == null) {
-                    // Target doesn't exist if we get null.
-                    // We already indicated this error elsewhere, so just skip
-                    // along.
-                    continue;
-                }
-
-                const targetMarker = target[markerID];
+                const targetMarker = target && target[markerID];
                 if (
                     targetMarker == null ||
                     !Object.values(targetMarker.targets).some(
@@ -49,7 +43,11 @@ export default function handleViolations(
                     )
                 ) {
                     log.error(
-                        `${targetRef.file} does not contain a tag named '${markerID}' that points to '${file}'`,
+                        `${cwdRelativePath(
+                            targetRef.file,
+                        )} does not contain a tag named '${markerID}' that points to '${cwdRelativePath(
+                            file,
+                        )}'`,
                     );
                     continue;
                 }

@@ -252,7 +252,7 @@ export default class MarkerParser {
             const startDecode = this._startTagDecodeRegExp.exec(startMatch[1]);
             if (startDecode == null) {
                 this._log.error(
-                    `Malformed sync-start tag found: line ${lineNumber}`,
+                    `Malformed sync-start tag, line ${lineNumber}: format should be 'start-tag:<label> [checksum] <filename>\\n'`,
                 );
             } else {
                 this._recordMarkerStart(
@@ -270,7 +270,7 @@ export default class MarkerParser {
             const endDecode = this._endTagDecodeRegExp.exec(endMatch[1]);
             if (endDecode == null) {
                 this._log.error(
-                    `Malformed sync-end tag found: line ${lineNumber}`,
+                    `Malformed sync-end tag, line ${lineNumber}: format should be 'end-tag:<label>\\n'`,
                 );
             } else {
                 this._recordMarkerEnd(endMatch[1]);

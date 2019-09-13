@@ -36,6 +36,8 @@ export default function parseFile(
     log: ILog,
     normalizeFileRef?: normalizePathFn,
 ): Promise<?Markers> {
+    // TODO(somewhatabstract): Change scoped logger so each error is just
+    // prefixed (or suffixed) with file:line type references
     const scopedLogger = new ScopedLogger(
         Format.info(cwdRelativePath(file)),
         log,
