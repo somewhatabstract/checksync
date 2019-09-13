@@ -34,6 +34,9 @@ export default async function getMarkersFromFiles(
         return {file: normalizedFileRef, exists};
     };
 
+    // TODO(somewhatabstract): Use jest-worker and farm parsing out to
+    // multiple threads.
+
     for (const file of files) {
         const fileMarkers = await parseFile(
             file,

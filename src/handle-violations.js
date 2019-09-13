@@ -6,6 +6,9 @@ import Format from "./format.js";
 
 import type {MarkerCache, ILog, Target} from "./types";
 
+// TODO(somewhatabstract): Change our violation handling so that our fixer
+// can work file by file.
+
 export default function handleViolations(
     cache: MarkerCache,
     autoFix: boolean,

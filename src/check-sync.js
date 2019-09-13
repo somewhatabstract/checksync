@@ -38,6 +38,11 @@ export default async function checkSync(
         return ErrorCodes.PARSE_ERRORS;
     }
 
+    // TODO(somewhatabstract): Use jest-worker and farm fixing out to multiple
+    // threads.
+    // const handler = autoFix ? fixer : reporter;
+    // const errorCode: ErrorCode = handler(cache, log);
+    // return errorCode;
     const violationFileNames = handleViolations(cache, autoFix, log).map(
         cwdRelativePath,
     );
