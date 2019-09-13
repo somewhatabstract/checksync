@@ -1,5 +1,6 @@
 // @flow
 import Format from "./format.js";
+import cwdRelativePath from "./cwd-relative-path.js";
 
 import type {ViolationHandler, ILog} from "./types.js";
 
@@ -32,7 +33,9 @@ const violationReporter: ViolationHandler = function(
         NO_CHECKSUM}`;
     log.log(
         Format.violation(
-            `${sourceFileRef} Looks like you changed the target content for sync-tag '${markerID}' in '${targetFile}:${targetLine}'. Make sure you've made the parallel changes in the source file, if necessary (${checksums})`,
+            `${sourceFileRef} Looks like you changed the target content for sync-tag '${markerID}' in '${cwdRelativePath(
+                targetFile,
+            )}:${targetLine}'. Make sure you've made the parallel changes in the source file, if necessary (${checksums})`,
         ),
     );
 };
