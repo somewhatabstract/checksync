@@ -1,107 +1,52 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Integration Tests should report __examples__ parse errors with autoFix: __examples__ autofix 1`] = `
-"<group> INFO  __examples__/content_after_start/c.js
-   ERROR  Sync-tag \\"content_after_start\\" target found after content started
-<end_group>
-<group> INFO  __examples__/directory_target/example.js
-   ERROR  Sync-tag \\"directory_target\\" points to \\"./a_directory\\", which does not exist or is a directory
-<end_group>
-<group> INFO  __examples__/end_with_no_start/example.js
-   WARNING  Sync-tag \\"end_with_no_start\\" end found, but sync-tag never started
-<end_group>
-<group> INFO  __examples__/malformed_end/malformed_badid.js
-   ERROR  Malformed sync-end tag, line 6: format should be 'end-tag:<label>\\\\n'
-  <group> ERROR  Unterminated markers
-    tagid
-  <end_group>
-<end_group>
-<group> INFO  __examples__/malformed_end/malformed_noid.js
-   ERROR  Malformed sync-end tag, line 6: format should be 'end-tag:<label>\\\\n'
-  <group> ERROR  Unterminated markers
-    tagid
-  <end_group>
-<end_group>
-<group> INFO  __examples__/malformed_start/malformed_badchecksum.js
-   ERROR  Malformed sync-start tag, line 3: format should be 'start-tag:<label> [checksum] <filename>\\\\n'
-   WARNING  Sync-tag \\"tagid\\" end found, but sync-tag never started
-<end_group>
-<group> INFO  __examples__/malformed_start/malformed_badid.js
-   ERROR  Malformed sync-start tag, line 3: format should be 'start-tag:<label> [checksum] <filename>\\\\n'
-   WARNING  Sync-tag \\"tagid\\" end found, but sync-tag never started
-<end_group>
-<group> INFO  __examples__/malformed_start/malformed_onlytagid.js
-   ERROR  Malformed sync-start tag, line 3: format should be 'start-tag:<label> [checksum] <filename>\\\\n'
-   WARNING  Sync-tag \\"tagid\\" end found, but sync-tag never started
-<end_group>
-<group> INFO  __examples__/missing_target/example.js
-   ERROR  Sync-tag \\"missing_target\\" points to \\"./missing_target.py\\", which does not exist or is a directory
-<end_group>
-<group> INFO  __examples__/no_self_reference/example.js
-   ERROR  Sync-tag \\"example_three\\" cannot target itself
-<end_group>
-<group> INFO  __examples__/unterminated_marker/example_two-b.py
-  <group> ERROR  Unterminated markers
-    example_two
-  <end_group>
-<end_group>
+" ERROR  __examples__/content_after_start/c.js:5 Sync-start for 'content_after_start' found after content started
+ ERROR  __examples__/directory_target/example.js:3 Sync-start for 'directory_target' points to './a_directory', which does not exist or is a directory
+ WARNING  __examples__/end_with_no_start/example.js:5 Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start
+ ERROR  __examples__/malformed_end/malformed_badid.js:7 Malformed sync-end tag: format should be 'end-tag:<label>\\\\n'
+ ERROR  __examples__/malformed_end/malformed_badid.js:4 Sync-start tag 'tagid' has no corresponding sync-end
+ ERROR  __examples__/malformed_end/malformed_noid.js:7 Malformed sync-end tag: format should be 'end-tag:<label>\\\\n'
+ ERROR  __examples__/malformed_end/malformed_noid.js:4 Sync-start tag 'tagid' has no corresponding sync-end
+ ERROR  __examples__/malformed_start/malformed_badchecksum.js:4 Malformed sync-start tag: format should be 'start-tag:<label> [checksum] <filename>\\\\n'
+ WARNING  __examples__/malformed_start/malformed_badchecksum.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
+ ERROR  __examples__/malformed_start/malformed_badid.js:4 Malformed sync-start tag: format should be 'start-tag:<label> [checksum] <filename>\\\\n'
+ WARNING  __examples__/malformed_start/malformed_badid.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
+ ERROR  __examples__/malformed_start/malformed_onlytagid.js:4 Malformed sync-start tag: format should be 'start-tag:<label> [checksum] <filename>\\\\n'
+ WARNING  __examples__/malformed_start/malformed_onlytagid.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
+ ERROR  __examples__/missing_target/example.js:3 Sync-start for 'missing_target' points to './missing_target.py', which does not exist or is a directory
+ ERROR  __examples__/no_self_reference/example.js:3 Sync-tag 'example_three' cannot target itself
+ ERROR  __examples__/unterminated_marker/example_two-b.py:3 Sync-start tag 'example_two' has no corresponding sync-end
  ERROR  Aborting fix due to parse errors. Fix errors and try again."
 `;
 
 exports[`Integration Tests should report __examples__ violations: __examples__ 1`] = `
-"<group> INFO  __examples__/content_after_start/c.js
-   ERROR  Sync-tag \\"content_after_start\\" target found after content started
-<end_group>
-<group> INFO  __examples__/directory_target/example.js
-   ERROR  Sync-tag \\"directory_target\\" points to \\"./a_directory\\", which does not exist or is a directory
-<end_group>
-<group> INFO  __examples__/end_with_no_start/example.js
-   WARNING  Sync-tag \\"end_with_no_start\\" end found, but sync-tag never started
-<end_group>
-<group> INFO  __examples__/malformed_end/malformed_badid.js
-   ERROR  Malformed sync-end tag, line 6: format should be 'end-tag:<label>\\\\n'
-  <group> ERROR  Unterminated markers
-    tagid
-  <end_group>
-<end_group>
-<group> INFO  __examples__/malformed_end/malformed_noid.js
-   ERROR  Malformed sync-end tag, line 6: format should be 'end-tag:<label>\\\\n'
-  <group> ERROR  Unterminated markers
-    tagid
-  <end_group>
-<end_group>
-<group> INFO  __examples__/malformed_start/malformed_badchecksum.js
-   ERROR  Malformed sync-start tag, line 3: format should be 'start-tag:<label> [checksum] <filename>\\\\n'
-   WARNING  Sync-tag \\"tagid\\" end found, but sync-tag never started
-<end_group>
-<group> INFO  __examples__/malformed_start/malformed_badid.js
-   ERROR  Malformed sync-start tag, line 3: format should be 'start-tag:<label> [checksum] <filename>\\\\n'
-   WARNING  Sync-tag \\"tagid\\" end found, but sync-tag never started
-<end_group>
-<group> INFO  __examples__/malformed_start/malformed_onlytagid.js
-   ERROR  Malformed sync-start tag, line 3: format should be 'start-tag:<label> [checksum] <filename>\\\\n'
-   WARNING  Sync-tag \\"tagid\\" end found, but sync-tag never started
-<end_group>
-<group> INFO  __examples__/missing_target/example.js
-   ERROR  Sync-tag \\"missing_target\\" points to \\"./missing_target.py\\", which does not exist or is a directory
-<end_group>
-<group> INFO  __examples__/no_self_reference/example.js
-   ERROR  Sync-tag \\"example_three\\" cannot target itself
-<end_group>
-<group> INFO  __examples__/unterminated_marker/example_two-b.py
-  <group> ERROR  Unterminated markers
-    example_two
-  <end_group>
-<end_group>
- MISMATCH  __examples__/content_after_start/a.js:3:0
- MISMATCH  __examples__/content_after_start/b.py:3:0
- MISMATCH  __examples__/content_after_start/b.py:4:0
- MISMATCH  __examples__/content_after_start/c.js:3:0
+" ERROR  __examples__/content_after_start/c.js:5 Sync-start for 'content_after_start' found after content started
+ ERROR  __examples__/directory_target/example.js:3 Sync-start for 'directory_target' points to './a_directory', which does not exist or is a directory
+ WARNING  __examples__/end_with_no_start/example.js:5 Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start
+ ERROR  __examples__/malformed_end/malformed_badid.js:7 Malformed sync-end tag: format should be 'end-tag:<label>\\\\n'
+ ERROR  __examples__/malformed_end/malformed_badid.js:4 Sync-start tag 'tagid' has no corresponding sync-end
+ ERROR  __examples__/malformed_end/malformed_noid.js:7 Malformed sync-end tag: format should be 'end-tag:<label>\\\\n'
+ ERROR  __examples__/malformed_end/malformed_noid.js:4 Sync-start tag 'tagid' has no corresponding sync-end
+ ERROR  __examples__/malformed_start/malformed_badchecksum.js:4 Malformed sync-start tag: format should be 'start-tag:<label> [checksum] <filename>\\\\n'
+ WARNING  __examples__/malformed_start/malformed_badchecksum.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
+ ERROR  __examples__/malformed_start/malformed_badid.js:4 Malformed sync-start tag: format should be 'start-tag:<label> [checksum] <filename>\\\\n'
+ WARNING  __examples__/malformed_start/malformed_badid.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
+ ERROR  __examples__/malformed_start/malformed_onlytagid.js:4 Malformed sync-start tag: format should be 'start-tag:<label> [checksum] <filename>\\\\n'
+ WARNING  __examples__/malformed_start/malformed_onlytagid.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
+ ERROR  __examples__/missing_target/example.js:3 Sync-start for 'missing_target' points to './missing_target.py', which does not exist or is a directory
+ ERROR  __examples__/no_self_reference/example.js:3 Sync-tag 'example_three' cannot target itself
+ ERROR  __examples__/unterminated_marker/example_two-b.py:3 Sync-start tag 'example_two' has no corresponding sync-end
+ MISMATCH  __examples__/content_after_start/a.js:3
+ MISMATCH  __examples__/content_after_start/b.py:3
+ MISMATCH  __examples__/content_after_start/b.py:4
+ MISMATCH  __examples__/content_after_start/c.js:3
  ERROR  __examples__/no_back_reference/file2.js does not contain a tag named 'markerID' that points to '__examples__/no_back_reference/file1.js'
- MISMATCH  __examples__/no_checksums/example_one-a.js:3:0
- MISMATCH  __examples__/no_checksums/example_one-b.py:3:0
+ MISMATCH  __examples__/no_checksums/example_one-a.js:3
+ MISMATCH  __examples__/no_checksums/example_one-b.py:3
+ MISMATCH  __examples__/no_self_reference/example.js:3
  ERROR  __examples__/unterminated_marker/example_two-b.py does not contain a tag named 'example_two' that points to '__examples__/unterminated_marker/example_two-a.js'
 <group> ERROR  Desynchronized blocks detected and parsing errors found. Fix the errors, update the blocks, then try:
-  checksync --fix __examples__/content_after_start/a.js __examples__/content_after_start/b.py __examples__/content_after_start/c.js __examples__/no_checksums/example_one-a.js __examples__/no_checksums/example_one-b.py
+  checksync --fix __examples__/content_after_start/a.js __examples__/content_after_start/b.py __examples__/content_after_start/c.js __examples__/no_checksums/example_one-a.js __examples__/no_checksums/example_one-b.py __examples__/no_self_reference/example.js
 <end_group>"
 `;

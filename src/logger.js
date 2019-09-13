@@ -37,10 +37,9 @@ export default class Logging implements ILog {
         this._logger && this._logger.info(Format.info(message));
     };
 
-    error = (message: string, skipFormat?: boolean): void => {
+    error = (message: string): void => {
         this._errorsLogged = true;
-        this._logger &&
-            this._logger.error(skipFormat ? message : Format.error(message));
+        this._logger && this._logger.error(Format.error(message));
     };
 
     warn = (message: string): void => {

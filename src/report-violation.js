@@ -27,9 +27,7 @@ const violationReporter: ViolationHandler = function(
     fixable: boolean,
     log: ILog,
 ): void {
-    log.log(
-        Format.violation(`${cwdRelativePath(sourceFile)}:${sourceLine + 1}:0`),
-    );
+    log.log(Format.violation(`${cwdRelativePath(sourceFile)}:${sourceLine}`));
 };
 
 export default violationReporter;

@@ -245,15 +245,14 @@ describe("#checkSync", () => {
             "violation2",
         ]);
         jest.spyOn(CwdRelativePath, "default").mockImplementation(f => f);
-        const errorSpy = jest.spyOn(NullLogger, "error");
+        const logSpy = jest.spyOn(NullLogger, "log");
 
         // Act
         await checkSync([], false, ["//"], NullLogger);
 
         // Assert
-        expect(errorSpy).toHaveBeenCalledWith(
+        expect(logSpy).toHaveBeenCalledWith(
             "checksync --fix violation1 violation2",
-            true,
         );
     });
 });

@@ -112,19 +112,6 @@ describe("Logger", () => {
             // Assert
             expect(formatSpy).toHaveBeenCalledWith("Test");
         });
-
-        it("should not format as error when skipFormat is true", () => {
-            // Arrange
-            jest.spyOn(NullLogger, "error").mockImplementation(() => {});
-            const formatSpy = jest.spyOn(Format, "error");
-            const logger = new Logger(NullLogger);
-
-            // Act
-            logger.error("Test", true);
-
-            // Assert
-            expect(formatSpy).not.toHaveBeenCalled();
-        });
     });
 
     describe("#warn", () => {

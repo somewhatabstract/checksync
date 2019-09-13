@@ -2,6 +2,7 @@
 import fixViolation from "./fix-violation.js";
 import reportViolation from "./report-violation.js";
 import cwdRelativePath from "./cwd-relative-path.js";
+import Format from "./format.js";
 
 import type {MarkerCache, ILog, Target} from "./types";
 
@@ -43,7 +44,7 @@ export default function handleViolations(
                     )
                 ) {
                     log.error(
-                        `${cwdRelativePath(
+                        `${Format.filePath(
                             targetRef.file,
                         )} does not contain a tag named '${markerID}' that points to '${cwdRelativePath(
                             file,

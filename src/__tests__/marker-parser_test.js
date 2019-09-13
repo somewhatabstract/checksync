@@ -5,9 +5,10 @@ import Logger from "../logger.js";
 const NullLogger = new Logger();
 
 describe("MarkerParser", () => {
-    describe("#getOpenMarkerIDs", () => {
-        it("should give empty array when no markers parsed", () => {
+    describe("#reportUnterminatedMarkers", () => {
+        it("should report nothing when no markers parsed", () => {
             // Arrange
+            const errorSpy = jest.spyOn(NullLogger, "error");
             const parser = new MarkerParser(
                 target => ({file: target, exists: true}),
                 jest.fn(),
@@ -16,33 +17,15 @@ describe("MarkerParser", () => {
             );
 
             // Act
-            const result = parser.getOpenMarkerIDs();
+            parser.reportUnterminatedMarkers();
 
             // Assert
-            expect(result).toBeEmpty();
+            expect(errorSpy).not.toHaveBeenCalled();
         });
 
-        it("should list open IDs when markers have not been terminated", () => {
+        it("should report nothing when all markers are terminated", () => {
             // Arrange
-            const parser = new MarkerParser(
-                target => ({file: target, exists: true}),
-                jest.fn(),
-                [],
-                NullLogger,
-            );
-            parser.parseLine("sync-start:tag1 1234 file.js");
-            parser.parseLine("sync-start:tag2 example.js");
-            parser.parseLine("sync-end:tag1");
-
-            // Act
-            const result = parser.getOpenMarkerIDs();
-
-            // Assert
-            expect(result).toEqual(["tag2"]);
-        });
-
-        it("should give empty array when all markers have been terminated", () => {
-            // Arrange
+            const errorSpy = jest.spyOn(NullLogger, "error");
             const parser = new MarkerParser(
                 target => ({file: target, exists: true}),
                 jest.fn(),
@@ -55,10 +38,33 @@ describe("MarkerParser", () => {
             parser.parseLine("sync-end:tag2");
 
             // Act
-            const result = parser.getOpenMarkerIDs();
+            parser.reportUnterminatedMarkers();
 
             // Assert
-            expect(result).toBeEmpty();
+            expect(errorSpy).not.toHaveBeenCalled();
+        });
+
+        it("should report unterminated markers", () => {
+            // Arrange
+            const errorSpy = jest.spyOn(NullLogger, "error");
+            const parser = new MarkerParser(
+                target => ({file: target, exists: true}),
+                jest.fn(),
+                [],
+                NullLogger,
+            );
+            parser.parseLine("sync-start:tag1 1234 file.js");
+            parser.parseLine("sync-start:tag2 example.js");
+            parser.parseLine("sync-end:tag1");
+
+            // Act
+            parser.reportUnterminatedMarkers();
+
+            // Assert
+            expect(errorSpy).toHaveBeenCalledWith(
+                "Sync-start tag 'tag2' has no corresponding sync-end",
+                2,
+            );
         });
     });
 
@@ -78,7 +84,7 @@ describe("MarkerParser", () => {
 
             // Assert
             expect(warnSpy.mock.calls[0][0]).toMatchInlineSnapshot(
-                `"Sync-tag \\"notstarted\\" end found, but sync-tag never started"`,
+                `"Sync-end for 'notstarted' found, but there was no corresponding sync-start"`,
             );
         });
 
@@ -97,7 +103,7 @@ describe("MarkerParser", () => {
 
             // Assert
             expect(errorSpy.mock.calls[0][0]).toMatchInlineSnapshot(
-                `"Sync-tag \\"markerid\\" points to \\"target1\\", which does not exist or is a directory"`,
+                `"Sync-start for 'markerid' points to 'target1', which does not exist or is a directory"`,
             );
         });
 
@@ -118,7 +124,7 @@ describe("MarkerParser", () => {
 
             // Assert
             expect(errorSpy.mock.calls[0][0]).toMatchInlineSnapshot(
-                `"Sync-tag \\"markerid\\" target found after content started"`,
+                `"Sync-start for 'markerid' found after content started"`,
             );
         });
 
@@ -138,7 +144,7 @@ describe("MarkerParser", () => {
 
             // Assert
             expect(warnSpy.mock.calls[0][0]).toMatchInlineSnapshot(
-                `"Duplicate target \\"target1\\" for sync-tag \\"markerid\\""`,
+                `"Duplicate target 'target1' for sync-tag 'markerid'"`,
             );
         });
 
@@ -158,7 +164,7 @@ describe("MarkerParser", () => {
 
             // Assert
             expect(warnSpy.mock.calls[0][0]).toMatchInlineSnapshot(
-                `"Sync-tag \\"markerid\\" has no content"`,
+                `"Sync-tag 'markerid' has no content"`,
             );
         });
 
@@ -185,7 +191,7 @@ describe("MarkerParser", () => {
                 "markerid1",
                 "1472197848",
                 expect.objectContaining({
-                    "0": expect.objectContaining({
+                    "1": expect.objectContaining({
                         checksum: undefined,
                         file: "target1",
                     }),
@@ -195,11 +201,11 @@ describe("MarkerParser", () => {
                 "markerid2",
                 "1472197848",
                 expect.objectContaining({
-                    "1": expect.objectContaining({
+                    "2": expect.objectContaining({
                         checksum: "9876",
                         file: "target2",
                     }),
-                    "2": expect.objectContaining({
+                    "3": expect.objectContaining({
                         checksum: "12345",
                         file: "target1",
                     }),
