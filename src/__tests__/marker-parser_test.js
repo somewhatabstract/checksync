@@ -69,6 +69,44 @@ describe("MarkerParser", () => {
     });
 
     describe("#parseLine", () => {
+        it("should error if sync-start is malformed", () => {
+            // Arrange
+            const errorSpy = jest.spyOn(NullLogger, "error");
+            const parser = new MarkerParser(
+                target => ({file: target, exists: true}),
+                jest.fn(),
+                [],
+                NullLogger,
+            );
+
+            // Act
+            parser.parseLine("sync-start:badstart");
+
+            // Assert
+            expect(errorSpy.mock.calls[0][0]).toMatchInlineSnapshot(
+                `"Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename>\\\\n'"`,
+            );
+        });
+
+        it("should error if sync-end is malformed", () => {
+            // Arrange
+            const errorSpy = jest.spyOn(NullLogger, "error");
+            const parser = new MarkerParser(
+                target => ({file: target, exists: true}),
+                jest.fn(),
+                [],
+                NullLogger,
+            );
+
+            // Act
+            parser.parseLine("sync-end:");
+
+            // Assert
+            expect(errorSpy.mock.calls[0][0]).toMatchInlineSnapshot(
+                `"Malformed sync-end: format should be 'sync-end:<label>\\\\n'"`,
+            );
+        });
+
         it("should warn if marker never started but is ended", () => {
             // Arrange
             const warnSpy = jest.spyOn(NullLogger, "warn");

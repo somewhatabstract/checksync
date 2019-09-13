@@ -17,7 +17,7 @@ exports[`Integration Tests should report __examples__ parse errors with autoFix:
  ERROR  __examples__/missing_target/example.js:3 Sync-start for 'missing_target' points to './missing_target.py', which does not exist or is a directory
  ERROR  __examples__/no_self_reference/example.js:3 Sync-tag 'example_three' cannot target itself
  ERROR  __examples__/unterminated_marker/example_two-b.py:3 Sync-start 'example_two' has no corresponding sync-end
- ERROR  Aborting fix due to parse errors. Fix errors and try again."
+ ERROR  🛑  Aborting fix due to parse errors. Fix these errors and try again."
 `;
 
 exports[`Integration Tests should report __examples__ violations: __examples__ 1`] = `
@@ -37,16 +37,18 @@ exports[`Integration Tests should report __examples__ violations: __examples__ 1
  ERROR  __examples__/missing_target/example.js:3 Sync-start for 'missing_target' points to './missing_target.py', which does not exist or is a directory
  ERROR  __examples__/no_self_reference/example.js:3 Sync-tag 'example_three' cannot target itself
  ERROR  __examples__/unterminated_marker/example_two-b.py:3 Sync-start 'example_two' has no corresponding sync-end
- MISMATCH  __examples__/content_after_start/a.js:3 Looks like you changed the target content for sync-tag 'content_after_start' in '/Users/jeffyates/git/checksync/__examples__/content_after_start/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary
- MISMATCH  __examples__/content_after_start/b.py:3 Looks like you changed the target content for sync-tag 'content_after_start' in '/Users/jeffyates/git/checksync/__examples__/content_after_start/a.js:3'. Make sure you've made the parallel changes in the source file, if necessary
- MISMATCH  __examples__/content_after_start/b.py:4 Looks like you changed the target content for sync-tag 'content_after_start' in '/Users/jeffyates/git/checksync/__examples__/content_after_start/c.js:3'. Make sure you've made the parallel changes in the source file, if necessary
- MISMATCH  __examples__/content_after_start/c.js:3 Looks like you changed the target content for sync-tag 'content_after_start' in '/Users/jeffyates/git/checksync/__examples__/content_after_start/b.py:4'. Make sure you've made the parallel changes in the source file, if necessary
+ MISMATCH  __examples__/checksums_need_updating/a.js:3 Looks like you changed the target content for sync-tag 'update_me' in '/Users/jeffyates/git/checksync/__examples__/checksums_need_updating/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (45678 != 209519188)
+ MISMATCH  __examples__/checksums_need_updating/b.py:3 Looks like you changed the target content for sync-tag 'update_me' in '/Users/jeffyates/git/checksync/__examples__/checksums_need_updating/a.js:3'. Make sure you've made the parallel changes in the source file, if necessary (4567 != 252580609)
+ MISMATCH  __examples__/content_after_start/a.js:3 Looks like you changed the target content for sync-tag 'content_after_start' in '/Users/jeffyates/git/checksync/__examples__/content_after_start/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 209519188)
+ MISMATCH  __examples__/content_after_start/b.py:3 Looks like you changed the target content for sync-tag 'content_after_start' in '/Users/jeffyates/git/checksync/__examples__/content_after_start/a.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 252580609)
+ MISMATCH  __examples__/content_after_start/b.py:4 Looks like you changed the target content for sync-tag 'content_after_start' in '/Users/jeffyates/git/checksync/__examples__/content_after_start/c.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 252580609)
+ MISMATCH  __examples__/content_after_start/c.js:3 Looks like you changed the target content for sync-tag 'content_after_start' in '/Users/jeffyates/git/checksync/__examples__/content_after_start/b.py:4'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 209519188)
  ERROR  __examples__/no_back_reference/file2.js does not contain a tag named 'markerID' that points to '__examples__/no_back_reference/file1.js'
- MISMATCH  __examples__/no_checksums/example_one-a.js:3 Looks like you changed the target content for sync-tag 'example_one' in '/Users/jeffyates/git/checksync/__examples__/no_checksums/example_one-b.py:3'. Make sure you've made the parallel changes in the source file, if necessary
- MISMATCH  __examples__/no_checksums/example_one-b.py:3 Looks like you changed the target content for sync-tag 'example_one' in '/Users/jeffyates/git/checksync/__examples__/no_checksums/example_one-a.js:3'. Make sure you've made the parallel changes in the source file, if necessary
- MISMATCH  __examples__/no_self_reference/example.js:3 Looks like you changed the target content for sync-tag 'example_three' in '/Users/jeffyates/git/checksync/__examples__/no_self_reference/example.js:3'. Make sure you've made the parallel changes in the source file, if necessary
+ MISMATCH  __examples__/no_checksums/example_one-a.js:3 Looks like you changed the target content for sync-tag 'example_one' in '/Users/jeffyates/git/checksync/__examples__/no_checksums/example_one-b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 209519188)
+ MISMATCH  __examples__/no_checksums/example_one-b.py:3 Looks like you changed the target content for sync-tag 'example_one' in '/Users/jeffyates/git/checksync/__examples__/no_checksums/example_one-a.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 252580609)
+ MISMATCH  __examples__/no_self_reference/example.js:3 Looks like you changed the target content for sync-tag 'example_three' in '/Users/jeffyates/git/checksync/__examples__/no_self_reference/example.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 252580609)
  ERROR  __examples__/unterminated_marker/example_two-b.py does not contain a tag named 'example_two' that points to '__examples__/unterminated_marker/example_two-a.js'
-<group> ERROR  Desynchronized blocks detected and parsing errors found. Fix the errors, update the blocks, then try:
-  checksync --fix __examples__/content_after_start/a.js __examples__/content_after_start/b.py __examples__/content_after_start/c.js __examples__/no_checksums/example_one-a.js __examples__/no_checksums/example_one-b.py __examples__/no_self_reference/example.js
+<group> ERROR  🛑  Desynchronized blocks detected and parsing errors found. Fix the errors, update the blocks, then try:
+  checksync --fix __examples__/checksums_need_updating/a.js __examples__/checksums_need_updating/b.py __examples__/content_after_start/a.js __examples__/content_after_start/b.py __examples__/content_after_start/c.js __examples__/no_checksums/example_one-a.js __examples__/no_checksums/example_one-b.py __examples__/no_self_reference/example.js
 <end_group>"
 `;

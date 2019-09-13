@@ -33,7 +33,7 @@ export default async function checkSync(
 
     if (log.errorsLogged && autoFix) {
         log.error(
-            "Aborting fix due to parse errors. Fix errors and try again.",
+            "🛑  Aborting fix due to parse errors. Fix these errors and try again.",
         );
         return ErrorCodes.PARSE_ERRORS;
     }
@@ -49,13 +49,15 @@ export default async function checkSync(
             // Output how to fix any violations we found if we're not running
             // autofix.
             const errorMsg = log.errorsLogged
-                ? "Desynchronized blocks detected and parsing errors found. Fix the errors, update the blocks, then try:"
-                : "Desynchronized blocks detected. Check them and update as required before resynchronizing:";
+                ? "🛑  Desynchronized blocks detected and parsing errors found. Fix the errors, update the blocks, then try:"
+                : "🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing:";
             log.group(Format.error(errorMsg));
             log.log(`checksync --fix ${violationFileNames.join(" ")}`);
             log.groupEnd();
             return ErrorCodes.DESYNCHRONIZED_BLOCKS;
         }
     }
+
+    log.log("🎉  Everything is in sync!");
     return ErrorCodes.SUCCESS;
 }

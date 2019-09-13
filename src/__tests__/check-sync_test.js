@@ -91,7 +91,7 @@ describe("#checkSync", () => {
 
         // Assert
         expect(errorSpy).toHaveBeenCalledWith(
-            "Aborting fix due to parse errors. Fix errors and try again.",
+            "🛑  Aborting fix due to parse errors. Fix these errors and try again.",
         );
     });
 

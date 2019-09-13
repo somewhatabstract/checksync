@@ -27,9 +27,10 @@ const violationReporter: ViolationHandler = function(
     log: ILog,
 ): void {
     const sourceFileRef = Format.filePath(`${sourceFile}:${sourceLine}`);
+    const checksums = `${refChecksum || "No checksum"} != ${targetChecksum}`;
     log.log(
         Format.violation(
-            `${sourceFileRef} Looks like you changed the target content for sync-tag '${markerID}' in '${targetFile}:${targetLine}'. Make sure you've made the parallel changes in the source file, if necessary`,
+            `${sourceFileRef} Looks like you changed the target content for sync-tag '${markerID}' in '${targetFile}:${targetLine}'. Make sure you've made the parallel changes in the source file, if necessary (${checksums})`,
         ),
     );
 };

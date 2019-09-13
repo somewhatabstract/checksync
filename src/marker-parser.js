@@ -237,8 +237,7 @@ export default class MarkerParser {
         for (const id of Object.keys(this._openMarkers)) {
             const openMarker = this._openMarkers[id];
             const targetFile = Object.keys(openMarker.targets)[0];
-            const target = targetFile && openMarker.targets[targetFile];
-            const {line} = target || {};
+            const {line} = openMarker.targets[targetFile];
             this._log.error(
                 `Sync-start '${id}' has no corresponding sync-end`,
                 line,
