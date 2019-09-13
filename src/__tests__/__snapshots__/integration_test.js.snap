@@ -95,6 +95,7 @@ exports[`Integration Tests should report __examples__ violations: __examples__ 1
 <end_group>
  MISMATCH  __examples__/content_after_start/a.js:3:0
  MISMATCH  __examples__/content_after_start/b.py:3:0
+ MISMATCH  __examples__/content_after_start/b.py:4:0
  MISMATCH  __examples__/content_after_start/c.js:3:0
  MISMATCH  __examples__/no_checksums/example_one-a.js:3:0
  MISMATCH  __examples__/no_checksums/example_one-b.py:3:0

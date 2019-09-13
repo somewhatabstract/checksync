@@ -2,7 +2,7 @@
 import fixViolation from "./fix-violation.js";
 import reportViolation from "./report-violation.js";
 
-import type {MarkerCache, ILog} from "./types";
+import type {MarkerCache, ILog, Target} from "./types";
 
 export default function handleViolations(
     cache: MarkerCache,
@@ -40,7 +40,19 @@ export default function handleViolations(
                     // along.
                     continue;
                 }
+
                 const targetMarker = target[markerID];
+                if (
+                    targetMarker == null ||
+                    !Object.values(targetMarker.targets).some(
+                        (t: any) => (t: Target).file === file,
+                    )
+                ) {
+                    log.error(
+                        `${targetRef.file} does not contain a tag named '${markerID}' that points to '${file}'`,
+                    );
+                    continue;
+                }
 
                 // Now compare the actual target marker checksum with the one
                 // in our reference, and if they don't match, do something
