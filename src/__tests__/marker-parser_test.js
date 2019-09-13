@@ -62,7 +62,7 @@ describe("MarkerParser", () => {
 
             // Assert
             expect(errorSpy).toHaveBeenCalledWith(
-                "Sync-start tag 'tag2' has no corresponding sync-end",
+                "Sync-start 'tag2' has no corresponding sync-end",
                 2,
             );
         });

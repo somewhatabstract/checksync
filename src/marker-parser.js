@@ -240,7 +240,7 @@ export default class MarkerParser {
             const target = targetFile && openMarker.targets[targetFile];
             const {line} = target || {};
             this._log.error(
-                `Sync-start tag '${id}' has no corresponding sync-end`,
+                `Sync-start '${id}' has no corresponding sync-end`,
                 line,
             );
         }
@@ -271,7 +271,7 @@ export default class MarkerParser {
             const startDecode = this._startTagDecodeRegExp.exec(startMatch[1]);
             if (startDecode == null) {
                 this._log.error(
-                    `Malformed sync-start tag: format should be 'start-tag:<label> [checksum] <filename>\\n'`,
+                    `Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename>\\n'`,
                     lineNumber,
                 );
             } else {
@@ -290,7 +290,7 @@ export default class MarkerParser {
             const endDecode = this._endTagDecodeRegExp.exec(endMatch[1]);
             if (endDecode == null) {
                 this._log.error(
-                    `Malformed sync-end tag: format should be 'end-tag:<label>\\n'`,
+                    `Malformed sync-end: format should be 'sync-end:<label>\\n'`,
                     lineNumber,
                 );
             } else {
