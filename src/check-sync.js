@@ -57,6 +57,7 @@ export default async function checkSync(
                 ? "🛑  Desynchronized blocks detected and parsing errors found. Fix the errors, update the blocks, then try:"
                 : "🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing:";
             log.group(Format.error(errorMsg));
+            // TODO(somewhatabstract): Add the `--comments` arg to this call.
             log.log(`checksync --fix ${violationFileNames.join(" ")}`);
             log.groupEnd();
             return ErrorCodes.DESYNCHRONIZED_BLOCKS;
