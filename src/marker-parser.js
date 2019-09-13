@@ -3,7 +3,7 @@ import escapeRegExp from "lodash/escapeRegExp";
 
 import calcChecksum from "./checksum.js";
 
-import type {ILog, Targets, normalizePathFn} from "./types.js";
+import type {IPositionLog, Targets, normalizePathFn} from "./types.js";
 
 type TrackedTarget = {
     /**
@@ -24,6 +24,7 @@ type TrackedTarget = {
 
 type TrackedTargets = {
     [target: string]: TrackedTarget,
+    ...,
 };
 
 type TrackedMarker = {
@@ -44,6 +45,7 @@ type TrackedMarker = {
 
 type TrackedMarkers = {
     [id: string]: TrackedMarker,
+    ...,
 };
 
 type addMarkerFn = (id: string, checksum: string, targets: Targets) => void;
@@ -52,7 +54,7 @@ type addMarkerFn = (id: string, checksum: string, targets: Targets) => void;
  * Convert our tracked targets object into a regular targets object.
  */
 const targetsFromTrackedTargets = (trackedTargets: TrackedTargets): Targets => {
-    const targets: Targets = ({}: any);
+    const targets: Targets = {};
 
     for (const file of Object.keys(trackedTargets)) {
         const {line, checksum} = trackedTargets[file];
@@ -77,12 +79,14 @@ const targetsFromTrackedTargets = (trackedTargets: TrackedTargets): Targets => {
  * @class MarkerParser
  */
 export default class MarkerParser {
-    _log: ILog;
-    _openMarkers: TrackedMarkers = ({}: any);
+    _log: IPositionLog;
+    _openMarkers: TrackedMarkers = {};
     _addMarker: addMarkerFn;
     _normalizePath: normalizePathFn;
     _startTagRegExp: RegExp;
+    _startTagDecodeRegExp: RegExp;
     _endTagRegExp: RegExp;
+    _endTagDecodeRegExp: RegExp;
     _lineNumber: number;
 
     /**
@@ -91,18 +95,18 @@ export default class MarkerParser {
      * @param {normalizePathFn} normalizePath - Callback that will normalize a given path.
      * @param {addMarkerFn} addMarker - Callback invoked when a complete marker has been parsed.
      * @param {Array<string>} comments - An array of strings that are used to detect the start of single-line comments.
-     * @param {ILog} log - Log to record feedback
+     * @param {IPositionLog} log - Log to record feedback
      */
     constructor(
         normalizePath: normalizePathFn,
         addMarker: addMarkerFn,
         comments: Array<string>,
-        log: ILog,
+        log: IPositionLog,
     ) {
         this._addMarker = addMarker;
         this._normalizePath = normalizePath;
         this._log = log;
-        this._lineNumber = 0;
+        this._lineNumber = 1;
 
         const commentsString = comments
             .map(c => `(?:${escapeRegExp(c)})`)
@@ -112,29 +116,46 @@ export default class MarkerParser {
          * This is the regular expression that parses a start tag.
          *
          * Groups:
-         *     1: The tag id
-         *     2: The checksum (optional)
-         *     3: The target filename
+         *     1:  Maybe the tag details to be decoded
          *
          * Example:
          *   `// sync-start:tagname 1234567 target.js`
          */
         this._startTagRegExp = new RegExp(
-            `^(?:${commentsString})\\s*sync-start:([^\\s]+)\\s+([0-9]*)?\\s*(.*)$`,
+            `^(?:${commentsString})\\s*sync-start:(.*)$`,
+        );
+
+        /**
+         * This regular expression decodes the start tag.
+         *
+         * Groups:
+         *     1: The tag id
+         *     2: The checksum (optional)
+         *     3: The target filename
+         */
+        this._startTagDecodeRegExp = new RegExp(
+            `^([^\\s]+)\\s+([0-9]*)?\\s*(\\S*)$`,
         );
 
         /**
          * This is the regular expression that parses an end tag.
          *
          * Groups:
-         *     1: The tag id
+         *     1: Maybe the tag id
          *
          * Example:
          *   `// sync-end:tagname`
          */
         this._endTagRegExp = new RegExp(
-            `^(?:${commentsString})\\s*sync-end:([^\\s]+)\\s*$`,
+            `^(?:${commentsString})\\s*sync-end:(.*)$`,
         );
+        /**
+         * This is the regular expression that parses the end tag details.
+         *
+         * Groups:
+         *     1: The tag id
+         */
+        this._endTagDecodeRegExp = new RegExp(`^(\\S+)\\s*$`);
     }
 
     _recordMarkerStart = (
@@ -145,7 +166,7 @@ export default class MarkerParser {
     ) => {
         this._openMarkers[id] = this._openMarkers[id] || {
             content: [],
-            targets: ({}: any),
+            targets: {},
         };
 
         const normalized = this._normalizePath(file);
@@ -157,19 +178,24 @@ export default class MarkerParser {
 
         if (!normalized.exists) {
             this._log.error(
-                `Sync-tag "${id}" points to "${file}", which does not exist or is a directory`,
+                `Sync-start for '${id}' points to '${file}', which does not exist or is a directory`,
+                line,
             );
             return;
         }
 
         if (this._openMarkers[id].targets[normalized.file]) {
-            this._log.warn(`Duplicate target "${file}" for sync-tag "${id}"`);
+            this._log.warn(
+                `Duplicate target '${file}' for sync-tag '${id}'`,
+                line,
+            );
             return;
         }
 
         if (this._openMarkers[id].content.length !== 0) {
             this._log.error(
-                `Sync-tag "${id}" target found after content started`,
+                `Sync-start for '${id}' found after content started`,
+                line,
             );
             return;
         }
@@ -180,17 +206,18 @@ export default class MarkerParser {
         };
     };
 
-    _recordMarkerEnd = (id: string) => {
+    _recordMarkerEnd = (id: string, line: number) => {
         const marker = this._openMarkers[id];
         if (marker == null) {
             this._log.warn(
-                `Sync-tag "${id}" end found, but sync-tag never started`,
+                `Sync-end for '${id}' found, but there was no corresponding sync-start`,
+                line,
             );
             return;
         }
 
         if (marker.content.length === 0) {
-            this._log.warn(`Sync-tag "${id}" has no content`);
+            this._log.warn(`Sync-tag '${id}' has no content`, line);
         }
 
         const checksum = calcChecksum(marker.content);
@@ -206,12 +233,17 @@ export default class MarkerParser {
         }
     };
 
-    /**
-     * Return an array of markers that were not terminated.
-     *
-     * @memberof MarkerParser
-     */
-    getOpenMarkerIDs = (): Array<string> => Object.keys(this._openMarkers);
+    reportUnterminatedMarkers = () => {
+        for (const id of Object.keys(this._openMarkers)) {
+            const openMarker = this._openMarkers[id];
+            const targetFile = Object.keys(openMarker.targets)[0];
+            const {line} = openMarker.targets[targetFile];
+            this._log.error(
+                `Sync-start '${id}' has no corresponding sync-end`,
+                line,
+            );
+        }
+    };
 
     /**
      * Parse a line of content and build into markers as appropriate.
@@ -228,18 +260,34 @@ export default class MarkerParser {
 
         const startMatch = this._startTagRegExp.exec(content);
         if (startMatch != null) {
-            this._recordMarkerStart(
-                startMatch[1],
-                startMatch[3],
-                lineNumber,
-                startMatch[2],
-            );
+            const startDecode = this._startTagDecodeRegExp.exec(startMatch[1]);
+            if (startDecode == null) {
+                this._log.error(
+                    `Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename>\\n'`,
+                    lineNumber,
+                );
+            } else {
+                this._recordMarkerStart(
+                    startDecode[1],
+                    startDecode[3],
+                    lineNumber,
+                    startDecode[2],
+                );
+            }
             return;
         }
 
         const endMatch = this._endTagRegExp.exec(content);
         if (endMatch != null) {
-            this._recordMarkerEnd(endMatch[1]);
+            const endDecode = this._endTagDecodeRegExp.exec(endMatch[1]);
+            if (endDecode == null) {
+                this._log.error(
+                    `Malformed sync-end: format should be 'sync-end:<label>\\n'`,
+                    lineNumber,
+                );
+            } else {
+                this._recordMarkerEnd(endMatch[1], lineNumber);
+            }
             return;
         }
 

@@ -21,7 +21,7 @@ export default async function getMarkersFromFiles(
     comments: Array<string>,
     log: ILog,
 ): Promise<MarkerCache> {
-    const cacheData: MarkerCache = ({}: any);
+    const cacheData: MarkerCache = {};
     const referencedFiles: Array<string> = [];
     const logFileRef = (file, fileRef) => {
         const normalizedFileRef = path.resolve(path.dirname(file), fileRef);
@@ -33,6 +33,9 @@ export default async function getMarkersFromFiles(
         }
         return {file: normalizedFileRef, exists};
     };
+
+    // TODO(somewhatabstract): Use jest-worker and farm parsing out to
+    // multiple threads.
 
     for (const file of files) {
         const fileMarkers = await parseFile(

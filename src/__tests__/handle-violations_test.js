@@ -221,13 +221,13 @@ describe("#handleViolations", () => {
 
         // Assert
         expect(spy).toHaveBeenCalledWith(
-            "filea",
-            1,
             "marker1",
+            "filea",
+            "1",
             "MISMATCH!",
             "targetfile",
+            "1",
             "TARGET_CHECKSUM",
-            true,
             NullLogger,
         );
     });
@@ -251,7 +251,7 @@ describe("#handleViolations", () => {
                     fixable: true,
                     checksum: "5678",
                     targets: ({
-                        "1": ({
+                        "8": ({
                             checksum: "MISMATCH!",
                             file: "targetfile",
                         }: Target),
@@ -263,7 +263,7 @@ describe("#handleViolations", () => {
                     fixable: true,
                     checksum: "TARGET_CHECKSUM",
                     targets: ({
-                        "1": ({
+                        "2": ({
                             checksum: "5678",
                             file: "filea",
                         }: Target),
@@ -273,7 +273,7 @@ describe("#handleViolations", () => {
                     fixable: true,
                     checksum: "TARGET_CHECKSUM",
                     targets: ({
-                        "1": ({
+                        "10": ({
                             checksum: "5678",
                             file: "filea",
                         }: Target),
@@ -288,13 +288,13 @@ describe("#handleViolations", () => {
 
         // Assert
         expect(spy).toHaveBeenCalledWith(
+            "marker2",
             "filea",
-            1,
-            "marker1",
+            "8",
             "MISMATCH!",
             "targetfile",
+            "10",
             "TARGET_CHECKSUM",
-            true,
             NullLogger,
         );
     });

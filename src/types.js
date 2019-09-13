@@ -19,10 +19,17 @@ export interface ILog {
     +group: (...labels: Array<string>) => void;
     +groupEnd: () => void;
 
-    +error: (message: string, skipFormat?: boolean) => void;
+    +error: (message: string) => void;
     +info: (message: string) => void;
     +log: (message: string) => void;
     +warn: (message: string) => void;
+}
+
+export interface IPositionLog extends ILog {
+    +error: (message: string, line?: string | number) => void;
+    +info: (message: string, line?: string | number) => void;
+    +log: (message: string, line?: string | number) => void;
+    +warn: (message: string, line?: string | number) => void;
 }
 
 /**
@@ -48,7 +55,8 @@ export type Target = {
  * is incorrect.
  */
 export type Targets = {
-    [line: number]: Target,
+    [line: string | number]: Target,
+    ...,
 };
 
 /**
@@ -79,6 +87,7 @@ export type Markers = {
      * Marker id to the marker details.
      */
     [id: string]: Marker,
+    ...,
 };
 
 /**
@@ -89,19 +98,20 @@ export type MarkerCache = {
      * A file path mapped to the markers within it.
      */
     [file: string]: ?Markers,
+    ...,
 };
 
 /**
  * Handle a sync violation
  */
 export type ViolationHandler = (
-    sourceFile: string,
-    sourceLine: number,
     markerID: string,
-    refChecksum: string,
+    sourceFile: string,
+    sourceLine: string | number,
+    refChecksum: ?string,
     targetFile: string,
-    targetChecksum: string,
-    fixable: boolean,
+    targetLine: string | number,
+    targetChecksum: ?string,
     log: ILog,
 ) => void;
 

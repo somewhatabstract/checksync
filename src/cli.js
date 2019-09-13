@@ -7,8 +7,6 @@ import minimist from "minimist";
 import checkSync from "./check-sync.js";
 import Logger from "./logger.js";
 
-import "./shims.js";
-
 /**
  * Run the command line.
  *
@@ -42,8 +40,7 @@ export const run = (launchFilePath: string): void => {
         },
     });
 
-    // This is going to be a string. $FlowFixMe
-    const comments = args.comments.split(",");
+    const comments = ((args.comments: any): string).split(",");
 
     // Make sure we have something to search, so default to current working
     // directory if no globs are given.

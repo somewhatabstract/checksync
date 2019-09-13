@@ -4,40 +4,38 @@ import {Readable} from "stream";
 import chalk from "chalk";
 
 import * as MarkerParser from "../marker-parser.js";
-import * as ScopedLogger from "../scoped-logger.js";
+import * as FileReferenceLogger from "../file-reference-logger.js";
 
 import Logger from "../logger.js";
 import parseFile from "../parse-file.js";
 
 jest.mock("../marker-parser.js");
-jest.mock("../scoped-logger.js");
+jest.mock("../file-reference-logger.js");
 
 const NullLogger = new Logger();
 
 describe("#parseFile", () => {
     const mockMarkerParser = {
-        getOpenMarkerIDs: jest.fn(),
+        reportUnterminatedMarkers: jest.fn(),
         parseLine: jest.fn(),
     };
     const resetMarkerParser = () => {
         jest.spyOn(MarkerParser, "default").mockImplementation(
             (...args) => mockMarkerParser,
         );
-        mockMarkerParser.getOpenMarkerIDs.mockReturnValue([]);
     };
 
-    const mockScopedLogger = {
+    const mockFileReferenceLogger = {
         log: jest.fn(),
         warn: jest.fn(),
         info: jest.fn(),
         groupEnd: jest.fn(),
         group: jest.fn(),
         error: jest.fn(),
-        closeScope: jest.fn(),
     };
-    const resetScopedLogger = () => {
-        jest.spyOn(ScopedLogger, "default").mockImplementation(
-            (...args) => mockScopedLogger,
+    const resetFileReferenceLogger = () => {
+        jest.spyOn(FileReferenceLogger, "default").mockImplementation(
+            (...args) => mockFileReferenceLogger,
         );
     };
 
@@ -60,7 +58,7 @@ describe("#parseFile", () => {
     beforeEach(() => {
         chalk.enabled = false;
         resetMarkerParser();
-        resetScopedLogger();
+        resetFileReferenceLogger();
     });
 
     it("should create scoped logger for file", async () => {
@@ -68,43 +66,16 @@ describe("#parseFile", () => {
         const fakeFile = mockFakeFile();
         fakeFile.push(null); // <- End of file
 
-        const scopedLoggerSpy = jest.spyOn(ScopedLogger, "default");
+        const fileRefLoggerSpy = jest.spyOn(FileReferenceLogger, "default");
 
         // Act
         await parseFile("file.js", true, [], NullLogger);
 
         // Assert
-        expect(scopedLoggerSpy).toHaveBeenCalledWith(
+        expect(fileRefLoggerSpy).toHaveBeenCalledWith(
             expect.stringContaining("file.js"),
             NullLogger,
         );
-    });
-
-    it("should close logging group for file on failure", async () => {
-        // Arrange
-        jest.spyOn(fs, "createReadStream").mockImplementation(() => {
-            throw new Error("The file wasn't found!");
-        });
-
-        // Act
-        await parseFile("file.js", true, [], NullLogger);
-
-        // Assert
-        expect(mockScopedLogger.closeScope).toHaveBeenCalled();
-        expect(mockScopedLogger.error).toHaveBeenCalled(); // <- Verifies we're testing failure
-    });
-
-    it("should close logging group for file on success", async () => {
-        // Arrange
-        const fakeFile = mockFakeFile();
-        fakeFile.push(null); // <- End of file
-
-        // Act
-        await parseFile("file.js", true, [], NullLogger);
-
-        // Assert
-        expect(mockScopedLogger.closeScope).toHaveBeenCalled();
-        expect(mockScopedLogger.error).not.toHaveBeenCalled(); // <- Verifies we're testing success
     });
 
     it("should log parse error on failure", async () => {
@@ -117,7 +88,7 @@ describe("#parseFile", () => {
         await parseFile("file.js", true, [], NullLogger);
 
         // Assert
-        expect(mockScopedLogger.error).toHaveBeenCalledWith(
+        expect(mockFileReferenceLogger.error).toHaveBeenCalledWith(
             "Could not parse file: ERROR_STRING",
         );
     });
@@ -132,7 +103,7 @@ describe("#parseFile", () => {
 
         // Assert
         expect(result).toBeNull();
-        expect(mockScopedLogger.error).not.toHaveBeenCalled(); // <- Verifies we're testing success
+        expect(mockFileReferenceLogger.error).not.toHaveBeenCalled(); // <- Verifies we're testing success
     });
 
     it("should resolve with null on error", async () => {
@@ -146,7 +117,7 @@ describe("#parseFile", () => {
 
         // Assert
         expect(result).toBeNull();
-        expect(mockScopedLogger.error).toHaveBeenCalled(); // <- Verifies we're testing failure
+        expect(mockFileReferenceLogger.error).toHaveBeenCalled(); // <- Verifies we're testing failure
     });
 
     it("should invoke MarkerParser.parseLine for each line", async () => {
@@ -187,7 +158,7 @@ describe("#parseFile", () => {
             mockNormalize,
             expect.any(Function),
             commentsArray,
-            mockScopedLogger,
+            mockFileReferenceLogger,
         );
     });
 
@@ -220,8 +191,9 @@ describe("#parseFile", () => {
         });
 
         // Assert
-        expect(mockScopedLogger.error).toHaveBeenCalledWith(
-            'Sync-tag "MARKER_ID1" cannot target itself',
+        expect(mockFileReferenceLogger.error).toHaveBeenCalledWith(
+            "Sync-tag 'MARKER_ID1' cannot target itself",
+            "LINE_NUMBER1",
         );
     });
 
@@ -275,14 +247,19 @@ describe("#parseFile", () => {
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
 
         // Act
-        addMarkerCb("MARKER_ID1", "ID1_CHECKSUM", {});
-        addMarkerCb("MARKER_ID1", "ID2_CHECKSUM", {});
+        addMarkerCb("MARKER_ID1", "ID1_CHECKSUM", {
+            LINE_NUMBER1: {file: "target.a"},
+        });
+        addMarkerCb("MARKER_ID1", "ID2_CHECKSUM", {
+            LINE_NUMBER2: {file: "target.2"},
+        });
         mockFile.push(null); // <- End of file
         await promise;
 
         // Assert
-        expect(mockScopedLogger.error).toHaveBeenCalledWith(
-            'Sync-tag "MARKER_ID1" declared multiple times',
+        expect(mockFileReferenceLogger.error).toHaveBeenCalledWith(
+            "Sync-tag 'MARKER_ID1' declared multiple times",
+            "LINE_NUMBER2",
         );
     });
 
@@ -313,26 +290,5 @@ describe("#parseFile", () => {
                 },
             },
         });
-    });
-
-    it("should output error group if markers not terminated", async () => {
-        // Arrange
-        const mockFile = mockFakeFile();
-        mockFile.push(null); // <- End of file
-        mockMarkerParser.getOpenMarkerIDs.mockReturnValue([
-            "MARKER_ID1",
-            "MARKER_ID2",
-        ]);
-
-        // Act
-        await parseFile("file.js", true, [], NullLogger);
-
-        // Assert
-        expect(mockScopedLogger.group).toHaveBeenCalledWith(
-            " ERROR  Unterminated markers",
-        );
-        expect(mockScopedLogger.error).toHaveBeenCalledWith("MARKER_ID1", true);
-        expect(mockScopedLogger.error).toHaveBeenCalledWith("MARKER_ID2", true);
-        expect(mockScopedLogger.groupEnd).toHaveBeenCalled();
     });
 });

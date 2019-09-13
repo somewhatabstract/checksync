@@ -9,8 +9,7 @@ import util from "util";
 
 import Format from "./format.js";
 import MarkerParser from "./marker-parser.js";
-import ScopedLogger from "./scoped-logger.js";
-import cwdRelativePath from "./cwd-relative-path.js";
+import FileReferenceLogger from "./file-reference-logger.js";
 
 import type {ILog, Markers, Targets, Target, normalizePathFn} from "./types.js";
 
@@ -36,44 +35,42 @@ export default function parseFile(
     log: ILog,
     normalizeFileRef?: normalizePathFn,
 ): Promise<?Markers> {
-    const scopedLogger = new ScopedLogger(
-        Format.info(cwdRelativePath(file)),
-        log,
-    );
+    const fileRefLogger = new FileReferenceLogger(file, log);
+    const markers: Markers = {};
 
-    const promise = new Promise((resolve, reject) => {
+    const addMarker = (
+        id: string,
+        checksum: string,
+        targets: Targets,
+    ): void => {
+        let outputError = false;
+        for (const line of Object.keys(targets)) {
+            if (markers[id]) {
+                outputError = true;
+                fileRefLogger.error(
+                    `Sync-tag '${id}' declared multiple times`,
+                    line,
+                );
+            }
+            if (targets[line].file === file) {
+                outputError = true;
+                fileRefLogger.error(
+                    `Sync-tag '${id}' cannot target itself`,
+                    line,
+                );
+            }
+        }
+
+        markers[id] = {fixable, checksum, targets};
+    };
+
+    return new Promise((resolve, reject) => {
         try {
-            const markers: Markers = ({}: any);
-
-            const addMarker = (
-                id: string,
-                checksum: string,
-                targets: Targets,
-            ): void => {
-                if (markers[id]) {
-                    scopedLogger.error(
-                        `Sync-tag "${id}" declared multiple times`,
-                    );
-                    return;
-                }
-
-                if (
-                    Object.values(targets).some(
-                        (t: any) => (t: Target).file === file,
-                    )
-                ) {
-                    scopedLogger.error(`Sync-tag "${id}" cannot target itself`);
-                    return;
-                }
-
-                markers[id] = {fixable, checksum, targets};
-            };
-
             const markerParser = new MarkerParser(
                 normalizeFileRef || (() => null),
                 addMarker,
                 comments,
-                scopedLogger,
+                fileRefLogger,
             );
 
             // Start the parsing.
@@ -84,16 +81,8 @@ export default function parseFile(
                 })
                 .on("line", (line: string) => markerParser.parseLine(line))
                 .on("close", () => {
-                    const openMarkerIDs = markerParser.getOpenMarkerIDs();
-                    if (openMarkerIDs.length !== 0) {
-                        scopedLogger.group(
-                            Format.error("Unterminated markers"),
-                        );
-                        openMarkerIDs.forEach(id =>
-                            scopedLogger.error(id, true),
-                        );
-                        scopedLogger.groupEnd();
-                    }
+                    markerParser.reportUnterminatedMarkers();
+
                     const markerCount = Object.keys(markers).length;
                     const result = markerCount === 0 ? null : markers;
 
@@ -102,12 +91,11 @@ export default function parseFile(
         } catch (e) {
             reject(e);
         }
-    });
-
-    return promise
-        .then(null, reason => {
-            scopedLogger.error(`Could not parse file: ${reason.message}`);
+    }).then(
+        res => res,
+        (reason: Error) => {
+            fileRefLogger.error(`Could not parse file: ${reason.message}`);
             return null;
-        })
-        .finally(() => scopedLogger.closeScope());
+        },
+    );
 }

@@ -1,8 +1,13 @@
 // @flow
 import fixViolation from "./fix-violation.js";
 import reportViolation from "./report-violation.js";
+import cwdRelativePath from "./cwd-relative-path.js";
+import Format from "./format.js";
 
-import type {MarkerCache, ILog} from "./types";
+import type {MarkerCache, ILog, Target} from "./types";
+
+// TODO(somewhatabstract): Change our violation handling so that our fixer
+// can work file by file.
 
 export default function handleViolations(
     cache: MarkerCache,
@@ -30,31 +35,43 @@ export default function handleViolations(
             }
 
             for (const line of Object.keys(marker.targets)) {
-                const lineNumber = parseInt(line);
-                const targetRef = marker.targets[lineNumber];
+                const targetRef = marker.targets[line];
 
                 const target = cache[targetRef.file];
-                if (target == null) {
-                    // Target doesn't exist if we get null.
-                    // We already indicated this error elsewhere, so just skip
-                    // along.
+                const targetMarker = target && target[markerID];
+                if (
+                    targetMarker == null ||
+                    !Object.values(targetMarker.targets).some(
+                        (t: any) => (t: Target).file === file,
+                    )
+                ) {
+                    log.error(
+                        `${Format.filePath(
+                            targetRef.file,
+                        )} does not contain a tag named '${markerID}' that points to '${cwdRelativePath(
+                            file,
+                        )}'`,
+                    );
                     continue;
                 }
-                const targetMarker = target[markerID];
 
                 // Now compare the actual target marker checksum with the one
                 // in our reference, and if they don't match, do something
                 // about it.
                 if (targetMarker.checksum !== targetRef.checksum) {
                     violationFiles[file] = true;
+
+                    const [targetLine] = Object.entries(
+                        targetMarker.targets,
+                    ).filter(([_, target]) => (target: any).file === file)[0];
                     violationHandler(
-                        file,
-                        lineNumber,
                         markerID,
+                        file,
+                        line,
                         targetRef.checksum,
                         targetRef.file,
+                        targetLine,
                         targetMarker.checksum,
-                        marker.fixable,
                         log,
                     );
                 }
