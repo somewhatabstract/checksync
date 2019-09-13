@@ -105,13 +105,13 @@ export type MarkerCache = {
  * Handle a sync violation
  */
 export type ViolationHandler = (
-    sourceFile: string,
-    sourceLine: number,
     markerID: string,
+    sourceFile: string,
+    sourceLine: string | number,
     refChecksum: string,
     targetFile: string,
+    targetLine: string | number,
     targetChecksum: string,
-    fixable: boolean,
     log: ILog,
 ) => void;
 

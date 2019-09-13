@@ -32,8 +32,7 @@ export default function handleViolations(
             }
 
             for (const line of Object.keys(marker.targets)) {
-                const lineNumber = parseInt(line);
-                const targetRef = marker.targets[lineNumber];
+                const targetRef = marker.targets[line];
 
                 const target = cache[targetRef.file];
                 const targetMarker = target && target[markerID];
@@ -58,14 +57,18 @@ export default function handleViolations(
                 // about it.
                 if (targetMarker.checksum !== targetRef.checksum) {
                     violationFiles[file] = true;
+
+                    const [targetLine] = Object.entries(
+                        targetMarker.targets,
+                    ).filter(([_, target]) => (target: any).file === file)[0];
                     violationHandler(
-                        file,
-                        lineNumber,
                         markerID,
+                        file,
+                        line,
                         targetRef.checksum,
                         targetRef.file,
+                        targetLine,
                         targetMarker.checksum,
-                        marker.fixable,
                         log,
                     );
                 }

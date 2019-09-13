@@ -1,6 +1,5 @@
 // @flow
 import Format from "./format.js";
-import cwdRelativePath from "./cwd-relative-path.js";
 
 import type {ViolationHandler, ILog} from "./types.js";
 
@@ -18,16 +17,21 @@ import type {ViolationHandler, ILog} from "./types.js";
  * @param {ILog} log The logger for logger messages.
  */
 const violationReporter: ViolationHandler = function(
-    sourceFile: string,
-    sourceLine: number,
     markerID: string,
+    sourceFile: string,
+    sourceLine: string | number,
     refChecksum: string,
     targetFile: string,
+    targetLine: string | number,
     targetChecksum: string,
-    fixable: boolean,
     log: ILog,
 ): void {
-    log.log(Format.violation(`${cwdRelativePath(sourceFile)}:${sourceLine}`));
+    const sourceFileRef = Format.filePath(`${sourceFile}:${sourceLine}`);
+    log.log(
+        Format.violation(
+            `${sourceFileRef} Looks like you changed the target content for sync-tag '${markerID}' in '${targetFile}:${targetLine}'. Make sure you've made the parallel changes in the source file, if necessary`,
+        ),
+    );
 };
 
 export default violationReporter;
