@@ -193,7 +193,48 @@ describe("#checkSync", () => {
         expect(result).toBe(ErrorCodes.DESYNCHRONIZED_BLOCKS);
     });
 
-    it("should example of how to fix violations if not autoFix", async () => {
+    it("should output group about blocks if mismatches and no violations", async () => {
+        // Arrange
+        const NullLogger = new Logger();
+        const fakeCache = {};
+        jest.spyOn(GetFiles, "default").mockReturnValue(["filea", "fileb"]);
+        jest.spyOn(GetMarkersFromFiles, "default").mockReturnValue(fakeCache);
+        jest.spyOn(HandleViolations, "default").mockReturnValue(["violation"]);
+        const groupSpy = jest.spyOn(NullLogger, "group");
+
+        // Act
+        await checkSync([], false, ["//"], NullLogger);
+
+        // Assert
+        expect(groupSpy).toHaveBeenCalledWith(
+            expect.stringMatching(
+                "Desynchronized blocks detected. Check them and update as required before resynchronizing:",
+            ),
+        );
+    });
+
+    it("should give error about blocks and parsing if both occur", async () => {
+        // Arrange
+        const NullLogger = new Logger();
+        NullLogger.error("Oh no! Parsing error");
+        const fakeCache = {};
+        jest.spyOn(GetFiles, "default").mockReturnValue(["filea", "fileb"]);
+        jest.spyOn(GetMarkersFromFiles, "default").mockReturnValue(fakeCache);
+        jest.spyOn(HandleViolations, "default").mockReturnValue(["violation"]);
+        const groupSpy = jest.spyOn(NullLogger, "group");
+
+        // Act
+        await checkSync([], false, ["//"], NullLogger);
+
+        // Assert
+        expect(groupSpy).toHaveBeenCalledWith(
+            expect.stringMatching(
+                "Desynchronized blocks detected and parsing errors found. Fix the errors, update the blocks, then try:",
+            ),
+        );
+    });
+
+    it("should give example of how to fix violations if not autoFix", async () => {
         // Arrange
         const NullLogger = new Logger();
         const fakeCache = {};
