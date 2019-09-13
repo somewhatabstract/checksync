@@ -108,10 +108,10 @@ export type ViolationHandler = (
     markerID: string,
     sourceFile: string,
     sourceLine: string | number,
-    refChecksum: string,
+    refChecksum: ?string,
     targetFile: string,
     targetLine: string | number,
-    targetChecksum: string,
+    targetChecksum: ?string,
     log: ILog,
 ) => void;
 

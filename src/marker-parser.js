@@ -246,13 +246,6 @@ export default class MarkerParser {
     };
 
     /**
-     * Return an array of markers that were not terminated.
-     *
-     * @memberof MarkerParser
-     */
-    getOpenMarkerIDs = (): Array<string> => Object.keys(this._openMarkers);
-
-    /**
      * Parse a line of content and build into markers as appropriate.
      *
      * This assumes it is being called for each line of a block of text, one
