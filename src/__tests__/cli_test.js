@@ -31,7 +31,7 @@ describe("#run", () => {
     it("should invoke checkSync with parsed args", () => {
         // Arrange
         const fakeParsedArgs = {
-            fix: true,
+            updateTags: true,
             comments: "COMMENT1,COMMENT2",
             _: ["globs", "and globs"],
         };

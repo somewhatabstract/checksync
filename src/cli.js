@@ -20,14 +20,14 @@ export const run = (launchFilePath: string): void => {
     // TODO(somewhatabstract): Add logging-level option
     // TODO(somewhatabstract): Add help
     const args = minimist(process.argv, {
-        boolean: ["fix"],
+        boolean: ["update-tags"],
         string: ["comments"],
         default: {
-            fix: false,
+            "update-tags": false,
             comments: "//,#",
         },
         alias: {
-            fix: ["f"],
+            "update-tags": ["u", "updateTags"],
         },
         unknown: arg => {
             // Filter out the node process.
@@ -39,14 +39,16 @@ export const run = (launchFilePath: string): void => {
             return true;
         },
     });
-
     const comments = ((args.comments: any): string).split(",");
 
     // Make sure we have something to search, so default to current working
     // directory if no globs are given.
     const globs = args._ && args._.length > 0 ? args._ : [process.cwd()];
 
-    checkSync(globs, args.fix === true, comments, new Logger(console)).then(
-        exitCode => process.exit(exitCode),
-    );
+    checkSync(
+        globs,
+        args.updateTags === true,
+        comments,
+        new Logger(console),
+    ).then(exitCode => process.exit(exitCode));
 };

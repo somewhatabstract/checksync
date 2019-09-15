@@ -1,20 +1,24 @@
 // @flow
 import getMarkersFromFiles from "./get-markers-from-files.js";
 import getFiles from "./get-files.js";
-import Format from "./format.js";
 import ErrorCodes from "./error-codes.js";
-import handleViolations from "./handle-violations.js";
-import cwdRelativePath from "./cwd-relative-path.js";
+import processCache from "./process-cache.js";
 
 import type {ILog} from "./types.js";
 import type {ErrorCode} from "./error-codes.js";
 
 /**
+ *
  * Check the sync marks for the files represented by the given globs.
  *
- * @param {string[]} globs The globs that identify which files to check.
+ * @export
+ * @param {Array<string>} globs The globs that identify which files to check.
  * @param {boolean} autoFix When true, any out-of-date sync markers will be
  * updated.
+ * @param {Array<string>} comments The strings that represent the start of
+ * lines where sync-start and sync-end tags can be found.
+ * @param {ILog} log A logger for outputting errors and the like.
+ * @returns {Promise<ErrorCode>} The promise of an error code
  */
 export default async function checkSync(
     globs: Array<string>,
@@ -32,38 +36,11 @@ export default async function checkSync(
     const cache = await getMarkersFromFiles(files, comments, log);
 
     if (log.errorsLogged && autoFix) {
-        log.error(
-            "🛑  Aborting fix due to parse errors. Fix these errors and try again.",
+        log.log(
+            "\n🛑  Aborting tag updates due to parsing errors. Fix these errors and try again.",
         );
         return ErrorCodes.PARSE_ERRORS;
     }
 
-    // TODO(somewhatabstract): Use jest-worker and farm fixing out to multiple
-    // threads.
-    // const handler = autoFix ? fixer : reporter;
-    // const errorCode: ErrorCode = handler(cache, log);
-    // return errorCode;
-    const violationFileNames = handleViolations(cache, autoFix, log).map(
-        cwdRelativePath,
-    );
-    if (violationFileNames.length > 0) {
-        if (autoFix) {
-            // Output a summary of what we fixed.
-            log.info(`Fixed ${violationFileNames.length} file(s)`);
-        } else {
-            // Output how to fix any violations we found if we're not running
-            // autofix.
-            const errorMsg = log.errorsLogged
-                ? "🛑  Desynchronized blocks detected and parsing errors found. Fix the errors, update the blocks, then try:"
-                : "🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing:";
-            log.group(Format.error(errorMsg));
-            // TODO(somewhatabstract): Add the `--comments` arg to this call.
-            log.log(`checksync --fix ${violationFileNames.join(" ")}`);
-            log.groupEnd();
-            return ErrorCodes.DESYNCHRONIZED_BLOCKS;
-        }
-    }
-
-    log.log("🎉  Everything is in sync!");
-    return ErrorCodes.SUCCESS;
+    return processCache(cache, autoFix, log);
 }

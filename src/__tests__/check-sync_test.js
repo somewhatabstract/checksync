@@ -1,8 +1,7 @@
 // @flow
 import * as GetFiles from "../get-files.js";
 import * as GetMarkersFromFiles from "../get-markers-from-files.js";
-import * as HandleViolations from "../handle-violations.js";
-import * as CwdRelativePath from "../cwd-relative-path.js";
+import * as ProcessCache from "../process-cache.js";
 import Logger from "../logger.js";
 
 import checkSync from "../check-sync.js";
@@ -10,7 +9,7 @@ import ErrorCodes from "../error-codes.js";
 
 jest.mock("../get-files.js");
 jest.mock("../get-markers-from-files.js");
-jest.mock("../handle-violations.js");
+jest.mock("../process-cache.js");
 jest.mock("../cwd-relative-path.js");
 
 describe("#checkSync", () => {
@@ -60,7 +59,7 @@ describe("#checkSync", () => {
         // Arrange
         const NullLogger = new Logger();
         jest.spyOn(GetFiles, "default").mockReturnValue(["filea", "fileb"]);
-        jest.spyOn(HandleViolations, "default").mockReturnValue([]);
+        jest.spyOn(ProcessCache, "default").mockReturnValue([]);
         const getMarkersFromFilesSpy = jest
             .spyOn(GetMarkersFromFiles, "default")
             .mockReturnValue({});
@@ -80,7 +79,7 @@ describe("#checkSync", () => {
         // Arrange
         const NullLogger = new Logger();
         jest.spyOn(GetFiles, "default").mockReturnValue(["filea", "fileb"]);
-        const errorSpy = jest.spyOn(NullLogger, "error");
+        const logSpy = jest.spyOn(NullLogger, "log");
         jest.spyOn(GetMarkersFromFiles, "default").mockImplementation(() => {
             NullLogger.error("Oh no!");
             return {};
@@ -90,8 +89,8 @@ describe("#checkSync", () => {
         await checkSync([], true, ["//"], NullLogger);
 
         // Assert
-        expect(errorSpy).toHaveBeenCalledWith(
-            "🛑  Aborting fix due to parse errors. Fix these errors and try again.",
+        expect(logSpy).toHaveBeenCalledWith(
+            "\n🛑  Aborting tag updates due to parsing errors. Fix these errors and try again.",
         );
     });
 
@@ -111,148 +110,39 @@ describe("#checkSync", () => {
         expect(result).toBe(ErrorCodes.PARSE_ERRORS);
     });
 
-    it("should invoke handleViolations with cache, autoFix, and log", async () => {
+    it("should invoke ProcessCache with cache, autoFix, and log", async () => {
         // Arrange
         const NullLogger = new Logger();
         const fakeCache = {};
         jest.spyOn(GetFiles, "default").mockReturnValue(["filea", "fileb"]);
         jest.spyOn(GetMarkersFromFiles, "default").mockReturnValue(fakeCache);
-        const handleViolationsSpy = jest
-            .spyOn(HandleViolations, "default")
+        const ProcessCacheSpy = jest
+            .spyOn(ProcessCache, "default")
             .mockReturnValue([]);
 
         // Act
         await checkSync([], false, ["//"], NullLogger);
 
         // Assert
-        expect(handleViolationsSpy).toHaveBeenCalledWith(
+        expect(ProcessCacheSpy).toHaveBeenCalledWith(
             fakeCache,
             false,
             NullLogger,
         );
     });
 
-    it("should return SUCCESS if no violations", async () => {
+    it("should return processCache result if no parsing errors", async () => {
         // Arrange
         const NullLogger = new Logger();
         const fakeCache = {};
         jest.spyOn(GetFiles, "default").mockReturnValue(["filea", "fileb"]);
         jest.spyOn(GetMarkersFromFiles, "default").mockReturnValue(fakeCache);
-        jest.spyOn(HandleViolations, "default").mockReturnValue([]);
+        jest.spyOn(ProcessCache, "default").mockReturnValue(ErrorCodes.SUCCESS);
 
         // Act
         const result = await checkSync([], false, ["//"], NullLogger);
 
         // Assert
         expect(result).toBe(ErrorCodes.SUCCESS);
-    });
-
-    it("should return SUCCESS if violations with autoFix", async () => {
-        // Arrange
-        const NullLogger = new Logger();
-        const fakeCache = {};
-        jest.spyOn(GetFiles, "default").mockReturnValue(["filea", "fileb"]);
-        jest.spyOn(GetMarkersFromFiles, "default").mockReturnValue(fakeCache);
-        jest.spyOn(HandleViolations, "default").mockReturnValue(["violation"]);
-
-        // Act
-        const result = await checkSync([], true, ["//"], NullLogger);
-
-        // Assert
-        expect(result).toBe(ErrorCodes.SUCCESS);
-    });
-
-    it("should output summary if violations with autoFix", async () => {
-        // Arrange
-        const NullLogger = new Logger();
-        const fakeCache = {};
-        jest.spyOn(GetFiles, "default").mockReturnValue(["filea", "fileb"]);
-        jest.spyOn(GetMarkersFromFiles, "default").mockReturnValue(fakeCache);
-        jest.spyOn(HandleViolations, "default").mockReturnValue(["violation"]);
-        const infoSpy = jest.spyOn(NullLogger, "info");
-
-        // Act
-        await checkSync([], true, ["//"], NullLogger);
-
-        // Assert
-        expect(infoSpy).toHaveBeenCalledWith("Fixed 1 file(s)");
-    });
-
-    it("should return DESYNCHRONIZED_BLOCKS if violations without autoFix", async () => {
-        // Arrange
-        const NullLogger = new Logger();
-        const fakeCache = {};
-        jest.spyOn(GetFiles, "default").mockReturnValue(["filea", "fileb"]);
-        jest.spyOn(GetMarkersFromFiles, "default").mockReturnValue(fakeCache);
-        jest.spyOn(HandleViolations, "default").mockReturnValue(["violation"]);
-
-        // Act
-        const result = await checkSync([], false, ["//"], NullLogger);
-
-        // Assert
-        expect(result).toBe(ErrorCodes.DESYNCHRONIZED_BLOCKS);
-    });
-
-    it("should output group about blocks if mismatches and no violations", async () => {
-        // Arrange
-        const NullLogger = new Logger();
-        const fakeCache = {};
-        jest.spyOn(GetFiles, "default").mockReturnValue(["filea", "fileb"]);
-        jest.spyOn(GetMarkersFromFiles, "default").mockReturnValue(fakeCache);
-        jest.spyOn(HandleViolations, "default").mockReturnValue(["violation"]);
-        const groupSpy = jest.spyOn(NullLogger, "group");
-
-        // Act
-        await checkSync([], false, ["//"], NullLogger);
-
-        // Assert
-        expect(groupSpy).toHaveBeenCalledWith(
-            expect.stringMatching(
-                "Desynchronized blocks detected. Check them and update as required before resynchronizing:",
-            ),
-        );
-    });
-
-    it("should give error about blocks and parsing if both occur", async () => {
-        // Arrange
-        const NullLogger = new Logger();
-        NullLogger.error("Oh no! Parsing error");
-        const fakeCache = {};
-        jest.spyOn(GetFiles, "default").mockReturnValue(["filea", "fileb"]);
-        jest.spyOn(GetMarkersFromFiles, "default").mockReturnValue(fakeCache);
-        jest.spyOn(HandleViolations, "default").mockReturnValue(["violation"]);
-        const groupSpy = jest.spyOn(NullLogger, "group");
-
-        // Act
-        await checkSync([], false, ["//"], NullLogger);
-
-        // Assert
-        expect(groupSpy).toHaveBeenCalledWith(
-            expect.stringMatching(
-                "Desynchronized blocks detected and parsing errors found. Fix the errors, update the blocks, then try:",
-            ),
-        );
-    });
-
-    it("should give example of how to fix violations if not autoFix", async () => {
-        // Arrange
-        const NullLogger = new Logger();
-        const fakeCache = {};
-        jest.spyOn(GetFiles, "default").mockReturnValue(["filea", "fileb"]);
-        jest.spyOn(GetMarkersFromFiles, "default").mockReturnValue(fakeCache);
-        jest.spyOn(HandleViolations, "default").mockReturnValue([
-            "violation1",
-            "violation2",
-        ]);
-        jest.spyOn(CwdRelativePath, "default").mockImplementation(f => f);
-        const logSpy = jest.spyOn(NullLogger, "log");
-
-        // Act
-        await checkSync([], false, ["//"], NullLogger);
-
-        // Assert
-        expect(logSpy).toHaveBeenCalledWith(
-            "checksync --fix violation1 violation2",
-        );
     });
 });

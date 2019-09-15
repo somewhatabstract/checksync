@@ -102,18 +102,16 @@ export type MarkerCache = {
 };
 
 /**
- * Handle a sync violation
+ * Process a file.
+ *
+ * @returns {boolean} True, if the file was ok; false, if there was a checksum
+ * mismatch violation.
  */
-export type ViolationHandler = (
-    markerID: string,
-    sourceFile: string,
-    sourceLine: string | number,
-    refChecksum: ?string,
-    targetFile: string,
-    targetLine: string | number,
-    targetChecksum: ?string,
+export type FileProcessor = (
+    file: string,
+    cache: MarkerCache,
     log: ILog,
-) => void;
+) => Promise<boolean>;
 
 export type normalizePathFn = (
     relativeFile: string,
