@@ -231,7 +231,7 @@ describe("#processCache", () => {
 
             // Assert
             expect(groupSpy).toHaveBeenCalledWith(
-                "\n🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing:",
+                "🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing:",
             );
             expect(logSpy).toHaveBeenCalledWith("checksync -u filea fileb");
         });
@@ -277,7 +277,7 @@ describe("#processCache", () => {
 
             // Assert
             expect(groupSpy).toHaveBeenCalledWith(
-                "\n🛑  Desynchronized blocks detected and parsing errors found. Fix the errors, update the blocks, then update the sync-start tags using:",
+                "🛑  Desynchronized blocks detected and parsing errors found. Fix the errors, update the blocks, then update the sync-start tags using:",
             );
             expect(logSpy).toHaveBeenCalledWith("checksync -u filea fileb");
         });

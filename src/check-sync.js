@@ -36,8 +36,9 @@ export default async function checkSync(
     const cache = await getMarkersFromFiles(files, comments, log);
 
     if (log.errorsLogged && autoFix) {
+        log.log("");
         log.log(
-            "\n🛑  Aborting tag updates due to parsing errors. Fix these errors and try again.",
+            "🛑  Aborting tag updates due to parsing errors. Fix these errors and try again.",
         );
         return ErrorCodes.PARSE_ERRORS;
     }

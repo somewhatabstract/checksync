@@ -4,7 +4,6 @@ import commonjs from "rollup-plugin-commonjs";
 import minify from "rollup-plugin-babel-minify";
 import analyzer from "rollup-plugin-analyzer";
 import visualizer from "rollup-plugin-visualizer";
-import graph from "rollup-plugin-graph";
 
 const getOptionalPlugins = () => {
     if (process.env.NODE_ENV === "CI") {
@@ -22,7 +21,6 @@ const getOptionalPlugins = () => {
             filename: "obj/stats.html",
             open: true,
         }),
-        graph(),
     ];
 };
 

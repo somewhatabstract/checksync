@@ -90,7 +90,7 @@ describe("#checkSync", () => {
 
         // Assert
         expect(logSpy).toHaveBeenCalledWith(
-            "\n🛑  Aborting tag updates due to parsing errors. Fix these errors and try again.",
+            "🛑  Aborting tag updates due to parsing errors. Fix these errors and try again.",
         );
     });
 
