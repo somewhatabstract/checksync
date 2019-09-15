@@ -19,7 +19,7 @@ export const run = (launchFilePath: string): void => {
     // TODO(somewhatabstract): Add ability to use .gitignore to ignore dirs
     // TODO(somewhatabstract): Add root dir support (default to package.json)
     // TODO(somewhatabstract): Add help
-    // TODO(somewhatabstract): Add verify option to verify fixes right after
+    // TODO(somewhatabstract): Auto-verify after update and add a no-verify option to skip that
     // completing them.
     const args = minimist(process.argv, {
         boolean: ["update-tags"],
