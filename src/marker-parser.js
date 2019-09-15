@@ -128,8 +128,8 @@ export default class MarkerParser {
          * This is the regular expression that parses a start tag.
          *
          * Groups:
-         *  // TODO: Capture comment string as we'll need to write it back.
-         *     1:  Maybe the tag details to be decoded
+         *     1: Comment string
+         *     2: Maybe the tag details to be decoded
          *
          * Example:
          *   `// sync-start:tagname 1234567 target.js`

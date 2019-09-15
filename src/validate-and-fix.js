@@ -21,8 +21,8 @@ const validateAndFix = async (
     //     targetChecksum,
     // } of generateMarkerEdges(file, cache, log)) {
     //     violationFiles[file] = true;
-
-    //     // TODO: fix!
+    //     // TODO: Write out the fix on the source line
+    //     const fixedLine = `${comment} sync-start:${markerID} ${targetChecksum} ${rootRelativePath(targetFile)}`;
     // }
     return !fileWasFixed;
 };

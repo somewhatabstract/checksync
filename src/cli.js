@@ -17,8 +17,10 @@ export const run = (launchFilePath: string): void => {
     chalk.enabled = true;
 
     // TODO(somewhatabstract): Add ability to use .gitignore to ignore dirs
-    // TODO(somewhatabstract): Add logging-level option
+    // TODO(somewhatabstract): Add root dir support (default to package.json)
     // TODO(somewhatabstract): Add help
+    // TODO(somewhatabstract): Add verify option to verify fixes right after
+    // completing them.
     const args = minimist(process.argv, {
         boolean: ["update-tags"],
         string: ["comments"],

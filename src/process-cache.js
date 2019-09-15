@@ -32,7 +32,7 @@ export default async function processCache(
                 ? "🛑  Desynchronized blocks detected and parsing errors found. Fix the errors, update the blocks, then update the sync-start tags using:"
                 : "🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing:";
             log.group(`${errorMsg}`);
-            // TODO(somewhatabstract): Add the `--comments` arg to this call.
+            // TODO(somewhatabstract): Add the `--comments` arg to this call?
             log.log(
                 `checksync -u ${violationFileNames
                     .map(cwdRelativePath)
