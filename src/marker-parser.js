@@ -116,6 +116,7 @@ export default class MarkerParser {
          * This is the regular expression that parses a start tag.
          *
          * Groups:
+         *  // TODO: Capture comment string as we'll need to write it back.
          *     1:  Maybe the tag details to be decoded
          *
          * Example:

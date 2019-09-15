@@ -24,6 +24,15 @@ export default async function getMarkersFromFiles(
     const cacheData: MarkerCache = {};
     const referencedFiles: Array<string> = [];
     const logFileRef = (file, fileRef) => {
+        // TODO: This is currently treating target file as source file relative
+        // but according to Khan Academy sync-linter, it should be relative to
+        // the project root. So, we need a way to determine what project root is
+        // Can we assume it's the locaton of the node_modules folder that checksync
+        // is installed in? No, because it could be installed globally.
+        // We can't assume github. What about package.json?
+        // Let's default to package.json folder and provide way to override it
+        // via our arguments.
+
         const normalizedFileRef = path.resolve(path.dirname(file), fileRef);
         const exists =
             fs.existsSync(normalizedFileRef) &&
