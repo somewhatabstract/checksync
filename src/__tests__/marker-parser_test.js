@@ -234,6 +234,7 @@ describe("MarkerParser", () => {
                         file: "target1",
                     }),
                 }),
+                "//",
             );
             expect(addMarker).toHaveBeenCalledWith(
                 "markerid2",
@@ -248,6 +249,7 @@ describe("MarkerParser", () => {
                         file: "target1",
                     }),
                 }),
+                "#",
             );
         });
     });

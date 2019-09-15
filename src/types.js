@@ -77,6 +77,11 @@ export type Marker = {
      * The targets that the marker syncs with.
      */
     +targets: Targets,
+
+    /**
+     * The comment style detected.
+     */
+    +comment: string,
 };
 
 /**

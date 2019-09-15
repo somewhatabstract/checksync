@@ -13,52 +13,56 @@ describe("#processCache", () => {
         it("should call validateAndReport for each file when not autofixing", async () => {
             // Arrange
             const NullLogger = new Logger();
-            const markerCache: MarkerCache = ({
+            const markerCache: MarkerCache = {
                 filea: {
                     marker1: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "5678",
-                        targets: ({
+                        targets: {
                             "1": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                     marker2: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "5678",
-                        targets: ({
+                        targets: {
                             "1": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                 },
                 fileb: {
                     marker1: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "TARGET_CHECKSUM",
-                        targets: ({
+                        targets: {
                             "1": ({
                                 checksum: "5678",
                                 file: "filea",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                     marker2: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "TARGET_CHECKSUM",
-                        targets: ({
+                        targets: {
                             "1": ({
                                 checksum: "5678",
                                 file: "filea",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                 },
-            }: any);
+            };
             const spy = jest
                 .spyOn(ValidateAndReport, "default")
                 .mockReturnValue(Promise.resolve(true));
@@ -74,52 +78,56 @@ describe("#processCache", () => {
         it("should return ErrorCodes.SUCCESS if all files are valid", async () => {
             // Arrange
             const NullLogger = new Logger();
-            const markerCache: MarkerCache = ({
+            const markerCache: MarkerCache = {
                 filea: {
                     marker1: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "5678",
-                        targets: ({
+                        targets: {
                             "1": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                     marker2: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "5678",
-                        targets: ({
+                        targets: {
                             "8": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                 },
                 fileb: {
                     marker1: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "TARGET_CHECKSUM",
-                        targets: ({
+                        targets: {
                             "2": ({
                                 checksum: "5678",
                                 file: "filea",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                     marker2: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "TARGET_CHECKSUM",
-                        targets: ({
+                        targets: {
                             "10": ({
                                 checksum: "5678",
                                 file: "filea",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                 },
-            }: any);
+            };
             jest.spyOn(ValidateAndReport, "default").mockReturnValue(
                 Promise.resolve(true),
             );
@@ -134,52 +142,56 @@ describe("#processCache", () => {
         it("should return ErrorCodes.DESYNCHRONIZED_BLOCKS if some files are invalid", async () => {
             // Arrange
             const NullLogger = new Logger();
-            const markerCache: MarkerCache = ({
+            const markerCache: MarkerCache = {
                 filea: {
                     marker1: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "5678",
-                        targets: ({
+                        targets: {
                             "1": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                     marker2: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "5678",
-                        targets: ({
+                        targets: {
                             "8": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                 },
                 fileb: {
                     marker1: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "TARGET_CHECKSUM",
-                        targets: ({
+                        targets: {
                             "2": ({
                                 checksum: "5678",
                                 file: "filea",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                     marker2: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "TARGET_CHECKSUM",
-                        targets: ({
+                        targets: {
                             "10": ({
                                 checksum: "5678",
                                 file: "filea",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                 },
-            }: any);
+            };
             jest.spyOn(ValidateAndReport, "default").mockReturnValue(
                 Promise.resolve(false),
             );
@@ -196,32 +208,34 @@ describe("#processCache", () => {
             const NullLogger = new Logger();
             const logSpy = jest.spyOn(NullLogger, "log");
             const groupSpy = jest.spyOn(NullLogger, "group");
-            const markerCache: MarkerCache = ({
+            const markerCache: MarkerCache = {
                 filea: {
                     marker1: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "5678",
-                        targets: ({
+                        targets: {
                             "1": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                 },
                 fileb: {
                     marker1: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "TARGET_CHECKSUM",
-                        targets: ({
+                        targets: {
                             "2": ({
                                 checksum: "5678",
                                 file: "filea",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                 },
-            }: any);
+            };
             jest.spyOn(ValidateAndReport, "default").mockReturnValue(
                 Promise.resolve(false),
             );
@@ -241,32 +255,34 @@ describe("#processCache", () => {
             const NullLogger = new Logger();
             const logSpy = jest.spyOn(NullLogger, "log");
             const groupSpy = jest.spyOn(NullLogger, "group");
-            const markerCache: MarkerCache = ({
+            const markerCache: MarkerCache = {
                 filea: {
                     marker1: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "5678",
-                        targets: ({
+                        targets: {
                             "1": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                 },
                 fileb: {
                     marker1: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "TARGET_CHECKSUM",
-                        targets: ({
+                        targets: {
                             "2": ({
                                 checksum: "5678",
                                 file: "filea",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                 },
-            }: any);
+            };
             jest.spyOn(ValidateAndReport, "default").mockReturnValue(
                 Promise.resolve(false),
             );
@@ -287,52 +303,56 @@ describe("#processCache", () => {
         it("should call validateAndFix for each file", async () => {
             // Arrange
             const NullLogger = new Logger();
-            const markerCache: MarkerCache = ({
+            const markerCache: MarkerCache = {
                 filea: {
                     marker1: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "5678",
-                        targets: ({
+                        targets: {
                             "1": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                     marker2: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "5678",
-                        targets: ({
+                        targets: {
                             "8": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                 },
                 fileb: {
                     marker1: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "TARGET_CHECKSUM",
-                        targets: ({
+                        targets: {
                             "2": ({
                                 checksum: "5678",
                                 file: "filea",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                     marker2: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "TARGET_CHECKSUM",
-                        targets: ({
+                        targets: {
                             "10": ({
                                 checksum: "5678",
                                 file: "filea",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                 },
-            }: any);
+            };
             const spy = jest
                 .spyOn(ValidateAndFix, "default")
                 .mockReturnValue(Promise.resolve(true));
@@ -348,52 +368,56 @@ describe("#processCache", () => {
         it("should return ErrorCodes.SUCCESS if no files were fixed", async () => {
             // Arrange
             const NullLogger = new Logger();
-            const markerCache: MarkerCache = ({
+            const markerCache: MarkerCache = {
                 filea: {
                     marker1: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "5678",
-                        targets: ({
+                        targets: {
                             "1": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                     marker2: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "5678",
-                        targets: ({
+                        targets: {
                             "8": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                 },
                 fileb: {
                     marker1: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "TARGET_CHECKSUM",
-                        targets: ({
+                        targets: {
                             "2": ({
                                 checksum: "5678",
                                 file: "filea",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                     marker2: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "TARGET_CHECKSUM",
-                        targets: ({
+                        targets: {
                             "10": ({
                                 checksum: "5678",
                                 file: "filea",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                 },
-            }: any);
+            };
             jest.spyOn(ValidateAndFix, "default").mockReturnValue(
                 Promise.resolve(true),
             );
@@ -408,52 +432,56 @@ describe("#processCache", () => {
         it("should return ErrorCodes.SUCCESS if files were fixed", async () => {
             // Arrange
             const NullLogger = new Logger();
-            const markerCache: MarkerCache = ({
+            const markerCache: MarkerCache = {
                 filea: {
                     marker1: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "5678",
-                        targets: ({
+                        targets: {
                             "1": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                     marker2: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "5678",
-                        targets: ({
+                        targets: {
                             "8": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                 },
                 fileb: {
                     marker1: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "TARGET_CHECKSUM",
-                        targets: ({
+                        targets: {
                             "2": ({
                                 checksum: "5678",
                                 file: "filea",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                     marker2: ({
+                        comment: "//",
                         fixable: true,
                         checksum: "TARGET_CHECKSUM",
-                        targets: ({
+                        targets: {
                             "10": ({
                                 checksum: "5678",
                                 file: "filea",
                             }: Target),
-                        }: any),
+                        },
                     }: Marker),
                 },
-            }: any);
+            };
             jest.spyOn(ValidateAndFix, "default").mockReturnValue(
                 Promise.resolve(false),
             );

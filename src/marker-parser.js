@@ -41,6 +41,13 @@ type TrackedMarker = {
      * @type {TrackedTargets}
      */
     targets: TrackedTargets,
+
+    /**
+     * The comment style we detected.
+     *
+     * @type {string}
+     */
+    comment: string,
 };
 
 type TrackedMarkers = {
@@ -48,7 +55,12 @@ type TrackedMarkers = {
     ...,
 };
 
-type addMarkerFn = (id: string, checksum: string, targets: Targets) => void;
+type addMarkerFn = (
+    id: string,
+    checksum: string,
+    targets: Targets,
+    comment: string,
+) => void;
 
 /**
  * Convert our tracked targets object into a regular targets object.
@@ -123,7 +135,7 @@ export default class MarkerParser {
          *   `// sync-start:tagname 1234567 target.js`
          */
         this._startTagRegExp = new RegExp(
-            `^(?:${commentsString})\\s*sync-start:(.*)$`,
+            `^(${commentsString})\\s*sync-start:(.*)$`,
         );
 
         /**
@@ -164,10 +176,12 @@ export default class MarkerParser {
         file: string,
         line: number,
         checksum: string,
+        comment: string,
     ) => {
         this._openMarkers[id] = this._openMarkers[id] || {
             content: [],
             targets: {},
+            comment,
         };
 
         const normalized = this._normalizePath(file);
@@ -225,7 +239,7 @@ export default class MarkerParser {
 
         delete this._openMarkers[id];
         const targets = targetsFromTrackedTargets(marker.targets);
-        this._addMarker(id, checksum, targets);
+        this._addMarker(id, checksum, targets, marker.comment);
     };
 
     _addContentToOpenMarkers = (line: string) => {
@@ -261,7 +275,7 @@ export default class MarkerParser {
 
         const startMatch = this._startTagRegExp.exec(content);
         if (startMatch != null) {
-            const startDecode = this._startTagDecodeRegExp.exec(startMatch[1]);
+            const startDecode = this._startTagDecodeRegExp.exec(startMatch[2]);
             if (startDecode == null) {
                 this._log.error(
                     `Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename>\\n'`,
@@ -273,6 +287,7 @@ export default class MarkerParser {
                     startDecode[3],
                     lineNumber,
                     startDecode[2],
+                    startMatch[1],
                 );
             }
             return;

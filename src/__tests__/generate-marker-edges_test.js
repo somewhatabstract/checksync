@@ -35,6 +35,7 @@ describe("#generateMarkerEdges", () => {
         const markerCache: MarkerCache = {
             filea: {
                 marker: ({
+                    comment: "//",
                     fixable: false,
                     checksum: "",
                     targets: {
@@ -47,6 +48,7 @@ describe("#generateMarkerEdges", () => {
             },
             fileb: {
                 marker: ({
+                    comment: "//",
                     fixable: true,
                     checksum: "",
                     targets: {
@@ -74,6 +76,7 @@ describe("#generateMarkerEdges", () => {
         const markerCache: MarkerCache = {
             filea: {
                 marker: ({
+                    comment: "//",
                     fixable: false,
                     checksum: "",
                     targets: {
@@ -86,6 +89,7 @@ describe("#generateMarkerEdges", () => {
             },
             fileb: {
                 marker: ({
+                    comment: "//",
                     fixable: true,
                     checksum: "",
                     targets: ({
@@ -123,6 +127,7 @@ describe("#generateMarkerEdges", () => {
         const markerCache: MarkerCache = {
             filea: {
                 marker: ({
+                    comment: "//",
                     fixable: true,
                     checksum: "",
                     targets: {
@@ -151,6 +156,7 @@ describe("#generateMarkerEdges", () => {
         const markerCache: MarkerCache = {
             filea: {
                 marker: ({
+                    comment: "//",
                     fixable: true,
                     checksum: "",
                     targets: {
@@ -163,6 +169,7 @@ describe("#generateMarkerEdges", () => {
             },
             fileb: {
                 marker: ({
+                    comment: "//",
                     fixable: true,
                     checksum: "",
                     targets: {},
@@ -185,6 +192,7 @@ describe("#generateMarkerEdges", () => {
         const markerCache: MarkerCache = {
             filea: {
                 marker: ({
+                    comment: "//",
                     fixable: true,
                     checksum: "1234",
                     targets: {
@@ -197,6 +205,7 @@ describe("#generateMarkerEdges", () => {
             },
             fileb: {
                 marker: ({
+                    comment: "//",
                     fixable: true,
                     checksum: "5678",
                     targets: {
@@ -224,6 +233,7 @@ describe("#generateMarkerEdges", () => {
         const markerCache: MarkerCache = {
             filea: {
                 marker: ({
+                    comment: "//",
                     fixable: true,
                     checksum: "4321",
                     targets: {
@@ -236,6 +246,7 @@ describe("#generateMarkerEdges", () => {
             },
             fileb: {
                 marker: ({
+                    comment: "//",
                     fixable: true,
                     checksum: "8765",
                     targets: {
