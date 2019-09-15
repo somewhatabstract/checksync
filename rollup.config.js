@@ -17,7 +17,7 @@ const getOptionalPlugins = () => {
         // comments and full code.
         analyzer({summaryOnly: true, filter: module => module.size !== 0}),
         visualizer({
-            title: "checksync bundle rollup",
+            title: "checksync bundle rollup (unminified)",
             filename: "obj/stats.html",
             open: true,
         }),
