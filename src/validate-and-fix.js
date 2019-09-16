@@ -61,12 +61,18 @@ const validateAndFix = (
 
         // Okay, we have broken edges, so let's make our fix map.
 
-        // Open the file for read/write .
+        // Open the file for read/write.
+        // We'll use this file descriptor to create our streams for reading
+        // and writing the file.
         const fd = fs.openSync(file, "r+");
 
         // Create a write stream starting at the beginning of the file,
         // because we are going to overwrite as we read.
-        const ws = fs.createWriteStream(file, {fd, start: 0});
+        const ws = fs
+            .createWriteStream(file, {fd, start: 0})
+            .once("close", () => {
+                resolve(false);
+            });
 
         // Now, we'll read line by line and process what we get against
         // our markers.
@@ -97,12 +103,12 @@ const validateAndFix = (
                 ws.write(`${fix == null ? line : fix}\n`);
             })
             .on("close", () => {
+                // We have finished reading, so let's tell the write stream
+                // to finish what it is doing. This will cause it to close.
+                // Our close handler for the write stream will then resolve
+                // the promise.
                 ws.end();
             });
-
-        ws.once("close", () => {
-            resolve(false);
-        });
     });
 };
 
