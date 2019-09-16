@@ -5,7 +5,6 @@
  */
 import readline from "readline";
 import fs from "fs";
-import util from "util";
 
 import Format from "./format.js";
 import MarkerParser from "./marker-parser.js";

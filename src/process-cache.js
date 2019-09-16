@@ -1,6 +1,7 @@
 // @flow
 import cwdRelativePath from "./cwd-relative-path.js";
 import ErrorCodes from "./error-codes.js";
+import Format from "./format.js";
 import validateAndFix from "./validate-and-fix.js";
 import validateAndReport from "./validate-and-report.js";
 
@@ -15,8 +16,16 @@ export default async function processCache(
     const violationFileNames: Array<string> = [];
     const fileValidator = autoFix ? validateAndFix : validateAndReport;
     for (const file of Object.keys(cache)) {
-        if (!(await fileValidator(file, cache, log))) {
-            violationFileNames.push(file);
+        try {
+            if (!(await fileValidator(file, cache, log))) {
+                violationFileNames.push(file);
+            }
+        } catch (e) {
+            log.error(
+                `${Format.filePath(
+                    cwdRelativePath(file),
+                )} update encountered error: ${e.message}`,
+            );
         }
     }
 
@@ -41,6 +50,11 @@ export default async function processCache(
             log.groupEnd();
             return ErrorCodes.DESYNCHRONIZED_BLOCKS;
         }
+    }
+
+    if (log.errorsLogged) {
+        log.log("🛑  Errors occurred during processing");
+        return ErrorCodes.PARSE_ERRORS;
     }
 
     log.log("🎉  Everything is in sync!");
