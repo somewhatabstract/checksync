@@ -2,9 +2,11 @@
 
 [![Node CI](https://github.com/somewhatabstract/checksync/workflows/Node%20CI/badge.svg)](https://github.com/somewhatabstract/checksync/actions) [![codecov](https://codecov.io/gh/somewhatabstract/checksync/branch/master/graph/badge.svg)](https://codecov.io/gh/somewhatabstract/checksync)
 
+**️❗IMPORTANT**: This is currently a work-in-progress. Use at your own risk. The first release to NPM should be happening soon, so watch this space! Thank you for your patience while I get the initial version feature complete.
+
 ## Installation
 
-Package is not yet published.
+This is a work in progress and as such, the package is not yet published.
 
 ## Usage
 
@@ -29,10 +31,16 @@ Package is not yet published.
     ```
 
 1. Run `checksync` to verify the tags are correct:
-    `yarn checksync <globs|files|dirs>`
 
-1. Run with `--fix` to automatically insert the missing checksums:
-    `yarn checksync --fix`
+    ```shell
+    yarn checksync <globs|files|dirs>
+    ```
+
+1. Run with `--update-tags` or `-u` to automatically insert the missing checksums:
+
+    ```shell
+    yarn checksync -u <globs|files|dirs>
+    ```
 
 1. Add a pre-commit step to run `checksync` on commiting changes so that you catch when synchronized blocks change.
     You can do this using a package like husky, or pre-commit.
@@ -41,7 +49,11 @@ Package is not yet published.
 
 ### Comment styles
 
-By default, `checksync` supports comment lines that begin with `//` and `#` as commonly found in JavaScript and Python, among other languages. However, you can override this using the `--comments` argument.
+By default, `checksync` supports comment lines that begin with `//` and `#` as commonly found in JavaScript and Python, among other languages. However, you can override this using the `--comments` or `-c` argument.
+
+```shell
+yarn checksync -c="//,#,'" <globs|files|dirs>
+```
 
 ## Development
 

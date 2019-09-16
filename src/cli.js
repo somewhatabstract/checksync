@@ -30,6 +30,7 @@ export const run = (launchFilePath: string): void => {
         },
         alias: {
             "update-tags": ["u", "updateTags"],
+            comments: ["c"],
         },
         unknown: arg => {
             // Filter out the node process.
