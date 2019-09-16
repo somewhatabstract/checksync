@@ -2,7 +2,7 @@
 import readline from "readline";
 import fs from "fs";
 
-// import cwdRelativePath from "./cwd-relative-path.js";
+import path from "path";
 import generateMarkerEdges from "./generate-marker-edges.js";
 
 import type {ILog, MarkerCache} from "./types.js";
@@ -11,15 +11,20 @@ import type {MarkerEdge} from "./generate-marker-edges.js";
 /**
  * Format a given edge into a comment with corrected checksum.
  */
-const formatEdgeFix = (brokenEdge: MarkerEdge): string =>
-    `${brokenEdge.sourceComment} sync-start:${brokenEdge.markerID} ${brokenEdge.targetChecksum} ${brokenEdge.targetFile}`;
+const formatEdgeFix = (sourceFile: string, brokenEdge: MarkerEdge): string =>
+    `${brokenEdge.sourceComment} sync-start:${brokenEdge.markerID} ${
+        brokenEdge.targetChecksum
+    } ${path.relative(path.dirname(sourceFile), brokenEdge.targetFile)}`;
 
 /**
  * Generate a map edge from broken declaration to fixed declaration.
  */
-const mapEdgeFix = (brokenEdge: MarkerEdge): [string, string] => [
+const mapEdgeFix = (
+    sourceFile: string,
+    brokenEdge: MarkerEdge,
+): [string, string] => [
     brokenEdge.sourceDeclaration,
-    formatEdgeFix(brokenEdge),
+    formatEdgeFix(sourceFile, brokenEdge),
 ];
 
 const validateAndFix = (
@@ -37,7 +42,7 @@ const validateAndFix = (
         }
 
         const brokenEdgeMap = brokenEdges
-            .map(mapEdgeFix)
+            .map(edge => mapEdgeFix(file, edge))
             .reduce((prev, [brokenDeclaration, fixedDeclaration]) => {
                 prev[brokenDeclaration] = fixedDeclaration;
                 return prev;
