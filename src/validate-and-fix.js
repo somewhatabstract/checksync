@@ -8,6 +8,11 @@ import generateMarkerEdges from "./generate-marker-edges.js";
 import type {ILog, MarkerCache} from "./types.js";
 import type {MarkerEdge} from "./generate-marker-edges.js";
 
+type EdgeMap = {
+    [brokenDeclaration: string]: string,
+    ...,
+};
+
 /**
  * Format a given edge into a comment with corrected checksum.
  */
@@ -41,12 +46,18 @@ const validateAndFix = (
             resolve(true);
         }
 
-        const brokenEdgeMap = brokenEdges
-            .map(edge => mapEdgeFix(file, edge))
-            .reduce((prev, [brokenDeclaration, fixedDeclaration]) => {
-                prev[brokenDeclaration] = fixedDeclaration;
-                return prev;
-            }, {});
+        const brokenEdgeMap: EdgeMap = brokenEdges
+            .map((edge: MarkerEdge) => mapEdgeFix(file, edge))
+            .reduce(
+                (
+                    prev: EdgeMap,
+                    [brokenDeclaration, fixedDeclaration]: [string, string],
+                ): EdgeMap => {
+                    prev[brokenDeclaration] = fixedDeclaration;
+                    return prev;
+                },
+                {},
+            );
 
         // Okay, we have broken edges, so let's make our fix map.
 
@@ -77,7 +88,7 @@ const validateAndFix = (
                 crlfDelay: Infinity,
                 terminal: false,
             })
-            .on("line", line => {
+            .on("line", (line: string) => {
                 // Let's see if this is something we need to fix.
                 const fix = brokenEdgeMap[line];
 
