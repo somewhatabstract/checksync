@@ -23,6 +23,8 @@ describe("#processCache", () => {
                             "1": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
+                                declaration:
+                                    "// sync-start:marker1 MISMATCH! fileb",
                             }: Target),
                         },
                     }: Marker),
@@ -34,6 +36,8 @@ describe("#processCache", () => {
                             "1": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
+                                declaration:
+                                    "// sync-start:marker2 MISMATCH! fileb",
                             }: Target),
                         },
                     }: Marker),
@@ -47,6 +51,7 @@ describe("#processCache", () => {
                             "1": ({
                                 checksum: "5678",
                                 file: "filea",
+                                declaration: "// sync-start:marker1 5678 filea",
                             }: Target),
                         },
                     }: Marker),
@@ -58,6 +63,7 @@ describe("#processCache", () => {
                             "1": ({
                                 checksum: "5678",
                                 file: "filea",
+                                declaration: "// sync-start:marker2 5678 filea",
                             }: Target),
                         },
                     }: Marker),
@@ -88,6 +94,8 @@ describe("#processCache", () => {
                             "1": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
+                                declaration:
+                                    "// sync-start:marker1 MISMATCH! fileb",
                             }: Target),
                         },
                     }: Marker),
@@ -99,6 +107,8 @@ describe("#processCache", () => {
                             "8": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
+                                declaration:
+                                    "// sync-start:marker2 MISMATCH! fileb",
                             }: Target),
                         },
                     }: Marker),
@@ -112,6 +122,7 @@ describe("#processCache", () => {
                             "2": ({
                                 checksum: "5678",
                                 file: "filea",
+                                declaration: "// sync-start:marker1 5678 filea",
                             }: Target),
                         },
                     }: Marker),
@@ -123,6 +134,7 @@ describe("#processCache", () => {
                             "10": ({
                                 checksum: "5678",
                                 file: "filea",
+                                declaration: "// sync-start:marker2 5678 filea",
                             }: Target),
                         },
                     }: Marker),
@@ -152,6 +164,8 @@ describe("#processCache", () => {
                             "1": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
+                                declaration:
+                                    "// sync-start:marker1 MISMATCH! fileb",
                             }: Target),
                         },
                     }: Marker),
@@ -163,6 +177,8 @@ describe("#processCache", () => {
                             "8": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
+                                declaration:
+                                    "// sync-start:marker2 MISMATCH! fileb",
                             }: Target),
                         },
                     }: Marker),
@@ -176,6 +192,7 @@ describe("#processCache", () => {
                             "2": ({
                                 checksum: "5678",
                                 file: "filea",
+                                declaration: "// sync-start:marker1 5678 filea",
                             }: Target),
                         },
                     }: Marker),
@@ -187,6 +204,7 @@ describe("#processCache", () => {
                             "10": ({
                                 checksum: "5678",
                                 file: "filea",
+                                declaration: "// sync-start:marker2 5678 filea",
                             }: Target),
                         },
                     }: Marker),
@@ -218,6 +236,8 @@ describe("#processCache", () => {
                             "1": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
+                                declaration:
+                                    "// sync-start:marker1 MISMATCH! fileb",
                             }: Target),
                         },
                     }: Marker),
@@ -231,6 +251,7 @@ describe("#processCache", () => {
                             "2": ({
                                 checksum: "5678",
                                 file: "filea",
+                                declaration: "// sync-start:marker1 5678 filea",
                             }: Target),
                         },
                     }: Marker),
@@ -265,6 +286,8 @@ describe("#processCache", () => {
                             "1": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
+                                declaration:
+                                    "// sync-start:marker1 MISMATCH! fileb",
                             }: Target),
                         },
                     }: Marker),
@@ -278,6 +301,7 @@ describe("#processCache", () => {
                             "2": ({
                                 checksum: "5678",
                                 file: "filea",
+                                declaration: "// sync-start:marker1 5678 filea",
                             }: Target),
                         },
                     }: Marker),
@@ -313,6 +337,8 @@ describe("#processCache", () => {
                             "1": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
+                                declaration:
+                                    "// sync-start:marker1 MISMATCH! fileb",
                             }: Target),
                         },
                     }: Marker),
@@ -324,6 +350,8 @@ describe("#processCache", () => {
                             "8": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
+                                declaration:
+                                    "// sync-start:marker2 MISMATCH! fileb",
                             }: Target),
                         },
                     }: Marker),
@@ -337,6 +365,7 @@ describe("#processCache", () => {
                             "2": ({
                                 checksum: "5678",
                                 file: "filea",
+                                declaration: "// sync-start:marker1 5678 filea",
                             }: Target),
                         },
                     }: Marker),
@@ -348,6 +377,7 @@ describe("#processCache", () => {
                             "10": ({
                                 checksum: "5678",
                                 file: "filea",
+                                declaration: "// sync-start:marker2 5678 filea",
                             }: Target),
                         },
                     }: Marker),
@@ -378,6 +408,8 @@ describe("#processCache", () => {
                             "1": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
+                                declaration:
+                                    "// sync-start:marker1 MISMATCH! fileb",
                             }: Target),
                         },
                     }: Marker),
@@ -389,6 +421,8 @@ describe("#processCache", () => {
                             "8": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
+                                declaration:
+                                    "// sync-start:marker2 MISMATCH! fileb",
                             }: Target),
                         },
                     }: Marker),
@@ -402,6 +436,7 @@ describe("#processCache", () => {
                             "2": ({
                                 checksum: "5678",
                                 file: "filea",
+                                declaration: "// sync-start:marker1 5678 filea",
                             }: Target),
                         },
                     }: Marker),
@@ -413,6 +448,7 @@ describe("#processCache", () => {
                             "10": ({
                                 checksum: "5678",
                                 file: "filea",
+                                declaration: "// sync-start:marker2 5678 filea",
                             }: Target),
                         },
                     }: Marker),
@@ -442,6 +478,8 @@ describe("#processCache", () => {
                             "1": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
+                                declaration:
+                                    "// sync-start:marker1 MISMATCH! fileb",
                             }: Target),
                         },
                     }: Marker),
@@ -453,6 +491,8 @@ describe("#processCache", () => {
                             "8": ({
                                 checksum: "MISMATCH!",
                                 file: "fileb",
+                                declaration:
+                                    "// sync-start:marker2 MISMATCH! fileb",
                             }: Target),
                         },
                     }: Marker),
@@ -466,6 +506,7 @@ describe("#processCache", () => {
                             "2": ({
                                 checksum: "5678",
                                 file: "filea",
+                                declaration: "// sync-start:marker1 5678 filea",
                             }: Target),
                         },
                     }: Marker),
@@ -477,6 +518,7 @@ describe("#processCache", () => {
                             "10": ({
                                 checksum: "5678",
                                 file: "filea",
+                                declaration: "// sync-start:marker2 5678 filea",
                             }: Target),
                         },
                     }: Marker),

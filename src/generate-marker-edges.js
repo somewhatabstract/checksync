@@ -5,11 +5,39 @@ import cwdRelativePath from "./cwd-relative-path.js";
 import type {ILog, Marker, MarkerCache} from "./types.js";
 
 type MarkerEdge = {
+    /**
+     * The marker identifier.
+     */
     +markerID: string,
+
+    /**
+     * The line in the source file where the marker is declared.
+     */
     +sourceLine: string,
+
+    /**
+     * The checksum that the source file has recorded for the target content.
+     */
     +sourceChecksum: string,
+
+    /**
+     * The full tag declaration of the marker target in the source file.
+     */
+    +sourceDeclaration: string,
+
+    /**
+     * The path to the target file of the marker.
+     */
     +targetFile: string,
+
+    /**
+     * The line in the target file where the marker begins.
+     */
     +targetLine: string,
+
+    /**
+     * The actual checksum of the target content.
+     */
     +targetChecksum: ?string,
 };
 
@@ -101,6 +129,7 @@ export default function* generateMarkerEdges(
                 markerID,
                 sourceLine,
                 sourceChecksum,
+                sourceDeclaration: targetRef.declaration,
                 targetFile: targetRef.file,
                 targetLine: targetDetails.line,
                 targetChecksum,

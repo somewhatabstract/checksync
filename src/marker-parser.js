@@ -20,6 +20,13 @@ type TrackedTarget = {
      * @type {number}
      */
     line: number,
+
+    /**
+     * The full declaration for this target's sync-tag.
+     *
+     * @type {string}
+     */
+    declaration: string,
 };
 
 type TrackedTargets = {
@@ -69,10 +76,11 @@ const targetsFromTrackedTargets = (trackedTargets: TrackedTargets): Targets => {
     const targets: Targets = {};
 
     for (const file of Object.keys(trackedTargets)) {
-        const {line, checksum} = trackedTargets[file];
+        const {line, checksum, declaration} = trackedTargets[file];
         targets[line] = {
             file,
             checksum,
+            declaration,
         };
     }
 
@@ -177,6 +185,7 @@ export default class MarkerParser {
         line: number,
         checksum: string,
         comment: string,
+        declaration: string,
     ) => {
         this._openMarkers[id] = this._openMarkers[id] || {
             content: [],
@@ -218,6 +227,7 @@ export default class MarkerParser {
         this._openMarkers[id].targets[normalized.file] = {
             line,
             checksum,
+            declaration,
         };
     };
 
@@ -288,6 +298,7 @@ export default class MarkerParser {
                     lineNumber,
                     startDecode[2],
                     startMatch[1],
+                    content,
                 );
             }
             return;

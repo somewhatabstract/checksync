@@ -47,6 +47,11 @@ export type Target = {
      * what we will pick up and report/fix.
      */
     +checksum: string,
+
+    /**
+     * The full line of text declaring the sync-start for this target.
+     */
+    +declaration: string,
 };
 
 /**

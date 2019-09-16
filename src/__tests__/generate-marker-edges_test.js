@@ -42,6 +42,7 @@ describe("#generateMarkerEdges", () => {
                         "1": ({
                             checksum: "5678",
                             file: "fileb",
+                            declaration: "// sync-start:marker 5678 fileb",
                         }: Target),
                     },
                 }: Marker),
@@ -55,6 +56,7 @@ describe("#generateMarkerEdges", () => {
                         "1": ({
                             checksum: "1234",
                             file: "filea",
+                            declaration: "// sync-start:marker 1234 filea",
                         }: Target),
                     },
                 }: Marker),
@@ -83,6 +85,7 @@ describe("#generateMarkerEdges", () => {
                         "1": ({
                             checksum: "5678",
                             file: "fileb",
+                            declaration: "// sync-start:marker 5678 fileb",
                         }: Target),
                     },
                 }: Marker),
@@ -96,6 +99,7 @@ describe("#generateMarkerEdges", () => {
                         "1": ({
                             checksum: "1234",
                             file: "filea",
+                            declaration: "// sync-start:marker 1234 filea",
                         }: Target),
                     }: any),
                 }: Marker),
@@ -112,6 +116,7 @@ describe("#generateMarkerEdges", () => {
             {
                 markerID: "marker",
                 sourceChecksum: "1234",
+                sourceDeclaration: "// sync-start:marker 1234 filea",
                 sourceLine: "1",
                 targetChecksum: "",
                 targetFile: "filea",
@@ -134,6 +139,7 @@ describe("#generateMarkerEdges", () => {
                         "1": ({
                             checksum: "5678",
                             file: "fileb",
+                            declaration: "// sync-start:marker 5678 fileb",
                         }: Target),
                     },
                 }: Marker),
@@ -163,6 +169,7 @@ describe("#generateMarkerEdges", () => {
                         "1": ({
                             checksum: "5678",
                             file: "fileb",
+                            declaration: "// sync-start:marker 5678 fileb",
                         }: Target),
                     },
                 }: Marker),
@@ -199,6 +206,7 @@ describe("#generateMarkerEdges", () => {
                         "1": ({
                             checksum: "5678",
                             file: "fileb",
+                            declaration: "// sync-start:marker 5678 fileb",
                         }: Target),
                     },
                 }: Marker),
@@ -212,6 +220,7 @@ describe("#generateMarkerEdges", () => {
                         "1": ({
                             checksum: "1234",
                             file: "filea",
+                            declaration: "// sync-start:marker 1234 filea",
                         }: Target),
                     },
                 }: Marker),
@@ -240,6 +249,7 @@ describe("#generateMarkerEdges", () => {
                         "1": ({
                             checksum: "5678",
                             file: "fileb",
+                            declaration: "// sync-start:marker 4321 fileb",
                         }: Target),
                     },
                 }: Marker),
@@ -253,6 +263,7 @@ describe("#generateMarkerEdges", () => {
                         "1": ({
                             checksum: "1234",
                             file: "filea",
+                            declaration: "// sync-start:marker 1234 filea",
                         }: Target),
                     },
                 }: Marker),
@@ -269,6 +280,7 @@ describe("#generateMarkerEdges", () => {
             {
                 markerID: "marker",
                 sourceChecksum: "1234",
+                sourceDeclaration: "// sync-start:marker 1234 filea",
                 sourceLine: "1",
                 targetChecksum: "4321",
                 targetFile: "filea",
