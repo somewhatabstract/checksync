@@ -1,15 +1,20 @@
 // @flow
 import readline from "readline";
 import fs from "fs";
-
 import path from "path";
+
 import generateMarkerEdges from "./generate-marker-edges.js";
+import Format from "./format.js";
+import cwdRelativePath from "./cwd-relative-path.js";
 
 import type {ILog, MarkerCache} from "./types.js";
 import type {MarkerEdge} from "./generate-marker-edges.js";
 
 type EdgeMap = {
-    [brokenDeclaration: string]: string,
+    [brokenDeclaration: string]: {
+        fix: string,
+        edge: MarkerEdge,
+    },
     ...,
 };
 
@@ -27,10 +32,33 @@ const formatEdgeFix = (sourceFile: string, brokenEdge: MarkerEdge): string =>
 const mapEdgeFix = (
     sourceFile: string,
     brokenEdge: MarkerEdge,
-): [string, string] => [
-    brokenEdge.sourceDeclaration,
-    formatEdgeFix(sourceFile, brokenEdge),
-];
+): [MarkerEdge, string] => [brokenEdge, formatEdgeFix(sourceFile, brokenEdge)];
+
+const reportBrokenEdge = (
+    sourceFile: string,
+    brokenEdge: MarkerEdge,
+    log: ILog,
+): void => {
+    const {
+        markerID,
+        sourceLine,
+        targetLine,
+        targetFile,
+        sourceChecksum,
+        targetChecksum,
+    } = brokenEdge;
+
+    const NO_CHECKSUM = "No checksum";
+    const sourceFileRef = Format.filePath(`${sourceFile}:${sourceLine}`);
+    log.log(
+        Format.violation(
+            `${sourceFileRef} Updating checksum for sync-tag '${markerID}' referencing '${cwdRelativePath(
+                targetFile,
+            )}:${targetLine}' from ${sourceChecksum ||
+                NO_CHECKSUM} to ${targetChecksum}.`,
+        ),
+    );
+};
 
 const validateAndFix = (
     file: string,
@@ -51,9 +79,12 @@ const validateAndFix = (
             .reduce(
                 (
                     prev: EdgeMap,
-                    [brokenDeclaration, fixedDeclaration]: [string, string],
+                    [edge, fixedDeclaration]: [MarkerEdge, string],
                 ): EdgeMap => {
-                    prev[brokenDeclaration] = fixedDeclaration;
+                    prev[edge.sourceDeclaration] = {
+                        fix: fixedDeclaration,
+                        edge: edge,
+                    };
                     return prev;
                 },
                 {},
@@ -96,11 +127,14 @@ const validateAndFix = (
             })
             .on("line", (line: string) => {
                 // Let's see if this is something we need to fix.
-                const fix = brokenEdgeMap[line];
+                const mappedFix = brokenEdgeMap[line];
+                if (mappedFix != null) {
+                    reportBrokenEdge(file, mappedFix.edge, log);
+                }
 
                 // If we have a fix, use it, otherwise, just output the line
                 // as it is (we have to add the newline).
-                ws.write(`${fix == null ? line : fix}\n`);
+                ws.write(`${mappedFix == null ? line : mappedFix.fix}\n`);
             })
             .on("close", () => {
                 // We have finished reading, so let's tell the write stream
