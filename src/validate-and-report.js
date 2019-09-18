@@ -21,7 +21,7 @@ const reportBrokenEdge = (
     } = brokenEdge;
 
     const NO_CHECKSUM = "No checksum";
-    const sourceFileRef = Format.filePath(`${sourceFile}:${sourceLine}`);
+    const sourceFileRef = Format.cwdFilePath(`${sourceFile}:${sourceLine}`);
     const checksums = `${sourceChecksum || NO_CHECKSUM} != ${targetChecksum ||
         NO_CHECKSUM}`;
     log.log(
@@ -35,6 +35,7 @@ const reportBrokenEdge = (
 
 const validateAndReport = (
     file: string,
+    rootMarker: ?string,
     cache: MarkerCache,
     log: ILog,
 ): Promise<boolean> => {

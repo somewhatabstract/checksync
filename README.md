@@ -10,6 +10,8 @@ This is a work in progress and as such, the package is not yet published.
 
 ## Usage
 
+All target paths are relative to your project root directory. By default, this is determined, using `ancesdir` to be the ancestor directory of the files being processed that contains `package.json`. If you want to specify a different root (for example, if you're syncing across multiple packages in a monorepo) you can specify a custom marker name using the `--root-marker` argument.
+
 1. Add synchronization tags to files indicating what sections to synchronize and with which files:
 
     ```javascript

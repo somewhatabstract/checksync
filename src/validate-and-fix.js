@@ -1,11 +1,11 @@
 // @flow
 import readline from "readline";
 import fs from "fs";
-import path from "path";
 
 import generateMarkerEdges from "./generate-marker-edges.js";
 import Format from "./format.js";
 import cwdRelativePath from "./cwd-relative-path.js";
+import rootRelativePath from "./root-relative-path.js";
 
 import type {ILog, MarkerCache} from "./types.js";
 import type {MarkerEdge} from "./generate-marker-edges.js";
@@ -21,18 +21,26 @@ type EdgeMap = {
 /**
  * Format a given edge into a comment with corrected checksum.
  */
-const formatEdgeFix = (sourceFile: string, brokenEdge: MarkerEdge): string =>
+const formatEdgeFix = (
+    sourceFile: string,
+    rootMarker: ?string,
+    brokenEdge: MarkerEdge,
+): string =>
     `${brokenEdge.sourceComment} sync-start:${brokenEdge.markerID} ${
         brokenEdge.targetChecksum
-    } ${path.relative(path.dirname(sourceFile), brokenEdge.targetFile)}`;
+    } ${rootRelativePath(brokenEdge.targetFile, rootMarker)}`;
 
 /**
  * Generate a map edge from broken declaration to fixed declaration.
  */
 const mapEdgeFix = (
     sourceFile: string,
+    rootMarker: ?string,
     brokenEdge: MarkerEdge,
-): [MarkerEdge, string] => [brokenEdge, formatEdgeFix(sourceFile, brokenEdge)];
+): [MarkerEdge, string] => [
+    brokenEdge,
+    formatEdgeFix(sourceFile, rootMarker, brokenEdge),
+];
 
 const reportBrokenEdge = (
     sourceFile: string,
@@ -49,7 +57,7 @@ const reportBrokenEdge = (
     } = brokenEdge;
 
     const NO_CHECKSUM = "No checksum";
-    const sourceFileRef = Format.filePath(`${sourceFile}:${sourceLine}`);
+    const sourceFileRef = Format.cwdFilePath(`${sourceFile}:${sourceLine}`);
     log.log(
         Format.violation(
             `${sourceFileRef} Updating checksum for sync-tag '${markerID}' referencing '${cwdRelativePath(
@@ -62,6 +70,7 @@ const reportBrokenEdge = (
 
 const validateAndFix = (
     file: string,
+    rootMarker: ?string,
     cache: MarkerCache,
     log: ILog,
 ): Promise<boolean> => {
@@ -75,7 +84,7 @@ const validateAndFix = (
         }
 
         const brokenEdgeMap: EdgeMap = brokenEdges
-            .map((edge: MarkerEdge) => mapEdgeFix(file, edge))
+            .map((edge: MarkerEdge) => mapEdgeFix(file, rootMarker, edge))
             .reduce(
                 (
                     prev: EdgeMap,

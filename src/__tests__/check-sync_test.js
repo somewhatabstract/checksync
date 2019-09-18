@@ -19,7 +19,10 @@ describe("#checkSync", () => {
         const getFilesSpy = jest.spyOn(GetFiles, "default").mockReturnValue([]);
 
         // Act
-        await checkSync(["glob1", "glob2"], true, ["//"], NullLogger);
+        await checkSync(
+            {globs: ["glob1", "glob2"], autoFix: true, comments: ["//"]},
+            NullLogger,
+        );
 
         // Assert
         expect(getFilesSpy).toHaveBeenCalledWith(["glob1", "glob2"]);
@@ -32,7 +35,10 @@ describe("#checkSync", () => {
         const errorSpy = jest.spyOn(NullLogger, "error");
 
         // Act
-        await checkSync(["glob1", "glob2"], false, ["//"], NullLogger);
+        await checkSync(
+            {globs: ["glob1", "glob2"], autoFix: false, comments: ["//"]},
+            NullLogger,
+        );
 
         // Assert
         expect(errorSpy).toHaveBeenCalledWith("No matching files");
@@ -45,9 +51,7 @@ describe("#checkSync", () => {
 
         // Act
         const result = await checkSync(
-            ["glob1", "glob2"],
-            false,
-            ["//"],
+            {globs: ["glob1", "glob2"], autoFix: false, comments: ["//"]},
             NullLogger,
         );
 
@@ -65,10 +69,14 @@ describe("#checkSync", () => {
             .mockReturnValue({});
 
         // Act
-        await checkSync([], true, ["//"], NullLogger);
+        await checkSync(
+            {globs: ["glob1", "glob2"], autoFix: true, comments: ["//"]},
+            NullLogger,
+        );
 
         // Assert
         expect(getMarkersFromFilesSpy).toHaveBeenCalledWith(
+            undefined,
             ["filea", "fileb"],
             ["//"],
             NullLogger,
@@ -86,7 +94,10 @@ describe("#checkSync", () => {
         });
 
         // Act
-        await checkSync([], true, ["//"], NullLogger);
+        await checkSync(
+            {globs: ["glob1", "glob2"], autoFix: true, comments: ["//"]},
+            NullLogger,
+        );
 
         // Assert
         expect(logSpy).toHaveBeenCalledWith(
@@ -104,13 +115,16 @@ describe("#checkSync", () => {
         });
 
         // Act
-        const result = await checkSync([], true, ["//"], NullLogger);
+        const result = await checkSync(
+            {globs: ["glob1", "glob2"], autoFix: true, comments: ["//"]},
+            NullLogger,
+        );
 
         // Assert
         expect(result).toBe(ErrorCodes.PARSE_ERRORS);
     });
 
-    it("should invoke ProcessCache with cache, autoFix, and log", async () => {
+    it("should invoke ProcessCache with rootMarker, cache, autoFix, and log", async () => {
         // Arrange
         const NullLogger = new Logger();
         const fakeCache = {};
@@ -121,10 +135,19 @@ describe("#checkSync", () => {
             .mockReturnValue([]);
 
         // Act
-        await checkSync([], false, ["//"], NullLogger);
+        await checkSync(
+            {
+                globs: ["glob1", "glob2"],
+                autoFix: false,
+                comments: ["//"],
+                rootMarker: "marker",
+            },
+            NullLogger,
+        );
 
         // Assert
         expect(ProcessCacheSpy).toHaveBeenCalledWith(
+            "marker",
             fakeCache,
             false,
             NullLogger,
@@ -140,7 +163,10 @@ describe("#checkSync", () => {
         jest.spyOn(ProcessCache, "default").mockReturnValue(ErrorCodes.SUCCESS);
 
         // Act
-        const result = await checkSync([], false, ["//"], NullLogger);
+        const result = await checkSync(
+            {globs: [], autoFix: false, comments: ["//"]},
+            NullLogger,
+        );
 
         // Assert
         expect(result).toBe(ErrorCodes.SUCCESS);

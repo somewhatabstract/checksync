@@ -23,7 +23,7 @@ export const run = (launchFilePath: string): void => {
     // completing them.
     const args = minimist(process.argv, {
         boolean: ["update-tags"],
-        string: ["comments"],
+        string: ["comments", "root-marker"],
         default: {
             "update-tags": false,
             comments: "//,#",
@@ -31,6 +31,7 @@ export const run = (launchFilePath: string): void => {
         alias: {
             "update-tags": ["u", "updateTags"],
             comments: ["c"],
+            "root-marker": ["r", "rootMarker"],
         },
         unknown: arg => {
             // Filter out the node process.
@@ -49,9 +50,12 @@ export const run = (launchFilePath: string): void => {
     const globs = args._ && args._.length > 0 ? args._ : [process.cwd()];
 
     checkSync(
-        globs,
-        args.updateTags === true,
-        comments,
+        {
+            globs,
+            autoFix: args.updateTags === true,
+            comments,
+            rootMarker: (args.rootMarker: any),
+        },
         new Logger(console),
     ).then(exitCode => process.exit(exitCode));
 };

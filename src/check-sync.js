@@ -4,7 +4,7 @@ import getFiles from "./get-files.js";
 import ErrorCodes from "./error-codes.js";
 import processCache from "./process-cache.js";
 
-import type {ILog} from "./types.js";
+import type {ILog, CheckSyncOptions} from "./types.js";
 import type {ErrorCode} from "./error-codes.js";
 
 /**
@@ -21,9 +21,7 @@ import type {ErrorCode} from "./error-codes.js";
  * @returns {Promise<ErrorCode>} The promise of an error code
  */
 export default async function checkSync(
-    globs: Array<string>,
-    autoFix: boolean,
-    comments: Array<string>,
+    {globs, autoFix, comments, rootMarker}: CheckSyncOptions,
     log: ILog,
 ): Promise<ErrorCode> {
     const files = await getFiles(globs);
@@ -33,7 +31,7 @@ export default async function checkSync(
         return ErrorCodes.NO_FILES;
     }
 
-    const cache = await getMarkersFromFiles(files, comments, log);
+    const cache = await getMarkersFromFiles(rootMarker, files, comments, log);
 
     if (log.errorsLogged && autoFix) {
         log.log("");
@@ -43,5 +41,5 @@ export default async function checkSync(
         return ErrorCodes.PARSE_ERRORS;
     }
 
-    return processCache(cache, autoFix, log);
+    return processCache(rootMarker, cache, autoFix, log);
 }

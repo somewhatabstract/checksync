@@ -31,7 +31,7 @@ describe("#validateAndReport", () => {
         const logSpy = jest.spyOn(NullLogger, "log");
 
         // Act
-        await validateAndReport("fileb", {}, NullLogger);
+        await validateAndReport("fileb", null, {}, NullLogger);
 
         // Assert
         expect(logSpy).toHaveBeenCalledWith(
@@ -55,7 +55,7 @@ describe("#validateAndReport", () => {
         const logSpy = jest.spyOn(NullLogger, "log");
 
         // Act
-        await validateAndReport("fileb", {}, NullLogger);
+        await validateAndReport("fileb", null, {}, NullLogger);
 
         // Assert
         expect(logSpy).toHaveBeenCalledWith(
@@ -79,7 +79,7 @@ describe("#validateAndReport", () => {
         const logSpy = jest.spyOn(NullLogger, "log");
 
         // Act
-        await validateAndReport("fileb", {}, NullLogger);
+        await validateAndReport("fileb", null, {}, NullLogger);
 
         // Assert
         expect(logSpy).toHaveBeenCalledWith(
@@ -93,7 +93,7 @@ describe("#validateAndReport", () => {
         jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([]);
 
         // Act
-        const result = await validateAndReport("fileb", {}, NullLogger);
+        const result = await validateAndReport("fileb", null, {}, NullLogger);
 
         // Assert
         expect(result).toBeTrue();
@@ -114,7 +114,7 @@ describe("#validateAndReport", () => {
         ]);
 
         // Act
-        const result = await validateAndReport("fileb", {}, NullLogger);
+        const result = await validateAndReport("fileb", null, {}, NullLogger);
 
         // Assert
         expect(result).toBeFalse();

@@ -45,9 +45,11 @@ describe("#run", () => {
 
         // Arrange
         expect(checkSyncSpy).toHaveBeenCalledWith(
-            fakeParsedArgs._,
-            true,
-            ["COMMENT1", "COMMENT2"],
+            {
+                globs: fakeParsedArgs._,
+                autoFix: true,
+                comments: ["COMMENT1", "COMMENT2"],
+            },
             expect.any(Object),
         );
     });

@@ -9,6 +9,7 @@ import type {ErrorCode} from "./error-codes.js";
 import type {MarkerCache, ILog} from "./types";
 
 export default async function processCache(
+    rootMarker: ?string,
     cache: MarkerCache,
     autoFix: boolean,
     log: ILog,
@@ -17,12 +18,12 @@ export default async function processCache(
     const fileValidator = autoFix ? validateAndFix : validateAndReport;
     for (const file of Object.keys(cache)) {
         try {
-            if (!(await fileValidator(file, cache, log))) {
+            if (!(await fileValidator(file, rootMarker, cache, log))) {
                 violationFileNames.push(file);
             }
         } catch (e) {
             log.error(
-                `${Format.filePath(
+                `${Format.cwdFilePath(
                     cwdRelativePath(file),
                 )} update encountered error: ${e.message}`,
             );

@@ -74,11 +74,21 @@ describe("#processCache", () => {
                 .mockReturnValue(Promise.resolve(true));
 
             // Act
-            await processCache(markerCache, false, NullLogger);
+            await processCache(null, markerCache, false, NullLogger);
 
             // Assert
-            expect(spy).toHaveBeenCalledWith("filea", markerCache, NullLogger);
-            expect(spy).toHaveBeenCalledWith("fileb", markerCache, NullLogger);
+            expect(spy).toHaveBeenCalledWith(
+                "filea",
+                null,
+                markerCache,
+                NullLogger,
+            );
+            expect(spy).toHaveBeenCalledWith(
+                "fileb",
+                null,
+                markerCache,
+                NullLogger,
+            );
         });
 
         it("should return ErrorCodes.SUCCESS if all files are valid", async () => {
@@ -145,7 +155,12 @@ describe("#processCache", () => {
             );
 
             // Act
-            const result = await processCache(markerCache, false, NullLogger);
+            const result = await processCache(
+                null,
+                markerCache,
+                false,
+                NullLogger,
+            );
 
             // Assert
             expect(result).toBe(ErrorCodes.SUCCESS);
@@ -215,7 +230,12 @@ describe("#processCache", () => {
             );
 
             // Act
-            const result = await processCache(markerCache, false, NullLogger);
+            const result = await processCache(
+                "marker",
+                markerCache,
+                false,
+                NullLogger,
+            );
 
             // Assert
             expect(result).toBe(ErrorCodes.DESYNCHRONIZED_BLOCKS);
@@ -262,7 +282,7 @@ describe("#processCache", () => {
             );
 
             // Act
-            await processCache(markerCache, false, NullLogger);
+            await processCache("marker", markerCache, false, NullLogger);
 
             // Assert
             expect(groupSpy).toHaveBeenCalledWith(
@@ -313,7 +333,7 @@ describe("#processCache", () => {
 
             // Act
             NullLogger.error("This was an error during parsing!");
-            await processCache(markerCache, false, NullLogger);
+            await processCache(null, markerCache, false, NullLogger);
 
             // Assert
             expect(groupSpy).toHaveBeenCalledWith(
@@ -388,11 +408,21 @@ describe("#processCache", () => {
                 .mockReturnValue(Promise.resolve(true));
 
             // Act
-            await processCache(markerCache, true, NullLogger);
+            await processCache(null, markerCache, true, NullLogger);
 
             // Assert
-            expect(spy).toHaveBeenCalledWith("filea", markerCache, NullLogger);
-            expect(spy).toHaveBeenCalledWith("fileb", markerCache, NullLogger);
+            expect(spy).toHaveBeenCalledWith(
+                "filea",
+                null,
+                markerCache,
+                NullLogger,
+            );
+            expect(spy).toHaveBeenCalledWith(
+                "fileb",
+                null,
+                markerCache,
+                NullLogger,
+            );
         });
 
         it("should return ErrorCodes.SUCCESS if no files were fixed", async () => {
@@ -459,7 +489,12 @@ describe("#processCache", () => {
             );
 
             // Act
-            const result = await processCache(markerCache, true, NullLogger);
+            const result = await processCache(
+                null,
+                markerCache,
+                true,
+                NullLogger,
+            );
 
             // Assert
             expect(result).toBe(ErrorCodes.SUCCESS);
@@ -529,7 +564,12 @@ describe("#processCache", () => {
             );
 
             // Act
-            const result = await processCache(markerCache, true, NullLogger);
+            const result = await processCache(
+                "marker",
+                markerCache,
+                true,
+                NullLogger,
+            );
 
             // Assert
             expect(result).toBe(ErrorCodes.SUCCESS);

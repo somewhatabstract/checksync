@@ -119,6 +119,7 @@ export type MarkerCache = {
  */
 export type FileProcessor = (
     file: string,
+    rootMarker: ?string,
     cache: MarkerCache,
     log: ILog,
 ) => Promise<boolean>;
@@ -128,4 +129,11 @@ export type normalizePathFn = (
 ) => ?{
     file: string,
     exists: boolean,
+};
+
+export type CheckSyncOptions = {
+    globs: Array<string>,
+    autoFix: boolean,
+    comments: Array<string>,
+    rootMarker?: ?string,
 };

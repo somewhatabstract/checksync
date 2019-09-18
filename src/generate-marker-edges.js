@@ -114,7 +114,7 @@ export default function* generateMarkerEdges(
                 // a marker that points back to our source file, so we need
                 // to report that.
                 log.error(
-                    `${Format.filePath(
+                    `${Format.cwdFilePath(
                         targetRef.file,
                     )} does not contain a tag named '${markerID}' that points to '${cwdRelativePath(
                         file,

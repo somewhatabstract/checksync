@@ -38,7 +38,7 @@ export default class FileReferenceLogger implements IPositionLog {
         `${this._formatRef(line)} ${message}`;
 
     _formatRef = (line?: string | number) =>
-        Format.filePath(`${this._file}${(line && `:${line}`) || ""}`);
+        Format.cwdFilePath(`${this._file}${(line && `:${line}`) || ""}`);
 
     get errorsLogged() {
         return this._log.errorsLogged;

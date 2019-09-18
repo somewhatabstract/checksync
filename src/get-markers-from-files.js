@@ -6,6 +6,7 @@ import fs from "fs";
 import path from "path";
 import uniq from "lodash/uniq";
 import parseFile from "./parse-file.js";
+import ancesdir from "ancesdir";
 
 import type {ILog, MarkerCache} from "./types.js";
 
@@ -17,6 +18,7 @@ import type {ILog, MarkerCache} from "./types.js";
  * @returns {Promise<MarkerCache>} A marker cache.
  */
 export default async function getMarkersFromFiles(
+    rootMarker: ?string,
     files: Array<string>,
     comments: Array<string>,
     log: ILog,
@@ -24,16 +26,9 @@ export default async function getMarkersFromFiles(
     const cacheData: MarkerCache = {};
     const referencedFiles: Array<string> = [];
     const logFileRef = (file, fileRef) => {
-        // TODO: This is currently treating target file as source file relative
-        // but according to Khan Academy sync-linter, it should be relative to
-        // the project root. So, we need a way to determine what project root is
-        // Can we assume it's the locaton of the node_modules folder that checksync
-        // is installed in? No, because it could be installed globally.
-        // We can't assume github. What about package.json?
-        // Let's default to package.json folder and provide way to override it
-        // via our arguments.
-
-        const normalizedFileRef = path.resolve(path.dirname(file), fileRef);
+        // Target paths are relative to the root location.
+        const rootPath = ancesdir(file, rootMarker);
+        const normalizedFileRef = path.normalize(path.join(rootPath, fileRef));
         const exists =
             fs.existsSync(normalizedFileRef) &&
             fs.lstatSync(normalizedFileRef).isFile();

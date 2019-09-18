@@ -1132,6 +1132,11 @@ ajv@^6.10.0, ajv@^6.10.2, ajv@^6.5.5:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
+ancesdir@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/ancesdir/-/ancesdir-1.1.0.tgz#c7a342fd81029f1bae0a2435b258bbbdbca34886"
+  integrity sha512-RZhQ5FmU+c/KBAjlr7h4lQnvaMZxmNwm5WZgA6SWG2/gGEsc/xQxqAduBb055cHkXVrOSuaGnJke8fxPiBZDog==
+
 ansi-escapes@^3.0.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/ansi-escapes/-/ansi-escapes-3.2.0.tgz#8780b98ff9dbf5638152d1f1fe5c1d7b4442976b"

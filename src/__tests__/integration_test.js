@@ -20,9 +20,11 @@ describe("Integration Tests", () => {
 
         // Act
         await checkSync(
-            [path.join(__dirname, "../../__examples__")],
-            false,
-            ["//", "#"],
+            {
+                globs: [path.join(__dirname, "../../__examples__")],
+                autoFix: false,
+                comments: ["//", "#"],
+            },
             stringLogger,
         );
         const result = stringLogger.getLog();
@@ -37,9 +39,11 @@ describe("Integration Tests", () => {
 
         // Act
         await checkSync(
-            [path.join(__dirname, "../../__examples__")],
-            true,
-            ["//", "#"],
+            {
+                globs: [path.join(__dirname, "../../__examples__")],
+                autoFix: true,
+                comments: ["//", "#"],
+            },
             stringLogger,
         );
         const result = stringLogger.getLog();

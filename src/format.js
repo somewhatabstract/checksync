@@ -8,6 +8,6 @@ const Format = {
     warn: (text: string) => `${chalk.bold.black.bgYellow(" WARNING ")} ${text}`,
     violation: (text: string) =>
         `${chalk.bold.black.bgYellowBright(" MISMATCH ")} ${text}`,
-    filePath: (filePath: string) => chalk.gray(cwdRelativePath(filePath)),
+    cwdFilePath: (filePath: string) => chalk.gray(cwdRelativePath(filePath)),
 };
 export default Format;

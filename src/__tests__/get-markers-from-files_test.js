@@ -4,10 +4,12 @@ import path from "path";
 import getMarkersFromFiles from "../get-markers-from-files.js";
 import * as ParseFile from "../parse-file.js";
 import Logger from "../logger.js";
+import * as Ancesdir from "ancesdir";
 
 jest.mock("../parse-file.js");
 jest.mock("path");
 jest.mock("fs");
+jest.mock("ancesdir");
 
 const NullLogger = new Logger();
 
@@ -19,7 +21,7 @@ describe("#fromFiles", () => {
             .mockReturnValue(Promise.resolve());
 
         // Act
-        await getMarkersFromFiles(["a.js", "b.js"], ["//"], NullLogger);
+        await getMarkersFromFiles(null, ["a.js", "b.js"], ["//"], NullLogger);
 
         // Assert
         expect(parseSpy).toHaveBeenCalledWith(
@@ -50,25 +52,26 @@ describe("#fromFiles", () => {
             });
         jest.spyOn(fs, "existsSync").mockReturnValue(true);
         jest.spyOn(fs, "lstatSync").mockReturnValue({isFile: () => true});
-        const pathResolveSpy = jest
-            .spyOn(path, "resolve")
+        const pathSpy = jest
+            .spyOn(path, "join")
             .mockReturnValue("resolved.path");
-        const pathDirnameSpy = jest
-            .spyOn(path, "dirname")
+        jest.spyOn(path, "normalize").mockReturnValue("normalized.path");
+        const ancesdirSpy = jest
+            .spyOn(Ancesdir, "default")
             .mockReturnValue("file.dirname");
 
         // Act
-        await getMarkersFromFiles(["a.js"], ["//"], NullLogger);
+        await getMarkersFromFiles(null, ["a.js"], ["//"], NullLogger);
 
         // Assert
         expect(parseSpy).toHaveBeenCalledWith(
-            "resolved.path",
+            "normalized.path",
             false,
             ["//"],
             NullLogger,
         );
-        expect(pathResolveSpy).toHaveBeenCalledWith("file.dirname", "b.js");
-        expect(pathDirnameSpy).toHaveBeenCalledWith("a.js");
+        expect(pathSpy).toHaveBeenCalledWith("file.dirname", "b.js");
+        expect(ancesdirSpy).toHaveBeenCalledWith("a.js", null);
     });
 
     it("should not parse already parsed files", async () => {
@@ -84,11 +87,11 @@ describe("#fromFiles", () => {
             });
         jest.spyOn(fs, "existsSync").mockReturnValue(true);
         jest.spyOn(fs, "lstatSync").mockReturnValue({isFile: () => true});
-        jest.spyOn(path, "resolve").mockImplementation((a, b) => b);
-        jest.spyOn(path, "dirname").mockReturnValue("");
+        jest.spyOn(path, "join").mockImplementation((a, b) => b);
+        jest.spyOn(path, "normalize").mockImplementation(b => b);
 
         // Act
-        await getMarkersFromFiles(["a.js", "b.js"], ["//"], NullLogger);
+        await getMarkersFromFiles(null, ["a.js", "b.js"], ["//"], NullLogger);
 
         // Assert
         expect(parseSpy).toHaveBeenCalledTimes(3);
@@ -126,6 +129,7 @@ describe("#fromFiles", () => {
 
         // Act
         const result = await getMarkersFromFiles(
+            null,
             ["a.js", "b.js"],
             ["//"],
             NullLogger,
@@ -157,11 +161,12 @@ describe("#fromFiles", () => {
         );
         jest.spyOn(fs, "existsSync").mockReturnValue(true);
         jest.spyOn(fs, "lstatSync").mockReturnValue({isFile: () => true});
-        jest.spyOn(path, "resolve").mockImplementation((a, b) => b);
-        jest.spyOn(path, "dirname").mockReturnValue("");
+        jest.spyOn(path, "join").mockImplementation((a, b) => b);
+        jest.spyOn(path, "normalize").mockImplementation(b => b);
 
         // Act
         const result = await getMarkersFromFiles(
+            "marker",
             ["a.js", "b.js"],
             ["//"],
             NullLogger,
@@ -188,11 +193,11 @@ describe("#fromFiles", () => {
             });
         jest.spyOn(fs, "existsSync").mockImplementation(f => f === "a.js");
         jest.spyOn(fs, "lstatSync").mockReturnValue({isFile: () => true});
-        jest.spyOn(path, "resolve").mockImplementation((a, b) => b);
-        jest.spyOn(path, "dirname").mockReturnValue("");
+        jest.spyOn(path, "join").mockImplementation((a, b) => b);
+        jest.spyOn(path, "normalize").mockImplementation(b => b);
 
         // Act
-        await getMarkersFromFiles(["a.js", "b.js"], ["//"], NullLogger);
+        await getMarkersFromFiles(null, ["a.js", "b.js"], ["//"], NullLogger);
 
         // Assert
         expect(parseSpy).toHaveBeenCalledTimes(2);
