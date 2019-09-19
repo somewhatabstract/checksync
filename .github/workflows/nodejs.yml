@@ -33,13 +33,15 @@ jobs:
     - name: Lint
       run: yarn lint
       if: matrix.coverage
+    - name: Run integration tests
+      run: yarn test:integration
     - name: Run tests
-      run: yarn test --runInBand && yarn test:integration
+      run: yarn test:ci
       if: matrix.coverage != true
       env:
         CI: true
     - name: Run tests with coverage
-      run: yarn coverage --runInBand && yarn test:integration
+      run: yarn test:ci --coverage
       if: matrix.coverage
       env:
         CI: true
