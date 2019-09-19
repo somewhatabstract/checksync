@@ -11,8 +11,6 @@ import * as RootRelativePath from "../root-relative-path.js";
 import type {MarkerEdge} from "../generate-marker-edges.js";
 import type {Options} from "../types.js";
 
-jest.mock("fs");
-
 const invokeEvent = (mocked: $Call<typeof jest.fn>, event: string, ...args) => {
     const eventHandlerCall = mocked.mock.calls.find(call => call[0] === event);
     if (eventHandlerCall == null) {
@@ -55,10 +53,14 @@ describe("#validateAndFix", () => {
         });
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
-        jest.spyOn(fs, "openSync");
-        jest.spyOn(fs, "createWriteStream").mockReturnValue(fakeWriteStream);
-        jest.spyOn(fs, "createReadStream");
-        jest.spyOn(readline, "createInterface").mockReturnValue(fakeInterface);
+        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
+        jest.spyOn(fs, "createWriteStream").mockReturnValueOnce(
+            fakeWriteStream,
+        );
+        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
+        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
+            fakeInterface,
+        );
         jest.spyOn(RootRelativePath, "default").mockImplementation(
             t => `ROOT_REL:${t}`,
         );
@@ -105,10 +107,14 @@ describe("#validateAndFix", () => {
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
 
-        jest.spyOn(fs, "openSync");
-        jest.spyOn(fs, "createWriteStream").mockReturnValue(fakeWriteStream);
-        jest.spyOn(fs, "createReadStream").mockReturnValue({});
-        jest.spyOn(readline, "createInterface").mockReturnValue(fakeInterface);
+        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
+        jest.spyOn(fs, "createWriteStream").mockReturnValueOnce(
+            fakeWriteStream,
+        );
+        jest.spyOn(fs, "createReadStream").mockReturnValueOnce({});
+        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
+            fakeInterface,
+        );
         jest.spyOn(RootRelativePath, "default").mockImplementation(
             t => `ROOT_REL:${t}`,
         );
@@ -156,10 +162,14 @@ describe("#validateAndFix", () => {
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
 
-        jest.spyOn(fs, "openSync");
-        jest.spyOn(fs, "createWriteStream").mockReturnValue(fakeWriteStream);
-        jest.spyOn(fs, "createReadStream").mockReturnValue({});
-        jest.spyOn(readline, "createInterface").mockReturnValue(fakeInterface);
+        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
+        jest.spyOn(fs, "createWriteStream").mockReturnValueOnce(
+            fakeWriteStream,
+        );
+        jest.spyOn(fs, "createReadStream").mockReturnValueOnce({});
+        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
+            fakeInterface,
+        );
         jest.spyOn(RootRelativePath, "default").mockImplementation(
             t => `ROOT_REL:${t}`,
         );
@@ -206,10 +216,14 @@ describe("#validateAndFix", () => {
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
 
-        jest.spyOn(fs, "openSync");
-        jest.spyOn(fs, "createWriteStream").mockReturnValue(fakeWriteStream);
-        jest.spyOn(fs, "createReadStream").mockReturnValue({});
-        jest.spyOn(readline, "createInterface").mockReturnValue(fakeInterface);
+        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
+        jest.spyOn(fs, "createWriteStream").mockReturnValueOnce(
+            fakeWriteStream,
+        );
+        jest.spyOn(fs, "createReadStream").mockReturnValueOnce({});
+        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
+            fakeInterface,
+        );
         jest.spyOn(RootRelativePath, "default").mockImplementation(
             t => `ROOT_REL:${t}`,
         );
@@ -259,10 +273,14 @@ describe("#validateAndFix", () => {
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
 
-        jest.spyOn(fs, "openSync");
-        jest.spyOn(fs, "createWriteStream").mockReturnValue(fakeWriteStream);
-        jest.spyOn(fs, "createReadStream").mockReturnValue({});
-        jest.spyOn(readline, "createInterface").mockReturnValue(fakeInterface);
+        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
+        jest.spyOn(fs, "createWriteStream").mockReturnValueOnce(
+            fakeWriteStream,
+        );
+        jest.spyOn(fs, "createReadStream").mockReturnValueOnce({});
+        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
+            fakeInterface,
+        );
         jest.spyOn(RootRelativePath, "default").mockImplementation(
             t => `ROOT_REL:${t}`,
         );
