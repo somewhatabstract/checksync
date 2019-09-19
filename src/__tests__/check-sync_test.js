@@ -7,6 +7,8 @@ import Logger from "../logger.js";
 import checkSync from "../check-sync.js";
 import ErrorCodes from "../error-codes.js";
 
+import type {Options} from "../types.js";
+
 jest.mock("../get-files.js");
 jest.mock("../get-markers-from-files.js");
 jest.mock("../process-cache.js");
@@ -20,12 +22,18 @@ describe("#checkSync", () => {
 
         // Act
         await checkSync(
-            {globs: ["glob1", "glob2"], autoFix: true, comments: ["//"]},
+            {
+                includeGlobs: ["glob1", "glob2"],
+                excludeGlobs: [],
+                dryRun: false,
+                autoFix: true,
+                comments: ["//"],
+            },
             NullLogger,
         );
 
         // Assert
-        expect(getFilesSpy).toHaveBeenCalledWith(["glob1", "glob2"]);
+        expect(getFilesSpy).toHaveBeenCalledWith(["glob1", "glob2"], []);
     });
 
     it("should log error when there are no matching files", async () => {
@@ -33,12 +41,16 @@ describe("#checkSync", () => {
         const NullLogger = new Logger();
         jest.spyOn(GetFiles, "default").mockReturnValue([]);
         const errorSpy = jest.spyOn(NullLogger, "error");
+        const options = {
+            includeGlobs: ["glob1", "glob2"],
+            excludeGlobs: [],
+            dryRun: false,
+            autoFix: false,
+            comments: ["//"],
+        };
 
         // Act
-        await checkSync(
-            {globs: ["glob1", "glob2"], autoFix: false, comments: ["//"]},
-            NullLogger,
-        );
+        await checkSync(options, NullLogger);
 
         // Assert
         expect(errorSpy).toHaveBeenCalledWith("No matching files");
@@ -48,12 +60,16 @@ describe("#checkSync", () => {
         // Arrange
         const NullLogger = new Logger();
         jest.spyOn(GetFiles, "default").mockReturnValue([]);
+        const options: Options = {
+            includeGlobs: ["glob1", "glob2"],
+            excludeGlobs: [],
+            dryRun: false,
+            autoFix: false,
+            comments: ["//"],
+        };
 
         // Act
-        const result = await checkSync(
-            {globs: ["glob1", "glob2"], autoFix: false, comments: ["//"]},
-            NullLogger,
-        );
+        const result = await checkSync(options, NullLogger);
 
         // Assert
         expect(result).toBe(ErrorCodes.NO_FILES);
@@ -67,8 +83,10 @@ describe("#checkSync", () => {
         const getMarkersFromFilesSpy = jest
             .spyOn(GetMarkersFromFiles, "default")
             .mockReturnValue({});
-        const options = {
-            globs: ["glob1", "glob2"],
+        const options: Options = {
+            includeGlobs: ["glob1", "glob2"],
+            excludeGlobs: [],
+            dryRun: false,
             autoFix: true,
             comments: ["//"],
         };
@@ -93,8 +111,10 @@ describe("#checkSync", () => {
             NullLogger.error("Oh no!");
             return {};
         });
-        const options = {
-            globs: ["glob1", "glob2"],
+        const options: Options = {
+            includeGlobs: ["glob1", "glob2"],
+            excludeGlobs: [],
+            dryRun: false,
             autoFix: true,
             comments: ["//"],
         };
@@ -116,8 +136,10 @@ describe("#checkSync", () => {
             NullLogger.error("Oh no!");
             return {};
         });
-        const options = {
-            globs: ["glob1", "glob2"],
+        const options: Options = {
+            includeGlobs: ["glob1", "glob2"],
+            excludeGlobs: [],
+            dryRun: false,
             autoFix: true,
             comments: ["//"],
         };
@@ -138,9 +160,11 @@ describe("#checkSync", () => {
         const ProcessCacheSpy = jest
             .spyOn(ProcessCache, "default")
             .mockReturnValue([]);
-        const options = {
-            globs: ["glob1", "glob2"],
-            autoFix: true,
+        const options: Options = {
+            includeGlobs: ["glob1", "glob2"],
+            excludeGlobs: [],
+            dryRun: false,
+            autoFix: false,
             comments: ["//"],
             rootMarker: "marker",
         };
@@ -166,7 +190,13 @@ describe("#checkSync", () => {
 
         // Act
         const result = await checkSync(
-            {globs: [], autoFix: false, comments: ["//"]},
+            {
+                includeGlobs: [],
+                excludeGlobs: [],
+                autoFix: false,
+                comments: ["//"],
+                dryRun: false,
+            },
             NullLogger,
         );
 

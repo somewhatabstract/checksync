@@ -20,8 +20,8 @@ export default async function checkSync(
     options: Options,
     log: ILog,
 ): Promise<ErrorCode> {
-    const {globs, autoFix} = options;
-    const files = await getFiles(globs);
+    const {includeGlobs, excludeGlobs, autoFix} = options;
+    const files = await getFiles(includeGlobs, excludeGlobs);
 
     if (files.length === 0) {
         log.error("No matching files");

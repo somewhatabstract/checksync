@@ -132,8 +132,10 @@ export type normalizePathFn = (
 };
 
 export type Options = {
-    globs: Array<string>,
+    includeGlobs: Array<string>,
+    excludeGlobs: Array<string>,
     autoFix: boolean,
     comments: Array<string>,
+    dryRun: boolean,
     rootMarker?: ?string,
 };

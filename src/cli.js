@@ -6,6 +6,15 @@ import chalk from "chalk";
 import minimist from "minimist";
 import checkSync from "./check-sync.js";
 import Logger from "./logger.js";
+import ErrorCodes from "./error-codes.js";
+
+export const defaultArgs = {
+    "update-tags": false,
+    comments: "//,#",
+    ignore: "",
+    help: false,
+    "dry-run": false,
+};
 
 /**
  * Run the command line.
@@ -16,24 +25,21 @@ export const run = (launchFilePath: string): void => {
     chalk.level = 3;
     chalk.enabled = true;
 
-    // TODO(somewhatabstract): Implement ability to provide ignore paths.
     // TODO(somewhatabstract): Implement help
-    // TODO(somewhatabstract): Implement auto-verify after update and use no-verify option to skip that
-    // completing them.
+    // TODO(somewhatabstract): Implement fix dry-run
     const args = minimist(process.argv, {
-        boolean: ["update-tags", "no-verify", "help"],
+        boolean: ["update-tags", "dry-run", "help"],
         string: ["comments", "root-marker", "ignore"],
         default: {
-            "update-tags": false,
-            comments: "//,#",
+            ...defaultArgs,
         },
         alias: {
             comments: ["c"],
             help: ["h"],
             ignore: ["i"],
-            "no-verify": ["n", "noVerify"],
-            "root-marker": ["r", "rootMarker"],
-            "update-tags": ["u", "updateTags"],
+            "dry-run": ["n"],
+            "root-marker": ["r"],
+            "update-tags": ["u"],
         },
         unknown: arg => {
             // Filter out the node process.
@@ -45,18 +51,29 @@ export const run = (launchFilePath: string): void => {
             return true;
         },
     });
-    const comments = ((args.comments: any): string).split(",");
+
+    if (args.help) {
+        // TODO: Output help and quit.
+        process.exit(ErrorCodes.SUCCESS);
+    }
+
+    const comments = ((args.comments: any): string).split(",").filter(c => !!c);
+    const excludeGlobs = ((args.ignore: any): string)
+        .split(",")
+        .filter(c => !!c);
 
     // Make sure we have something to search, so default to current working
     // directory if no globs are given.
-    const globs = args._ && args._.length > 0 ? args._ : [process.cwd()];
+    const includeGlobs = args._ && args._.length > 0 ? args._ : [process.cwd()];
 
     checkSync(
         {
-            globs,
-            autoFix: args.updateTags === true,
+            includeGlobs,
+            excludeGlobs,
+            autoFix: args["update-tags"] === true,
             comments,
-            rootMarker: (args.rootMarker: any),
+            rootMarker: (args["root-marker"]: any),
+            dryRun: args["dry-run"] === true,
         },
         new Logger(console),
     ).then(exitCode => process.exit(exitCode));

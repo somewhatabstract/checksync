@@ -22,10 +22,12 @@ describe("#fromFiles", () => {
             .spyOn(ParseFile, "default")
             .mockReturnValue(Promise.resolve());
         const options: Options = {
-            globs: ["a.js", "b.js"],
+            includeGlobs: ["a.js", "b.js"],
             comments: ["//"],
             autoFix: true,
             rootMarker: null,
+            dryRun: false,
+            excludeGlobs: [],
         };
 
         // Act
@@ -68,10 +70,12 @@ describe("#fromFiles", () => {
             .spyOn(Ancesdir, "default")
             .mockReturnValue("file.dirname");
         const options: Options = {
-            globs: ["a.js", "b.js"],
+            includeGlobs: ["a.js", "b.js"],
             comments: ["//"],
             autoFix: true,
             rootMarker: null,
+            dryRun: false,
+            excludeGlobs: [],
         };
 
         // Act
@@ -104,10 +108,12 @@ describe("#fromFiles", () => {
         jest.spyOn(path, "join").mockImplementation((a, b) => b);
         jest.spyOn(path, "normalize").mockImplementation(b => b);
         const options: Options = {
-            globs: ["a.js", "b.js"],
+            includeGlobs: ["a.js", "b.js"],
             comments: ["//"],
             autoFix: true,
             rootMarker: null,
+            dryRun: false,
+            excludeGlobs: [],
         };
 
         // Act
@@ -147,10 +153,12 @@ describe("#fromFiles", () => {
                 }),
         );
         const options: Options = {
-            globs: ["a.js", "b.js"],
+            includeGlobs: ["a.js", "b.js"],
             comments: ["//"],
             autoFix: true,
             rootMarker: null,
+            dryRun: false,
+            excludeGlobs: [],
         };
 
         // Act
@@ -189,10 +197,12 @@ describe("#fromFiles", () => {
         jest.spyOn(path, "join").mockImplementation((a, b) => b);
         jest.spyOn(path, "normalize").mockImplementation(b => b);
         const options: Options = {
-            globs: ["a.js", "b.js"],
+            includeGlobs: ["a.js", "b.js"],
             comments: ["//"],
             autoFix: true,
             rootMarker: null,
+            dryRun: false,
+            excludeGlobs: [],
         };
 
         // Act
@@ -226,10 +236,12 @@ describe("#fromFiles", () => {
         jest.spyOn(path, "join").mockImplementation((a, b) => b);
         jest.spyOn(path, "normalize").mockImplementation(b => b);
         const options: Options = {
-            globs: ["a.js", "b.js"],
+            includeGlobs: ["a.js", "b.js"],
             comments: ["//"],
             autoFix: true,
             rootMarker: null,
+            dryRun: false,
+            excludeGlobs: [],
         };
 
         // Act

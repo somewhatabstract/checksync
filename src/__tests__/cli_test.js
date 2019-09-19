@@ -1,7 +1,7 @@
 // @flow
 import * as minimist from "minimist";
 
-import {run} from "../cli.js";
+import {run, defaultArgs} from "../cli.js";
 import * as CheckSync from "../check-sync.js";
 
 jest.mock("minimist");
@@ -10,6 +10,7 @@ describe("#run", () => {
     it("should parse args", () => {
         // Arrange
         const fakeParsedArgs = {
+            ...defaultArgs,
             fix: false,
             comments: "//,#",
         };
@@ -31,7 +32,8 @@ describe("#run", () => {
     it("should invoke checkSync with parsed args", () => {
         // Arrange
         const fakeParsedArgs = {
-            updateTags: true,
+            ...defaultArgs,
+            "update-tags": true,
             comments: "COMMENT1,COMMENT2",
             _: ["globs", "and globs"],
         };
@@ -46,7 +48,9 @@ describe("#run", () => {
         // Arrange
         expect(checkSyncSpy).toHaveBeenCalledWith(
             {
-                globs: fakeParsedArgs._,
+                includeGlobs: fakeParsedArgs._,
+                excludeGlobs: [],
+                dryRun: false,
                 autoFix: true,
                 comments: ["COMMENT1", "COMMENT2"],
             },
@@ -58,6 +62,7 @@ describe("#run", () => {
         it("should return false for process.execPath", () => {
             // Arrange
             const fakeParsedArgs = {
+                ...defaultArgs,
                 fix: false,
                 comments: "//,#",
             };
@@ -78,6 +83,7 @@ describe("#run", () => {
         it("should return false for the given launchfile path", () => {
             // Arrange
             const fakeParsedArgs = {
+                ...defaultArgs,
                 fix: false,
                 comments: "//,#",
             };
@@ -98,6 +104,7 @@ describe("#run", () => {
         it("should return false for .bin command", () => {
             // Arrange
             const fakeParsedArgs = {
+                ...defaultArgs,
                 fix: false,
                 comments: "//,#",
             };
@@ -118,6 +125,7 @@ describe("#run", () => {
         it("should return true for other things", () => {
             // Arrange
             const fakeParsedArgs = {
+                ...defaultArgs,
                 fix: false,
                 comments: "//,#",
             };
@@ -138,6 +146,7 @@ describe("#run", () => {
         it("should exit process with given exit code", () => {
             // Arrange
             const fakeParsedArgs = {
+                ...defaultArgs,
                 fix: false,
                 comments: "//,#",
             };

@@ -12,9 +12,11 @@ describe("Integration Tests", () => {
         // Act
         await checkSync(
             {
-                globs: [path.join(__dirname, "../../__examples__")],
+                includeGlobs: [path.join(__dirname, "../../__examples__")],
                 autoFix: false,
                 comments: ["//", "#"],
+                dryRun: false,
+                excludeGlobs: ["**/excluded/**"],
             },
             stringLogger,
         );
@@ -31,9 +33,11 @@ describe("Integration Tests", () => {
         // Act
         await checkSync(
             {
-                globs: [path.join(__dirname, "../../__examples__")],
+                includeGlobs: [path.join(__dirname, "../../__examples__")],
                 autoFix: true,
                 comments: ["//", "#"],
+                dryRun: true,
+                excludeGlobs: ["**/excluded/**"],
             },
             stringLogger,
         );

@@ -121,7 +121,6 @@ describe("#validateAndFix", () => {
         // Act
         const promise = validateAndFix("filea", null, {}, NullLogger);
         readLineFromFile("BROKEN_DECLARATION");
-        // TODO: Log a broken line!
         fakeWriteStream.once.mock.calls[0][1]();
         await promise;
 
@@ -172,7 +171,6 @@ describe("#validateAndFix", () => {
         // Act
         const promise = validateAndFix("filea", null, {}, NullLogger);
         readLineFromFile("REGULAR_LINE");
-        // TODO: Log a broken line!
         fakeWriteStream.once.mock.calls[0][1]();
         await promise;
 
@@ -221,7 +219,6 @@ describe("#validateAndFix", () => {
         // Act
         const promise = validateAndFix("filea", null, {}, NullLogger);
         readLineFromFile("BROKEN_DECLARATION");
-        // TODO: Log a broken line!
         fakeWriteStream.once.mock.calls[0][1]();
         await promise;
 

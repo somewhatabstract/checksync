@@ -72,10 +72,12 @@ describe("#processCache", () => {
                 .spyOn(ValidateAndReport, "default")
                 .mockReturnValue(Promise.resolve(true));
             const options: Options = {
-                globs: [],
+                includeGlobs: [],
                 comments: [],
                 autoFix: false,
                 rootMarker: null,
+                dryRun: false,
+                excludeGlobs: [],
             };
 
             // Act
@@ -103,10 +105,12 @@ describe("#processCache", () => {
                 Promise.resolve(true),
             );
             const options: Options = {
-                globs: [],
+                includeGlobs: [],
                 comments: [],
                 autoFix: false,
                 rootMarker: null,
+                dryRun: false,
+                excludeGlobs: [],
             };
 
             // Act
@@ -123,10 +127,12 @@ describe("#processCache", () => {
                 Promise.resolve(false),
             );
             const options: Options = {
-                globs: [],
+                includeGlobs: [],
                 comments: [],
                 autoFix: false,
                 rootMarker: "marker",
+                dryRun: false,
+                excludeGlobs: [],
             };
 
             // Act
@@ -145,9 +151,11 @@ describe("#processCache", () => {
                 Promise.resolve(false),
             );
             const options: Options = {
-                globs: ["filea", "fileb"],
+                includeGlobs: ["filea", "fileb"],
                 comments: ["//"],
                 autoFix: false,
+                dryRun: false,
+                excludeGlobs: [],
             };
 
             // Act
@@ -171,9 +179,11 @@ describe("#processCache", () => {
                 Promise.resolve(false),
             );
             const options: Options = {
-                globs: ["filea", "fileb"],
+                includeGlobs: ["filea", "fileb"],
                 comments: ["//"],
                 autoFix: false,
+                dryRun: false,
+                excludeGlobs: [],
             };
 
             // Act
@@ -198,10 +208,12 @@ describe("#processCache", () => {
                 .spyOn(ValidateAndFix, "default")
                 .mockReturnValue(Promise.resolve(true));
             const options: Options = {
-                globs: ["filea", "fileb"],
+                includeGlobs: ["filea", "fileb"],
                 comments: ["//"],
                 autoFix: true,
                 rootMarker: null,
+                dryRun: false,
+                excludeGlobs: [],
             };
 
             // Act
@@ -229,10 +241,12 @@ describe("#processCache", () => {
                 Promise.resolve(true),
             );
             const options: Options = {
-                globs: ["filea", "fileb"],
+                includeGlobs: ["filea", "fileb"],
                 comments: ["//"],
                 autoFix: true,
                 rootMarker: null,
+                dryRun: false,
+                excludeGlobs: [],
             };
 
             // Act
@@ -249,10 +263,12 @@ describe("#processCache", () => {
                 Promise.resolve(false),
             );
             const options: Options = {
-                globs: ["filea", "fileb"],
+                includeGlobs: ["filea", "fileb"],
                 comments: ["//"],
                 autoFix: true,
                 rootMarker: "marker",
+                dryRun: false,
+                excludeGlobs: [],
             };
 
             // Act
@@ -271,10 +287,12 @@ describe("#processCache", () => {
         );
         const logSpy = jest.spyOn(NullLogger, "error");
         const options: Options = {
-            globs: ["filea", "fileb"],
+            includeGlobs: ["filea", "fileb"],
             comments: ["//"],
             autoFix: true,
             rootMarker: "marker",
+            dryRun: false,
+            excludeGlobs: [],
         };
 
         // Act
@@ -297,10 +315,12 @@ describe("#processCache", () => {
         );
         const logSpy = jest.spyOn(NullLogger, "log");
         const options: Options = {
-            globs: ["filea", "fileb"],
+            includeGlobs: ["filea", "fileb"],
             comments: ["//"],
             autoFix: true,
             rootMarker: null,
+            dryRun: false,
+            excludeGlobs: [],
         };
 
         // Act
