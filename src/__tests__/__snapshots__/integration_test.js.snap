@@ -52,6 +52,6 @@ exports[`Integration Tests should report __examples__ violations: __examples__ 1
  ERROR  __examples__/unterminated_marker/example_two-b.py does not contain a tag named 'example_two' that points to '__examples__/unterminated_marker/example_two-a.js'
 
 <group>🛑  Desynchronized blocks detected and parsing errors found. Fix the errors, update the blocks, then update the sync-start tags using:
-  checksync -c \\"//,#\\" -u __examples__/checksums_need_updating/a.js __examples__/checksums_need_updating/b.py __examples__/content_after_start/a.js __examples__/content_after_start/b.py __examples__/content_after_start/c.js __examples__/no_checksums/example_one-a.js __examples__/no_checksums/example_one-b.py __examples__/no_self_reference/example.js
+  checksync -u __examples__/checksums_need_updating/a.js __examples__/checksums_need_updating/b.py __examples__/content_after_start/a.js __examples__/content_after_start/b.py __examples__/content_after_start/c.js __examples__/no_checksums/example_one-a.js __examples__/no_checksums/example_one-b.py __examples__/no_self_reference/example.js
 <end_group>"
 `;

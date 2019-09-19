@@ -11,7 +11,7 @@ import logHelp from "./help.js";
 
 export const defaultArgs = {
     "update-tags": false,
-    comments: "//,#",
+    comments: `${["#,//"].sort().join(",")}`,
     ignore: "",
     help: false,
     "dry-run": false,

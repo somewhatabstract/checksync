@@ -329,6 +329,29 @@ describe("#processCache", () => {
                 `checksync -c "//" -u filea fileb`,
             );
         });
+
+        it("should exclude comment arg from fix suggestion if it matches default", async () => {
+            // Arrange
+            const NullLogger = new Logger();
+            const logSpy = jest.spyOn(NullLogger, "log");
+            jest.spyOn(ValidateAndFix, "default").mockReturnValue(
+                Promise.resolve(false),
+            );
+            const options: Options = {
+                includeGlobs: ["filea", "fileb"],
+                comments: ["//", "#"],
+                autoFix: true,
+                rootMarker: "marker",
+                dryRun: true,
+                excludeGlobs: [],
+            };
+
+            // Act
+            await processCache(options, TestCache, NullLogger);
+
+            // Assert
+            expect(logSpy).toHaveBeenCalledWith(`checksync -u filea fileb`);
+        });
     });
 
     it("should log error if file validator errors", async () => {

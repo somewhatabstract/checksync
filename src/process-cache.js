@@ -5,6 +5,8 @@ import Format from "./format.js";
 import validateAndFix from "./validate-and-fix.js";
 import validateAndReport from "./validate-and-report.js";
 
+import {defaultArgs} from "./cli.js";
+
 import type {ErrorCode} from "./error-codes.js";
 import type {MarkerCache, ILog, Options} from "./types";
 
@@ -32,11 +34,15 @@ export default async function processCache(
 
     if (violationFileNames.length > 0) {
         const outputRerunCommand = () => {
-            const commentsArg = options.comments.join(",");
+            const commentsArg = options.comments.sort().join(",");
             const fileNamesArgs = violationFileNames
                 .map(cwdRelativePath)
                 .join(" ");
-            log.log(`checksync -c "${commentsArg}" -u ${fileNamesArgs}`);
+            if (commentsArg === defaultArgs.comments) {
+                log.log(`checksync -u ${fileNamesArgs}`);
+            } else {
+                log.log(`checksync -c "${commentsArg}" -u ${fileNamesArgs}`);
+            }
         };
 
         if (autoFix) {
