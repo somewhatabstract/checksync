@@ -6,7 +6,7 @@ import ErrorCodes from "../error-codes.js";
 import * as ValidateAndReport from "../validate-and-report.js";
 import * as ValidateAndFix from "../validate-and-fix.js";
 
-import type {MarkerCache, Marker, Target} from "../types.js";
+import type {MarkerCache, Marker, Target, Options} from "../types.js";
 
 describe("#processCache", () => {
     const TestCache: MarkerCache = {
@@ -71,9 +71,15 @@ describe("#processCache", () => {
             const spy = jest
                 .spyOn(ValidateAndReport, "default")
                 .mockReturnValue(Promise.resolve(true));
+            const options: Options = {
+                globs: [],
+                comments: [],
+                autoFix: false,
+                rootMarker: null,
+            };
 
             // Act
-            await processCache(null, TestCache, false, NullLogger);
+            await processCache(options, TestCache, NullLogger);
 
             // Assert
             expect(spy).toHaveBeenCalledWith(
@@ -96,14 +102,15 @@ describe("#processCache", () => {
             jest.spyOn(ValidateAndReport, "default").mockReturnValue(
                 Promise.resolve(true),
             );
+            const options: Options = {
+                globs: [],
+                comments: [],
+                autoFix: false,
+                rootMarker: null,
+            };
 
             // Act
-            const result = await processCache(
-                null,
-                TestCache,
-                false,
-                NullLogger,
-            );
+            const result = await processCache(options, TestCache, NullLogger);
 
             // Assert
             expect(result).toBe(ErrorCodes.SUCCESS);
@@ -115,14 +122,15 @@ describe("#processCache", () => {
             jest.spyOn(ValidateAndReport, "default").mockReturnValue(
                 Promise.resolve(false),
             );
+            const options: Options = {
+                globs: [],
+                comments: [],
+                autoFix: false,
+                rootMarker: "marker",
+            };
 
             // Act
-            const result = await processCache(
-                "marker",
-                TestCache,
-                false,
-                NullLogger,
-            );
+            const result = await processCache(options, TestCache, NullLogger);
 
             // Assert
             expect(result).toBe(ErrorCodes.DESYNCHRONIZED_BLOCKS);
@@ -136,15 +144,22 @@ describe("#processCache", () => {
             jest.spyOn(ValidateAndReport, "default").mockReturnValue(
                 Promise.resolve(false),
             );
+            const options: Options = {
+                globs: ["filea", "fileb"],
+                comments: ["//"],
+                autoFix: false,
+            };
 
             // Act
-            await processCache("marker", TestCache, false, NullLogger);
+            await processCache(options, TestCache, NullLogger);
 
             // Assert
             expect(groupSpy).toHaveBeenCalledWith(
                 "🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing:",
             );
-            expect(logSpy).toHaveBeenCalledWith("checksync -u filea fileb");
+            expect(logSpy).toHaveBeenCalledWith(
+                `checksync -c "//" -u filea fileb`,
+            );
         });
 
         it("should output guidance if syntax errors and blocks mismatch", async () => {
@@ -155,16 +170,23 @@ describe("#processCache", () => {
             jest.spyOn(ValidateAndReport, "default").mockReturnValue(
                 Promise.resolve(false),
             );
+            const options: Options = {
+                globs: ["filea", "fileb"],
+                comments: ["//"],
+                autoFix: false,
+            };
 
             // Act
             NullLogger.error("This was an error during parsing!");
-            await processCache(null, TestCache, false, NullLogger);
+            await processCache(options, TestCache, NullLogger);
 
             // Assert
             expect(groupSpy).toHaveBeenCalledWith(
                 "🛑  Desynchronized blocks detected and parsing errors found. Fix the errors, update the blocks, then update the sync-start tags using:",
             );
-            expect(logSpy).toHaveBeenCalledWith("checksync -u filea fileb");
+            expect(logSpy).toHaveBeenCalledWith(
+                `checksync -c "//" -u filea fileb`,
+            );
         });
     });
 
@@ -175,9 +197,15 @@ describe("#processCache", () => {
             const spy = jest
                 .spyOn(ValidateAndFix, "default")
                 .mockReturnValue(Promise.resolve(true));
+            const options: Options = {
+                globs: ["filea", "fileb"],
+                comments: ["//"],
+                autoFix: true,
+                rootMarker: null,
+            };
 
             // Act
-            await processCache(null, TestCache, true, NullLogger);
+            await processCache(options, TestCache, NullLogger);
 
             // Assert
             expect(spy).toHaveBeenCalledWith(
@@ -200,14 +228,15 @@ describe("#processCache", () => {
             jest.spyOn(ValidateAndFix, "default").mockReturnValue(
                 Promise.resolve(true),
             );
+            const options: Options = {
+                globs: ["filea", "fileb"],
+                comments: ["//"],
+                autoFix: true,
+                rootMarker: null,
+            };
 
             // Act
-            const result = await processCache(
-                null,
-                TestCache,
-                true,
-                NullLogger,
-            );
+            const result = await processCache(options, TestCache, NullLogger);
 
             // Assert
             expect(result).toBe(ErrorCodes.SUCCESS);
@@ -219,14 +248,15 @@ describe("#processCache", () => {
             jest.spyOn(ValidateAndFix, "default").mockReturnValue(
                 Promise.resolve(false),
             );
+            const options: Options = {
+                globs: ["filea", "fileb"],
+                comments: ["//"],
+                autoFix: true,
+                rootMarker: "marker",
+            };
 
             // Act
-            const result = await processCache(
-                "marker",
-                TestCache,
-                true,
-                NullLogger,
-            );
+            const result = await processCache(options, TestCache, NullLogger);
 
             // Assert
             expect(result).toBe(ErrorCodes.SUCCESS);
@@ -240,9 +270,15 @@ describe("#processCache", () => {
             Promise.reject(new Error("Oh no!")),
         );
         const logSpy = jest.spyOn(NullLogger, "error");
+        const options: Options = {
+            globs: ["filea", "fileb"],
+            comments: ["//"],
+            autoFix: true,
+            rootMarker: "marker",
+        };
 
         // Act
-        await processCache("marker", TestCache, true, NullLogger);
+        await processCache(options, TestCache, NullLogger);
 
         // Assert
         expect(logSpy).toHaveBeenCalledWith(
@@ -260,14 +296,15 @@ describe("#processCache", () => {
             Promise.reject(new Error("Oh no!")),
         );
         const logSpy = jest.spyOn(NullLogger, "log");
+        const options: Options = {
+            globs: ["filea", "fileb"],
+            comments: ["//"],
+            autoFix: true,
+            rootMarker: null,
+        };
 
         // Act
-        const result = await processCache(
-            "marker",
-            TestCache,
-            true,
-            NullLogger,
-        );
+        const result = await processCache(options, TestCache, NullLogger);
 
         // Assert
         expect(result).toBe(ErrorCodes.PARSE_ERRORS);

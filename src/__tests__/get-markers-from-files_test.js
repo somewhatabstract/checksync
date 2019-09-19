@@ -6,6 +6,8 @@ import * as ParseFile from "../parse-file.js";
 import Logger from "../logger.js";
 import * as Ancesdir from "ancesdir";
 
+import type {Options} from "../types.js";
+
 jest.mock("../parse-file.js");
 jest.mock("path");
 jest.mock("fs");
@@ -19,9 +21,15 @@ describe("#fromFiles", () => {
         const parseSpy = jest
             .spyOn(ParseFile, "default")
             .mockReturnValue(Promise.resolve());
+        const options: Options = {
+            globs: ["a.js", "b.js"],
+            comments: ["//"],
+            autoFix: true,
+            rootMarker: null,
+        };
 
         // Act
-        await getMarkersFromFiles(null, ["a.js", "b.js"], ["//"], NullLogger);
+        await getMarkersFromFiles(options, ["a.js", "b.js"], NullLogger);
 
         // Assert
         expect(parseSpy).toHaveBeenCalledWith(
@@ -59,9 +67,15 @@ describe("#fromFiles", () => {
         const ancesdirSpy = jest
             .spyOn(Ancesdir, "default")
             .mockReturnValue("file.dirname");
+        const options: Options = {
+            globs: ["a.js", "b.js"],
+            comments: ["//"],
+            autoFix: true,
+            rootMarker: null,
+        };
 
         // Act
-        await getMarkersFromFiles(null, ["a.js"], ["//"], NullLogger);
+        await getMarkersFromFiles(options, ["a.js"], NullLogger);
 
         // Assert
         expect(parseSpy).toHaveBeenCalledWith(
@@ -89,9 +103,15 @@ describe("#fromFiles", () => {
         jest.spyOn(fs, "lstatSync").mockReturnValue({isFile: () => true});
         jest.spyOn(path, "join").mockImplementation((a, b) => b);
         jest.spyOn(path, "normalize").mockImplementation(b => b);
+        const options: Options = {
+            globs: ["a.js", "b.js"],
+            comments: ["//"],
+            autoFix: true,
+            rootMarker: null,
+        };
 
         // Act
-        await getMarkersFromFiles(null, ["a.js", "b.js"], ["//"], NullLogger);
+        await getMarkersFromFiles(options, ["a.js", "b.js"], NullLogger);
 
         // Assert
         expect(parseSpy).toHaveBeenCalledTimes(3);
@@ -126,12 +146,17 @@ describe("#fromFiles", () => {
                     fixable,
                 }),
         );
+        const options: Options = {
+            globs: ["a.js", "b.js"],
+            comments: ["//"],
+            autoFix: true,
+            rootMarker: null,
+        };
 
         // Act
         const result = await getMarkersFromFiles(
-            null,
+            options,
             ["a.js", "b.js"],
-            ["//"],
             NullLogger,
         );
 
@@ -163,12 +188,17 @@ describe("#fromFiles", () => {
         jest.spyOn(fs, "lstatSync").mockReturnValue({isFile: () => true});
         jest.spyOn(path, "join").mockImplementation((a, b) => b);
         jest.spyOn(path, "normalize").mockImplementation(b => b);
+        const options: Options = {
+            globs: ["a.js", "b.js"],
+            comments: ["//"],
+            autoFix: true,
+            rootMarker: null,
+        };
 
         // Act
         const result = await getMarkersFromFiles(
-            "marker",
+            options,
             ["a.js", "b.js"],
-            ["//"],
             NullLogger,
         );
 
@@ -195,9 +225,15 @@ describe("#fromFiles", () => {
         jest.spyOn(fs, "lstatSync").mockReturnValue({isFile: () => true});
         jest.spyOn(path, "join").mockImplementation((a, b) => b);
         jest.spyOn(path, "normalize").mockImplementation(b => b);
+        const options: Options = {
+            globs: ["a.js", "b.js"],
+            comments: ["//"],
+            autoFix: true,
+            rootMarker: null,
+        };
 
         // Act
-        await getMarkersFromFiles(null, ["a.js", "b.js"], ["//"], NullLogger);
+        await getMarkersFromFiles(options, ["a.js", "b.js"], NullLogger);
 
         // Assert
         expect(parseSpy).toHaveBeenCalledTimes(2);

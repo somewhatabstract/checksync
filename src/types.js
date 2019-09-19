@@ -131,7 +131,7 @@ export type normalizePathFn = (
     exists: boolean,
 };
 
-export type CheckSyncOptions = {
+export type Options = {
     globs: Array<string>,
     autoFix: boolean,
     comments: Array<string>,

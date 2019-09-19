@@ -6,19 +6,19 @@ import validateAndFix from "./validate-and-fix.js";
 import validateAndReport from "./validate-and-report.js";
 
 import type {ErrorCode} from "./error-codes.js";
-import type {MarkerCache, ILog} from "./types";
+import type {MarkerCache, ILog, Options} from "./types";
 
 export default async function processCache(
-    rootMarker: ?string,
+    options: Options,
     cache: MarkerCache,
-    autoFix: boolean,
     log: ILog,
 ): Promise<ErrorCode> {
+    const {autoFix} = options;
     const violationFileNames: Array<string> = [];
     const fileValidator = autoFix ? validateAndFix : validateAndReport;
     for (const file of Object.keys(cache)) {
         try {
-            if (!(await fileValidator(file, rootMarker, cache, log))) {
+            if (!(await fileValidator(file, options.rootMarker, cache, log))) {
                 violationFileNames.push(file);
             }
         } catch (e) {
@@ -42,12 +42,11 @@ export default async function processCache(
                 ? "🛑  Desynchronized blocks detected and parsing errors found. Fix the errors, update the blocks, then update the sync-start tags using:"
                 : "🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing:";
             log.group(`${errorMsg}`);
-            // TODO(somewhatabstract): Add the `--comments` arg to this call?
-            log.log(
-                `checksync -u ${violationFileNames
-                    .map(cwdRelativePath)
-                    .join(" ")}`,
-            );
+            const commentsArg = options.comments.join(",");
+            const fileNamesArgs = violationFileNames
+                .map(cwdRelativePath)
+                .join(" ");
+            log.log(`checksync -c "${commentsArg}" -u ${fileNamesArgs}`);
             log.groupEnd();
             return ErrorCodes.DESYNCHRONIZED_BLOCKS;
         }
