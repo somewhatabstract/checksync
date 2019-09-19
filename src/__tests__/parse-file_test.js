@@ -1,6 +1,6 @@
 // @flow
 import fs from "fs";
-import {Readable} from "stream";
+import readline from "readline";
 
 import * as MarkerParser from "../marker-parser.js";
 import * as FileReferenceLogger from "../file-reference-logger.js";
@@ -8,26 +8,18 @@ import * as FileReferenceLogger from "../file-reference-logger.js";
 import Logger from "../logger.js";
 import parseFile from "../parse-file.js";
 
-describe("#parseFile", () => {
-    /**
-     * Helper to create a fake file stream and set that as the mock response for
-     * `fs.createReadStream`.
-     */
-    const mockFakeFile = () => {
-        const fakeFile = new Readable();
-        /**
-         * This noop is needed or we can get an error output:
-         *   https://stackoverflow.com/a/22085851
-         * $FlowFixMe
-         */
-        fakeFile._read = () => {};
-        jest.spyOn(fs, "createReadStream").mockImplementationOnce(
-            () => fakeFile,
+const invokeEvent = (mocked: $Call<typeof jest.fn>, event: string, ...args) => {
+    const eventHandlerCall = mocked.mock.calls.find(call => call[0] === event);
+    if (eventHandlerCall == null) {
+        throw new Error(
+            "Event handler not found on our fake readline interface",
         );
-        return fakeFile;
-    };
+    }
+    eventHandlerCall[1](...args);
+};
 
-    const setupMarkerParser = () => {
+describe("#parseFile", () => {
+    const setupMarkerParser = function() {
         const mockParser = {
             reportUnterminatedMarkers: jest.fn(),
             parseLine: jest.fn(),
@@ -38,7 +30,7 @@ describe("#parseFile", () => {
         return mockParser;
     };
 
-    const setupFileReferenceLogger = () => {
+    const setupFileReferenceLogger = function() {
         const mockFileReferenceLogger = {
             error: jest.fn(),
         };
@@ -50,15 +42,22 @@ describe("#parseFile", () => {
 
     it("should create scoped logger for file", async () => {
         // Arrange
-        const NullLogger = new Logger();
-        const fakeFile = mockFakeFile();
-        fakeFile.push(null);
         setupMarkerParser();
         setupFileReferenceLogger();
+        const NullLogger = new Logger();
+        const fakeInterface = {on: jest.fn()};
+        fakeInterface.on.mockReturnValue(fakeInterface);
+        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
+        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
+            fakeInterface,
+        );
+        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
         const fileRefLoggerSpy = jest.spyOn(FileReferenceLogger, "default");
 
         // Act
-        await parseFile("file.js", true, [], NullLogger);
+        const promise = parseFile("file.js", true, [], NullLogger);
+        finishReadingFile();
+        await promise;
 
         // Assert
         expect(fileRefLoggerSpy).toHaveBeenCalledWith(
@@ -89,11 +88,18 @@ describe("#parseFile", () => {
         const NullLogger = new Logger();
         setupMarkerParser();
         const logger = setupFileReferenceLogger();
-        const fakeFile = mockFakeFile();
-        fakeFile.push(null);
+        const fakeInterface = {on: jest.fn()};
+        fakeInterface.on.mockReturnValue(fakeInterface);
+        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
+        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
+            fakeInterface,
+        );
+        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
 
         // Act
-        const result = await parseFile("file.js", true, [], NullLogger);
+        const promise = parseFile("file.js", true, [], NullLogger);
+        finishReadingFile();
+        const result = await promise;
 
         // Assert
         expect(result).toBeNull();
@@ -120,13 +126,22 @@ describe("#parseFile", () => {
         // Arrange
         const NullLogger = new Logger();
         const mockMarkerParser = setupMarkerParser();
-        const fakeFile = mockFakeFile();
-        fakeFile.push("Line1\n");
-        fakeFile.push("Line2\n");
-        fakeFile.push(null); // <- End of file
+        const fakeInterface = {on: jest.fn()};
+        fakeInterface.on.mockReturnValue(fakeInterface);
+        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
+        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
+            fakeInterface,
+        );
+        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
+        const readLine = (line: string) =>
+            invokeEvent(fakeInterface.on, "line", line);
 
         // Act
-        await parseFile("file.js", true, [], NullLogger);
+        const promise = parseFile("file.js", true, [], NullLogger);
+        readLine("Line1");
+        readLine("Line2");
+        finishReadingFile();
+        await promise;
 
         // Assert
         expect(mockMarkerParser.parseLine).toHaveBeenCalledTimes(2);
@@ -137,8 +152,13 @@ describe("#parseFile", () => {
     it("should initialize MarkerParser with callbacks, comments, and log", async () => {
         // Arrange
         const NullLogger = new Logger();
-        const fakeFile = mockFakeFile();
-        fakeFile.push(null); // <- End of file
+        const fakeInterface = {on: jest.fn()};
+        fakeInterface.on.mockReturnValue(fakeInterface);
+        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
+        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
+            fakeInterface,
+        );
+        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
         const mockFileReferenceLogger = setupFileReferenceLogger();
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
@@ -146,13 +166,15 @@ describe("#parseFile", () => {
         const mockNormalize = jest.fn();
 
         // Act
-        await parseFile(
+        const promise = parseFile(
             "file.js",
             true,
             commentsArray,
             NullLogger,
             mockNormalize,
         );
+        finishReadingFile();
+        await promise;
 
         // Assert
         expect(markerParserSpy).toHaveBeenCalledWith(
@@ -166,14 +188,23 @@ describe("#parseFile", () => {
     it("should give normalize to null marker to MarkerParser if no normalize function given", async () => {
         // Arrange
         const NullLogger = new Logger();
-        const fakeFile = mockFakeFile();
-        fakeFile.push(null); // <- End of file
+        const fakeInterface = {on: jest.fn()};
+        fakeInterface.on.mockReturnValue(fakeInterface);
+        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
+        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
+            fakeInterface,
+        );
+        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
+        setupFileReferenceLogger();
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
+        setupMarkerParser();
         const commentsArray = ["COMMENT1", "COMMENT2"];
-        parseFile("file.js", true, commentsArray, NullLogger);
-        const normalizeFunc = markerParserSpy.mock.calls[0][0];
 
         // Act
+        const promise = parseFile("file.js", true, commentsArray, NullLogger);
+        finishReadingFile();
+        const normalizeFunc = markerParserSpy.mock.calls[0][0];
+        await promise;
         const result = normalizeFunc("afilename");
 
         // Assert
@@ -183,17 +214,25 @@ describe("#parseFile", () => {
     it("should log error if marker targets containing file", async () => {
         // Arrange
         const NullLogger = new Logger();
-        mockFakeFile();
+        const fakeInterface = {on: jest.fn()};
+        fakeInterface.on.mockReturnValue(fakeInterface);
+        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
+        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
+            fakeInterface,
+        );
+        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
         const mockFileReferenceLogger = setupFileReferenceLogger();
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
-        parseFile("file.js", true, [], NullLogger);
-        const addMarkerCb = markerParserSpy.mock.calls[0][1];
 
         // Act
+        const promise = parseFile("file.js", true, [], NullLogger);
+        const addMarkerCb = markerParserSpy.mock.calls[0][1];
         addMarkerCb("MARKER_ID1", "ID1_CHECKSUM", {
             LINE_NUMBER1: {file: "file.js", checksum: "TARGET_CHECKSUM1"},
         });
+        finishReadingFile();
+        await promise;
 
         // Assert
         expect(mockFileReferenceLogger.error).toHaveBeenCalledWith(
@@ -208,7 +247,13 @@ describe("#parseFile", () => {
         setupFileReferenceLogger();
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
-        const fakeFile = mockFakeFile();
+        const fakeInterface = {on: jest.fn()};
+        fakeInterface.on.mockReturnValue(fakeInterface);
+        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
+        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
+            fakeInterface,
+        );
+        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
         const promise = parseFile("file.js", true, [], NullLogger);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
 
@@ -216,7 +261,10 @@ describe("#parseFile", () => {
         addMarkerCb("MARKER_ID1", "ID1_CHECKSUM", {
             LINE_NUMBER1: {file: "TARGET_FILE1", checksum: "TARGET_CHECKSUM1"},
         });
-        fakeFile.push(null); // <- End of file
+        addMarkerCb("MARKER_ID2", "ID2_CHECKSUM", {
+            LINE_NUMBER2: {file: "TARGET_FILE2", checksum: "TARGET_CHECKSUM2"},
+        });
+        finishReadingFile();
         const result = await promise;
 
         // Assert
@@ -231,6 +279,16 @@ describe("#parseFile", () => {
                     },
                 },
             },
+            MARKER_ID2: {
+                fixable: true,
+                checksum: "ID2_CHECKSUM",
+                targets: {
+                    LINE_NUMBER2: {
+                        file: "TARGET_FILE2",
+                        checksum: "TARGET_CHECKSUM2",
+                    },
+                },
+            },
         });
     });
 
@@ -239,7 +297,13 @@ describe("#parseFile", () => {
         const NullLogger = new Logger();
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
-        const fakeFile = mockFakeFile();
+        const fakeInterface = {on: jest.fn()};
+        fakeInterface.on.mockReturnValue(fakeInterface);
+        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
+        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
+            fakeInterface,
+        );
+        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
         const mockFileReferenceLogger = setupFileReferenceLogger();
         const promise = parseFile("file.js", true, [], NullLogger);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
@@ -251,7 +315,7 @@ describe("#parseFile", () => {
         addMarkerCb("MARKER_ID1", "ID2_CHECKSUM", {
             LINE_NUMBER2: {file: "target.2"},
         });
-        fakeFile.push(null); // <- End of file
+        finishReadingFile();
         await promise;
 
         // Assert
@@ -266,7 +330,13 @@ describe("#parseFile", () => {
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
         const NullLogger = new Logger();
-        const fakeFile = mockFakeFile();
+        const fakeInterface = {on: jest.fn()};
+        fakeInterface.on.mockReturnValue(fakeInterface);
+        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
+        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
+            fakeInterface,
+        );
+        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
 
         // Act
         const promise = parseFile("file.js", false, [], NullLogger);
@@ -274,7 +344,7 @@ describe("#parseFile", () => {
         addMarkerCb("MARKER_ID1", "ID1_CHECKSUM", {
             LINE_NUMBER1: {file: "TARGET_FILE1", checksum: "TARGET_CHECKSUM1"},
         });
-        fakeFile.push(null); // <- End of file
+        finishReadingFile();
         const result = await promise;
 
         // Assert
