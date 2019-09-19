@@ -21,7 +21,7 @@ export default async function checkSync(
     log: ILog,
 ): Promise<ErrorCode> {
     if (options.autoFix && options.dryRun) {
-        log.info("DRY-RUN: Files will not be written");
+        log.info("DRY-RUN: Files will not be modified");
     }
     const {includeGlobs, excludeGlobs, autoFix} = options;
     const files = await getFiles(includeGlobs, excludeGlobs);

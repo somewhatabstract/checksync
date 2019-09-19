@@ -127,11 +127,12 @@ describe("#validateAndFix", () => {
         const logSpy = jest.spyOn(NullLogger, "log");
         const readLineFromFile = (line: string) =>
             invokeEvent(fakeInterface.on, "line", line);
+        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
 
         // Act
         const promise = validateAndFix(options, "filea", {}, NullLogger);
         readLineFromFile("BROKEN_DECLARATION");
-        fakeWriteStream.once.mock.calls[0][1]();
+        finishReadingFile();
         await promise;
 
         // Assert
@@ -177,11 +178,12 @@ describe("#validateAndFix", () => {
         const logSpy = jest.spyOn(NullLogger, "log");
         const readLineFromFile = (line: string) =>
             invokeEvent(fakeInterface.on, "line", line);
+        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
 
         // Act
         const promise = validateAndFix(options, "filea", {}, NullLogger);
         readLineFromFile("REGULAR_LINE");
-        fakeWriteStream.once.mock.calls[0][1]();
+        finishReadingFile();
         await promise;
 
         // Assert
@@ -225,11 +227,12 @@ describe("#validateAndFix", () => {
         ]);
         const readLineFromFile = (line: string) =>
             invokeEvent(fakeInterface.on, "line", line);
+        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
 
         // Act
         const promise = validateAndFix(options, "filea", {}, NullLogger);
         readLineFromFile("BROKEN_DECLARATION");
-        fakeWriteStream.once.mock.calls[0][1]();
+        finishReadingFile();
         await promise;
 
         // Assert
@@ -239,5 +242,58 @@ describe("#validateAndFix", () => {
         expect(fakeWriteStream.write).not.toHaveBeenCalledWith(
             "BROKEN_DECLARATION\n",
         );
+    });
+
+    it("should not write to file during dry run", async () => {
+        // Arrange
+        const NullLogger = new Logger(null);
+        const fakeWriteStream = {
+            once: jest.fn(),
+            write: jest.fn(),
+            end: jest.fn(),
+        };
+        fakeWriteStream.once.mockReturnValue(fakeWriteStream);
+        fakeWriteStream.end.mockImplementation(() => {
+            invokeEvent(fakeWriteStream.once, "close");
+        });
+        const fakeInterface = {on: jest.fn()};
+        fakeInterface.on.mockReturnValue(fakeInterface);
+
+        jest.spyOn(fs, "openSync");
+        jest.spyOn(fs, "createWriteStream").mockReturnValue(fakeWriteStream);
+        jest.spyOn(fs, "createReadStream").mockReturnValue({});
+        jest.spyOn(readline, "createInterface").mockReturnValue(fakeInterface);
+        jest.spyOn(RootRelativePath, "default").mockImplementation(
+            t => `ROOT_REL:${t}`,
+        );
+        jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([
+            ({
+                markerID: "MARKER_ID",
+                sourceComment: "//",
+                sourceChecksum: "",
+                sourceDeclaration: "BROKEN_DECLARATION",
+                sourceLine: "42",
+                targetFile: "fileb",
+                targetChecksum: "TARGET_CHECKSUM",
+                targetLine: "99",
+            }: MarkerEdge),
+        ]);
+        const readLineFromFile = (line: string) =>
+            invokeEvent(fakeInterface.on, "line", line);
+        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
+        const testOptions: Options = {
+            ...options,
+            dryRun: true,
+        };
+
+        // Act
+        const promise = validateAndFix(testOptions, "filea", {}, NullLogger);
+        readLineFromFile("BROKEN_DECLARATION");
+        finishReadingFile();
+
+        await promise;
+
+        // Assert
+        expect(fakeWriteStream.write).not.toHaveBeenCalled();
     });
 });

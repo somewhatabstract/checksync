@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Integration Tests should report __examples__ parse errors with autoFix: __examples__ autofix 1`] = `
-" INFO  DRY-RUN: Files will not be written
+" INFO  DRY-RUN: Files will not be modified
  ERROR  __examples__/content_after_start/c.js:5 Sync-start for 'content_after_start' found after content started
  ERROR  __examples__/directory_target/example.js:3 Sync-start for 'directory_target' points to '__examples__/directory_target/a_directory', which does not exist or is a directory
  WARNING  __examples__/end_with_no_start/example.js:5 Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start

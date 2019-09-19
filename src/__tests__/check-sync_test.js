@@ -15,6 +15,30 @@ jest.mock("../process-cache.js");
 jest.mock("../cwd-relative-path.js");
 
 describe("#checkSync", () => {
+    it("should log message if dry run autofix", async () => {
+        // Arrange
+        const NullLogger = new Logger();
+        const logSpy = jest.spyOn(NullLogger, "info");
+        jest.spyOn(GetFiles, "default").mockReturnValue([]);
+
+        // Act
+        await checkSync(
+            {
+                includeGlobs: ["glob1", "glob2"],
+                excludeGlobs: [],
+                dryRun: true,
+                autoFix: true,
+                comments: ["//"],
+            },
+            NullLogger,
+        );
+
+        // Assert
+        expect(logSpy).toHaveBeenCalledWith(
+            "DRY-RUN: Files will not be modified",
+        );
+    });
+
     it("should expand the globs to files", async () => {
         // Arrange
         const NullLogger = new Logger();
