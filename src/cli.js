@@ -26,7 +26,6 @@ export const run = (launchFilePath: string): void => {
     chalk.enabled = true;
 
     // TODO(somewhatabstract): Implement help
-    // TODO(somewhatabstract): Implement fix dry-run
     const args = minimist(process.argv, {
         boolean: ["update-tags", "dry-run", "help"],
         string: ["comments", "root-marker", "ignore"],
