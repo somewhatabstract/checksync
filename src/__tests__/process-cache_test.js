@@ -277,6 +277,58 @@ describe("#processCache", () => {
             // Assert
             expect(result).toBe(ErrorCodes.SUCCESS);
         });
+
+        it("should log how many files were fixed when not dry run", async () => {
+            // Arrange
+            const NullLogger = new Logger();
+            const logSpy = jest.spyOn(NullLogger, "info");
+            jest.spyOn(ValidateAndFix, "default").mockReturnValue(
+                Promise.resolve(false),
+            );
+            const options: Options = {
+                includeGlobs: ["filea", "fileb"],
+                comments: ["//"],
+                autoFix: true,
+                rootMarker: "marker",
+                dryRun: false,
+                excludeGlobs: [],
+            };
+
+            // Act
+            await processCache(options, TestCache, NullLogger);
+
+            // Assert
+            expect(logSpy).toHaveBeenCalledWith("Fixed 2 file(s)");
+        });
+
+        it("should log how many files would be fixed when dry run", async () => {
+            // Arrange
+            const NullLogger = new Logger();
+            const groupSpy = jest.spyOn(NullLogger, "group");
+            const logSpy = jest.spyOn(NullLogger, "log");
+            jest.spyOn(ValidateAndFix, "default").mockReturnValue(
+                Promise.resolve(false),
+            );
+            const options: Options = {
+                includeGlobs: ["filea", "fileb"],
+                comments: ["//"],
+                autoFix: true,
+                rootMarker: "marker",
+                dryRun: true,
+                excludeGlobs: [],
+            };
+
+            // Act
+            await processCache(options, TestCache, NullLogger);
+
+            // Assert
+            expect(groupSpy).toHaveBeenCalledWith(
+                "2 file(s) would have been fixed. To fix, run:",
+            );
+            expect(logSpy).toHaveBeenCalledWith(
+                `checksync -c "//" -u filea fileb`,
+            );
+        });
     });
 
     it("should log error if file validator errors", async () => {
