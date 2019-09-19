@@ -34,7 +34,7 @@ jobs:
       run: yarn lint
       if: matrix.coverage
     - name: Run integration tests
-      run: yarn test:integration
+      run: yarn test:integration --testTimeout=20000
     - name: Run tests
       run: yarn test:ci
       if: matrix.coverage != true

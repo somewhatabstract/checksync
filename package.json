@@ -70,7 +70,7 @@
         "prepublishOnly": "yarn clean && yarn test && yarn build",
         "clean": "rm -rf dist && rm -rf obj",
         "build": "yarn test && rollup -c",
-        "test:ci": "jest --runInBand --config jest.config.js --testPathIgnorePatterns integration_test.js",
+        "test:ci": "jest --colors --testTimeout=20000 --config jest.config.js --testPathIgnorePatterns integration_test.js",
         "test": "jest --colors --config jest.config.js --testPathIgnorePatterns integration_test.js",
         "test:integration": "jest --colors --config jest.config.js integration_test.js",
         "test:all": "jest --colors --config jest.config.js",
