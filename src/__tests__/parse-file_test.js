@@ -55,7 +55,6 @@ describe("#parseFile", () => {
         fakeFile.push(null);
         setupMarkerParser();
         setupFileReferenceLogger();
-        jest.spyOn(fs, "createReadStream").mockReturnValue(fakeFile);
         const fileRefLoggerSpy = jest.spyOn(FileReferenceLogger, "default");
 
         // Act
