@@ -3,6 +3,7 @@ import * as minimist from "minimist";
 
 import {run, defaultArgs} from "../cli.js";
 import * as CheckSync from "../check-sync.js";
+import ErrorCodes from "../error-codes.js";
 
 jest.mock("minimist");
 
@@ -27,6 +28,30 @@ describe("#run", () => {
             process.argv,
             expect.any(Object),
         );
+    });
+
+    it.todo("should exit with success if help arg present");
+
+    it("should log help info help arg present", () => {
+        // Arrange
+        const fakeParsedArgs = {
+            ...defaultArgs,
+            help: true,
+        };
+        jest.spyOn(CheckSync, "default");
+        jest.spyOn(minimist, "default").mockReturnValue(fakeParsedArgs);
+        const exitSpy = jest
+            .spyOn(process, "exit")
+            .mockImplementationOnce(() => {
+                throw new Error("PRETEND PROCESS EXIT!");
+            });
+
+        // Act
+        const underTest = () => run(__filename);
+
+        // Arrange
+        expect(underTest).toThrowError("PRETEND PROCESS EXIT!");
+        expect(exitSpy).toHaveBeenCalledWith(ErrorCodes.SUCCESS);
     });
 
     it("should invoke checkSync with parsed args", () => {
