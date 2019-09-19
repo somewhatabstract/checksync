@@ -110,11 +110,14 @@ const validateAndFix: FileProcessor = (
 
         // Create a write stream starting at the beginning of the file,
         // because we are going to overwrite as we read.
-        const ws = fs
-            .createWriteStream(file, {fd, start: 0})
-            .once("close", () => {
-                resolve(false);
-            });
+        const ws = options.dryRun
+            ? {
+                  write: (content: string) => {},
+                  end: () => resolve(false),
+              }
+            : fs.createWriteStream(file, {fd, start: 0}).once("close", () => {
+                  resolve(false);
+              });
 
         // Now, we'll read line by line and process what we get against
         // our markers.

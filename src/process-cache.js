@@ -31,9 +31,25 @@ export default async function processCache(
     }
 
     if (violationFileNames.length > 0) {
+        const outputRerunCommand = () => {
+            const commentsArg = options.comments.join(",");
+            const fileNamesArgs = violationFileNames
+                .map(cwdRelativePath)
+                .join(" ");
+            log.log(`checksync -c "${commentsArg}" -u ${fileNamesArgs}`);
+        };
+
         if (autoFix) {
-            // Output a summary of what we fixed.
-            log.info(`Fixed ${violationFileNames.length} file(s)`);
+            if (options.dryRun) {
+                log.group(
+                    `${violationFileNames.length} file(s) would have been fixed. To fix, run:`,
+                );
+                outputRerunCommand();
+                log.groupEnd();
+            } else {
+                // Output a summary of what we fixed.
+                log.info(`Fixed ${violationFileNames.length} file(s)`);
+            }
         } else {
             // Output how to fix any violations we found if we're not running
             // autofix.
@@ -42,11 +58,7 @@ export default async function processCache(
                 ? "🛑  Desynchronized blocks detected and parsing errors found. Fix the errors, update the blocks, then update the sync-start tags using:"
                 : "🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing:";
             log.group(`${errorMsg}`);
-            const commentsArg = options.comments.join(",");
-            const fileNamesArgs = violationFileNames
-                .map(cwdRelativePath)
-                .join(" ");
-            log.log(`checksync -c "${commentsArg}" -u ${fileNamesArgs}`);
+            outputRerunCommand();
             log.groupEnd();
             return ErrorCodes.DESYNCHRONIZED_BLOCKS;
         }
