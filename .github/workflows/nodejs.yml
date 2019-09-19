@@ -28,23 +28,30 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+
     - name: Install dependencies
       run: yarn install
+
     - name: Lint
       run: yarn lint
       if: matrix.coverage
+
     - name: Run integration tests
       run: yarn test:integration --testTimeout=20000
+      if: matrix.os != windows-latest
+
     - name: Run tests
       run: yarn test:ci
       if: matrix.coverage != true
       env:
         CI: true
+
     - name: Run tests with coverage
       run: yarn test:ci --coverage
       if: matrix.coverage
       env:
         CI: true
+
     - name: Upload coverage
       run: yarn codecov
       if: matrix.coverage
