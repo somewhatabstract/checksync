@@ -216,9 +216,6 @@ describe("#parseFile", () => {
         addMarkerCb("MARKER_ID1", "ID1_CHECKSUM", {
             LINE_NUMBER1: {file: "TARGET_FILE1", checksum: "TARGET_CHECKSUM1"},
         });
-        addMarkerCb("MARKER_ID2", "ID2_CHECKSUM", {
-            LINE_NUMBER2: {file: "TARGET_FILE2", checksum: "TARGET_CHECKSUM2"},
-        });
         fakeFile.push(null); // <- End of file
         const result = await promise;
 
@@ -231,16 +228,6 @@ describe("#parseFile", () => {
                     LINE_NUMBER1: {
                         file: "TARGET_FILE1",
                         checksum: "TARGET_CHECKSUM1",
-                    },
-                },
-            },
-            MARKER_ID2: {
-                fixable: true,
-                checksum: "ID2_CHECKSUM",
-                targets: {
-                    LINE_NUMBER2: {
-                        file: "TARGET_FILE2",
-                        checksum: "TARGET_CHECKSUM2",
                     },
                 },
             },
