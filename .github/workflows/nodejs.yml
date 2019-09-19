@@ -34,12 +34,12 @@ jobs:
       run: yarn lint
       if: matrix.coverage
     - name: Run tests
-      run: yarn test && yarn test:integration
+      run: yarn test --runInBand && yarn test:integration
       if: matrix.coverage != true
       env:
         CI: true
     - name: Run tests with coverage
-      run: yarn coverage && yarn test:integration
+      run: yarn coverage --runInBand && yarn test:integration
       if: matrix.coverage
       env:
         CI: true
