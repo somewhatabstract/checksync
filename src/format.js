@@ -9,5 +9,8 @@ const Format = {
     violation: (text: string) =>
         `${chalk.bold.black.bgYellowBright(" MISMATCH ")} ${text}`,
     cwdFilePath: (filePath: string) => chalk.gray(cwdRelativePath(filePath)),
+
+    code: (text: string) => `${chalk.bold.yellow(text)}`,
+    heading: (text: string) => `${chalk.bold.green(text)}`,
 };
 export default Format;

@@ -7,6 +7,7 @@ import minimist from "minimist";
 import checkSync from "./check-sync.js";
 import Logger from "./logger.js";
 import ErrorCodes from "./error-codes.js";
+import logHelp from "./help.js";
 
 export const defaultArgs = {
     "update-tags": false,
@@ -25,7 +26,6 @@ export const run = (launchFilePath: string): void => {
     chalk.level = 3;
     chalk.enabled = true;
 
-    // TODO(somewhatabstract): Implement help
     const args = minimist(process.argv, {
         boolean: ["update-tags", "dry-run", "help"],
         string: ["comments", "root-marker", "ignore"],
@@ -34,10 +34,10 @@ export const run = (launchFilePath: string): void => {
         },
         alias: {
             comments: ["c"],
+            "dry-run": ["n"],
             help: ["h"],
             ignore: ["i"],
-            "dry-run": ["n"],
-            "root-marker": ["r"],
+            "root-marker": ["m"],
             "update-tags": ["u"],
         },
         unknown: arg => {
@@ -51,8 +51,10 @@ export const run = (launchFilePath: string): void => {
         },
     });
 
+    const log = new Logger(console);
+
     if (args.help) {
-        // TODO: Output help and quit.
+        logHelp(log);
         process.exit(ErrorCodes.SUCCESS);
     }
 
@@ -74,6 +76,6 @@ export const run = (launchFilePath: string): void => {
             rootMarker: (args["root-marker"]: any),
             dryRun: args["dry-run"] === true,
         },
-        new Logger(console),
+        log,
     ).then(exitCode => process.exit(exitCode));
 };

@@ -14,25 +14,27 @@ jest.mock("../file-reference-logger.js");
 const NullLogger = new Logger();
 
 describe("#parseFile", () => {
-    const mockMarkerParser = {
-        reportUnterminatedMarkers: jest.fn(),
-        parseLine: jest.fn(),
-    };
+    const mockMarkerParser = {};
     const resetMarkerParser = () => {
+        Object.assign(mockMarkerParser, {
+            reportUnterminatedMarkers: jest.fn(),
+            parseLine: jest.fn(),
+        });
         jest.spyOn(MarkerParser, "default").mockImplementation(
             (...args) => mockMarkerParser,
         );
     };
 
-    const mockFileReferenceLogger = {
-        log: jest.fn(),
-        warn: jest.fn(),
-        info: jest.fn(),
-        groupEnd: jest.fn(),
-        group: jest.fn(),
-        error: jest.fn(),
-    };
+    const mockFileReferenceLogger = {};
     const resetFileReferenceLogger = () => {
+        Object.assign(mockFileReferenceLogger, {
+            log: jest.fn(),
+            warn: jest.fn(),
+            info: jest.fn(),
+            groupEnd: jest.fn(),
+            group: jest.fn(),
+            error: jest.fn(),
+        });
         jest.spyOn(FileReferenceLogger, "default").mockImplementation(
             (...args) => mockFileReferenceLogger,
         );
