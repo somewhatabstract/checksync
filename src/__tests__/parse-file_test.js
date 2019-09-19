@@ -8,6 +8,8 @@ import * as FileReferenceLogger from "../file-reference-logger.js";
 import Logger from "../logger.js";
 import parseFile from "../parse-file.js";
 
+jest.mock("fs");
+
 describe("#parseFile", () => {
     /**
      * Helper to create a fake file stream and set that as the mock response for
