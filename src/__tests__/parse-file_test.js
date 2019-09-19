@@ -9,10 +9,6 @@ import Logger from "../logger.js";
 import parseFile from "../parse-file.js";
 
 describe("#parseFile", () => {
-    beforeEach(() => {
-        jest.resetModules();
-    });
-
     /**
      * Helper to create a fake file stream and set that as the mock response for
      * `fs.createReadStream`.
@@ -209,10 +205,10 @@ describe("#parseFile", () => {
     it("should resolve with found markers", async () => {
         // Arrange
         const NullLogger = new Logger();
-        const fakeFile = mockFakeFile();
         setupFileReferenceLogger();
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
+        const fakeFile = mockFakeFile();
         const promise = parseFile("file.js", true, [], NullLogger);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
 
