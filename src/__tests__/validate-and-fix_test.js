@@ -31,6 +31,10 @@ describe("#validateAndFix", () => {
         rootMarker: null,
     };
 
+    beforeEach(() => {
+        jest.resetModules();
+    });
+
     it("should resolve true if there are no broken edges in file", async () => {
         // Arrange
         const NullLogger = new Logger(null);

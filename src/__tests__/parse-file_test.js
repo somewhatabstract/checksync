@@ -9,6 +9,10 @@ import Logger from "../logger.js";
 import parseFile from "../parse-file.js";
 
 describe("#parseFile", () => {
+    beforeEach(() => {
+        jest.resetModules();
+    });
+
     /**
      * Helper to create a fake file stream and set that as the mock response for
      * `fs.createReadStream`.
