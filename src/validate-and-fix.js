@@ -121,7 +121,7 @@ const validateAndFix = (
          * at using a pipe from read stream to transform stream to write
          * so that node properly handles back pressure for us and keeps
          * throughput optimal.
-         * However, that taks more effort since the transform stream has to be
+         * However, that takes more effort since the transform stream has to be
          * chunk aware to ensure we cope with partial line reads properly.
          */
         readline

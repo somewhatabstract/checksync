@@ -16,22 +16,24 @@ export const run = (launchFilePath: string): void => {
     chalk.level = 3;
     chalk.enabled = true;
 
-    // TODO(somewhatabstract): Add ability to use .gitignore to ignore dirs
-    // TODO(somewhatabstract): Add root dir support (default to package.json)
-    // TODO(somewhatabstract): Add help
-    // TODO(somewhatabstract): Auto-verify after update and add a no-verify option to skip that
+    // TODO(somewhatabstract): Implement ability to provide ignore paths.
+    // TODO(somewhatabstract): Implement help
+    // TODO(somewhatabstract): Implement auto-verify after update and use no-verify option to skip that
     // completing them.
     const args = minimist(process.argv, {
-        boolean: ["update-tags"],
-        string: ["comments", "root-marker"],
+        boolean: ["update-tags", "no-verify", "help"],
+        string: ["comments", "root-marker", "ignore"],
         default: {
             "update-tags": false,
             comments: "//,#",
         },
         alias: {
-            "update-tags": ["u", "updateTags"],
             comments: ["c"],
+            help: ["h"],
+            ignore: ["i"],
+            "no-verify": ["n", "noVerify"],
             "root-marker": ["r", "rootMarker"],
+            "update-tags": ["u", "updateTags"],
         },
         unknown: arg => {
             // Filter out the node process.
