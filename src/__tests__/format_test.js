@@ -1,16 +1,7 @@
 // @flow
-import chalk from "chalk";
 import Format from "../format";
 
 describe("Format", () => {
-    beforeAll(() => {
-        chalk.enabled = false;
-    });
-
-    afterAll(() => {
-        chalk.enabled = true;
-    });
-
     describe("#info", () => {
         it("should prefix with _INFO__", () => {
             // Arrange

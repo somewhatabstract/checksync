@@ -232,4 +232,47 @@ describe("#processCache", () => {
             expect(result).toBe(ErrorCodes.SUCCESS);
         });
     });
+
+    it("should log error if file validator errors", async () => {
+        // Arrange
+        const NullLogger = new Logger();
+        jest.spyOn(ValidateAndFix, "default").mockReturnValue(
+            Promise.reject(new Error("Oh no!")),
+        );
+        const logSpy = jest.spyOn(NullLogger, "error");
+
+        // Act
+        await processCache("marker", TestCache, true, NullLogger);
+
+        // Assert
+        expect(logSpy).toHaveBeenCalledWith(
+            "filea update encountered error: Oh no!",
+        );
+        expect(logSpy).toHaveBeenCalledWith(
+            "fileb update encountered error: Oh no!",
+        );
+    });
+
+    it("should log if errors occurred during processing ", async () => {
+        // Arrange
+        const NullLogger = new Logger();
+        jest.spyOn(ValidateAndFix, "default").mockReturnValue(
+            Promise.reject(new Error("Oh no!")),
+        );
+        const logSpy = jest.spyOn(NullLogger, "log");
+
+        // Act
+        const result = await processCache(
+            "marker",
+            TestCache,
+            true,
+            NullLogger,
+        );
+
+        // Assert
+        expect(result).toBe(ErrorCodes.PARSE_ERRORS);
+        expect(logSpy).toHaveBeenCalledWith(
+            "🛑  Errors occurred during processing",
+        );
+    });
 });

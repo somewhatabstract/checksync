@@ -1,7 +1,6 @@
 // @flow
 import fs from "fs";
 import {Readable} from "stream";
-import chalk from "chalk";
 
 import * as MarkerParser from "../marker-parser.js";
 import * as FileReferenceLogger from "../file-reference-logger.js";
@@ -56,7 +55,6 @@ describe("#parseFile", () => {
     };
 
     beforeEach(() => {
-        chalk.enabled = false;
         resetMarkerParser();
         resetFileReferenceLogger();
     });

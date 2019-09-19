@@ -1,5 +1,4 @@
 // @flow
-import chalk from "chalk";
 import validateAndReport from "../validate-and-report.js";
 import Logger from "../logger.js";
 import * as GenerateMarkerEdges from "../generate-marker-edges.js";
@@ -7,14 +6,6 @@ import * as GenerateMarkerEdges from "../generate-marker-edges.js";
 jest.mock("../generate-marker-edges.js");
 
 describe("#validateAndReport", () => {
-    beforeEach(() => {
-        chalk.enabled = false;
-    });
-
-    afterEach(() => {
-        chalk.enabled = true;
-    });
-
     it("should report violation", async () => {
         // Arrange
         const NullLogger = new Logger();

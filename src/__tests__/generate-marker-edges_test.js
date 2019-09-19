@@ -1,19 +1,10 @@
 // @flow
-import chalk from "chalk";
 import Logger from "../logger.js";
 import generateMarkerEdges from "../generate-marker-edges.js";
 
 import type {MarkerCache, Target, Marker} from "../types.js";
 
 describe("#generateMarkerEdges", () => {
-    beforeEach(() => {
-        chalk.enabled = false;
-    });
-
-    afterEach(() => {
-        chalk.enabled = true;
-    });
-
     it("should return empty sequence if cache does not contain file", () => {
         // Arrange
         const NullLogger = new Logger();

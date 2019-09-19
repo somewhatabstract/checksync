@@ -1,16 +1,7 @@
 // @flow
-import chalk from "chalk";
 import StringLogger from "../string-logger.js";
 
 describe("StringLogger", () => {
-    beforeEach(() => {
-        chalk.enabled = false;
-    });
-
-    afterAll(() => {
-        chalk.enabled = false;
-    });
-
     it.each(["log", "info", "warn", "error"])(
         "should add %s call to log",
         testCase => {

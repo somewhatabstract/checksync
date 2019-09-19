@@ -1,17 +1,8 @@
 // @flow
-import chalk from "chalk";
 import Logger from "../logger.js";
 import FileReferenceLogger from "../file-reference-logger.js";
 
 describe("FileReferenceLogger", () => {
-    beforeEach(() => {
-        chalk.enabled = false;
-    });
-
-    afterEach(() => {
-        chalk.enabled = true;
-    });
-
     it("should return errorsLogged from underlying logger", () => {
         // Arrange
         const NullLogger = new Logger();
