@@ -85,14 +85,14 @@ describe("#processCache", () => {
 
             // Assert
             expect(spy).toHaveBeenCalledWith(
+                options,
                 "filea",
-                null,
                 TestCache,
                 NullLogger,
             );
             expect(spy).toHaveBeenCalledWith(
+                options,
                 "fileb",
-                null,
                 TestCache,
                 NullLogger,
             );
@@ -221,14 +221,14 @@ describe("#processCache", () => {
 
             // Assert
             expect(spy).toHaveBeenCalledWith(
+                options,
                 "filea",
-                null,
                 TestCache,
                 NullLogger,
             );
             expect(spy).toHaveBeenCalledWith(
+                options,
                 "fileb",
-                null,
                 TestCache,
                 NullLogger,
             );

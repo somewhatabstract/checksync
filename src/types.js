@@ -118,8 +118,8 @@ export type MarkerCache = {
  * mismatch violation.
  */
 export type FileProcessor = (
+    options: Options,
     file: string,
-    rootMarker: ?string,
     cache: MarkerCache,
     log: ILog,
 ) => Promise<boolean>;

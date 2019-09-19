@@ -18,7 +18,7 @@ export default async function processCache(
     const fileValidator = autoFix ? validateAndFix : validateAndReport;
     for (const file of Object.keys(cache)) {
         try {
-            if (!(await fileValidator(file, options.rootMarker, cache, log))) {
+            if (!(await fileValidator(options, file, cache, log))) {
                 violationFileNames.push(file);
             }
         } catch (e) {

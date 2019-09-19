@@ -3,7 +3,7 @@ import Format from "./format.js";
 import cwdRelativePath from "./cwd-relative-path.js";
 import generateMarkerEdges from "./generate-marker-edges.js";
 
-import type {MarkerCache, ILog} from "./types.js";
+import type {MarkerCache, ILog, Options, FileProcessor} from "./types.js";
 import type {MarkerEdge} from "./generate-marker-edges.js";
 
 const reportBrokenEdge = (
@@ -33,9 +33,9 @@ const reportBrokenEdge = (
     );
 };
 
-const validateAndReport = (
+const validateAndReport: FileProcessor = (
+    options: Options,
     file: string,
-    rootMarker: ?string,
     cache: MarkerCache,
     log: ILog,
 ): Promise<boolean> => {

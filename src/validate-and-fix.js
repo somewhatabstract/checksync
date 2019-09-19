@@ -7,7 +7,7 @@ import Format from "./format.js";
 import cwdRelativePath from "./cwd-relative-path.js";
 import rootRelativePath from "./root-relative-path.js";
 
-import type {ILog, MarkerCache} from "./types.js";
+import type {ILog, MarkerCache, Options, FileProcessor} from "./types.js";
 import type {MarkerEdge} from "./generate-marker-edges.js";
 
 type EdgeMap = {
@@ -68,9 +68,9 @@ const reportBrokenEdge = (
     );
 };
 
-const validateAndFix = (
+const validateAndFix: FileProcessor = (
+    options: Options,
     file: string,
-    rootMarker: ?string,
     cache: MarkerCache,
     log: ILog,
 ): Promise<boolean> => {
@@ -84,7 +84,9 @@ const validateAndFix = (
         }
 
         const brokenEdgeMap: EdgeMap = brokenEdges
-            .map((edge: MarkerEdge) => mapEdgeFix(file, rootMarker, edge))
+            .map((edge: MarkerEdge) =>
+                mapEdgeFix(file, options.rootMarker, edge),
+            )
             .reduce(
                 (
                     prev: EdgeMap,

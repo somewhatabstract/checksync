@@ -9,6 +9,7 @@ import * as GenerateMarkerEdges from "../generate-marker-edges.js";
 import * as RootRelativePath from "../root-relative-path.js";
 
 import type {MarkerEdge} from "../generate-marker-edges.js";
+import type {Options} from "../types.js";
 
 jest.mock("fs");
 
@@ -23,13 +24,22 @@ const invokeEvent = (mocked: $Call<typeof jest.fn>, event: string, ...args) => {
 };
 
 describe("#validateAndFix", () => {
+    const options: Options = {
+        includeGlobs: [],
+        excludeGlobs: [],
+        dryRun: false,
+        autoFix: true,
+        comments: [],
+        rootMarker: null,
+    };
+
     it("should resolve true if there are no broken edges in file", async () => {
         // Arrange
         const NullLogger = new Logger(null);
         jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([]);
 
         // Act
-        const result = await validateAndFix("filea", null, {}, NullLogger);
+        const result = await validateAndFix(options, "filea", {}, NullLogger);
 
         // Assert
         expect(result).toBeTrue();
@@ -72,7 +82,7 @@ describe("#validateAndFix", () => {
         const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
 
         // Act
-        const promise = validateAndFix("filea", null, {}, NullLogger);
+        const promise = validateAndFix(options, "filea", {}, NullLogger);
         finishReadingFile();
         const result = await promise;
 
@@ -119,7 +129,7 @@ describe("#validateAndFix", () => {
             invokeEvent(fakeInterface.on, "line", line);
 
         // Act
-        const promise = validateAndFix("filea", null, {}, NullLogger);
+        const promise = validateAndFix(options, "filea", {}, NullLogger);
         readLineFromFile("BROKEN_DECLARATION");
         fakeWriteStream.once.mock.calls[0][1]();
         await promise;
@@ -169,7 +179,7 @@ describe("#validateAndFix", () => {
             invokeEvent(fakeInterface.on, "line", line);
 
         // Act
-        const promise = validateAndFix("filea", null, {}, NullLogger);
+        const promise = validateAndFix(options, "filea", {}, NullLogger);
         readLineFromFile("REGULAR_LINE");
         fakeWriteStream.once.mock.calls[0][1]();
         await promise;
@@ -217,7 +227,7 @@ describe("#validateAndFix", () => {
             invokeEvent(fakeInterface.on, "line", line);
 
         // Act
-        const promise = validateAndFix("filea", null, {}, NullLogger);
+        const promise = validateAndFix(options, "filea", {}, NullLogger);
         readLineFromFile("BROKEN_DECLARATION");
         fakeWriteStream.once.mock.calls[0][1]();
         await promise;

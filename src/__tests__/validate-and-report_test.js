@@ -3,9 +3,20 @@ import validateAndReport from "../validate-and-report.js";
 import Logger from "../logger.js";
 import * as GenerateMarkerEdges from "../generate-marker-edges.js";
 
+import type {Options} from "../types.js";
+
 jest.mock("../generate-marker-edges.js");
 
 describe("#validateAndReport", () => {
+    const options: Options = {
+        includeGlobs: [],
+        excludeGlobs: [],
+        dryRun: false,
+        autoFix: false,
+        comments: [],
+        rootMarker: null,
+    };
+
     it("should report violation", async () => {
         // Arrange
         const NullLogger = new Logger();
@@ -22,7 +33,7 @@ describe("#validateAndReport", () => {
         const logSpy = jest.spyOn(NullLogger, "log");
 
         // Act
-        await validateAndReport("fileb", null, {}, NullLogger);
+        await validateAndReport(options, "fileb", {}, NullLogger);
 
         // Assert
         expect(logSpy).toHaveBeenCalledWith(
@@ -46,7 +57,7 @@ describe("#validateAndReport", () => {
         const logSpy = jest.spyOn(NullLogger, "log");
 
         // Act
-        await validateAndReport("fileb", null, {}, NullLogger);
+        await validateAndReport(options, "fileb", {}, NullLogger);
 
         // Assert
         expect(logSpy).toHaveBeenCalledWith(
@@ -70,7 +81,7 @@ describe("#validateAndReport", () => {
         const logSpy = jest.spyOn(NullLogger, "log");
 
         // Act
-        await validateAndReport("fileb", null, {}, NullLogger);
+        await validateAndReport(options, "fileb", {}, NullLogger);
 
         // Assert
         expect(logSpy).toHaveBeenCalledWith(
@@ -84,7 +95,12 @@ describe("#validateAndReport", () => {
         jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([]);
 
         // Act
-        const result = await validateAndReport("fileb", null, {}, NullLogger);
+        const result = await validateAndReport(
+            options,
+            "fileb",
+            {},
+            NullLogger,
+        );
 
         // Assert
         expect(result).toBeTrue();
@@ -105,7 +121,12 @@ describe("#validateAndReport", () => {
         ]);
 
         // Act
-        const result = await validateAndReport("fileb", null, {}, NullLogger);
+        const result = await validateAndReport(
+            options,
+            "fileb",
+            {},
+            NullLogger,
+        );
 
         // Assert
         expect(result).toBeFalse();
