@@ -84,7 +84,9 @@ export default function parseFile(
                     input: fileStream,
                     crlfDelay: Infinity,
                 })
-                .on("line", (line: string) => markerParser.parseLine(line))
+                .on("line", (line: string) =>
+                    markerParser.parseLine(line + "\n"),
+                )
                 .on("close", () => {
                     markerParser.reportUnterminatedMarkers();
 
