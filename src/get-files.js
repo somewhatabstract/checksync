@@ -17,7 +17,7 @@ const globAsync: (
 function getFilesForGlobs(globs: Array<string>): Promise<Array<string>> {
     const promisedGlobs = uniq(globs)
         // If we have a dir, let's make that a be everything under that dir.
-        .map(pattern =>
+        .map((pattern: string) =>
             fs.existsSync(pattern) && fs.lstatSync(pattern).isDirectory()
                 ? `${pattern}/**`
                 : pattern,
