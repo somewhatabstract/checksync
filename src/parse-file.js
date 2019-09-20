@@ -32,7 +32,7 @@ export default function parseFile(
     fixable: boolean,
     comments: Array<string>,
     log: ILog,
-    normalizeFileRef?: ?normalizePathFn,
+    normalizeFileRef: normalizePathFn,
 ): Promise<?Markers> {
     const fileRefLogger = new FileReferenceLogger(file, log);
     const markers: Markers = {};
@@ -67,7 +67,7 @@ export default function parseFile(
     return new Promise((resolve, reject) => {
         try {
             const markerParser = new MarkerParser(
-                normalizeFileRef || (() => null),
+                normalizeFileRef,
                 addMarker,
                 comments,
                 fileRefLogger,

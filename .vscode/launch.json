@@ -23,7 +23,12 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceFolder}/bin/checksync.dev.js"
+            "program": "${workspaceFolder}/bin/checksync.dev.js",
+            "args": [
+                "-m",
+                ".ka_root",
+                "/Users/jeffyates/khan/webapp/Makefile"
+            ],
         }
     ]
 }
