@@ -66,6 +66,8 @@ export default function* generateMarkerEdges(
         if (targetMarker == null) {
             return null;
         }
+        // We look for a target that points to our file or an alias of our
+        // file - the file is considered its own alias.
         const matchingTargets = Object.entries(targetMarker.targets).filter(
             ([_, target]) => aliases.includes((target: any).file),
         );
@@ -108,9 +110,6 @@ export default function* generateMarkerEdges(
             const targetInfo: ?FileInfo = cache[targetRef.file];
             const targetMarker: ?Marker =
                 targetInfo && targetInfo.markers[markerID];
-
-            // TODO(somewhatabstract): Ensure we take aliases into account
-            // when looking for target.
 
             const targetDetails = getTargetDetail(targetMarker, aliases);
             if (targetDetails == null) {

@@ -69,6 +69,8 @@ export default async function getMarkersFromFiles(
                     continue;
                 }
 
+                // TODO(somewhatabstract): Use jest-worker and farm parsing out
+                // to  multiple threads/processes.
                 const fileMarkers = await parseFile(
                     file,
                     fixable,
@@ -102,8 +104,8 @@ export default async function getMarkersFromFiles(
         }
     };
 
-    // TODO(somewhatabstract): Use jest-worker and farm parsing out to
-    // multiple threads.
+    // Process the main file set. These are considered "fixable" as they
+    // are the files that our user requested be processed directly.
     await cacheFiles(files, true);
 
     /**

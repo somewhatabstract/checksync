@@ -20,6 +20,8 @@ export default async function processCache(
     const fileValidator = autoFix ? validateAndFix : validateAndReport;
     for (const file of Object.keys(cache)) {
         try {
+            // TODO(somewhatabstract): Use jest-worker and farm processing out
+            // to multiple threads/processes.
             if (!(await fileValidator(options, file, cache, log))) {
                 violationFileNames.push(file);
             }
