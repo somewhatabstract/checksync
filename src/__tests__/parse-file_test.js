@@ -47,6 +47,7 @@ describe("#parseFile", () => {
         const NullLogger = new Logger();
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
+        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
         jest.spyOn(readline, "createInterface").mockReturnValueOnce(
             fakeInterface,
@@ -70,7 +71,7 @@ describe("#parseFile", () => {
         // Arrange
         const NullLogger = new Logger();
         const logger = setupFileReferenceLogger();
-        jest.spyOn(fs, "createReadStream").mockImplementationOnce(() => {
+        jest.spyOn(fs, "openSync").mockImplementationOnce(() => {
             throw new Error("ERROR_STRING");
         });
 
@@ -90,6 +91,7 @@ describe("#parseFile", () => {
         const logger = setupFileReferenceLogger();
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
+        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
         jest.spyOn(readline, "createInterface").mockReturnValueOnce(
             fakeInterface,
@@ -110,7 +112,7 @@ describe("#parseFile", () => {
         // Arrange
         const NullLogger = new Logger();
         const mockFileReferenceLogger = setupFileReferenceLogger();
-        jest.spyOn(fs, "createReadStream").mockImplementationOnce(() => {
+        jest.spyOn(fs, "openSync").mockImplementationOnce(() => {
             throw new Error("ERROR_STRING");
         });
 
@@ -128,6 +130,7 @@ describe("#parseFile", () => {
         const mockMarkerParser = setupMarkerParser();
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
+        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
         jest.spyOn(readline, "createInterface").mockReturnValueOnce(
             fakeInterface,
@@ -154,6 +157,7 @@ describe("#parseFile", () => {
         const NullLogger = new Logger();
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
+        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
         jest.spyOn(readline, "createInterface").mockReturnValueOnce(
             fakeInterface,
@@ -190,6 +194,7 @@ describe("#parseFile", () => {
         const NullLogger = new Logger();
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
+        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
         jest.spyOn(readline, "createInterface").mockReturnValueOnce(
             fakeInterface,
@@ -216,6 +221,7 @@ describe("#parseFile", () => {
         const NullLogger = new Logger();
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
+        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
         jest.spyOn(readline, "createInterface").mockReturnValueOnce(
             fakeInterface,
@@ -249,6 +255,7 @@ describe("#parseFile", () => {
         setupMarkerParser();
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
+        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
         jest.spyOn(readline, "createInterface").mockReturnValueOnce(
             fakeInterface,
@@ -299,6 +306,7 @@ describe("#parseFile", () => {
         setupMarkerParser();
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
+        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
         jest.spyOn(readline, "createInterface").mockReturnValueOnce(
             fakeInterface,
@@ -332,6 +340,7 @@ describe("#parseFile", () => {
         const NullLogger = new Logger();
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
+        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
         jest.spyOn(readline, "createInterface").mockReturnValueOnce(
             fakeInterface,

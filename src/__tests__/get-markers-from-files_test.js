@@ -21,6 +21,7 @@ describe("#fromFiles", () => {
         const parseSpy = jest
             .spyOn(ParseFile, "default")
             .mockReturnValue(Promise.resolve());
+        jest.spyOn(fs, "realpathSync").mockImplementation(a => a);
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
             comments: ["//"],
@@ -60,6 +61,7 @@ describe("#fromFiles", () => {
                 }
                 return Promise.resolve(file);
             });
+        jest.spyOn(fs, "realpathSync").mockImplementation(a => a);
         jest.spyOn(fs, "existsSync").mockReturnValue(true);
         jest.spyOn(fs, "lstatSync").mockReturnValue({isFile: () => true});
         const pathSpy = jest
@@ -87,6 +89,7 @@ describe("#fromFiles", () => {
             false,
             ["//"],
             NullLogger,
+            null,
         );
         expect(pathSpy).toHaveBeenCalledWith("file.dirname", "b.js");
         expect(ancesdirSpy).toHaveBeenCalledWith("a.js", null);
@@ -103,6 +106,7 @@ describe("#fromFiles", () => {
                 }
                 return Promise.resolve(file);
             });
+        jest.spyOn(fs, "realpathSync").mockImplementation(a => a);
         jest.spyOn(fs, "existsSync").mockReturnValue(true);
         jest.spyOn(fs, "lstatSync").mockReturnValue({isFile: () => true});
         jest.spyOn(path, "join").mockImplementation((a, b) => b);
@@ -140,6 +144,7 @@ describe("#fromFiles", () => {
             false,
             ["//"],
             NullLogger,
+            null,
         );
     });
 
@@ -152,6 +157,7 @@ describe("#fromFiles", () => {
                     fixable,
                 }),
         );
+        jest.spyOn(fs, "realpathSync").mockImplementation(a => a);
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
             comments: ["//"],
@@ -171,12 +177,18 @@ describe("#fromFiles", () => {
         // Assert
         expect(result).toStrictEqual({
             "a.js": {
-                file: "a.js",
-                fixable: true,
+                aliases: ["a.js"],
+                markers: {
+                    file: "a.js",
+                    fixable: true,
+                },
             },
             "b.js": {
-                file: "b.js",
-                fixable: true,
+                aliases: ["b.js"],
+                markers: {
+                    file: "b.js",
+                    fixable: true,
+                },
             },
         });
     });
@@ -192,6 +204,7 @@ describe("#fromFiles", () => {
                 return Promise.resolve(file);
             },
         );
+        jest.spyOn(fs, "realpathSync").mockImplementation(a => a);
         jest.spyOn(fs, "existsSync").mockReturnValue(true);
         jest.spyOn(fs, "lstatSync").mockReturnValue({isFile: () => true});
         jest.spyOn(path, "join").mockImplementation((a, b) => b);
@@ -215,7 +228,7 @@ describe("#fromFiles", () => {
         // Assert
         expect(result).toStrictEqual({
             "a.js": null,
-            "b.js": "b.js",
+            "b.js": {aliases: ["b.js"], markers: "b.js"},
             "c.js": null,
         });
     });
@@ -231,6 +244,7 @@ describe("#fromFiles", () => {
                 logCb("c.js");
                 return Promise.resolve(file);
             });
+        jest.spyOn(fs, "realpathSync").mockImplementation(a => a);
         jest.spyOn(fs, "existsSync").mockImplementation(f => f === "a.js");
         jest.spyOn(fs, "lstatSync").mockReturnValue({isFile: () => true});
         jest.spyOn(path, "join").mockImplementation((a, b) => b);
