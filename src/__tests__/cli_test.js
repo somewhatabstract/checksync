@@ -1,15 +1,31 @@
 // @flow
 import * as minimist from "minimist";
 
-import {run} from "../cli.js";
+import {run, defaultArgs} from "../cli.js";
 import * as CheckSync from "../check-sync.js";
+import ErrorCodes from "../error-codes.js";
+import Logger from "../logger.js";
 
 jest.mock("minimist");
+jest.mock("../logger.js", () => {
+    const realLogger = jest.requireActual("../logger.js").default;
+    const log = new realLogger(null);
+    for (const key of Object.keys(log)) {
+        if (typeof log[key] !== "function") {
+            continue;
+        }
+        jest.spyOn(log, key);
+    }
+    return function() {
+        return log;
+    };
+});
 
 describe("#run", () => {
     it("should parse args", () => {
         // Arrange
         const fakeParsedArgs = {
+            ...defaultArgs,
             fix: false,
             comments: "//,#",
         };
@@ -28,10 +44,55 @@ describe("#run", () => {
         );
     });
 
+    it("should exit with success if help arg present", () => {
+        // Arrange
+        const fakeParsedArgs = {
+            ...defaultArgs,
+            help: true,
+        };
+        jest.spyOn(CheckSync, "default");
+        jest.spyOn(minimist, "default").mockReturnValue(fakeParsedArgs);
+        const exitSpy = jest
+            .spyOn(process, "exit")
+            .mockImplementationOnce(() => {
+                throw new Error("PRETEND PROCESS EXIT!");
+            });
+
+        // Act
+        const underTest = () => run(__filename);
+
+        // Arrange
+        expect(underTest).toThrowError("PRETEND PROCESS EXIT!");
+        expect(exitSpy).toHaveBeenCalledWith(ErrorCodes.SUCCESS);
+    });
+
+    it("should log help info help arg present", () => {
+        // Arrange
+        const fakeParsedArgs = {
+            ...defaultArgs,
+            help: true,
+        };
+        jest.spyOn(CheckSync, "default");
+        jest.spyOn(minimist, "default").mockReturnValue(fakeParsedArgs);
+        jest.spyOn(process, "exit").mockImplementationOnce(() => {
+            throw new Error("PRETEND PROCESS EXIT!");
+        });
+        const logSpy = jest.spyOn(new Logger(null), "log");
+
+        // Act
+        const underTest = () => run(__filename);
+
+        // Arrange
+        expect(underTest).toThrow();
+        expect(logSpy).toHaveBeenCalledTimes(1);
+        expect(logSpy.mock.calls[0][0]).toMatchSnapshot();
+    });
+
     it("should invoke checkSync with parsed args", () => {
         // Arrange
         const fakeParsedArgs = {
-            fix: true,
+            ...defaultArgs,
+            "update-tags": true,
             comments: "COMMENT1,COMMENT2",
             _: ["globs", "and globs"],
         };
@@ -45,9 +106,13 @@ describe("#run", () => {
 
         // Arrange
         expect(checkSyncSpy).toHaveBeenCalledWith(
-            fakeParsedArgs._,
-            true,
-            ["COMMENT1", "COMMENT2"],
+            {
+                includeGlobs: fakeParsedArgs._,
+                excludeGlobs: [],
+                dryRun: false,
+                autoFix: true,
+                comments: ["COMMENT1", "COMMENT2"],
+            },
             expect.any(Object),
         );
     });
@@ -56,6 +121,7 @@ describe("#run", () => {
         it("should return false for process.execPath", () => {
             // Arrange
             const fakeParsedArgs = {
+                ...defaultArgs,
                 fix: false,
                 comments: "//,#",
             };
@@ -76,6 +142,7 @@ describe("#run", () => {
         it("should return false for the given launchfile path", () => {
             // Arrange
             const fakeParsedArgs = {
+                ...defaultArgs,
                 fix: false,
                 comments: "//,#",
             };
@@ -96,6 +163,7 @@ describe("#run", () => {
         it("should return false for .bin command", () => {
             // Arrange
             const fakeParsedArgs = {
+                ...defaultArgs,
                 fix: false,
                 comments: "//,#",
             };
@@ -116,6 +184,7 @@ describe("#run", () => {
         it("should return true for other things", () => {
             // Arrange
             const fakeParsedArgs = {
+                ...defaultArgs,
                 fix: false,
                 comments: "//,#",
             };
@@ -136,6 +205,7 @@ describe("#run", () => {
         it("should exit process with given exit code", () => {
             // Arrange
             const fakeParsedArgs = {
+                ...defaultArgs,
                 fix: false,
                 comments: "//,#",
             };

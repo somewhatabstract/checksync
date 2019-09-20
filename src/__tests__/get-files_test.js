@@ -19,7 +19,7 @@ describe("#getFiles", () => {
             });
 
         // Act
-        await getFiles(["directory"]);
+        await getFiles(["directory"], []);
 
         // Assert
         expect(globSpy).toHaveBeenCalledWith(
@@ -39,7 +39,7 @@ describe("#getFiles", () => {
             });
 
         // Act
-        await getFiles(["pattern"]);
+        await getFiles(["pattern"], []);
 
         // Assert
         expect(globSpy).toHaveBeenCalledWith(
@@ -60,7 +60,7 @@ describe("#getFiles", () => {
             });
 
         // Act
-        await getFiles(["pattern"]);
+        await getFiles(["pattern"], []);
 
         // Assert
         expect(globSpy).toHaveBeenCalledWith(
@@ -68,6 +68,22 @@ describe("#getFiles", () => {
             expect.any(Object),
             expect.any(Function),
         );
+    });
+
+    it("should dedupe globs", async () => {
+        // Arrange
+        jest.spyOn(fs, "existsSync").mockReturnValue(false);
+        const globSpy = jest
+            .spyOn(Glob, "default")
+            .mockImplementation((pattern, opts, cb) => {
+                cb(null, ["c", "a", "d", "b"]);
+            });
+
+        // Act
+        await getFiles(["pattern1", "pattern1"], ["exclude1", "exclude1"]);
+
+        // Assert
+        expect(globSpy).toHaveBeenCalledTimes(2);
     });
 
     it("should return a sorted list without duplicates", async () => {
@@ -80,10 +96,36 @@ describe("#getFiles", () => {
             });
 
         // Act
-        const result = await getFiles(["pattern1", "pattern2"]);
+        const result = await getFiles(["pattern1", "pattern2"], []);
 
         // Assert
         expect(result).toEqual(["a", "b", "c", "d"]);
         expect(globSpy).toHaveBeenCalledTimes(2);
+    });
+
+    it("should exclude files matched by exclude globs", async () => {
+        // Arrange
+        jest.spyOn(fs, "existsSync").mockReturnValue(false);
+        const globSpy = jest
+            .spyOn(Glob, "default")
+            .mockImplementationOnce((pattern, opts, cb) => {
+                cb(null, ["c", "a", "d", "b"]);
+            })
+            .mockImplementationOnce((pattern, opts, cb) => {
+                cb(null, ["a"]);
+            })
+            .mockImplementationOnce((pattern, opts, cb) => {
+                cb(null, ["c", "a"]);
+            });
+
+        // Act
+        const result = await getFiles(
+            ["pattern1"],
+            ["excludePattern1", "excludePattern2"],
+        );
+
+        // Assert
+        expect(result).toEqual(["b", "d"]);
+        expect(globSpy).toHaveBeenCalledTimes(3);
     });
 });

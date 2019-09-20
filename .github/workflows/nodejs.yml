@@ -11,14 +11,18 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     strategy:
       matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
         node-version: [8.x, 10.x, 12.x]
         include:
           - node-version: 12.x
+            os: ubuntu-latest
             coverage: true
+          - os: windows-latest
+            skip-integration-tests: true
 
     steps:
     - uses: actions/checkout@v1
@@ -26,20 +30,30 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+
     - name: Install dependencies
       run: yarn install
+
     - name: Lint
       run: yarn lint
+      if: matrix.coverage
+
+    - name: Run integration tests
+      run: yarn test:integration --testTimeout=20000
+      if: matrix.skip-integration-tests != true
+
     - name: Run tests
-      run: yarn test && yarn test:integration
+      run: yarn test:ci
       if: matrix.coverage != true
       env:
         CI: true
+
     - name: Run tests with coverage
-      run: yarn coverage && yarn test:integration
+      run: yarn test:ci --coverage
       if: matrix.coverage
       env:
         CI: true
+
     - name: Upload coverage
       run: yarn codecov
       if: matrix.coverage

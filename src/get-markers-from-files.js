@@ -6,25 +6,29 @@ import fs from "fs";
 import path from "path";
 import uniq from "lodash/uniq";
 import parseFile from "./parse-file.js";
+import ancesdir from "ancesdir";
 
-import type {ILog, MarkerCache} from "./types.js";
+import type {ILog, MarkerCache, Options} from "./types.js";
 
 /**
  * Generate a marker cache from the given files.
  *
  * @export
+ * @param {Options} options
  * @param {Array<string>} files The files to be loaded.
  * @returns {Promise<MarkerCache>} A marker cache.
  */
 export default async function getMarkersFromFiles(
+    options: Options,
     files: Array<string>,
-    comments: Array<string>,
     log: ILog,
 ): Promise<MarkerCache> {
     const cacheData: MarkerCache = {};
     const referencedFiles: Array<string> = [];
     const logFileRef = (file, fileRef) => {
-        const normalizedFileRef = path.resolve(path.dirname(file), fileRef);
+        // Target paths are relative to the root location.
+        const rootPath = ancesdir(file, options.rootMarker);
+        const normalizedFileRef = path.normalize(path.join(rootPath, fileRef));
         const exists =
             fs.existsSync(normalizedFileRef) &&
             fs.lstatSync(normalizedFileRef).isFile();
@@ -41,7 +45,7 @@ export default async function getMarkersFromFiles(
         const fileMarkers = await parseFile(
             file,
             true,
-            comments,
+            options.comments,
             log,
             fileRef => logFileRef(file, fileRef),
         );
@@ -59,7 +63,12 @@ export default async function getMarkersFromFiles(
             continue;
         }
 
-        const fileMarkers = await parseFile(fileRef, false, comments, log);
+        const fileMarkers = await parseFile(
+            fileRef,
+            false,
+            options.comments,
+            log,
+        );
         cacheData[fileRef] = fileMarkers;
     }
 

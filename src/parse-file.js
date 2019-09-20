@@ -5,7 +5,6 @@
  */
 import readline from "readline";
 import fs from "fs";
-import util from "util";
 
 import Format from "./format.js";
 import MarkerParser from "./marker-parser.js";
@@ -42,6 +41,7 @@ export default function parseFile(
         id: string,
         checksum: string,
         targets: Targets,
+        comment: string,
     ): void => {
         let outputError = false;
         for (const line of Object.keys(targets)) {
@@ -61,7 +61,7 @@ export default function parseFile(
             }
         }
 
-        markers[id] = {fixable, checksum, targets};
+        markers[id] = {fixable, checksum, targets, comment};
     };
 
     return new Promise((resolve, reject) => {

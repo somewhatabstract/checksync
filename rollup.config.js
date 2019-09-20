@@ -4,7 +4,6 @@ import commonjs from "rollup-plugin-commonjs";
 import minify from "rollup-plugin-babel-minify";
 import analyzer from "rollup-plugin-analyzer";
 import visualizer from "rollup-plugin-visualizer";
-import graph from "rollup-plugin-graph";
 
 const getOptionalPlugins = () => {
     if (process.env.NODE_ENV === "CI") {
@@ -18,11 +17,9 @@ const getOptionalPlugins = () => {
         // comments and full code.
         analyzer({summaryOnly: true, filter: module => module.size !== 0}),
         visualizer({
-            title: "checksync bundle rollup",
-            filename: "obj/stats.html",
-            open: true,
+            title: "checksync bundle rollup (unminified)",
+            filename: "report/stats.html",
         }),
-        graph(),
     ];
 };
 

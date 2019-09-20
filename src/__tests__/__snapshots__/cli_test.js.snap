@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`#run should log help info help arg present 1`] = `
+"[1m[32mchecksync ✅ 🔗[39m[22m
+
+Checksync uses tags in your files to identify blocks that need to remain
+synchronised. It works on any text file as long as it can find the tags.
+
+[1m[32mTag Format[39m[22m
+
+Each tagged block is identified by one or more sync-start tags and a single
+sync-end tag.
+
+The sync-start tags take the form:
+
+    [1m[33m<comment> sync-start:<marker_id> <?checksum> <target_file>[39m[22m  
+
+The sync-end tags take the form:
+
+    [1m[33m<comment> sync-end:<marker_id>[39m[22m  
+
+Where:
+
+    [1m[33m<comment>[39m[22m       is one of the comment tokens provided by the [1m[33m--comment[39m[22m  
+                    argument
+
+    [1m[33m<marker_id>[39m[22m     is the unique identifier for this marker
+
+    [1m[33m<checksum>[39m[22m      is the expected checksum of the corresponding block in
+                    the target file
+
+    [1m[33m<target_file>[39m[22m   is the path from your package root to the target file
+                    with a corresponding sync block with the same [1m[33mmarker_id[39m[22m  
+
+[1m[32mUsage[39m[22m
+
+[1m[33mchecksync <arguments> <include_globs>[39m[22m  
+
+Where:
+
+    [1m[33m<arguments>[39m[22m       are the arguments you provide (see below)
+
+    [1m[33m<include_globs>[39m[22m   are glob patterns for identifying files to check
+
+[1m[32mArguments[39m[22m
+
+    [1m[33m--comments,-c[39m[22m      A string containing comma-separated tokens that
+                       indicate the start of lines where tags appear.
+                       Defaults to [1m[33m\\"//,#\\"[39m[22m  
+
+    [1m[33m--dry-run,-n[39m[22m       Ignored unless supplied with [1m[33m--update-tags[39m[22m  
+
+    [1m[33m--help,-h[39m[22m          Outputs this help text
+
+    [1m[33m--ignore,-i[39m[22m        A string containing comma-separated globs that identify
+                       files that should not be checked
+
+    [1m[33m--root-marker,-m[39m[22m   By default, the root directory (used to generate
+                       interpret and generate target paths for sync-start
+                       tags) for your project is determined by the nearest
+                       ancestor directory to the processed files that
+                       contains a [1m[33mpackage.json[39m[22m   file. If you want to
+                       use a different file or directory to identify your
+                       root directory, specify that using this argument.
+                       For example, [1m[33m--root-marker .gitignore[39m[22m   would mean
+                       the first ancestor directory containing a
+                       [1m[33m.gitignore[39m[22m   file.
+
+    [1m[33m--update-tags,-u[39m[22m   Updates tags with incorrect target checksums. This
+                       modifies files in place; run with [1m[33m--dry-run[39m[22m   to see what
+                       files will change without modifying them.
+"
+`;

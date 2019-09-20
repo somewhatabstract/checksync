@@ -6,6 +6,16 @@ import chalk from "chalk";
 import minimist from "minimist";
 import checkSync from "./check-sync.js";
 import Logger from "./logger.js";
+import ErrorCodes from "./error-codes.js";
+import logHelp from "./help.js";
+
+export const defaultArgs = {
+    "update-tags": false,
+    comments: `${["#,//"].sort().join(",")}`,
+    ignore: "",
+    help: false,
+    "dry-run": false,
+};
 
 /**
  * Run the command line.
@@ -16,18 +26,19 @@ export const run = (launchFilePath: string): void => {
     chalk.level = 3;
     chalk.enabled = true;
 
-    // TODO(somewhatabstract): Add ability to use .gitignore to ignore dirs
-    // TODO(somewhatabstract): Add logging-level option
-    // TODO(somewhatabstract): Add help
     const args = minimist(process.argv, {
-        boolean: ["fix"],
-        string: ["comments"],
+        boolean: ["update-tags", "dry-run", "help"],
+        string: ["comments", "root-marker", "ignore"],
         default: {
-            fix: false,
-            comments: "//,#",
+            ...defaultArgs,
         },
         alias: {
-            fix: ["f"],
+            comments: ["c"],
+            "dry-run": ["n"],
+            help: ["h"],
+            ignore: ["i"],
+            "root-marker": ["m"],
+            "update-tags": ["u"],
         },
         unknown: arg => {
             // Filter out the node process.
@@ -40,13 +51,31 @@ export const run = (launchFilePath: string): void => {
         },
     });
 
-    const comments = ((args.comments: any): string).split(",");
+    const log = new Logger(console);
+
+    if (args.help) {
+        logHelp(log);
+        process.exit(ErrorCodes.SUCCESS);
+    }
+
+    const comments = ((args.comments: any): string).split(",").filter(c => !!c);
+    const excludeGlobs = ((args.ignore: any): string)
+        .split(",")
+        .filter(c => !!c);
 
     // Make sure we have something to search, so default to current working
     // directory if no globs are given.
-    const globs = args._ && args._.length > 0 ? args._ : [process.cwd()];
+    const includeGlobs = args._ && args._.length > 0 ? args._ : [process.cwd()];
 
-    checkSync(globs, args.fix === true, comments, new Logger(console)).then(
-        exitCode => process.exit(exitCode),
-    );
+    checkSync(
+        {
+            includeGlobs,
+            excludeGlobs,
+            autoFix: args["update-tags"] === true,
+            comments,
+            rootMarker: (args["root-marker"]: any),
+            dryRun: args["dry-run"] === true,
+        },
+        log,
+    ).then(exitCode => process.exit(exitCode));
 };

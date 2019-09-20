@@ -4,6 +4,7 @@
 module.exports = {
     // Automatically restore mocks between every test
     resetMocks: true,
+    restoreMocks: true,
 
     // The directory where Jest should output its coverage files
     coverageDirectory: "coverage",
@@ -14,5 +15,5 @@ module.exports = {
     // Setting this value to "fake" allows the use of fake timers for functions such as "setTimeout"
     timers: "fake",
 
-    setupFilesAfterEnv: ["jest-extended"],
+    setupFilesAfterEnv: ["jest-extended", "./jest.setup.js"],
 };

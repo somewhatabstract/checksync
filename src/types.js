@@ -47,6 +47,11 @@ export type Target = {
      * what we will pick up and report/fix.
      */
     +checksum: string,
+
+    /**
+     * The full line of text declaring the sync-start for this target.
+     */
+    +declaration: string,
 };
 
 /**
@@ -77,6 +82,11 @@ export type Marker = {
      * The targets that the marker syncs with.
      */
     +targets: Targets,
+
+    /**
+     * The comment style detected.
+     */
+    +comment: string,
 };
 
 /**
@@ -102,22 +112,30 @@ export type MarkerCache = {
 };
 
 /**
- * Handle a sync violation
+ * Process a file.
+ *
+ * @returns {boolean} True, if the file was ok; false, if there was a checksum
+ * mismatch violation.
  */
-export type ViolationHandler = (
-    markerID: string,
-    sourceFile: string,
-    sourceLine: string | number,
-    refChecksum: ?string,
-    targetFile: string,
-    targetLine: string | number,
-    targetChecksum: ?string,
+export type FileProcessor = (
+    options: Options,
+    file: string,
+    cache: MarkerCache,
     log: ILog,
-) => void;
+) => Promise<boolean>;
 
 export type normalizePathFn = (
     relativeFile: string,
 ) => ?{
     file: string,
     exists: boolean,
+};
+
+export type Options = {
+    includeGlobs: Array<string>,
+    excludeGlobs: Array<string>,
+    autoFix: boolean,
+    comments: Array<string>,
+    dryRun: boolean,
+    rootMarker?: ?string,
 };

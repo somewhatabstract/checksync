@@ -1,28 +1,23 @@
 // @flow
 import path from "path";
-import chalk from "chalk";
 import StringLogger from "../string-logger.js";
 
 import checkSync from "../check-sync.js";
 
 describe("Integration Tests", () => {
-    beforeEach(() => {
-        chalk.enabled = false;
-    });
-
-    afterEach(() => {
-        chalk.enabled = true;
-    });
-
     it("should report __examples__ violations", async () => {
         // Arrange
         const stringLogger = new StringLogger();
 
         // Act
         await checkSync(
-            [path.join(__dirname, "../../__examples__")],
-            false,
-            ["//", "#"],
+            {
+                includeGlobs: [path.join(__dirname, "../../__examples__")],
+                autoFix: false,
+                comments: ["//", "#"],
+                dryRun: false,
+                excludeGlobs: ["**/excluded/**"],
+            },
             stringLogger,
         );
         const result = stringLogger.getLog();
@@ -37,9 +32,13 @@ describe("Integration Tests", () => {
 
         // Act
         await checkSync(
-            [path.join(__dirname, "../../__examples__")],
-            true,
-            ["//", "#"],
+            {
+                includeGlobs: [path.join(__dirname, "../../__examples__")],
+                autoFix: true,
+                comments: ["//", "#"],
+                dryRun: true,
+                excludeGlobs: ["**/excluded/**"],
+            },
             stringLogger,
         );
         const result = stringLogger.getLog();

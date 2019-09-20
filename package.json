@@ -37,6 +37,7 @@
         "@babel/preset-flow": "^7.0.0",
         "@babel/register": "^7.5.5",
         "adler-32": "^1.2.0",
+        "ancesdir": "^1.1.0",
         "babel-eslint": "^10.0.2",
         "babel-jest": "^24.9.0",
         "babelrc-rollup": "^3.0.0",
@@ -59,7 +60,6 @@
         "rollup-plugin-babel": "^4.3.3",
         "rollup-plugin-babel-minify": "^9.0.0",
         "rollup-plugin-commonjs": "^10.1.0",
-        "rollup-plugin-graph": "^2.0.0",
         "rollup-plugin-node-resolve": "^5.2.0",
         "rollup-plugin-visualizer": "^2.6.0"
     },
@@ -68,8 +68,9 @@
     },
     "scripts": {
         "prepublishOnly": "yarn clean && yarn test && yarn build",
-        "clean": "rm -rf dist",
-        "build": "yarn test && rollup -c > obj/deps.dot",
+        "clean": "rm -rf dist && rm -rf obj",
+        "build": "yarn test && rollup -c",
+        "test:ci": "jest --colors --config jest.config.js --testPathIgnorePatterns integration_test.js",
         "test": "jest --colors --config jest.config.js --testPathIgnorePatterns integration_test.js",
         "test:integration": "jest --colors --config jest.config.js integration_test.js",
         "test:all": "jest --colors --config jest.config.js",
