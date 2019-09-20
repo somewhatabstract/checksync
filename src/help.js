@@ -79,11 +79,11 @@ export default function logHelp(log: ILog) {
     // Parse text from markdown into formatted text.
     const formattedHelp = helpMarkDown
         .replace(regexHeaders, (s, ...args) => {
-            const [heading] = args;
+            const [heading] = (args: Array<string>);
             return Format.heading(`${heading}`);
         })
         .replace(regexCode, (s, ...args) => {
-            const [space, code] = args;
+            const [space, code] = (args: Array<string>);
             return `${space}${Format.code(code)}  `;
         });
 

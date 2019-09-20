@@ -27,14 +27,14 @@ export default async function getMarkersFromFiles(
 ): Promise<MarkerCache> {
     const cacheData: MarkerCache = {};
     const referencedFiles: Array<string> = [];
-    const logFileRef = (file, fileRef) => {
+    const logFileRef = (file, fileRef, track) => {
         // Target paths are relative to the root location.
         const rootPath = ancesdir(file, options.rootMarker);
         const normalizedFileRef = path.normalize(path.join(rootPath, fileRef));
         const exists =
             fs.existsSync(normalizedFileRef) &&
             fs.lstatSync(normalizedFileRef).isFile();
-        if (exists) {
+        if (track && exists) {
             referencedFiles.push(normalizedFileRef);
         }
         return {file: normalizedFileRef, exists};
@@ -77,7 +77,7 @@ export default async function getMarkersFromFiles(
                     fixable,
                     options.comments,
                     log,
-                    fixable ? fileRef => logFileRef(file, fileRef) : null,
+                    fileRef => logFileRef(file, fileRef, fixable),
                 );
                 setCacheData(
                     file,

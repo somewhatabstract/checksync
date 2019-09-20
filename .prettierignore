@@ -6,3 +6,4 @@ dist
 *.yml
 *.md
 *.py
+__examples__

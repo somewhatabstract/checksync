@@ -91,7 +91,7 @@ describe("#fromFiles", () => {
             false,
             ["//"],
             NullLogger,
-            null,
+            expect.any(Function),
         );
         expect(pathSpy).toHaveBeenCalledWith("file.dirname", "b.js");
         expect(ancesdirSpy).toHaveBeenCalledWith("a.js", null);
@@ -146,7 +146,7 @@ describe("#fromFiles", () => {
             false,
             ["//"],
             NullLogger,
-            null,
+            expect.any(Function),
         );
     });
 
