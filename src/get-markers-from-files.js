@@ -7,8 +7,9 @@ import path from "path";
 import uniq from "lodash/uniq";
 import parseFile from "./parse-file.js";
 import ancesdir from "ancesdir";
+import cloneAsUnfixable from "./clone-as-unfixable.js";
 
-import type {ILog, MarkerCache, Options} from "./types.js";
+import type {ILog, FileInfo, MarkerCache, Options} from "./types.js";
 
 /**
  * Generate a marker cache from the given files.
@@ -38,19 +39,72 @@ export default async function getMarkersFromFiles(
         return {file: normalizedFileRef, exists};
     };
 
+    const setCacheData = (file: string, info: ?FileInfo) => {
+        cacheData[file] = info;
+        if (info != null) {
+            info.aliases.push(file);
+        }
+    };
+
+    const cacheFiles = async (files: Array<string>, fixable: boolean) => {
+        for (const file of files) {
+            if (cacheData[file] !== undefined) {
+                continue;
+            }
+
+            // This file might be a symlink source or target, so before we parse it,
+            // let's see if we already did.
+            try {
+                const realFilePath = fs.realpathSync(file);
+                if (
+                    realFilePath !== file &&
+                    cacheData[realFilePath] !== undefined
+                ) {
+                    // Close as unfixable, since this file already exists in
+                    // a fixable version, and we don't need to fix it twice.
+                    setCacheData(
+                        file,
+                        cloneAsUnfixable(cacheData[realFilePath]),
+                    );
+                    continue;
+                }
+
+                const fileMarkers = await parseFile(
+                    file,
+                    fixable,
+                    options.comments,
+                    log,
+                    fixable ? fileRef => logFileRef(file, fileRef) : null,
+                );
+                setCacheData(
+                    file,
+                    fileMarkers
+                        ? {
+                              markers: fileMarkers,
+                              aliases: [],
+                          }
+                        : null,
+                );
+
+                // Since this might be a symlink source, let's make sure we store the
+                // markers under its target filepath too.
+                if (realFilePath !== file) {
+                    // Close as unfixable, since this file already exists in
+                    // a fixable version, and we don't need to fix it twice.
+                    setCacheData(
+                        realFilePath,
+                        cloneAsUnfixable(cacheData[file]),
+                    );
+                }
+            } catch (e) {
+                log.error(e.message);
+            }
+        }
+    };
+
     // TODO(somewhatabstract): Use jest-worker and farm parsing out to
     // multiple threads.
-
-    for (const file of files) {
-        const fileMarkers = await parseFile(
-            file,
-            true,
-            options.comments,
-            log,
-            fileRef => logFileRef(file, fileRef),
-        );
-        cacheData[file] = fileMarkers;
-    }
+    await cacheFiles(files, true);
 
     /**
      * In this second pass, we load the files that are not in the original
@@ -58,19 +112,7 @@ export default async function getMarkersFromFiles(
      * deeper (though perhaps repeating till all referenced files are
      * loaded would be a mode folks might want).
      */
-    for (const fileRef of uniq(referencedFiles)) {
-        if (cacheData[fileRef] !== undefined) {
-            continue;
-        }
-
-        const fileMarkers = await parseFile(
-            fileRef,
-            false,
-            options.comments,
-            log,
-        );
-        cacheData[fileRef] = fileMarkers;
-    }
+    await cacheFiles(uniq(referencedFiles), false);
 
     return cacheData;
 }

@@ -32,7 +32,7 @@ export default function parseFile(
     fixable: boolean,
     comments: Array<string>,
     log: ILog,
-    normalizeFileRef?: normalizePathFn,
+    normalizeFileRef?: ?normalizePathFn,
 ): Promise<?Markers> {
     const fileRefLogger = new FileReferenceLogger(file, log);
     const markers: Markers = {};
@@ -73,10 +73,15 @@ export default function parseFile(
                 fileRefLogger,
             );
 
+            // Open the file synchronously so we get a nice error if the file
+            // does not exist or errors in some way during open.
+            const fd = fs.openSync(file, "r");
+            const fileStream = fs.createReadStream(file, {fd});
+
             // Start the parsing.
             readline
                 .createInterface({
-                    input: fs.createReadStream(file),
+                    input: fileStream,
                     crlfDelay: Infinity,
                 })
                 .on("line", (line: string) => markerParser.parseLine(line))

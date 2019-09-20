@@ -2,7 +2,7 @@
 import Format from "./format.js";
 import cwdRelativePath from "./cwd-relative-path.js";
 
-import type {ILog, Marker, MarkerCache} from "./types.js";
+import type {FileInfo, ILog, Marker, MarkerCache} from "./types.js";
 
 export type MarkerEdge = {
     /**
@@ -62,12 +62,12 @@ export default function* generateMarkerEdges(
     cache: MarkerCache,
     log: ILog,
 ): Iterator<MarkerEdge> {
-    const getTargetDetail = (targetMarker: ?Marker) => {
+    const getTargetDetail = (targetMarker: ?Marker, aliases: Array<string>) => {
         if (targetMarker == null) {
             return null;
         }
         const matchingTargets = Object.entries(targetMarker.targets).filter(
-            ([_, target]) => (target: any).file === file,
+            ([_, target]) => aliases.includes((target: any).file),
         );
         if (matchingTargets.length === 0) {
             return null;
@@ -82,13 +82,14 @@ export default function* generateMarkerEdges(
         };
     };
 
-    const markers = cache[file];
-    if (markers == null) {
+    const fileInfo = cache[file];
+    if (fileInfo == null) {
         // This means a target reference that couldn't be found and we can
         // totally ignore it at this level.
         return;
     }
 
+    const {markers, aliases} = fileInfo;
     for (const markerID of Object.keys(markers)) {
         const sourceMarker = markers[markerID];
         if (!sourceMarker.fixable) {
@@ -104,10 +105,14 @@ export default function* generateMarkerEdges(
          */
         for (const sourceLine of Object.keys(sourceMarker.targets)) {
             const targetRef = sourceMarker.targets[sourceLine];
-            const target = cache[targetRef.file];
-            const targetMarker = target && target[markerID];
+            const targetInfo: ?FileInfo = cache[targetRef.file];
+            const targetMarker: ?Marker =
+                targetInfo && targetInfo.markers[markerID];
 
-            const targetDetails = getTargetDetail(targetMarker);
+            // TODO(somewhatabstract): Ensure we take aliases into account
+            // when looking for target.
+
+            const targetDetails = getTargetDetail(targetMarker, aliases);
             if (targetDetails == null) {
                 // If we got no details, then either the target file is not in
                 // the cache, does not contain the marker, or does not have
