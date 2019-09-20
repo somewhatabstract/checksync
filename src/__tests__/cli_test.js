@@ -181,7 +181,56 @@ describe("#run", () => {
             expect(result).toBeFalse();
         });
 
-        it("should return true for other things", () => {
+        it("should exit on unknown arguments starting with -", () => {
+            // Arrange
+            const fakeParsedArgs = {
+                ...defaultArgs,
+                fix: false,
+                comments: "//,#",
+            };
+            jest.spyOn(CheckSync, "default").mockReturnValue({then: jest.fn()});
+            const minimistSpy = jest
+                .spyOn(minimist, "default")
+                .mockReturnValue(fakeParsedArgs);
+            const exitSpy = jest
+                .spyOn(process, "exit")
+                .mockImplementationOnce(() => {});
+            run(__filename);
+            const unknownHandler = minimistSpy.mock.calls[0][1].unknown;
+
+            // Act
+            unknownHandler("--imadethisup");
+
+            // Assert
+            expect(exitSpy).toHaveBeenCalledWith(ErrorCodes.UNKNOWN_ARGS);
+        });
+
+        it("should report unknown arguments starting with -", () => {
+            // Arrange
+            const fakeParsedArgs = {
+                ...defaultArgs,
+                fix: false,
+                comments: "//,#",
+            };
+            jest.spyOn(CheckSync, "default").mockReturnValue({then: jest.fn()});
+            const minimistSpy = jest
+                .spyOn(minimist, "default")
+                .mockReturnValue(fakeParsedArgs);
+            jest.spyOn(process, "exit").mockImplementationOnce(() => {});
+            const logSpy = jest.spyOn(new Logger(null), "error");
+            run(__filename);
+            const unknownHandler = minimistSpy.mock.calls[0][1].unknown;
+
+            // Act
+            unknownHandler("--imadethisup");
+
+            // Assert
+            expect(logSpy).toHaveBeenCalledWith(
+                "Unknown argument: --imadethisup",
+            );
+        });
+
+        it("should return true for non-argument args (i.e. files)", () => {
             // Arrange
             const fakeParsedArgs = {
                 ...defaultArgs,
