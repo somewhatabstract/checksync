@@ -11,56 +11,64 @@ import type {MarkerCache, Marker, Target, Options} from "../types.js";
 describe("#processCache", () => {
     const TestCache: MarkerCache = {
         filea: {
-            marker1: ({
-                comment: "//",
-                fixable: true,
-                checksum: "5678",
-                targets: {
-                    "1": ({
-                        checksum: "MISMATCH!",
-                        file: "fileb",
-                        declaration: "// sync-start:marker1 MISMATCH! fileb",
-                    }: Target),
-                },
-            }: Marker),
-            marker2: ({
-                comment: "//",
-                fixable: true,
-                checksum: "5678",
-                targets: {
-                    "1": ({
-                        checksum: "MISMATCH!",
-                        file: "fileb",
-                        declaration: "// sync-start:marker2 MISMATCH! fileb",
-                    }: Target),
-                },
-            }: Marker),
+            aliases: ["filea"],
+            markers: {
+                marker1: ({
+                    comment: "//",
+                    fixable: true,
+                    checksum: "5678",
+                    targets: {
+                        "1": ({
+                            checksum: "MISMATCH!",
+                            file: "fileb",
+                            declaration:
+                                "// sync-start:marker1 MISMATCH! fileb",
+                        }: Target),
+                    },
+                }: Marker),
+                marker2: ({
+                    comment: "//",
+                    fixable: true,
+                    checksum: "5678",
+                    targets: {
+                        "1": ({
+                            checksum: "MISMATCH!",
+                            file: "fileb",
+                            declaration:
+                                "// sync-start:marker2 MISMATCH! fileb",
+                        }: Target),
+                    },
+                }: Marker),
+            },
         },
         fileb: {
-            marker1: ({
-                comment: "//",
-                fixable: true,
-                checksum: "TARGET_CHECKSUM",
-                targets: {
-                    "1": ({
-                        checksum: "5678",
-                        file: "filea",
-                        declaration: "// sync-start:marker1 5678 filea",
-                    }: Target),
-                },
-            }: Marker),
-            marker2: ({
-                comment: "//",
-                fixable: true,
-                checksum: "TARGET_CHECKSUM",
-                targets: {
-                    "1": ({
-                        checksum: "5678",
-                        file: "filea",
-                        declaration: "// sync-start:marker2 5678 filea",
-                    }: Target),
-                },
-            }: Marker),
+            aliases: ["fileb"],
+            markers: {
+                marker1: ({
+                    comment: "//",
+                    fixable: true,
+                    checksum: "TARGET_CHECKSUM",
+                    targets: {
+                        "1": ({
+                            checksum: "5678",
+                            file: "filea",
+                            declaration: "// sync-start:marker1 5678 filea",
+                        }: Target),
+                    },
+                }: Marker),
+                marker2: ({
+                    comment: "//",
+                    fixable: true,
+                    checksum: "TARGET_CHECKSUM",
+                    targets: {
+                        "1": ({
+                            checksum: "5678",
+                            file: "filea",
+                            declaration: "// sync-start:marker2 5678 filea",
+                        }: Target),
+                    },
+                }: Marker),
+            },
         },
     };
 
