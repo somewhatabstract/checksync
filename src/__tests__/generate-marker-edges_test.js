@@ -25,32 +25,38 @@ describe("#generateMarkerEdges", () => {
         const NullLogger = new Logger();
         const markerCache: MarkerCache = {
             filea: {
-                marker: ({
-                    comment: "//",
-                    fixable: false,
-                    checksum: "",
-                    targets: {
-                        "1": ({
-                            checksum: "5678",
-                            file: "fileb",
-                            declaration: "// sync-start:marker 5678 fileb",
-                        }: Target),
-                    },
-                }: Marker),
+                aliases: [],
+                markers: {
+                    marker: ({
+                        comment: "//",
+                        fixable: false,
+                        checksum: "",
+                        targets: {
+                            "1": ({
+                                checksum: "5678",
+                                file: "fileb",
+                                declaration: "// sync-start:marker 5678 fileb",
+                            }: Target),
+                        },
+                    }: Marker),
+                },
             },
             fileb: {
-                marker: ({
-                    comment: "//",
-                    fixable: true,
-                    checksum: "",
-                    targets: {
-                        "1": ({
-                            checksum: "1234",
-                            file: "filea",
-                            declaration: "// sync-start:marker 1234 filea",
-                        }: Target),
-                    },
-                }: Marker),
+                aliases: [],
+                markers: {
+                    marker: ({
+                        comment: "//",
+                        fixable: true,
+                        checksum: "",
+                        targets: {
+                            "1": ({
+                                checksum: "1234",
+                                file: "filea",
+                                declaration: "// sync-start:marker 1234 filea",
+                            }: Target),
+                        },
+                    }: Marker),
+                },
             },
         };
 
@@ -68,32 +74,38 @@ describe("#generateMarkerEdges", () => {
         const NullLogger = new Logger();
         const markerCache: MarkerCache = {
             filea: {
-                marker: ({
-                    comment: "//",
-                    fixable: false,
-                    checksum: "",
-                    targets: {
-                        "1": ({
-                            checksum: "5678",
-                            file: "fileb",
-                            declaration: "// sync-start:marker 5678 fileb",
-                        }: Target),
-                    },
-                }: Marker),
+                aliases: ["filea"],
+                markers: {
+                    marker: ({
+                        comment: "//",
+                        fixable: false,
+                        checksum: "",
+                        targets: {
+                            "1": ({
+                                checksum: "5678",
+                                file: "fileb",
+                                declaration: "// sync-start:marker 5678 fileb",
+                            }: Target),
+                        },
+                    }: Marker),
+                },
             },
             fileb: {
-                marker: ({
-                    comment: "//",
-                    fixable: true,
-                    checksum: "",
-                    targets: ({
-                        "1": ({
-                            checksum: "1234",
-                            file: "filea",
-                            declaration: "// sync-start:marker 1234 filea",
-                        }: Target),
-                    }: any),
-                }: Marker),
+                aliases: ["fileb"],
+                markers: {
+                    marker: ({
+                        comment: "//",
+                        fixable: true,
+                        checksum: "",
+                        targets: ({
+                            "1": ({
+                                checksum: "1234",
+                                file: "filea",
+                                declaration: "// sync-start:marker 1234 filea",
+                            }: Target),
+                        }: any),
+                    }: Marker),
+                },
             },
         };
 
@@ -123,18 +135,21 @@ describe("#generateMarkerEdges", () => {
         const errorSpy = jest.spyOn(NullLogger, "error");
         const markerCache: MarkerCache = {
             filea: {
-                marker: ({
-                    comment: "//",
-                    fixable: true,
-                    checksum: "",
-                    targets: {
-                        "1": ({
-                            checksum: "5678",
-                            file: "fileb",
-                            declaration: "// sync-start:marker 5678 fileb",
-                        }: Target),
-                    },
-                }: Marker),
+                aliases: ["filea"],
+                markers: {
+                    marker: ({
+                        comment: "//",
+                        fixable: true,
+                        checksum: "",
+                        targets: {
+                            "1": ({
+                                checksum: "5678",
+                                file: "fileb",
+                                declaration: "// sync-start:marker 5678 fileb",
+                            }: Target),
+                        },
+                    }: Marker),
+                },
             },
         };
 
@@ -153,26 +168,32 @@ describe("#generateMarkerEdges", () => {
         const errorSpy = jest.spyOn(NullLogger, "error");
         const markerCache: MarkerCache = {
             filea: {
-                marker: ({
-                    comment: "//",
-                    fixable: true,
-                    checksum: "",
-                    targets: {
-                        "1": ({
-                            checksum: "5678",
-                            file: "fileb",
-                            declaration: "// sync-start:marker 5678 fileb",
-                        }: Target),
-                    },
-                }: Marker),
+                aliases: ["filea"],
+                markers: {
+                    marker: ({
+                        comment: "//",
+                        fixable: true,
+                        checksum: "",
+                        targets: {
+                            "1": ({
+                                checksum: "5678",
+                                file: "fileb",
+                                declaration: "// sync-start:marker 5678 fileb",
+                            }: Target),
+                        },
+                    }: Marker),
+                },
             },
             fileb: {
-                marker: ({
-                    comment: "//",
-                    fixable: true,
-                    checksum: "",
-                    targets: {},
-                }: Marker),
+                aliases: ["fileb"],
+                markers: {
+                    marker: ({
+                        comment: "//",
+                        fixable: true,
+                        checksum: "",
+                        targets: {},
+                    }: Marker),
+                },
             },
         };
 
@@ -190,32 +211,38 @@ describe("#generateMarkerEdges", () => {
         const NullLogger = new Logger();
         const markerCache: MarkerCache = {
             filea: {
-                marker: ({
-                    comment: "//",
-                    fixable: true,
-                    checksum: "1234",
-                    targets: {
-                        "1": ({
-                            checksum: "5678",
-                            file: "fileb",
-                            declaration: "// sync-start:marker 5678 fileb",
-                        }: Target),
-                    },
-                }: Marker),
+                aliases: ["filea"],
+                markers: {
+                    marker: ({
+                        comment: "//",
+                        fixable: true,
+                        checksum: "1234",
+                        targets: {
+                            "1": ({
+                                checksum: "5678",
+                                file: "fileb",
+                                declaration: "// sync-start:marker 5678 fileb",
+                            }: Target),
+                        },
+                    }: Marker),
+                },
             },
             fileb: {
-                marker: ({
-                    comment: "//",
-                    fixable: true,
-                    checksum: "5678",
-                    targets: {
-                        "1": ({
-                            checksum: "1234",
-                            file: "filea",
-                            declaration: "// sync-start:marker 1234 filea",
-                        }: Target),
-                    },
-                }: Marker),
+                aliases: ["fileb"],
+                markers: {
+                    marker: ({
+                        comment: "//",
+                        fixable: true,
+                        checksum: "5678",
+                        targets: {
+                            "1": ({
+                                checksum: "1234",
+                                file: "filea",
+                                declaration: "// sync-start:marker 1234 filea",
+                            }: Target),
+                        },
+                    }: Marker),
+                },
             },
         };
 
@@ -233,32 +260,38 @@ describe("#generateMarkerEdges", () => {
         const NullLogger = new Logger();
         const markerCache: MarkerCache = {
             filea: {
-                marker: ({
-                    comment: "//",
-                    fixable: true,
-                    checksum: "4321",
-                    targets: {
-                        "1": ({
-                            checksum: "5678",
-                            file: "fileb",
-                            declaration: "// sync-start:marker 4321 fileb",
-                        }: Target),
-                    },
-                }: Marker),
+                aliases: ["filea"],
+                markers: {
+                    marker: ({
+                        comment: "//",
+                        fixable: true,
+                        checksum: "4321",
+                        targets: {
+                            "1": ({
+                                checksum: "5678",
+                                file: "fileb",
+                                declaration: "// sync-start:marker 4321 fileb",
+                            }: Target),
+                        },
+                    }: Marker),
+                },
             },
             fileb: {
-                marker: ({
-                    comment: "//",
-                    fixable: true,
-                    checksum: "8765",
-                    targets: {
-                        "1": ({
-                            checksum: "1234",
-                            file: "filea",
-                            declaration: "// sync-start:marker 1234 filea",
-                        }: Target),
-                    },
-                }: Marker),
+                aliases: ["fileb"],
+                markers: {
+                    marker: ({
+                        comment: "//",
+                        fixable: true,
+                        checksum: "8765",
+                        targets: {
+                            "1": ({
+                                checksum: "1234",
+                                file: "filea",
+                                declaration: "// sync-start:marker 1234 filea",
+                            }: Target),
+                        },
+                    }: Marker),
+                },
             },
         };
 

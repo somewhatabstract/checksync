@@ -26,6 +26,10 @@ export const run = (launchFilePath: string): void => {
     chalk.level = 3;
     chalk.enabled = true;
 
+    const log = new Logger(console);
+
+    // TODO(somewhatabstract): Verbose logging (make sure any caught errors
+    // verbose their error messages)
     const args = minimist(process.argv, {
         boolean: ["update-tags", "dry-run", "help"],
         string: ["comments", "root-marker", "ignore"],
@@ -47,11 +51,14 @@ export const run = (launchFilePath: string): void => {
             if (arg === launchFilePath) return false;
             // Filter out the command that yarn/npm might install.
             if (arg.endsWith(".bin/checksync")) return false;
+
+            if (arg.startsWith("-")) {
+                log.error(`Unknown argument: ${arg}`);
+                process.exit(ErrorCodes.UNKNOWN_ARGS);
+            }
             return true;
         },
     });
-
-    const log = new Logger(console);
 
     if (args.help) {
         logHelp(log);

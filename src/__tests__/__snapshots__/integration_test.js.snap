@@ -17,6 +17,7 @@ exports[`Integration Tests should report __examples__ parse errors with autoFix:
  WARNING  __examples__/malformed_start/malformed_onlytagid.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
  ERROR  __examples__/missing_target/example.js:3 Sync-start for 'missing_target' points to '__examples__/missing_target/missing_target.py', which does not exist or is a directory
  ERROR  __examples__/no_self_reference/example.js:3 Sync-tag 'example_three' cannot target itself
+ ERROR  Cannot parse file: __examples__/symlinked_checksums_need_updating/target_does_not_exist.js
  ERROR  __examples__/unterminated_marker/example_two-b.py:3 Sync-start 'example_two' has no corresponding sync-end
 
 🛑  Aborting tag updates due to parsing errors. Fix these errors and try again."
@@ -38,6 +39,7 @@ exports[`Integration Tests should report __examples__ violations: __examples__ 1
  WARNING  __examples__/malformed_start/malformed_onlytagid.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
  ERROR  __examples__/missing_target/example.js:3 Sync-start for 'missing_target' points to '__examples__/missing_target/missing_target.py', which does not exist or is a directory
  ERROR  __examples__/no_self_reference/example.js:3 Sync-tag 'example_three' cannot target itself
+ ERROR  Cannot parse file: __examples__/symlinked_checksums_need_updating/target_does_not_exist.js
  ERROR  __examples__/unterminated_marker/example_two-b.py:3 Sync-start 'example_two' has no corresponding sync-end
  MISMATCH  __examples__/checksums_need_updating/a.js:3 Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (45678 != 209519188)
  MISMATCH  __examples__/checksums_need_updating/b.py:3 Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/a.js:3'. Make sure you've made the parallel changes in the source file, if necessary (4567 != 252580609)

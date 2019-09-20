@@ -100,6 +100,11 @@ export type Markers = {
     ...,
 };
 
+export type FileInfo = {
+    aliases: Array<string>,
+    markers: Markers,
+};
+
 /**
  * All the markers we're working with as a map from filepath to its markers.
  */
@@ -107,7 +112,7 @@ export type MarkerCache = {
     /**
      * A file path mapped to the markers within it.
      */
-    [file: string]: ?Markers,
+    [file: string]: ?FileInfo,
     ...,
 };
 

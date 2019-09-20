@@ -7,6 +7,7 @@ const errorCodes = {
     NO_FILES: 1,
     PARSE_ERRORS: 2,
     DESYNCHRONIZED_BLOCKS: 3,
+    UNKNOWN_ARGS: 4,
 };
 
 export type ErrorCode = $Values<typeof errorCodes>;
