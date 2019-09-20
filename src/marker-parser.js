@@ -280,10 +280,10 @@ export default class MarkerParser {
      * @param {string} content The line content to be parsed.
      */
     parseLine = (content: string): void => {
-        content = content.trim();
         const lineNumber = this._lineNumber++;
 
-        const startMatch = this._startTagRegExp.exec(content);
+        const tagSearch = content.trim();
+        const startMatch = this._startTagRegExp.exec(tagSearch);
         if (startMatch != null) {
             const startDecode = this._startTagDecodeRegExp.exec(startMatch[2]);
             if (startDecode == null) {
@@ -304,7 +304,7 @@ export default class MarkerParser {
             return;
         }
 
-        const endMatch = this._endTagRegExp.exec(content);
+        const endMatch = this._endTagRegExp.exec(tagSearch);
         if (endMatch != null) {
             const endDecode = this._endTagDecodeRegExp.exec(endMatch[1]);
             if (endDecode == null) {
