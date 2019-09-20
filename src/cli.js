@@ -27,6 +27,9 @@ export const run = (launchFilePath: string): void => {
     chalk.enabled = true;
 
     const log = new Logger(console);
+
+    // TODO(somewhatabstract): Verbose logging (make sure any caught errors
+    // verbose their error messages)
     const args = minimist(process.argv, {
         boolean: ["update-tags", "dry-run", "help"],
         string: ["comments", "root-marker", "ignore"],

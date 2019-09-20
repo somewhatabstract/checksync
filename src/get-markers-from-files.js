@@ -8,6 +8,7 @@ import uniq from "lodash/uniq";
 import parseFile from "./parse-file.js";
 import ancesdir from "ancesdir";
 import cloneAsUnfixable from "./clone-as-unfixable.js";
+import Format from "./format.js";
 
 import type {ILog, FileInfo, MarkerCache, Options} from "./types.js";
 
@@ -99,7 +100,7 @@ export default async function getMarkersFromFiles(
                     );
                 }
             } catch (e) {
-                log.error(e.message);
+                log.error(`Cannot parse file: ${Format.cwdFilePath(file)}`);
             }
         }
     };

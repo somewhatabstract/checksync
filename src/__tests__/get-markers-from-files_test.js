@@ -6,6 +6,7 @@ import * as ParseFile from "../parse-file.js";
 import Logger from "../logger.js";
 import * as Ancesdir from "ancesdir";
 import * as CloneAsFixable from "../clone-as-unfixable.js";
+import Format from "../format.js";
 
 import type {Options} from "../types.js";
 
@@ -375,6 +376,7 @@ describe("#fromFiles", () => {
         jest.spyOn(fs, "realpathSync").mockImplementation(a => {
             throw new Error("This isn't a file!");
         });
+        jest.spyOn(Format, "cwdFilePath").mockImplementation(f => f);
         const logSpy = jest.spyOn(NullLogger, "error");
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
@@ -389,6 +391,6 @@ describe("#fromFiles", () => {
         await getMarkersFromFiles(options, ["a.js", "b.js"], NullLogger);
 
         // Assert
-        expect(logSpy).toHaveBeenCalledWith("This isn't a file!");
+        expect(logSpy).toHaveBeenCalledWith("Cannot parse file: a.js");
     });
 });
