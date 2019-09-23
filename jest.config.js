@@ -12,10 +12,6 @@ module.exports = {
     // The test environment that will be used for testing
     testEnvironment: "node",
 
-    testPathIgnorePatterns: process.env.ALLOW_INTEGRATION_TESTS
-        ? []
-        : ["integration"],
-
     // Setting this value to "fake" allows the use of fake timers for functions such as "setTimeout"
     timers: "fake",
 
