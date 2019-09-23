@@ -32,7 +32,6 @@ export default async function checkSync(
     }
 
     const cache = await getMarkersFromFiles(options, files, log);
-
     if (log.errorsLogged && autoFix) {
         log.log("");
         log.log(
@@ -41,5 +40,6 @@ export default async function checkSync(
         return ErrorCodes.PARSE_ERRORS;
     }
 
-    return processCache(options, cache, log);
+    const result = processCache(options, cache, log);
+    return result;
 }

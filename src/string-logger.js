@@ -20,7 +20,7 @@ class StringLoggerInternal {
     getLog = () => this._buffer.join("\n");
 
     group = (...labels: Array<string>) => {
-        this._log("<group>", ...labels);
+        this._log("<group ", ...labels, " >");
         this._groupIndent++;
     };
 

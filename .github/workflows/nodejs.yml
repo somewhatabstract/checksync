@@ -21,6 +21,8 @@ jobs:
           - node-version: 12.x
             os: ubuntu-latest
             coverage: true
+            # Integration tests currently won't match paths if run on windows
+            # so, they are disabled.
           - os: windows-latest
             skip-integration-tests: true
 
@@ -39,7 +41,7 @@ jobs:
       if: matrix.coverage
 
     - name: Run integration tests
-      run: yarn test:integration --testTimeout=20000
+      run: yarn test:integration
       if: matrix.skip-integration-tests != true
 
     - name: Run tests
