@@ -27,7 +27,7 @@ describe("StringLogger", () => {
             const result = logger.getLog();
 
             // Assert
-            expect(result).toMatchInlineSnapshot(`"<group>GROUP!"`);
+            expect(result).toMatchInlineSnapshot(`"<group GROUP! >"`);
         });
 
         it("should indent subsequent calls by group level", () => {
@@ -70,7 +70,7 @@ describe("StringLogger", () => {
 
             // Assert
             expect(result).toMatchInlineSnapshot(`
-                "<group>GROUP!
+                "<group GROUP! >
                 <end_group>"
             `);
         });

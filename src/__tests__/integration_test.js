@@ -1,49 +1,66 @@
 // @flow
+import fs from "fs";
 import path from "path";
+import ancesdir from "ancesdir";
 import StringLogger from "../string-logger.js";
 
 import checkSync from "../check-sync.js";
 
 describe("Integration Tests", () => {
-    it("should report __examples__ violations", async () => {
-        // Arrange
-        const stringLogger = new StringLogger();
+    const getExampleDirs = () => {
+        const __examples__ = path.join(ancesdir(), "__examples__");
+        return fs
+            .readdirSync(__examples__)
+            .map(name => [name, path.join(__examples__, name)])
+            .filter(([_, dirPath]) => fs.lstatSync(dirPath).isDirectory());
+    };
+    const exampleDirs = getExampleDirs();
 
-        // Act
-        await checkSync(
-            {
-                includeGlobs: [path.join(__dirname, "../../__examples__")],
-                autoFix: false,
-                comments: ["//", "#"],
-                dryRun: false,
-                excludeGlobs: ["**/excluded/**"],
-            },
-            stringLogger,
-        );
-        const result = stringLogger.getLog();
+    it.each(exampleDirs)(
+        "should report example %s to match snapshot",
+        async (name, dirPath) => {
+            // Arrange
+            const stringLogger = new StringLogger();
 
-        // Assert
-        expect(result).toMatchSnapshot("__examples__");
-    });
+            // Act
+            await checkSync(
+                {
+                    includeGlobs: [dirPath],
+                    autoFix: false,
+                    comments: ["//", "#"],
+                    dryRun: false,
+                    excludeGlobs: ["**/excluded/**"],
+                },
+                stringLogger,
+            );
+            const result = stringLogger.getLog();
 
-    it("should report __examples__ parse errors with autoFix", async () => {
-        // Arrange
-        const stringLogger = new StringLogger();
+            // Assert
+            expect(result).toMatchSnapshot();
+        },
+    );
 
-        // Act
-        await checkSync(
-            {
-                includeGlobs: [path.join(__dirname, "../../__examples__")],
-                autoFix: true,
-                comments: ["//", "#"],
-                dryRun: true,
-                excludeGlobs: ["**/excluded/**"],
-            },
-            stringLogger,
-        );
-        const result = stringLogger.getLog();
+    it.each(exampleDirs)(
+        "should report example %s to match snapshot with autofix dryrun",
+        async (name, dirPath) => {
+            // Arrange
+            const stringLogger = new StringLogger();
 
-        // Assert
-        expect(result).toMatchSnapshot("__examples__ autofix");
-    });
+            // Act
+            await checkSync(
+                {
+                    includeGlobs: [dirPath],
+                    autoFix: true,
+                    comments: ["//", "#"],
+                    dryRun: true,
+                    excludeGlobs: ["**/excluded/**"],
+                },
+                stringLogger,
+            );
+            const result = stringLogger.getLog();
+
+            // Assert
+            expect(result).toMatchSnapshot();
+        },
+    );
 });
