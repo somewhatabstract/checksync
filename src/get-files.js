@@ -37,6 +37,8 @@ const removeIgnoredFiles = (
     files: Array<string>,
     excludeGlobs: Array<string>,
 ): Array<string> => {
+    // Since the matchers are going to be applied repeatedly, let's build
+    // minimatch instances and reuse them.
     const matchers = uniq(excludeGlobs).map(glob => new Minimatch(glob));
     return files.filter(file => matchers.every(m => !m.match(file)));
 };
@@ -51,6 +53,5 @@ export default async function getFiles(
     excludeGlobs: Array<string>,
 ): Promise<Array<string>> {
     const includeFiles = await getFilesForGlobs(includeGlobs);
-
     return removeIgnoredFiles(includeFiles, excludeGlobs);
 }
