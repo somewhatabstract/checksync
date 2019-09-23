@@ -2,7 +2,8 @@
 import fs from "fs";
 import util from "util";
 import glob from "glob";
-import {Minimatch} from "minimatch";
+import minimatch from "minimatch";
+const {Minimatch} = minimatch;
 
 import flatten from "lodash/flatten";
 import sortedUniq from "lodash/sortedUniq";
