@@ -40,8 +40,12 @@ const removeIgnoredFiles = (
 ): Array<string> => {
     // Since the matchers are going to be applied repeatedly, let's build
     // minimatch instances and reuse them.
-    const matchers = uniq(excludeGlobs).map(glob => new Minimatch(glob));
-    return files.filter(file => matchers.every(m => !m.match(file)));
+    const matchers = uniq(excludeGlobs).map(
+        (glob: string) => new Minimatch(glob),
+    );
+    return files.filter(file =>
+        matchers.every((m: Minimatch) => !m.match(file)),
+    );
 };
 
 /**
