@@ -2,6 +2,7 @@
 import fs from "fs";
 import util from "util";
 import glob from "glob";
+import {Minimatch} from "minimatch";
 
 import flatten from "lodash/flatten";
 import sortedUniq from "lodash/sortedUniq";
@@ -32,6 +33,16 @@ function getFilesForGlobs(globs: Array<string>): Promise<Array<string>> {
     );
 }
 
+const removeIgnoredFiles = (
+    files: Array<string>,
+    excludeGlobs: Array<string>,
+): Array<string> => {
+    // Since the matchers are going to be applied repeatedly, let's build
+    // minimatch instances and reuse them.
+    const matchers = uniq(excludeGlobs).map(glob => new Minimatch(glob));
+    return files.filter(file => matchers.every(m => !m.match(file)));
+};
+
 /**
  * Expand the given globs into files.
  *
@@ -42,7 +53,5 @@ export default async function getFiles(
     excludeGlobs: Array<string>,
 ): Promise<Array<string>> {
     const includeFiles = await getFilesForGlobs(includeGlobs);
-    const excludeFiles = await getFilesForGlobs(excludeGlobs);
-
-    return includeFiles.filter(i => !excludeFiles.includes(i));
+    return removeIgnoredFiles(includeFiles, excludeGlobs);
 }
