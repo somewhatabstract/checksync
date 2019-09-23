@@ -1,11 +1,13 @@
 // @flow
 import fs from "fs";
 import * as Glob from "glob";
+import * as Minimatch from "minimatch";
 
 import getFiles from "../get-files.js";
 
 jest.mock("glob");
 jest.mock("fs");
+jest.mock("minimatch");
 
 describe("#getFiles", () => {
     it("should append directories with /**", async () => {
@@ -78,12 +80,14 @@ describe("#getFiles", () => {
             .mockImplementation((pattern, opts, cb) => {
                 cb(null, ["c", "a", "d", "b"]);
             });
+        const minimatchSpy = jest.spyOn(Minimatch, "Minimatch");
 
         // Act
         await getFiles(["pattern1", "pattern1"], ["exclude1", "exclude1"]);
 
         // Assert
-        expect(globSpy).toHaveBeenCalledTimes(2);
+        expect(globSpy).toHaveBeenCalledTimes(1);
+        expect(minimatchSpy).toHaveBeenCalledTimes(1);
     });
 
     it("should return a sorted list without duplicates", async () => {
@@ -110,22 +114,16 @@ describe("#getFiles", () => {
             .spyOn(Glob, "default")
             .mockImplementationOnce((pattern, opts, cb) => {
                 cb(null, ["c", "a", "d", "b"]);
-            })
-            .mockImplementationOnce((pattern, opts, cb) => {
-                cb(null, ["a"]);
-            })
-            .mockImplementationOnce((pattern, opts, cb) => {
-                cb(null, ["c", "a"]);
             });
+        jest.spyOn(Minimatch, "Minimatch").mockImplementation((...args) =>
+            jest.requireActual("minimatch").Minimatch(...args),
+        );
 
         // Act
-        const result = await getFiles(
-            ["pattern1"],
-            ["excludePattern1", "excludePattern2"],
-        );
+        const result = await getFiles(["pattern1"], ["a", "c"]);
 
         // Assert
         expect(result).toEqual(["b", "d"]);
-        expect(globSpy).toHaveBeenCalledTimes(3);
+        expect(globSpy).toHaveBeenCalledTimes(1);
     });
 });
