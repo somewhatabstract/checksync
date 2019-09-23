@@ -39,7 +39,7 @@ jobs:
       if: matrix.coverage
 
     - name: Run integration tests
-      run: yarn test:integration --testTimeout=20000
+      run: yarn test:integration
       if: matrix.skip-integration-tests != true
 
     - name: Run tests
