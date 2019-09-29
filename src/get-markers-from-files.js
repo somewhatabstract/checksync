@@ -71,7 +71,7 @@ export default async function getMarkersFromFiles(
                 }
 
                 // TODO(somewhatabstract): Use jest-worker and farm parsing out
-                // to  multiple threads/processes.
+                // to multiple threads/processes.
                 const fileMarkers = await parseFile(
                     file,
                     fixable,
