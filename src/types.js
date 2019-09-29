@@ -144,3 +144,8 @@ export type Options = {
     dryRun: boolean,
     rootMarker?: ?string,
 };
+
+export type NormalizedFileInfo = {
+    file: string,
+    exists: boolean,
+};

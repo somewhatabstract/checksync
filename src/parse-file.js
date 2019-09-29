@@ -5,12 +5,26 @@
  */
 import readline from "readline";
 import fs from "fs";
+import ancesdir from "ancesdir";
 
 import Format from "./format.js";
 import MarkerParser from "./marker-parser.js";
 import FileReferenceLogger from "./file-reference-logger.js";
+import getNormalizedTargetFileInfo from "./get-normalized-target-file-info.js";
 
-import type {ILog, Markers, Targets, Target, normalizePathFn} from "./types.js";
+import type {
+    ILog,
+    Markers,
+    Targets,
+    Target,
+    normalizePathFn,
+    Options,
+} from "./types.js";
+
+type ParseResult = {
+    markers: ?Markers,
+    referencedFiles: Array<string>,
+};
 
 /**
  * Parse the given file and extract sync markers.
@@ -28,12 +42,12 @@ import type {ILog, Markers, Targets, Target, normalizePathFn} from "./types.js";
  * null if there were no markers or errors.
  */
 export default function parseFile(
+    options: Options,
     file: string,
     fixable: boolean,
-    comments: Array<string>,
     log: ILog,
-    normalizeFileRef: normalizePathFn,
-): Promise<?Markers> {
+): Promise<ParseResult> {
+    const rootPath = ancesdir(file, options.rootMarker);
     const fileRefLogger = new FileReferenceLogger(file, log);
     const markers: Markers = {};
 
@@ -64,12 +78,24 @@ export default function parseFile(
         markers[id] = {fixable, checksum, targets, comment};
     };
 
+    const referencedFiles: Array<string> = [];
+    const normalizeFileRef = (fileRef: string) => {
+        const normalizedFileInfo = getNormalizedTargetFileInfo(
+            rootPath,
+            fileRef,
+        );
+        if (fixable && normalizedFileInfo.exists) {
+            referencedFiles.push(normalizedFileInfo.file);
+        }
+        return normalizedFileInfo;
+    };
+
     return new Promise((resolve, reject) => {
         try {
             const markerParser = new MarkerParser(
                 normalizeFileRef,
                 addMarker,
-                comments,
+                options.comments,
                 fileRefLogger,
             );
 
@@ -91,7 +117,10 @@ export default function parseFile(
                     markerParser.reportUnterminatedMarkers();
 
                     const markerCount = Object.keys(markers).length;
-                    const result = markerCount === 0 ? null : markers;
+                    const result = {
+                        markers: markerCount === 0 ? null : markers,
+                        referencedFiles,
+                    };
 
                     resolve(result);
                 });
@@ -102,7 +131,10 @@ export default function parseFile(
         res => res,
         (reason: Error) => {
             fileRefLogger.error(`Could not parse file: ${reason.message}`);
-            return null;
+            return {
+                markers: null,
+                referencedFiles: [],
+            };
         },
     );
 }
