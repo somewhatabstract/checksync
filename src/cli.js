@@ -8,14 +8,7 @@ import checkSync from "./check-sync.js";
 import Logger from "./logger.js";
 import ErrorCodes from "./error-codes.js";
 import logHelp from "./help.js";
-
-export const defaultArgs = {
-    "update-tags": false,
-    comments: `${["#,//"].sort().join(",")}`,
-    ignore: "",
-    help: false,
-    "dry-run": false,
-};
+import defaultArgs from "./default-args.js";
 
 /**
  * Run the command line.

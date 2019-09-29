@@ -5,7 +5,7 @@ import Format from "./format.js";
 import validateAndFix from "./validate-and-fix.js";
 import validateAndReport from "./validate-and-report.js";
 
-import {defaultArgs} from "./cli.js";
+import defaultArgs from "./default-args.js";
 
 import type {ErrorCode} from "./error-codes.js";
 import type {MarkerCache, ILog, Options} from "./types";

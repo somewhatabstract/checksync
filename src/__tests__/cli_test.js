@@ -1,10 +1,11 @@
 // @flow
 import * as minimist from "minimist";
 
-import {run, defaultArgs} from "../cli.js";
+import {run} from "../cli.js";
 import * as CheckSync from "../check-sync.js";
 import ErrorCodes from "../error-codes.js";
 import Logger from "../logger.js";
+import defaultArgs from "../default-args.js";
 
 jest.mock("minimist");
 jest.mock("../logger.js", () => {
