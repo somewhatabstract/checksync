@@ -59,7 +59,7 @@ export type MarkerEdge = {
  */
 export default function* generateMarkerEdges(
     file: string,
-    cache: MarkerCache,
+    cache: $ReadOnly<MarkerCache>,
     log: ILog,
 ): Iterator<MarkerEdge> {
     const getTargetDetail = (targetMarker: ?Marker, aliases: Array<string>) => {

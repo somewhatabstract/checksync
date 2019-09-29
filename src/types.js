@@ -125,7 +125,7 @@ export type MarkerCache = {
 export type FileProcessor = (
     options: Options,
     file: string,
-    cache: MarkerCache,
+    cache: $ReadOnly<MarkerCache>,
     log: ILog,
 ) => Promise<boolean>;
 

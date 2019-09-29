@@ -12,7 +12,7 @@ import type {MarkerCache, ILog, Options} from "./types";
 
 export default async function processCache(
     options: Options,
-    cache: MarkerCache,
+    cache: $ReadOnly<MarkerCache>,
     log: ILog,
 ): Promise<ErrorCode> {
     const {autoFix} = options;
