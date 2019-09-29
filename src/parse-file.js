@@ -45,7 +45,7 @@ export default function parseFile(
     options: Options,
     file: string,
     fixable: boolean,
-    log: ILog,
+    log: ILog, // TODO(somewhatabstract): Make logging work with jest-worker
 ): Promise<ParseResult> {
     const rootPath = ancesdir(file, options.rootMarker);
     const fileRefLogger = new FileReferenceLogger(file, log);

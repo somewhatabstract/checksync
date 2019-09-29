@@ -13,7 +13,7 @@ import type {MarkerCache, ILog, Options} from "./types";
 export default async function processCache(
     options: Options,
     cache: $ReadOnly<MarkerCache>,
-    log: ILog,
+    log: ILog, // TODO(somewhatabstract): Make logging work with jest-worker
 ): Promise<ErrorCode> {
     const {autoFix} = options;
     const violationFileNames: Array<string> = [];
