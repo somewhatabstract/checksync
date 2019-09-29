@@ -38,7 +38,7 @@ type ParseResult = {
  * @param {ILog} log The interface through which to log user feedback.
  * @param {(fileRef: string) => mixed} [logFileRef] A callback to register any
  * target files that are referenced by markers in this file.
- * @returns {Promise<?Markers>} The promise of the markers this file contains or
+ * @returns {Promise<ParseResult>} The promise of the markers this file contains or
  * null if there were no markers or errors.
  */
 export default function parseFile(
