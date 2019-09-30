@@ -2,8 +2,7 @@
 import fs from "fs";
 import util from "util";
 import glob from "glob";
-import minimatch from "minimatch";
-const {Minimatch} = minimatch;
+import micromatch from "micromatch";
 
 import flatten from "lodash/flatten";
 import sortedUniq from "lodash/sortedUniq";
@@ -40,12 +39,10 @@ const removeIgnoredFiles = (
 ): Array<string> => {
     // Since the matchers are going to be applied repeatedly, let's build
     // minimatch instances and reuse them.
-    const matchers = uniq(excludeGlobs).map(
-        (glob: string) => new Minimatch(glob),
+    const matchers = uniq(excludeGlobs).map((glob: string) =>
+        micromatch.matcher(glob),
     );
-    return files.filter(file =>
-        matchers.every((m: Minimatch) => !m.match(file)),
-    );
+    return files.filter(file => matchers.every(matcher => !matcher(file)));
 };
 
 /**
