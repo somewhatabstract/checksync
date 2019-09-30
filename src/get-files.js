@@ -1,18 +1,29 @@
 // @flow
-import fs from "fs";
 import glob from "fast-glob";
 import path from "path";
 
-function turnDirectoriesToGlobs(globs: Array<string>): Array<string> {
-    return (
-        globs
-            // If we have a dir, let's make that a be everything under that dir.
-            .map((pattern: string) =>
-                fs.existsSync(pattern) && fs.lstatSync(pattern).isDirectory()
-                    ? path.join(pattern, "**")
-                    : pattern,
-            )
-    );
+/**
+ * Following gitignore format https://git-scm.com/docs/gitignore#_pattern_format
+ *
+ * /foo  Ignore root (not sub) file and dir and its paths underneath.     /foo, /foo/**
+ * /foo/ Ignore root (not sub) foo dir and its paths underneath.          /foo/**
+ * foo   Ignore (root/sub) foo files and dirs and their paths underneath. foo, ** /foo/**
+ * foo/  Ignore (root/sub) foo dirs and their paths underneath.	          ** /foo/**
+ */
+function* turnIgnoresToGlobs(globs: Array<string>): Iterator<string> {
+    for (const glob of globs) {
+        if (glob.startsWith("/")) {
+            yield path.join(glob, "**");
+            if (!glob.endsWith("/")) {
+                yield glob;
+            }
+        } else {
+            yield path.join("**", glob, "**");
+            if (!glob.endsWith("/")) {
+                yield glob;
+            }
+        }
+    }
 }
 
 /**
@@ -24,8 +35,8 @@ export default async function getFiles(
     includeGlobs: Array<string>,
     excludeGlobs: Array<string>,
 ): Promise<Array<string>> {
-    const includePatterns = turnDirectoriesToGlobs(includeGlobs);
-    const excludePatterns = turnDirectoriesToGlobs(excludeGlobs);
+    const includePatterns = Array.from(turnIgnoresToGlobs(includeGlobs));
+    const excludePatterns = Array.from(turnIgnoresToGlobs(excludeGlobs));
 
     // Now let's match the patterns and see what files we get.
     const paths = await glob(includePatterns, {
