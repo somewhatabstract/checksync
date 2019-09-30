@@ -3,7 +3,6 @@
  * Cache in which we store our knowledge of existing markers.
  */
 import fs from "fs";
-import uniq from "lodash/uniq";
 import parseFile from "./parse-file.js";
 import cloneAsUnfixable from "./clone-as-unfixable.js";
 import Format from "./format.js";
@@ -102,7 +101,7 @@ export default async function getMarkersFromFiles(
      * deeper (though perhaps repeating till all referenced files are
      * loaded would be a mode folks might want).
      */
-    await cacheFiles(uniq(referencedFiles), false);
+    await cacheFiles(referencedFiles, false);
 
     return cacheData;
 }

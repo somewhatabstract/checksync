@@ -55,22 +55,6 @@ describe("#getFiles", () => {
         expect(globSpy).toHaveBeenCalledWith(["pattern"], expect.any(Object));
     });
 
-    it("should dedupe globs", async () => {
-        // Arrange
-        jest.spyOn(fs, "existsSync").mockReturnValue(false);
-        const globSpy = jest
-            .spyOn(FastGlob, "default")
-            .mockImplementation((pattern, opts) =>
-                Promise.resolve(["c", "a", "d", "b"]),
-            );
-
-        // Act
-        await getFiles(["pattern1", "pattern1"], ["exclude1", "exclude1"]);
-
-        // Assert
-        expect(globSpy).toHaveBeenCalledWith(["pattern1"], expect.any(Object));
-    });
-
     it("should return a sorted list without duplicates", async () => {
         // Arrange
         jest.spyOn(fs, "existsSync").mockReturnValue(false);
