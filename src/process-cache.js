@@ -13,15 +13,13 @@ import type {MarkerCache, ILog, Options} from "./types";
 export default async function processCache(
     options: Options,
     cache: $ReadOnly<MarkerCache>,
-    log: ILog, // TODO(somewhatabstract): Make logging work with jest-worker
+    log: ILog,
 ): Promise<ErrorCode> {
     const {autoFix} = options;
     const violationFileNames: Array<string> = [];
     const fileValidator = autoFix ? validateAndFix : validateAndReport;
     for (const file of Object.keys(cache)) {
         try {
-            // TODO(somewhatabstract): Use jest-worker and farm processing out
-            // to multiple threads/processes.
             if (!(await fileValidator(options, file, cache, log))) {
                 violationFileNames.push(file);
             }
