@@ -11,6 +11,8 @@ exports[`Integration Tests should report example checksums_need_updating to matc
 
 exports[`Integration Tests should report example checksums_need_updating to match snapshot with autofix dryrun 1`] = `
 " INFO  DRY-RUN: Files will not be modified
+ MISMATCH  __examples__/checksums_need_updating/a.js:3 Updating checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/b.py:3' from 45678 to 249234014.
+ MISMATCH  __examples__/checksums_need_updating/b.py:3 Updating checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/a.js:3' from 4567 to 770446101.
 <group 2 file(s) would have been fixed. To fix, run: >
   checksync -u __examples__/checksums_need_updating/a.js __examples__/checksums_need_updating/b.py
 <end_group>
@@ -147,6 +149,8 @@ exports[`Integration Tests should report example no_checksums to match snapshot 
 
 exports[`Integration Tests should report example no_checksums to match snapshot with autofix dryrun 1`] = `
 " INFO  DRY-RUN: Files will not be modified
+ MISMATCH  __examples__/no_checksums/example_one-a.js:3 Updating checksum for sync-tag 'example_one' referencing '__examples__/no_checksums/example_one-b.py:3' from No checksum to 249234014.
+ MISMATCH  __examples__/no_checksums/example_one-b.py:3 Updating checksum for sync-tag 'example_one' referencing '__examples__/no_checksums/example_one-a.js:3' from No checksum to 770446101.
 <group 2 file(s) would have been fixed. To fix, run: >
   checksync -u __examples__/no_checksums/example_one-a.js __examples__/no_checksums/example_one-b.py
 <end_group>
@@ -180,6 +184,8 @@ exports[`Integration Tests should report example symlinked_checksums_need_updati
 
 exports[`Integration Tests should report example symlinked_checksums_need_updating to match snapshot with autofix dryrun 1`] = `
 " INFO  DRY-RUN: Files will not be modified
+ MISMATCH  __examples__/symlinked_checksums_need_updating/a.js:3 Updating checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/b.py:3' from 45678 to 249234014.
+ MISMATCH  __examples__/symlinked_checksums_need_updating/b.py:3 Updating checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/a.js:3' from 4567 to 770446101.
 <group 2 file(s) would have been fixed. To fix, run: >
   checksync -u __examples__/symlinked_checksums_need_updating/a.js __examples__/symlinked_checksums_need_updating/b.py
 <end_group>

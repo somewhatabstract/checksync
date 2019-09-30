@@ -234,8 +234,8 @@ describe("#parseFile", () => {
 
         // Assert
         expect(mockMarkerParser.parseLine).toHaveBeenCalledTimes(2);
-        expect(mockMarkerParser.parseLine).toHaveBeenCalledWith("Line1\n");
-        expect(mockMarkerParser.parseLine).toHaveBeenCalledWith("Line2\n");
+        expect(mockMarkerParser.parseLine).toHaveBeenCalledWith("Line1");
+        expect(mockMarkerParser.parseLine).toHaveBeenCalledWith("Line2");
     });
 
     it("should initialize MarkerParser with callbacks, comments, and log", async () => {

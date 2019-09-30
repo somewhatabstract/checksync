@@ -254,7 +254,7 @@ export default class MarkerParser {
 
     _addContentToOpenMarkers = (line: string) => {
         for (const id of Object.keys(this._openMarkers)) {
-            this._openMarkers[id].content.push(line);
+            this._openMarkers[id].content.push(line + "\n");
         }
     };
 
