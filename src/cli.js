@@ -2,6 +2,7 @@
 /**
  * The implementation of our command line utility.
  */
+import fs from "fs";
 import chalk from "chalk";
 import minimist from "minimist";
 import checkSync from "./check-sync.js";
@@ -9,6 +10,7 @@ import Logger from "./logger.js";
 import ErrorCodes from "./error-codes.js";
 import logHelp from "./help.js";
 import defaultArgs from "./default-args.js";
+import parseGitIgnore from "parse-gitignore";
 
 /**
  * Run the command line.
@@ -24,18 +26,19 @@ export const run = (launchFilePath: string): void => {
     // TODO(somewhatabstract): Verbose logging (make sure any caught errors
     // verbose their error messages)
     const args = minimist(process.argv, {
-        boolean: ["update-tags", "dry-run", "help"],
-        string: ["comments", "root-marker", "ignore"],
+        boolean: ["updateTags", "dryRun", "help"],
+        string: ["comments", "rootMarker", "ignore", "ignoreFile"],
         default: {
             ...defaultArgs,
         },
         alias: {
             comments: ["c"],
-            "dry-run": ["n"],
+            dryRun: ["n", "dry-run"],
             help: ["h"],
             ignore: ["i"],
-            "root-marker": ["m"],
-            "update-tags": ["u"],
+            ignoreFile: ["ignore-file"],
+            rootMarker: ["m", "root-marker"],
+            updateTags: ["u", "update-tags"],
         },
         unknown: arg => {
             // Filter out the node process.
@@ -59,9 +62,14 @@ export const run = (launchFilePath: string): void => {
     }
 
     const comments = ((args.comments: any): string).split(",").filter(c => !!c);
-    const excludeGlobs = ((args.ignore: any): string)
+    const ignoreGlobs = ((args.ignore: any): string)
         .split(",")
         .filter(c => !!c);
+    const ignoreFileGlobs =
+        args.ignoreFile != null
+            ? parseGitIgnore(fs.readFileSync((args.ignoreFile: any)))
+            : [];
+    const excludeGlobs = [...ignoreGlobs, ...ignoreFileGlobs];
 
     // Make sure we have something to search, so default to current working
     // directory if no globs are given.
@@ -71,10 +79,10 @@ export const run = (launchFilePath: string): void => {
         {
             includeGlobs,
             excludeGlobs,
-            autoFix: args["update-tags"] === true,
+            autoFix: args.updateTags === true,
             comments,
-            rootMarker: (args["root-marker"]: any),
-            dryRun: args["dry-run"] === true,
+            rootMarker: (args.rootMarker: any),
+            dryRun: args.dryRun === true,
         },
         log,
     ).then(exitCode => process.exit(exitCode));

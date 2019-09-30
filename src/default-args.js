@@ -1,10 +1,10 @@
 // @flow
 const defaultArgs = {
-    "update-tags": false,
+    updateTags: false,
     comments: `${["#,//"].sort().join(",")}`,
     ignore: "",
     help: false,
-    "dry-run": false,
+    dryRun: false,
 };
 
 export default defaultArgs;

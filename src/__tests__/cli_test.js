@@ -93,7 +93,7 @@ describe("#run", () => {
         // Arrange
         const fakeParsedArgs = {
             ...defaultArgs,
-            "update-tags": true,
+            updateTags: true,
             comments: "COMMENT1,COMMENT2",
             _: ["globs", "and globs"],
         };
