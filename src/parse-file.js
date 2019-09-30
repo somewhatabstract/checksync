@@ -57,17 +57,14 @@ export default function parseFile(
         targets: Targets,
         comment: string,
     ): void => {
-        let outputError = false;
         for (const line of Object.keys(targets)) {
             if (markers[id]) {
-                outputError = true;
                 fileRefLogger.error(
                     `Sync-tag '${id}' declared multiple times`,
                     line,
                 );
             }
             if (targets[line].file === file) {
-                outputError = true;
                 fileRefLogger.error(
                     `Sync-tag '${id}' cannot target itself`,
                     line,
