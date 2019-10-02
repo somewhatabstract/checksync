@@ -26,7 +26,7 @@ export const run = (launchFilePath: string): void => {
     // TODO(somewhatabstract): Verbose logging (make sure any caught errors
     // verbose their error messages)
     const args = minimist(process.argv, {
-        boolean: ["updateTags", "dryRun", "help"],
+        boolean: ["updateTags", "dryRun", "help", "noIgnoreFile"],
         string: ["comments", "rootMarker", "ignore", "ignoreFile"],
         default: {
             ...defaultArgs,
@@ -34,9 +34,10 @@ export const run = (launchFilePath: string): void => {
         alias: {
             comments: ["c"],
             dryRun: ["n", "dry-run"],
-            help: ["h"],
+            help: ["h", "?"],
             ignore: ["i"],
             ignoreFile: ["ignore-file"],
+            noIgnoreFile: ["no-ignore-file"],
             rootMarker: ["m", "root-marker"],
             updateTags: ["u", "update-tags"],
         },
@@ -65,10 +66,16 @@ export const run = (launchFilePath: string): void => {
     const ignoreGlobs = ((args.ignore: any): string)
         .split(",")
         .filter(c => !!c);
-    const ignoreFileGlobs =
-        args.ignoreFile != null
-            ? parseGitIgnore(fs.readFileSync((args.ignoreFile: any)))
-            : [];
+
+    const shouldParseIgnore =
+        !args.noIgnoreFile &&
+        ((args.ignoreFile !== defaultArgs.ignoreFile &&
+            args.ignoreFile != null) ||
+            (args.ignoreFile === defaultArgs.ignoreFile &&
+                fs.existsSync((args.ignoreFile: any))));
+    const ignoreFileGlobs = shouldParseIgnore
+        ? parseGitIgnore(fs.readFileSync((args.ignoreFile: any)))
+        : [];
     const excludeGlobs = [...ignoreGlobs, ...ignoreFileGlobs];
 
     // Make sure we have something to search, so default to current working
