@@ -34,7 +34,7 @@ export const run = (launchFilePath: string): void => {
         alias: {
             comments: ["c"],
             dryRun: ["n", "dry-run"],
-            help: ["h"],
+            help: ["h", "?"],
             ignore: ["i"],
             ignoreFile: ["ignore-file"],
             rootMarker: ["m", "root-marker"],

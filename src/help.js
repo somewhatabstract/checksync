@@ -22,15 +22,15 @@ The sync-end tags take the form:
 
 Where:
 
-    \`<comment>\`     is one of the comment tokens provided by the \`--comment\`
+    \`<comment>\`       is one of the comment tokens provided by the \`--comment\`
                     argument
 
-    \`<marker_id>\`   is the unique identifier for this marker
+    \`<marker_id>\`     is the unique identifier for this marker
 
-    \`<checksum>\`    is the expected checksum of the corresponding block in
+    \`<checksum>\`      is the expected checksum of the corresponding block in
                     the target file
 
-    \`<target_file>\` is the path from your package root to the target file
+    \`<target_file>\`   is the path from your package root to the target file
                     with a corresponding sync block with the same \`marker_id\`
 
 ## Usage
@@ -39,28 +39,29 @@ Where:
 
 Where:
 
-    \`<arguments>\`     are the arguments you provide (see below)
+    \`<arguments>\`       are the arguments you provide (see below)
 
-    \`<include_globs>\` are glob patterns for identifying files to check
+    \`<include_globs>\`   are glob patterns for identifying files to check
 
 ## Arguments
 
-    \`--comments,-c\`    A string containing comma-separated tokens that
+    \`--comments,-c\`      A string containing comma-separated tokens that
                        indicate the start of lines where tags appear.
                        Defaults to \`"//,#"\`.
 
-    \`--dry-run,-n\`     Ignored unless supplied with \`--update-tags\`.
+    \`--dry-run,-n\`       Ignored unless supplied with \`--update-tags\`.
 
-    \`--help,-h\`        Outputs this help text.
+    \`--help,-h\`          Outputs this help text.
 
-    \`--ignore,-i\`      A string containing comma-separated globs that identify
+    \`--ignore,-i\`        A string containing comma-separated globs that identify
                        files that should not be checked.
 
-    \`--ignore-file\`    A .gitignore-like file that provides globs to be
-                         ignored. These will be combined with the \`--ignore\`
-                         globs.
+    \`--ignore-file\`      A .gitignore-like file that provides globs to be
+                       ignored. These will be combined with the \`--ignore\`
+                       globs.
+                       Defaults to \`.gitignore\`.
 
-    \`--root-marker,-m\` By default, the root directory (used to generate
+    \`--root-marker,-m\`   By default, the root directory (used to generate
                        interpret and generate target paths for sync-start
                        tags) for your project is determined by the nearest
                        ancestor directory to the processed files that
@@ -71,7 +72,7 @@ Where:
                        the first ancestor directory containing a
                        \`.gitignore\` file.
 
-    \`--update-tags,-u\` Updates tags with incorrect target checksums. This
+    \`--update-tags,-u\`   Updates tags with incorrect target checksums. This
                        modifies files in place; run with \`--dry-run\` to see what
                        files will change without modifying them.
 `;
@@ -88,7 +89,7 @@ export default function logHelp(log: ILog) {
         })
         .replace(regexCode, (s, ...args) => {
             const [space, code] = (args: Array<string>);
-            return `${space}${Format.code(code)}  `;
+            return `${space}${Format.code(code)}`;
         });
 
     log.log(formattedHelp);
