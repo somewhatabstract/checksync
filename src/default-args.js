@@ -5,6 +5,7 @@ const defaultArgs = {
     ignore: "",
     help: false,
     dryRun: false,
+    ignoreFile: ".gitignore",
 };
 
 export default defaultArgs;

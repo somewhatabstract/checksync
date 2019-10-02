@@ -6,6 +6,7 @@ import * as CheckSync from "../check-sync.js";
 import ErrorCodes from "../error-codes.js";
 import Logger from "../logger.js";
 import defaultArgs from "../default-args.js";
+import * as ParseGitIgnore from "parse-gitignore";
 
 jest.mock("minimist");
 jest.mock("../logger.js", () => {
@@ -21,6 +22,8 @@ jest.mock("../logger.js", () => {
         return log;
     };
 });
+jest.mock("parse-gitignore");
+jest.mock("fs");
 
 describe("#run", () => {
     it("should parse args", () => {
@@ -29,6 +32,7 @@ describe("#run", () => {
             ...defaultArgs,
             fix: false,
             comments: "//,#",
+            ignoreFile: undefined,
         };
         jest.spyOn(CheckSync, "default").mockReturnValue({then: jest.fn()});
         const minimistSpy = jest
@@ -95,12 +99,14 @@ describe("#run", () => {
             ...defaultArgs,
             updateTags: true,
             comments: "COMMENT1,COMMENT2",
+            ignoreFile: "madeupfile",
             _: ["globs", "and globs"],
         };
         const checkSyncSpy = jest
             .spyOn(CheckSync, "default")
             .mockReturnValue({then: jest.fn()});
         jest.spyOn(minimist, "default").mockReturnValue(fakeParsedArgs);
+        jest.spyOn(ParseGitIgnore, "default").mockReturnValue(["madeupglob"]);
 
         // Act
         run(__filename);
@@ -109,7 +115,7 @@ describe("#run", () => {
         expect(checkSyncSpy).toHaveBeenCalledWith(
             {
                 includeGlobs: fakeParsedArgs._,
-                excludeGlobs: [],
+                excludeGlobs: ["madeupglob"],
                 dryRun: false,
                 autoFix: true,
                 comments: ["COMMENT1", "COMMENT2"],
@@ -130,6 +136,9 @@ describe("#run", () => {
             const minimistSpy = jest
                 .spyOn(minimist, "default")
                 .mockReturnValue(fakeParsedArgs);
+            jest.spyOn(ParseGitIgnore, "default").mockReturnValue([
+                "madeupglob",
+            ]);
             run(__filename);
             const unknownHandler = minimistSpy.mock.calls[0][1].unknown;
 
@@ -151,6 +160,9 @@ describe("#run", () => {
             const minimistSpy = jest
                 .spyOn(minimist, "default")
                 .mockReturnValue(fakeParsedArgs);
+            jest.spyOn(ParseGitIgnore, "default").mockReturnValue([
+                "madeupglob",
+            ]);
             run(__filename);
             const unknownHandler = minimistSpy.mock.calls[0][1].unknown;
 
@@ -172,6 +184,9 @@ describe("#run", () => {
             const minimistSpy = jest
                 .spyOn(minimist, "default")
                 .mockReturnValue(fakeParsedArgs);
+            jest.spyOn(ParseGitIgnore, "default").mockReturnValue([
+                "madeupglob",
+            ]);
             run(__filename);
             const unknownHandler = minimistSpy.mock.calls[0][1].unknown;
 
@@ -196,6 +211,9 @@ describe("#run", () => {
             const exitSpy = jest
                 .spyOn(process, "exit")
                 .mockImplementationOnce(() => {});
+            jest.spyOn(ParseGitIgnore, "default").mockReturnValue([
+                "madeupglob",
+            ]);
             run(__filename);
             const unknownHandler = minimistSpy.mock.calls[0][1].unknown;
 
@@ -218,6 +236,9 @@ describe("#run", () => {
                 .spyOn(minimist, "default")
                 .mockReturnValue(fakeParsedArgs);
             jest.spyOn(process, "exit").mockImplementationOnce(() => {});
+            jest.spyOn(ParseGitIgnore, "default").mockReturnValue([
+                "madeupglob",
+            ]);
             const logSpy = jest.spyOn(new Logger(null), "error");
             run(__filename);
             const unknownHandler = minimistSpy.mock.calls[0][1].unknown;
@@ -242,6 +263,9 @@ describe("#run", () => {
             const minimistSpy = jest
                 .spyOn(minimist, "default")
                 .mockReturnValue(fakeParsedArgs);
+            jest.spyOn(ParseGitIgnore, "default").mockReturnValue([
+                "madeupglob",
+            ]);
             run(__filename);
             const unknownHandler = minimistSpy.mock.calls[0][1].unknown;
 
@@ -265,6 +289,9 @@ describe("#run", () => {
             const exitSpy = jest
                 .spyOn(process, "exit")
                 .mockImplementation(jest.fn());
+            jest.spyOn(ParseGitIgnore, "default").mockReturnValue([
+                "madeupglob",
+            ]);
             run(__filename);
             const thenHandler = thenMock.mock.calls[0][0];
 
