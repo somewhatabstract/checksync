@@ -11,14 +11,16 @@ import path from "path";
  * foo/  Ignore (root/sub) foo dirs and their paths underneath.	          ** /foo/**
  */
 function* turnIgnoresToGlobs(globs: Array<string>): Iterator<string> {
+    const normalizeSeparators = (g: string): string =>
+        g.split(path.sep).join("/");
     for (const glob of globs) {
         if (glob.startsWith("/")) {
-            yield path.join(glob, "**").replace(path.sep, "/");
+            yield normalizeSeparators(path.join(glob, "**"));
             if (!glob.endsWith("/")) {
                 yield glob;
             }
         } else {
-            yield path.join("**", glob, "**").replace(path.sep, "/");
+            yield normalizeSeparators(path.join("**", glob, "**"));
             if (!glob.endsWith("/")) {
                 yield glob;
             }
