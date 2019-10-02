@@ -1,6 +1,7 @@
 // @flow
 import * as minimist from "minimist";
 
+import fs from "fs";
 import {run} from "../cli.js";
 import * as CheckSync from "../check-sync.js";
 import ErrorCodes from "../error-codes.js";
@@ -42,7 +43,7 @@ describe("#run", () => {
         // Act
         run(__filename);
 
-        // Arrange
+        // Assert
         expect(minimistSpy).toHaveBeenCalledWith(
             process.argv,
             expect.any(Object),
@@ -66,7 +67,7 @@ describe("#run", () => {
         // Act
         const underTest = () => run(__filename);
 
-        // Arrange
+        // Assert
         expect(underTest).toThrowError("PRETEND PROCESS EXIT!");
         expect(exitSpy).toHaveBeenCalledWith(ErrorCodes.SUCCESS);
     });
@@ -87,7 +88,7 @@ describe("#run", () => {
         // Act
         const underTest = () => run(__filename);
 
-        // Arrange
+        // Assert
         expect(underTest).toThrow();
         expect(logSpy).toHaveBeenCalledTimes(1);
         expect(logSpy.mock.calls[0][0]).toMatchSnapshot();
@@ -111,11 +112,41 @@ describe("#run", () => {
         // Act
         run(__filename);
 
-        // Arrange
+        // Assert
         expect(checkSyncSpy).toHaveBeenCalledWith(
             {
                 includeGlobs: fakeParsedArgs._,
                 excludeGlobs: ["madeupglob"],
+                dryRun: false,
+                autoFix: true,
+                comments: ["COMMENT1", "COMMENT2"],
+            },
+            expect.any(Object),
+        );
+    });
+
+    it("should skip ignore file if left default and file does not exist", () => {
+        // Arrange
+        const fakeParsedArgs = {
+            ...defaultArgs,
+            updateTags: true,
+            comments: "COMMENT1,COMMENT2",
+            _: ["globs", "and globs"],
+        };
+        const checkSyncSpy = jest
+            .spyOn(CheckSync, "default")
+            .mockReturnValue({then: jest.fn()});
+        jest.spyOn(minimist, "default").mockReturnValue(fakeParsedArgs);
+        jest.spyOn(fs, "existsSync").mockReturnValueOnce(false);
+
+        // Act
+        run(__filename);
+
+        // Assert
+        expect(checkSyncSpy).toHaveBeenCalledWith(
+            {
+                includeGlobs: fakeParsedArgs._,
+                excludeGlobs: [],
                 dryRun: false,
                 autoFix: true,
                 comments: ["COMMENT1", "COMMENT2"],

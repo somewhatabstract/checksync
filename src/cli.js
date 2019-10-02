@@ -65,10 +65,15 @@ export const run = (launchFilePath: string): void => {
     const ignoreGlobs = ((args.ignore: any): string)
         .split(",")
         .filter(c => !!c);
-    const ignoreFileGlobs =
-        args.ignoreFile != null
-            ? parseGitIgnore(fs.readFileSync((args.ignoreFile: any)))
-            : [];
+
+    const shouldParseIgnore =
+        (args.ignoreFile !== defaultArgs.ignoreFile &&
+            args.ignoreFile != null) ||
+        (args.ignoreFile === defaultArgs.ignoreFile &&
+            fs.existsSync((args.ignoreFile: any)));
+    const ignoreFileGlobs = shouldParseIgnore
+        ? parseGitIgnore(fs.readFileSync((args.ignoreFile: any)))
+        : [];
     const excludeGlobs = [...ignoreGlobs, ...ignoreFileGlobs];
 
     // Make sure we have something to search, so default to current working
