@@ -58,8 +58,12 @@ Where:
 
     \`--ignore-file\`      A .gitignore-like file that provides globs to be
                        ignored. These will be combined with the \`--ignore\`
-                       globs.
+                       globs. Ignored if \`--no-ignore-file\` is present.
                        Defaults to \`.gitignore\`.
+
+    \`--no-ignore-file\`   When \`true\`, does not use any ignore file. This is
+                       useful when the default value for \`--ignore-file\` is not
+                       wanted.
 
     \`--root-marker,-m\`   By default, the root directory (used to generate
                        interpret and generate target paths for sync-start
