@@ -13,12 +13,12 @@ import path from "path";
 function* turnIgnoresToGlobs(globs: Array<string>): Iterator<string> {
     for (const glob of globs) {
         if (glob.startsWith("/")) {
-            yield path.join(glob, "**").replace("\\", "/");
+            yield path.join(glob, "**").replace(path.sep, "/");
             if (!glob.endsWith("/")) {
                 yield glob;
             }
         } else {
-            yield path.join("**", glob, "**").replace("\\", "/");
+            yield path.join("**", glob, "**").replace(path.sep, "/");
             if (!glob.endsWith("/")) {
                 yield glob;
             }
