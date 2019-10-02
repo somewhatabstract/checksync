@@ -1,129 +1,101 @@
 // @flow
-import fs from "fs";
-import * as Glob from "glob";
-import * as Minimatch from "minimatch";
+import * as FastGlob from "fast-glob";
 
 import getFiles from "../get-files.js";
 
-jest.mock("glob");
+jest.mock("fast-glob");
 jest.mock("fs");
-jest.mock("minimatch");
 
 describe("#getFiles", () => {
-    it("should append directories with /**", async () => {
+    it("should expand foo format includes", async () => {
         // Arrange
-        jest.spyOn(fs, "existsSync").mockReturnValue(true);
-        jest.spyOn(fs, "lstatSync").mockReturnValue({isDirectory: () => true});
         const globSpy = jest
-            .spyOn(Glob, "default")
-            .mockImplementation((pattern, opts, cb) => {
-                cb(null, []);
-            });
+            .spyOn(FastGlob, "default")
+            .mockImplementation((pattern, opts) => Promise.resolve([]));
 
         // Act
-        await getFiles(["directory"], []);
+        await getFiles(["foo"], []);
 
         // Assert
         expect(globSpy).toHaveBeenCalledWith(
-            "directory/**",
+            ["**/foo/**", "foo"],
             expect.any(Object),
-            expect.any(Function),
         );
     });
 
-    it("should not append /** if the pattern does not exist", async () => {
+    it("should expand /foo format includes", async () => {
         // Arrange
-        jest.spyOn(fs, "existsSync").mockReturnValue(false);
         const globSpy = jest
-            .spyOn(Glob, "default")
-            .mockImplementation((pattern, opts, cb) => {
-                cb(null, []);
-            });
+            .spyOn(FastGlob, "default")
+            .mockImplementation((pattern, opts) => Promise.resolve([]));
 
         // Act
-        await getFiles(["pattern"], []);
+        await getFiles(["/foo"], []);
 
         // Assert
         expect(globSpy).toHaveBeenCalledWith(
-            "pattern",
+            ["/foo/**", "/foo"],
             expect.any(Object),
-            expect.any(Function),
         );
     });
 
-    it("should not append /** if the pattern exists but is not a directory", async () => {
+    it("should expand /foo/ format includes", async () => {
         // Arrange
-        jest.spyOn(fs, "existsSync").mockReturnValue(true);
-        jest.spyOn(fs, "lstatSync").mockReturnValue({isDirectory: () => false});
         const globSpy = jest
-            .spyOn(Glob, "default")
-            .mockImplementation((pattern, opts, cb) => {
-                cb(null, []);
-            });
+            .spyOn(FastGlob, "default")
+            .mockImplementation((pattern, opts) => Promise.resolve([]));
 
         // Act
-        await getFiles(["pattern"], []);
+        await getFiles(["/foo/"], []);
 
         // Assert
-        expect(globSpy).toHaveBeenCalledWith(
-            "pattern",
-            expect.any(Object),
-            expect.any(Function),
-        );
+        expect(globSpy).toHaveBeenCalledWith(["/foo/**"], expect.any(Object));
     });
 
-    it("should dedupe globs", async () => {
+    it("should expand foo/ format includes", async () => {
         // Arrange
-        jest.spyOn(fs, "existsSync").mockReturnValue(false);
         const globSpy = jest
-            .spyOn(Glob, "default")
-            .mockImplementation((pattern, opts, cb) => {
-                cb(null, ["c", "a", "d", "b"]);
-            });
-        const minimatchSpy = jest.spyOn(Minimatch, "Minimatch");
+            .spyOn(FastGlob, "default")
+            .mockImplementation((pattern, opts) => Promise.resolve([]));
 
         // Act
-        await getFiles(["pattern1", "pattern1"], ["exclude1", "exclude1"]);
+        await getFiles(["foo/"], []);
 
         // Assert
-        expect(globSpy).toHaveBeenCalledTimes(1);
-        expect(minimatchSpy).toHaveBeenCalledTimes(1);
+        expect(globSpy).toHaveBeenCalledWith(["**/foo/**"], expect.any(Object));
     });
 
     it("should return a sorted list without duplicates", async () => {
         // Arrange
-        jest.spyOn(fs, "existsSync").mockReturnValue(false);
         const globSpy = jest
-            .spyOn(Glob, "default")
-            .mockImplementation((pattern, opts, cb) => {
-                cb(null, ["c", "a", "d", "b"]);
-            });
+            .spyOn(FastGlob, "default")
+            .mockImplementation((pattern, opts) =>
+                Promise.resolve(["c", "a", "d", "b"]),
+            );
 
         // Act
         const result = await getFiles(["pattern1", "pattern2"], []);
 
         // Assert
         expect(result).toEqual(["a", "b", "c", "d"]);
-        expect(globSpy).toHaveBeenCalledTimes(2);
+        expect(globSpy).toHaveBeenCalledTimes(1);
     });
 
     it("should exclude files matched by exclude globs", async () => {
         // Arrange
-        jest.spyOn(fs, "existsSync").mockReturnValue(false);
         const globSpy = jest
-            .spyOn(Glob, "default")
-            .mockImplementationOnce((pattern, opts, cb) => {
-                cb(null, ["c", "a", "d", "b"]);
-            });
-        jest.spyOn(Minimatch, "Minimatch").mockImplementation((...args) =>
-            jest.requireActual("minimatch").Minimatch(...args),
-        );
+            .spyOn(FastGlob, "default")
+            .mockImplementation((pattern, opts) =>
+                Promise.resolve(["c", "a", "d", "b"]),
+            );
 
         // Act
-        const result = await getFiles(["pattern1"], ["a", "c"]);
+        await getFiles([], ["a", "c"]);
 
         // Assert
-        expect(result).toEqual(["b", "d"]);
-        expect(globSpy).toHaveBeenCalledTimes(1);
+        expect(globSpy).toHaveBeenCalledWith(
+            [],
+            expect.objectContaining({ignore: ["**/a/**", "a", "**/c/**", "c"]}),
+        );
     });
 });

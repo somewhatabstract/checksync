@@ -3,10 +3,7 @@
  * Cache in which we store our knowledge of existing markers.
  */
 import fs from "fs";
-import path from "path";
-import uniq from "lodash/uniq";
 import parseFile from "./parse-file.js";
-import ancesdir from "ancesdir";
 import cloneAsUnfixable from "./clone-as-unfixable.js";
 import Format from "./format.js";
 
@@ -27,18 +24,6 @@ export default async function getMarkersFromFiles(
 ): Promise<MarkerCache> {
     const cacheData: MarkerCache = {};
     const referencedFiles: Array<string> = [];
-    const logFileRef = (file, fileRef, track) => {
-        // Target paths are relative to the root location.
-        const rootPath = ancesdir(file, options.rootMarker);
-        const normalizedFileRef = path.normalize(path.join(rootPath, fileRef));
-        const exists =
-            fs.existsSync(normalizedFileRef) &&
-            fs.lstatSync(normalizedFileRef).isFile();
-        if (track && exists) {
-            referencedFiles.push(normalizedFileRef);
-        }
-        return {file: normalizedFileRef, exists};
-    };
 
     const setCacheData = (file: string, info: ?FileInfo) => {
         cacheData[file] = info;
@@ -70,24 +55,22 @@ export default async function getMarkersFromFiles(
                     continue;
                 }
 
-                // TODO(somewhatabstract): Use jest-worker and farm parsing out
-                // to  multiple threads/processes.
-                const fileMarkers = await parseFile(
+                const parseResult = await parseFile(
+                    options,
                     file,
                     fixable,
-                    options.comments,
                     log,
-                    fileRef => logFileRef(file, fileRef, fixable),
                 );
                 setCacheData(
                     file,
-                    fileMarkers
+                    parseResult.markers
                         ? {
-                              markers: fileMarkers,
+                              markers: parseResult.markers,
                               aliases: [],
                           }
                         : null,
                 );
+                referencedFiles.push(...parseResult.referencedFiles);
 
                 // Since this might be a symlink source, let's make sure we store the
                 // markers under its target filepath too.
@@ -115,7 +98,7 @@ export default async function getMarkersFromFiles(
      * deeper (though perhaps repeating till all referenced files are
      * loaded would be a mode folks might want).
      */
-    await cacheFiles(uniq(referencedFiles), false);
+    await cacheFiles(referencedFiles, false);
 
     return cacheData;
 }

@@ -5,14 +5,14 @@ import Format from "./format.js";
 import validateAndFix from "./validate-and-fix.js";
 import validateAndReport from "./validate-and-report.js";
 
-import {defaultArgs} from "./cli.js";
+import defaultArgs from "./default-args.js";
 
 import type {ErrorCode} from "./error-codes.js";
 import type {MarkerCache, ILog, Options} from "./types";
 
 export default async function processCache(
     options: Options,
-    cache: MarkerCache,
+    cache: $ReadOnly<MarkerCache>,
     log: ILog,
 ): Promise<ErrorCode> {
     const {autoFix} = options;
@@ -20,8 +20,6 @@ export default async function processCache(
     const fileValidator = autoFix ? validateAndFix : validateAndReport;
     for (const file of Object.keys(cache)) {
         try {
-            // TODO(somewhatabstract): Use jest-worker and farm processing out
-            // to multiple threads/processes.
             if (!(await fileValidator(options, file, cache, log))) {
                 violationFileNames.push(file);
             }

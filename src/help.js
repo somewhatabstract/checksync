@@ -47,14 +47,18 @@ Where:
 
     \`--comments,-c\`    A string containing comma-separated tokens that
                        indicate the start of lines where tags appear.
-                       Defaults to \`"//,#"\`
+                       Defaults to \`"//,#"\`.
 
-    \`--dry-run,-n\`     Ignored unless supplied with \`--update-tags\`
+    \`--dry-run,-n\`     Ignored unless supplied with \`--update-tags\`.
 
-    \`--help,-h\`        Outputs this help text
+    \`--help,-h\`        Outputs this help text.
 
     \`--ignore,-i\`      A string containing comma-separated globs that identify
-                       files that should not be checked
+                       files that should not be checked.
+
+    \`--ignore-file\`    A .gitignore-like file that provides globs to be
+                         ignored. These will be combined with the \`--ignore\`
+                         globs.
 
     \`--root-marker,-m\` By default, the root directory (used to generate
                        interpret and generate target paths for sync-start

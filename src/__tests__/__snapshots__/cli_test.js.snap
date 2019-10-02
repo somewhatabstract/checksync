@@ -46,14 +46,18 @@ Where:
 
     [1m[33m--comments,-c[39m[22m      A string containing comma-separated tokens that
                        indicate the start of lines where tags appear.
-                       Defaults to [1m[33m\\"//,#\\"[39m[22m  
+                       Defaults to [1m[33m\\"//,#\\"[39m[22m  .
 
-    [1m[33m--dry-run,-n[39m[22m       Ignored unless supplied with [1m[33m--update-tags[39m[22m  
+    [1m[33m--dry-run,-n[39m[22m       Ignored unless supplied with [1m[33m--update-tags[39m[22m  .
 
-    [1m[33m--help,-h[39m[22m          Outputs this help text
+    [1m[33m--help,-h[39m[22m          Outputs this help text.
 
     [1m[33m--ignore,-i[39m[22m        A string containing comma-separated globs that identify
-                       files that should not be checked
+                       files that should not be checked.
+
+    [1m[33m--ignore-file[39m[22m      A .gitignore-like file that provides globs to be
+                         ignored. These will be combined with the [1m[33m--ignore[39m[22m  
+                         globs.
 
     [1m[33m--root-marker,-m[39m[22m   By default, the root directory (used to generate
                        interpret and generate target paths for sync-start

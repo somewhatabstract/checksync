@@ -125,7 +125,7 @@ export type MarkerCache = {
 export type FileProcessor = (
     options: Options,
     file: string,
-    cache: MarkerCache,
+    cache: $ReadOnly<MarkerCache>,
     log: ILog,
 ) => Promise<boolean>;
 
@@ -143,4 +143,9 @@ export type Options = {
     comments: Array<string>,
     dryRun: boolean,
     rootMarker?: ?string,
+};
+
+export type NormalizedFileInfo = {
+    file: string,
+    exists: boolean,
 };

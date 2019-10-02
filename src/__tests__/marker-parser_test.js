@@ -227,7 +227,7 @@ describe("MarkerParser", () => {
             // Assert
             expect(addMarker).toHaveBeenCalledWith(
                 "markerid1",
-                "1472197848",
+                "1284371662",
                 expect.objectContaining({
                     "1": expect.objectContaining({
                         checksum: undefined,
@@ -238,7 +238,7 @@ describe("MarkerParser", () => {
             );
             expect(addMarker).toHaveBeenCalledWith(
                 "markerid2",
-                "1472197848",
+                "1284371662",
                 expect.objectContaining({
                     "2": expect.objectContaining({
                         checksum: "9876",

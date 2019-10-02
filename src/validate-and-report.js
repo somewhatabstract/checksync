@@ -36,7 +36,7 @@ const reportBrokenEdge = (
 const validateAndReport: FileProcessor = (
     options: Options,
     file: string,
-    cache: MarkerCache,
+    cache: $ReadOnly<MarkerCache>,
     log: ILog,
 ): Promise<boolean> => {
     let fileNeedsFixing = false;

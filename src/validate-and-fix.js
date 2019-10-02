@@ -71,7 +71,7 @@ const reportBrokenEdge = (
 const validateAndFix: FileProcessor = (
     options: Options,
     file: string,
-    cache: MarkerCache,
+    cache: $ReadOnly<MarkerCache>,
     log: ILog,
 ): Promise<boolean> => {
     return new Promise((resolve, reject) => {
