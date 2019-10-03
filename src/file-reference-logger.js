@@ -25,14 +25,16 @@ export default class FileReferenceLogger implements IPositionLog {
 
     log = (message: string, line?: string | number): void =>
         this._log.log(this._format(message, line));
-    info = (message: string, line?: string | number) =>
+    info = (message: string, line?: string | number): void =>
         this._log.info(this._format(message, line));
-    warn = (message: string, line?: string | number) =>
+    warn = (message: string, line?: string | number): void =>
         this._log.warn(this._format(message, line));
-    error = (message: string, line?: string | number) =>
+    error = (message: string, line?: string | number): void =>
         this._log.error(this._format(message, line));
     group = (...labels: Array<string>): void => this._log.group(...labels);
     groupEnd = (): void => this._log.groupEnd();
+    verbose = (message: string, line?: string | number): void =>
+        this._log.verbose(this._format(message, line));
 
     _format = (message: string, line?: string | number) =>
         `${this._formatRef(line)} ${message}`;

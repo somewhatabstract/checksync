@@ -6,15 +6,22 @@ import Format from "./format.js";
 
 import type {ILog} from "./types.js";
 
-type StandardLog = $ReadOnly<$Diff<ILog, {+errorsLogged: boolean}>>;
+type MissingInStandardLog = {
+    +errorsLogged: boolean,
+    +verbose: string => void,
+};
+type StandardLog = $Diff<ILog, MissingInStandardLog>;
+type StandardLogReadOnly = $ReadOnly<StandardLog>;
 
 export default class Logging implements ILog {
-    _logger: ?StandardLog;
+    _logger: ?StandardLogReadOnly;
+    _verbose: boolean;
     _errorsLogged: boolean;
 
-    constructor(logger: ?StandardLog) {
+    constructor(logger: ?StandardLogReadOnly, verbose?: boolean) {
         this._logger = logger;
         this._errorsLogged = false;
+        this._verbose = !!verbose;
     }
 
     get errorsLogged(): boolean {
@@ -44,5 +51,9 @@ export default class Logging implements ILog {
 
     warn = (message: string): void => {
         this._logger && this._logger.warn(Format.warn(message));
+    };
+
+    verbose = (message: string): void => {
+        this._verbose && this.log(Format.verbose(message));
     };
 }
