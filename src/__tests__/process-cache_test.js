@@ -8,6 +8,8 @@ import * as ValidateAndFix from "../validate-and-fix.js";
 
 import type {MarkerCache, Marker, Target, Options} from "../types.js";
 
+jest.mock("../get-launch-string.js", () => () => "checksync");
+
 describe("#processCache", () => {
     const TestCache: MarkerCache = {
         filea: {
