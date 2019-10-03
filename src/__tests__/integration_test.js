@@ -6,6 +6,8 @@ import StringLogger from "../string-logger.js";
 
 import checkSync from "../check-sync.js";
 
+jest.mock("../get-launch-string.js", () => () => "checksync");
+
 describe("Integration Tests", () => {
     const getExampleDirs = () => {
         const __examples__ = path.join(ancesdir(), "__examples__");

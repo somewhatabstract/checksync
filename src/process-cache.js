@@ -1,4 +1,5 @@
 // @flow
+import getLaunchString from "./get-launch-string.js";
 import cwdRelativePath from "./cwd-relative-path.js";
 import ErrorCodes from "./error-codes.js";
 import Format from "./format.js";
@@ -38,10 +39,14 @@ export default async function processCache(
             const fileNamesArgs = violationFileNames
                 .map(cwdRelativePath)
                 .join(" ");
+
+            const launchCommand = getLaunchString();
             if (commentsArg === defaultArgs.comments) {
-                log.log(`checksync -u ${fileNamesArgs}`);
+                log.log(`${launchCommand} -u ${fileNamesArgs}`);
             } else {
-                log.log(`checksync -c "${commentsArg}" -u ${fileNamesArgs}`);
+                log.log(
+                    `${launchCommand} -c "${commentsArg}" -u ${fileNamesArgs}`,
+                );
             }
         };
 
