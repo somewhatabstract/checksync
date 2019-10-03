@@ -36,7 +36,6 @@ class StringLoggerInternal {
     info = (message: string): void => this._log(message);
     error = (message: string): void => this._log(message);
     warn = (message: string): void => this._log(message);
-    verbose = (message: string): void => this._log(message);
 }
 
 export default class StringLogger extends Logger {

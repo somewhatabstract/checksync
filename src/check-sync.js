@@ -24,7 +24,7 @@ export default async function checkSync(
         log.info("DRY-RUN: Files will not be modified");
     }
     const {includeGlobs, excludeGlobs, autoFix} = options;
-    const files = await getFiles(includeGlobs, excludeGlobs);
+    const files = await getFiles(includeGlobs, excludeGlobs, log);
 
     if (files.length === 0) {
         log.error("No matching files");

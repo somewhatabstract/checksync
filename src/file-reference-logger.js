@@ -33,8 +33,8 @@ export default class FileReferenceLogger implements IPositionLog {
         this._log.error(this._format(message, line));
     group = (...labels: Array<string>): void => this._log.group(...labels);
     groupEnd = (): void => this._log.groupEnd();
-    verbose = (message: string, line?: string | number): void =>
-        this._log.verbose(this._format(message, line));
+    verbose = (messageBuilder: () => string, line?: string | number): void =>
+        this._log.verbose(() => this._format(messageBuilder(), line));
 
     _format = (message: string, line?: string | number) =>
         `${this._formatRef(line)} ${message}`;

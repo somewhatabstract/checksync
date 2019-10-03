@@ -26,7 +26,7 @@ export const run = (launchFilePath: string): void => {
     // TODO(somewhatabstract): Verbose logging (make sure any caught errors
     // verbose their error messages)
     const args = minimist(process.argv, {
-        boolean: ["updateTags", "dryRun", "help", "noIgnoreFile"],
+        boolean: ["updateTags", "dryRun", "help", "noIgnoreFile", "verbose"],
         string: ["comments", "rootMarker", "ignore", "ignoreFile"],
         default: {
             ...defaultArgs,
@@ -62,6 +62,13 @@ export const run = (launchFilePath: string): void => {
         process.exit(ErrorCodes.SUCCESS);
     }
 
+    if (args.verbose) {
+        log.setVerbose();
+    }
+    log.verbose(
+        () => `Launched with args: ${JSON.stringify(args, null, "    ")}`,
+    );
+
     const comments = ((args.comments: any): string).split(",").filter(c => !!c);
     const ignoreGlobs = ((args.ignore: any): string)
         .split(",")
@@ -92,5 +99,8 @@ export const run = (launchFilePath: string): void => {
             dryRun: args.dryRun === true,
         },
         log,
-    ).then(exitCode => process.exit(exitCode));
+    ).then(exitCode => {
+        log.verbose(() => `Exiting with code ${exitCode}`);
+        process.exit(exitCode);
+    });
 };

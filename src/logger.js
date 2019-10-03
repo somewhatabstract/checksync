@@ -8,7 +8,7 @@ import type {ILog} from "./types.js";
 
 type MissingInStandardLog = {
     +errorsLogged: boolean,
-    +verbose: string => void,
+    +verbose: (() => string) => void,
 };
 type StandardLog = $Diff<ILog, MissingInStandardLog>;
 type StandardLogReadOnly = $ReadOnly<StandardLog>;
@@ -23,6 +23,8 @@ export default class Logging implements ILog {
         this._errorsLogged = false;
         this._verbose = !!verbose;
     }
+
+    setVerbose = () => (this._verbose = true);
 
     get errorsLogged(): boolean {
         return this._errorsLogged;
@@ -53,7 +55,7 @@ export default class Logging implements ILog {
         this._logger && this._logger.warn(Format.warn(message));
     };
 
-    verbose = (message: string): void => {
-        this._verbose && this.log(Format.verbose(message));
+    verbose = (messageBuilder: () => string): void => {
+        this._verbose && this.log(Format.verbose(messageBuilder()));
     };
 }
