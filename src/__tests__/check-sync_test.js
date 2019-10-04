@@ -57,7 +57,11 @@ describe("#checkSync", () => {
         );
 
         // Assert
-        expect(getFilesSpy).toHaveBeenCalledWith(["glob1", "glob2"], []);
+        expect(getFilesSpy).toHaveBeenCalledWith(
+            ["glob1", "glob2"],
+            [],
+            NullLogger,
+        );
     });
 
     it("should log error when there are no matching files", async () => {

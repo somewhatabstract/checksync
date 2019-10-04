@@ -187,6 +187,26 @@ describe("#run", () => {
         );
     });
 
+    it("should set logging to verbose when --verbose specified", () => {
+        const fakeParsedArgs = {
+            ...defaultArgs,
+            noIgnoreFile: true,
+            comments: "COMMENT1,COMMENT2",
+            verbose: true,
+            _: ["globs", "and globs"],
+        };
+        jest.spyOn(CheckSync, "default").mockReturnValue({then: jest.fn()});
+        jest.spyOn(minimist, "default").mockReturnValue(fakeParsedArgs);
+        jest.spyOn(fs, "existsSync").mockReturnValueOnce(false);
+        const setVerboseSpy = jest.spyOn(new Logger(null), "setVerbose");
+
+        // Act
+        run(__filename);
+
+        // Assert
+        expect(setVerboseSpy).toHaveBeenCalledTimes(1);
+    });
+
     describe("unknown arg handling", () => {
         it("should return false for process.execPath", () => {
             // Arrange

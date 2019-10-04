@@ -41,9 +41,9 @@ class StringLoggerInternal {
 export default class StringLogger extends Logger {
     getLog: () => string;
 
-    constructor() {
+    constructor(verbose?: boolean) {
         const realLogger = new StringLoggerInternal();
-        super(realLogger);
+        super(realLogger, verbose);
         this.getLog = () => realLogger.getLog();
     }
 }

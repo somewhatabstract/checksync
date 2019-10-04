@@ -23,6 +23,7 @@ export interface ILog {
     +info: (message: string) => void;
     +log: (message: string) => void;
     +warn: (message: string) => void;
+    +verbose: (() => string) => void;
 }
 
 export interface IPositionLog extends ILog {
