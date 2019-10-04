@@ -56,9 +56,10 @@ Where:
     \`--ignore,-i\`        A string containing comma-separated globs that identify
                        files that should not be checked.
 
-    \`--ignore-file\`      A .gitignore-like file that provides globs to be
-                       ignored. These will be combined with the \`--ignore\`
-                       globs. Ignored if \`--no-ignore-file\` is present.
+    \`--ignore-files\`     A comma-separated list of .gitignore-like files that
+                       provide path patterns to be ignored. These will be
+                       combined with the \`--ignore\` globs.
+                       Ignored if \`--no-ignore-file\` is present.
                        Defaults to \`.gitignore\`.
 
     \`--no-ignore-file\`   When \`true\`, does not use any ignore file. This is
@@ -79,6 +80,11 @@ Where:
     \`--update-tags,-u\`   Updates tags with incorrect target checksums. This
                        modifies files in place; run with \`--dry-run\` to see what
                        files will change without modifying them.
+
+    \`--verbose\`          More details will be added to the output when this
+                       option is provided. This is useful when determining if
+                       provided glob patterns are applying as expected, for
+                       example.
 `;
 
 export default function logHelp(log: ILog) {

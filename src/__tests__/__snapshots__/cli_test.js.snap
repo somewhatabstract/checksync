@@ -55,9 +55,10 @@ Where:
     [1m[33m--ignore,-i[39m[22m        A string containing comma-separated globs that identify
                        files that should not be checked.
 
-    [1m[33m--ignore-file[39m[22m      A .gitignore-like file that provides globs to be
-                       ignored. These will be combined with the [1m[33m--ignore[39m[22m
-                       globs. Ignored if [1m[33m--no-ignore-file[39m[22m is present.
+    [1m[33m--ignore-files[39m[22m     A comma-separated list of .gitignore-like files that
+                       provide path patterns to be ignored. These will be
+                       combined with the [1m[33m--ignore[39m[22m globs.
+                       Ignored if [1m[33m--no-ignore-file[39m[22m is present.
                        Defaults to [1m[33m.gitignore[39m[22m.
 
     [1m[33m--no-ignore-file[39m[22m   When [1m[33mtrue[39m[22m, does not use any ignore file. This is
@@ -78,5 +79,10 @@ Where:
     [1m[33m--update-tags,-u[39m[22m   Updates tags with incorrect target checksums. This
                        modifies files in place; run with [1m[33m--dry-run[39m[22m to see what
                        files will change without modifying them.
+
+    [1m[33m--verbose[39m[22m          More details will be added to the output when this
+                       option is provided. This is useful when determining if
+                       provided glob patterns are applying as expected, for
+                       example.
 "
 `;
