@@ -44,6 +44,36 @@ describe("FileReferenceLogger", () => {
         expect(spy).toHaveBeenCalled();
     });
 
+    describe("#verbose", () => {
+        it("should prefix with default file reference", () => {
+            // Arrange
+            const NullLogger = new Logger();
+            const spy = jest.spyOn(NullLogger, "verbose");
+            const logger = new FileReferenceLogger("FILE", NullLogger);
+
+            // Act
+            logger.verbose(() => "MESSAGE");
+
+            // Assert
+            expect(spy).toHaveBeenCalledWith(expect.any(Function));
+            expect(spy.mock.calls[0][0]()).toBe("FILE MESSAGE");
+        });
+
+        it("should prefix with file:line reference", () => {
+            // Arrange
+            const NullLogger = new Logger();
+            const spy = jest.spyOn(NullLogger, "verbose");
+            const logger = new FileReferenceLogger("FILE", NullLogger);
+
+            // Act
+            logger.verbose(() => "MESSAGE", 42);
+
+            // Assert
+            expect(spy).toHaveBeenCalledWith(expect.any(Function));
+            expect(spy.mock.calls[0][0]()).toBe("FILE:42 MESSAGE");
+        });
+    });
+
     describe.each(["error", "log", "warn", "info"])("#%s", testCase => {
         it("should prefix with default file reference", () => {
             // Arrange
