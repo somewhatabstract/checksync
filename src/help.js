@@ -20,6 +20,9 @@ The sync-end tags take the form:
 
     \`<comment> sync-end:<marker_id>\`
 
+Each \`marker_id\` can have multiple \`sync-start\` tags, each with a different
+target file, but there must be only one corresponding \`sync-end\` tag.
+
 Where:
 
     \`<comment>\`       is one of the comment tokens provided by the \`--comment\`

@@ -19,6 +19,9 @@ The sync-end tags take the form:
 
     [1m[33m<comment> sync-end:<marker_id>[39m[22m
 
+Each [1m[33mmarker_id[39m[22m can have multiple [1m[33msync-start[39m[22m tags, each with a different
+target file, but there must be only one corresponding [1m[33msync-end[39m[22m tag.
+
 Where:
 
     [1m[33m<comment>[39m[22m       is one of the comment tokens provided by the [1m[33m--comment[39m[22m
