@@ -5,7 +5,7 @@ const defaultArgs = {
     ignore: "",
     help: false,
     dryRun: false,
-    ignoreFile: ".gitignore",
+    ignoreFiles: ".gitignore",
     noIgnoreFile: false,
 };
 

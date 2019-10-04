@@ -12,6 +12,21 @@ import logHelp from "./help.js";
 import defaultArgs from "./default-args.js";
 import parseGitIgnore from "parse-gitignore";
 
+const ignoreFilesToExcludes = (ignoreFilesArg: string): Array<string> => {
+    const ignoreFiles = ignoreFilesArg.split(",").filter(c => !!c);
+    if (
+        ignoreFilesArg === defaultArgs.ignoreFiles &&
+        !fs.existsSync(ignoreFilesArg)
+    ) {
+        return [];
+    }
+
+    return ignoreFiles
+        .map(file => fs.readFileSync(file))
+        .map((content: Buffer) => parseGitIgnore(content))
+        .reduce((prev, current: Array<string>) => [...prev, ...current], []);
+};
+
 /**
  * Run the command line.
  *
@@ -27,7 +42,7 @@ export const run = (launchFilePath: string): void => {
     // verbose their error messages)
     const args = minimist(process.argv, {
         boolean: ["updateTags", "dryRun", "help", "noIgnoreFile", "verbose"],
-        string: ["comments", "rootMarker", "ignore", "ignoreFile"],
+        string: ["comments", "rootMarker", "ignore", "ignoreFiles"],
         default: {
             ...defaultArgs,
         },
@@ -36,7 +51,7 @@ export const run = (launchFilePath: string): void => {
             dryRun: ["n", "dry-run"],
             help: ["h", "?"],
             ignore: ["i"],
-            ignoreFile: ["ignore-file"],
+            ignoreFiles: ["ignore-files"],
             noIgnoreFile: ["no-ignore-file"],
             rootMarker: ["m", "root-marker"],
             updateTags: ["u", "update-tags"],
@@ -74,15 +89,9 @@ export const run = (launchFilePath: string): void => {
         .split(",")
         .filter(c => !!c);
 
-    const shouldParseIgnore =
-        !args.noIgnoreFile &&
-        ((args.ignoreFile !== defaultArgs.ignoreFile &&
-            args.ignoreFile != null) ||
-            (args.ignoreFile === defaultArgs.ignoreFile &&
-                fs.existsSync((args.ignoreFile: any))));
-    const ignoreFileGlobs = shouldParseIgnore
-        ? parseGitIgnore(fs.readFileSync((args.ignoreFile: any)))
-        : [];
+    const ignoreFileGlobs = args.noIgnoreFile
+        ? []
+        : ignoreFilesToExcludes((args.ignoreFiles: any));
     const excludeGlobs = [...ignoreGlobs, ...ignoreFileGlobs];
 
     // Make sure we have something to search, so default to current working
