@@ -10,6 +10,19 @@ on:
     - master
 
 jobs:
+  approve:
+    name: Auto-approve dependabot PRs
+    # We only need this for PRs and dependeabot.
+    # We have it in the same workflow file to workround bug with actions and
+    # required checks where the required checks don't seem to work right for
+    # multiple workflows
+    if: github.event_name == 'pull_request' && (github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]')
+    runs-on: ubuntu-latest
+    steps:
+    - uses: hmarr/auto-approve-action@v2.0.0
+      with:
+        github-token: "${{ secrets.GITHUB_TOKEN }}"
+
   lint:
     name: Lint and flow check
     env:
