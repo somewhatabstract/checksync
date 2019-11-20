@@ -5336,9 +5336,9 @@ rollup-plugin-node-resolve@^5.2.0:
     rollup-pluginutils "^2.8.1"
 
 rollup-plugin-visualizer@^3.0.6:
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-visualizer/-/rollup-plugin-visualizer-3.1.1.tgz#fd2bcbd658766591e5de10900caf91e173f6c71c"
-  integrity sha512-NsfB7BjOsrOPUR7t2odYh4MfblttKGObNPYJY0kalTq8sxu6kooTXOXtoTeghaCk6LFu0LoYujIVXlWa9mQacw==
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-visualizer/-/rollup-plugin-visualizer-3.2.1.tgz#7664b2a567c01cd3d55f1141f967a7378fb615ad"
+  integrity sha512-9BBWLGUgyFc3F0f6aL5kMkGY4osOsA2JrOsZYPPasBChjgHWLLIA+Ns0PVuGWMKC0eUdOSHuDkt8UURxF8UisQ==
   dependencies:
     mkdirp "^0.5.1"
     nanoid "^2.1.6"
