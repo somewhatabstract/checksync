@@ -37,7 +37,7 @@
         "@babel/preset-flow": "^7.0.0",
         "@babel/register": "^7.5.5",
         "adler-32": "^1.2.0",
-        "ancesdir": "^1.1.0",
+        "ancesdir": "^1.1.1",
         "babel-eslint": "^10.0.2",
         "babel-jest": "^24.9.0",
         "babelrc-rollup": "^3.0.0",
