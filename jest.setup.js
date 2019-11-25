@@ -1,10 +1,14 @@
 import chalk from "chalk";
 
+let chalkLevel = 0;
+
 beforeEach(() => {
     // Disable chalk so that colors aren't included in log text.
-    chalk.enabled = false;
+    chalkLevel = chalk.level;
+    chalk.level = 0;
 });
 
 afterEach(() => {
-    chalk.enabled = true;
+    // Reset chalk level.
+    chalk.level = chalkLevel;
 });
