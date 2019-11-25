@@ -34,7 +34,6 @@ const ignoreFilesToExcludes = (ignoreFilesArg: string): Array<string> => {
  */
 export const run = (launchFilePath: string): void => {
     chalk.level = 3;
-    chalk.enabled = true;
 
     const log = new Logger(console);
 
