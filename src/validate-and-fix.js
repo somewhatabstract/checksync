@@ -25,10 +25,21 @@ const formatEdgeFix = (
     sourceFile: string,
     rootMarker: ?string,
     brokenEdge: MarkerEdge,
-): string =>
-    `${brokenEdge.sourceComment} sync-start:${brokenEdge.markerID} ${
-        brokenEdge.targetChecksum
-    } ${rootRelativePath(brokenEdge.targetFile, rootMarker)}`;
+): string => {
+    const startOfComment = brokenEdge.sourceComment
+        ? brokenEdge.sourceDeclaration.indexOf(brokenEdge.sourceComment)
+        : -1;
+    const indent =
+        startOfComment > 0
+            ? brokenEdge.sourceDeclaration.substring(0, startOfComment)
+            : "";
+    return `${indent}${brokenEdge.sourceComment} sync-start:${
+        brokenEdge.markerID
+    } ${brokenEdge.targetChecksum} ${rootRelativePath(
+        brokenEdge.targetFile,
+        rootMarker,
+    )}`;
+};
 
 /**
  * Generate a map edge from broken declaration to fixed declaration.

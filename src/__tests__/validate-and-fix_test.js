@@ -65,21 +65,16 @@ describe("#validateAndFix", () => {
             t => `ROOT_REL:${t}`,
         );
         jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([
-            {
-                BROKEN_DECLARATION: {
-                    fix: "FIXED_DECLARATION",
-                    edge: ({
-                        markerID: "MARKER_ID",
-                        sourceComment: "//",
-                        sourceChecksum: "SRC_CHECKSUM",
-                        sourceDeclaration: "BROKEN_DECLARATION",
-                        sourceLine: "42",
-                        targetFile: "fileb",
-                        targetChecksum: "TARGET_CHECKSUM",
-                        targetLine: "99",
-                    }: MarkerEdge),
-                },
-            },
+            ({
+                markerID: "MARKER_ID",
+                sourceComment: "//",
+                sourceChecksum: "SRC_CHECKSUM",
+                sourceDeclaration: "BROKEN_DECLARATION",
+                sourceLine: "42",
+                targetFile: "fileb",
+                targetChecksum: "TARGET_CHECKSUM",
+                targetLine: "99",
+            }: MarkerEdge),
         ]);
         const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
 
