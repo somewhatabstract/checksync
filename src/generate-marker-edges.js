@@ -11,7 +11,7 @@ export type MarkerEdge = {
     +markerID: string,
 
     /**
-     * The line in the source file where the marker is declared.
+     * The line number in the source file where the marker is declared.
      */
     +sourceLine: string,
 
@@ -36,7 +36,7 @@ export type MarkerEdge = {
     +targetFile: string,
 
     /**
-     * The line in the target file where the marker begins.
+     * The line number in the target file where the marker begins.
      */
     +targetLine: string,
 
@@ -68,9 +68,9 @@ export default function* generateMarkerEdges(
         }
         // We look for a target that points to our file or an alias of our
         // file - the file is considered its own alias.
-        const matchingTargets = Object.entries(targetMarker.targets).filter(
-            ([_, target]) => aliases.includes((target: any).file),
-        );
+        const matchingTargets = Object.entries(
+            targetMarker.targets,
+        ).filter(([_, target]) => aliases.includes((target: any).file));
         if (matchingTargets.length === 0) {
             return null;
         }

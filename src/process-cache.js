@@ -41,6 +41,7 @@ export default async function processCache(
                 .join(" ");
 
             const launchCommand = getLaunchString();
+            log.log("");
             if (commentsArg === defaultArgs.comments) {
                 log.log(`${launchCommand} -u ${fileNamesArgs}`);
             } else {
