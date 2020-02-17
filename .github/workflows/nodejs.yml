@@ -69,7 +69,7 @@ jobs:
         # TODO(somewhatabstract): Add windows-latest when we have normalized the
         # paths in the snapshots.
         os: [ubuntu-latest, macOS-latest]
-        node-version: [^8.12.x, 10.x, 12.x]
+        node-version: [10.x, 12.x]
     steps:
     - uses: actions/checkout@v1
     - name: Use Node.js ${{ matrix.node-version }}

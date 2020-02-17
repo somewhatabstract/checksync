@@ -22,7 +22,7 @@
     "license": "MIT",
     "private": false,
     "engines": {
-        "node": ">= 8"
+        "node": ">= 10"
     },
     "files": [
         "bin/checksync.js",
