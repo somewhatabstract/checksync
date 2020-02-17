@@ -1,6 +1,6 @@
 # checksync
 
-[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=somewhatabstract/checksync)](https://dependabot.com) [![Node CI](https://github.com/somewhatabstract/checksync/workflows/Node%20CI/badge.svg)](https://github.com/somewhatabstract/checksync/actions) [![codecov](https://codecov.io/gh/somewhatabstract/checksync/branch/master/graph/badge.svg)](https://codecov.io/gh/somewhatabstract/checksync) [![npm (tag)](https://img.shields.io/npm/v/checksync/latest)](https://www.npmjs.com/package/checksync)
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=somewhatabstract/checksync)](https://dependabot.com) [![Node CI](https://github.com/somewhatabstract/checksync/workflows/Node%20CI/badge.svg)](https://github.com/somewhatabstract/checksync/actions) [![codecov](https://codecov.io/gh/somewhatabstract/checksync/branch/master/graph/badge.svg)](https://codecov.io/gh/somewhatabstract/checksync) [![npm (tag)](https://img.shields.io/npm/v/checksync/latest)](https://www.npmjs.com/package/checksync) [![Required Node Version](https://img.shields.io/node/v/checksync/latest)](https://www.npmjs.com/package/checksync)
 
 ## Installation
 
