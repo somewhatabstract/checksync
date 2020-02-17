@@ -38,7 +38,7 @@ export default {
             sourceMap: false,
             namedExports: {"promise.prototype.finally": ["shim"]},
         }),
-        minify({comments: false, sourceMap: false}),
+        minify({comments: false, sourceMap: false, mangle: false}),
         ...getOptionalPlugins(),
     ],
 };
