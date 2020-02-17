@@ -22,7 +22,7 @@
     "license": "MIT",
     "private": false,
     "engines": {
-        "node": ">= 8"
+        "node": ">= 10"
     },
     "files": [
         "bin/checksync.js",
@@ -48,7 +48,7 @@
         "fast-glob": "^3.0.4",
         "flow-bin": "^0.118.0",
         "flow-typed": "^2.6.1",
-        "jest": "^24.9.0",
+        "jest": "^25.1.0",
         "jest-extended": "^0.11.2",
         "jest-worker": "^25.1.0",
         "lodash": "^4.17.15",
