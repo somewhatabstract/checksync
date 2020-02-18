@@ -1312,10 +1312,10 @@ ajv@^6.10.0, ajv@^6.10.2, ajv@^6.5.5:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-ancesdir@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/ancesdir/-/ancesdir-1.1.1.tgz#81a5e56abbb789345445306602d643da7f4ac232"
-  integrity sha512-P1kc/F0ISZNULTcOynPOnRgN/sAPSpsI4wH5wKo1ZDFydY9F7bt1ZBRXKJt4gpDrU5eggWWCV2V0r9uggtWkwA==
+ancesdir@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/ancesdir/-/ancesdir-2.0.0.tgz#918a8a9f0ddbbc99f763904c1ae6c13015cf61c2"
+  integrity sha512-CeGSm9BqE55e9UKWurLDUlJlmI4wbp5izIISgDbLbRONthZ8RHuuvavfH2O8cKR4MPAWK9YkZMvYrHXlY/YhLA==
 
 ansi-escapes@^4.2.1:
   version "4.2.1"
