@@ -39,7 +39,7 @@
         "adler-32": "^1.2.0",
         "ancesdir": "^2.0.0",
         "babel-eslint": "^10.0.3",
-        "babel-jest": "^25.1.0",
+        "babel-jest": "^26.0.0",
         "babelrc-rollup": "^3.0.0",
         "chalk": "^4.0.0",
         "codecov": "^3.5.0",
