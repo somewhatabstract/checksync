@@ -44,7 +44,7 @@
         "chalk": "^4.0.0",
         "codecov": "^3.5.0",
         "eslint": "^7.0.0",
-        "eslint-plugin-flowtype": "^4.6.0",
+        "eslint-plugin-flowtype": "^5.1.0",
         "fast-glob": "^3.0.4",
         "flow-bin": "^0.124.0",
         "flow-typed": "^3.0.0",
