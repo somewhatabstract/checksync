@@ -36,6 +36,7 @@
         "@babel/preset-env": "^7.8.4",
         "@babel/preset-flow": "^7.8.3",
         "@babel/register": "^7.8.3",
+        "@rollup/plugin-json": "^4.0.3",
         "adler-32": "^1.2.0",
         "ancesdir": "^2.0.0",
         "babel-eslint": "^10.0.3",
