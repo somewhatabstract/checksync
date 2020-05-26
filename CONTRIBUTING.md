@@ -64,7 +64,7 @@ Running the build will execute tests first.
 
 To run `checksync` locally without building, you can use `./bin/checksync.dev.js`.
 
-To run a `checksync` build. use `./bin/checksync.js` instead.
+To run a `checksync` build, use `./bin/checksync.js` instead.
 
 ### Publishing
 

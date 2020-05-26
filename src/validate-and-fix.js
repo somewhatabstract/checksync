@@ -15,7 +15,7 @@ type EdgeMap = {
         fix: string,
         edge: MarkerEdge,
     },
-    ...,
+    ...
 };
 
 /**
@@ -73,8 +73,9 @@ const reportBrokenEdge = (
         Format.violation(
             `${sourceFileRef} Updating checksum for sync-tag '${markerID}' referencing '${cwdRelativePath(
                 targetFile,
-            )}:${targetLine}' from ${sourceChecksum ||
-                NO_CHECKSUM} to ${targetChecksum}.`,
+            )}:${targetLine}' from ${
+                sourceChecksum || NO_CHECKSUM
+            } to ${targetChecksum}.`,
         ),
     );
 };
@@ -90,8 +91,8 @@ const validateAndFix: FileProcessor = (
         // Let's make a lookup of old declaration to new.
         const brokenEdges = Array.from(generateMarkerEdges(file, cache, log));
         if (brokenEdges.length === 0) {
-            // This shouldn't get here, but if it does, yay! Nothing to do.
             resolve(true);
+            return;
         }
 
         const brokenEdgeMap: EdgeMap = brokenEdges
