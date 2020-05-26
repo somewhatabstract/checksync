@@ -46,7 +46,7 @@ export default async function getMarkersFromFiles(
                     realFilePath !== file &&
                     cacheData[realFilePath] !== undefined
                 ) {
-                    // Close as unfixable, since this file already exists in
+                    // Clone as unfixable, since this file already exists in
                     // a fixable version, and we don't need to fix it twice.
                     setCacheData(
                         file,
