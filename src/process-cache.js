@@ -35,20 +35,34 @@ export default async function processCache(
 
     if (violationFileNames.length > 0) {
         const outputRerunCommand = () => {
-            const commentsArg = options.comments.sort().join(",");
-            const fileNamesArgs = violationFileNames
-                .map(cwdRelativePath)
-                .join(" ");
-
-            const launchCommand = getLaunchString();
             log.log("");
-            if (commentsArg === defaultArgs.comments) {
-                log.log(`${launchCommand} -u ${fileNamesArgs}`);
-            } else {
-                log.log(
-                    `${launchCommand} -c "${commentsArg}" -u ${fileNamesArgs}`,
-                );
+            /**
+             * There are some arguments we need to include to ensure that the launch
+             * string we output would work.
+             *
+             * We don't care about ignore files, because we're giving a list of specific
+             * files, but we do care about:
+             *  - comment matchers
+             *  - the root marker
+             */
+            const updateCommandParts = [];
+            updateCommandParts.push(getLaunchString());
+            const commentsArg = options.comments.sort().join(",");
+            if (commentsArg !== defaultArgs.comments) {
+                updateCommandParts.push("-c");
+                updateCommandParts.push(`"${commentsArg}"`);
             }
+            const rootMarker = options.rootMarker;
+            if (rootMarker != null) {
+                updateCommandParts.push("-m");
+                updateCommandParts.push(`"${rootMarker}"`);
+            }
+            updateCommandParts.push("-u");
+            updateCommandParts.push(
+                violationFileNames.map(cwdRelativePath).join(" "),
+            );
+
+            log.log(updateCommandParts.join(" "));
         };
 
         if (autoFix) {

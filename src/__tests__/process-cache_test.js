@@ -336,7 +336,7 @@ describe("#processCache", () => {
                 "2 file(s) would have been fixed. To fix, run:",
             );
             expect(logSpy).toHaveBeenCalledWith(
-                `checksync -c "//" -u filea fileb`,
+                `checksync -c "//" -m "marker" -u filea fileb`,
             );
         });
 
@@ -360,7 +360,9 @@ describe("#processCache", () => {
             await processCache(options, TestCache, NullLogger);
 
             // Assert
-            expect(logSpy).toHaveBeenCalledWith(`checksync -u filea fileb`);
+            expect(logSpy).toHaveBeenCalledWith(
+                `checksync -m "marker" -u filea fileb`,
+            );
         });
     });
 
