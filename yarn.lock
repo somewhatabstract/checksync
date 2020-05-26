@@ -1220,6 +1220,22 @@
   dependencies:
     "@types/node" ">= 8"
 
+"@rollup/plugin-json@^4.0.3":
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/@rollup/plugin-json/-/plugin-json-4.0.3.tgz#747e2c2884c5a0fa00b66c9c0f3f1012cddca534"
+  integrity sha512-QMUT0HZNf4CX17LMdwaslzlYHUKTYGuuk34yYIgZrNdu+pMEfqMS55gck7HEeHBKXHM4cz5Dg1OVwythDdbbuQ==
+  dependencies:
+    "@rollup/pluginutils" "^3.0.8"
+
+"@rollup/pluginutils@^3.0.8":
+  version "3.0.10"
+  resolved "https://registry.yarnpkg.com/@rollup/pluginutils/-/pluginutils-3.0.10.tgz#a659b9025920378494cd8f8c59fbf9b3a50d5f12"
+  integrity sha512-d44M7t+PjmMrASHbhgpSbVgtL6EFyX7J4mYxwQ/c5eoaE6N2VgCgEcWVzNnwycIloti+/MpwFr8qfw+nRw00sw==
+  dependencies:
+    "@types/estree" "0.0.39"
+    estree-walker "^1.0.1"
+    picomatch "^2.2.2"
+
 "@sindresorhus/is@^2.0.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-2.1.0.tgz#6ad4ca610f696098e92954ab431ff83bea0ce13f"
@@ -2757,6 +2773,11 @@ estree-walker@^0.6.1:
   version "0.6.1"
   resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-0.6.1.tgz#53049143f40c6eb918b23671d1fe3219f3a1b362"
   integrity sha512-SqmZANLWS0mnatqbSfRP5g8OXZC12Fgg1IwNtLsyHDzJizORW4khDfjPqJZsemPWBB2uqykUah5YpQ6epsqC/w==
+
+estree-walker@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/estree-walker/-/estree-walker-1.0.1.tgz#31bc5d612c96b704106b477e6dd5d8aa138cb700"
+  integrity sha512-1fMXF3YP4pZZVozF8j/ZLfvnR8NSIljt56UhbZ5PeeDmmGHpgpdwQt7ITlGvYaQukCvuBRMLEiKiYC+oeIg4cg==
 
 esutils@^2.0.2:
   version "2.0.3"
@@ -5125,6 +5146,11 @@ picomatch@^2.0.4, picomatch@^2.0.5, picomatch@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.2.1.tgz#21bac888b6ed8601f831ce7816e335bc779f0a4a"
   integrity sha512-ISBaA8xQNmwELC7eOjqFKMESB2VIqt4PPDD0nsS95b/9dZXvVKOlz9keMSnoGGKcOHXfTvDD6WMaRoSc9UuhRA==
+
+picomatch@^2.2.2:
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.2.2.tgz#21f333e9b6b8eaff02468f5146ea406d345f4dad"
+  integrity sha512-q0M/9eZHzmr0AulXyPwNfZjtwZ/RBZlbN3K3CErVrk50T2ASYI7Bye0EvekFY3IP1Nt2DHu0re+V2ZHIpMkuWg==
 
 pify@^4.0.1:
   version "4.0.1"

@@ -4,6 +4,7 @@ import commonjs from "rollup-plugin-commonjs";
 import minify from "rollup-plugin-babel-minify";
 import analyzer from "rollup-plugin-analyzer";
 import visualizer from "rollup-plugin-visualizer";
+import json from "@rollup/plugin-json";
 
 const getOptionalPlugins = () => {
     if (process.env.NODE_ENV === "CI") {
@@ -15,7 +16,7 @@ const getOptionalPlugins = () => {
         // NOTE: The analysis is of the pre-minified output.
         // So the reported bundle size is the non-minified size that includes
         // comments and full code.
-        analyzer({summaryOnly: true, filter: module => module.size !== 0}),
+        analyzer({summaryOnly: true, filter: (module) => module.size !== 0}),
         visualizer({
             title: "checksync bundle rollup (unminified)",
             filename: "report/stats.html",
@@ -30,6 +31,7 @@ export default {
         format: "cjs",
     },
     plugins: [
+        json(),
         resolve({preferBuiltins: true}),
         babel({
             exclude: "node_modules/**", // only transpile our source code

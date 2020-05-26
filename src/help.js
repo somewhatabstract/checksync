@@ -1,9 +1,9 @@
 // @flow
 import Format from "./format.js";
 import type {ILog} from "./types.js";
-import packageInfo from "../package.json";
+import {version} from "../package.json";
 
-const helpMarkDown = `# checksync ${packageInfo.version} ✅ 🔗
+const helpMarkDown = `# checksync ${version} ✅ 🔗
 
 Checksync uses tags in your files to identify blocks that need to remain
 synchronised. It works on any text file as long as it can find the tags.

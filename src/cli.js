@@ -13,7 +13,7 @@ import defaultArgs from "./default-args.js";
 import parseGitIgnore from "parse-gitignore";
 
 const ignoreFilesToExcludes = (ignoreFilesArg: string): Array<string> => {
-    const ignoreFiles = ignoreFilesArg.split(",").filter(c => !!c);
+    const ignoreFiles = ignoreFilesArg.split(",").filter((c) => !!c);
     if (
         ignoreFilesArg === defaultArgs.ignoreFiles &&
         !fs.existsSync(ignoreFilesArg)
@@ -22,7 +22,7 @@ const ignoreFilesToExcludes = (ignoreFilesArg: string): Array<string> => {
     }
 
     return ignoreFiles
-        .map(file => fs.readFileSync(file))
+        .map((file) => fs.readFileSync(file))
         .map((content: Buffer) => parseGitIgnore(content))
         .reduce((prev, current: Array<string>) => [...prev, ...current], []);
 };
@@ -55,7 +55,7 @@ export const run = (launchFilePath: string): void => {
             rootMarker: ["m", "root-marker"],
             updateTags: ["u", "update-tags"],
         },
-        unknown: arg => {
+        unknown: (arg) => {
             // Filter out the node process.
             if (arg === process.execPath) return false;
             // Filter out our entry point.
@@ -83,10 +83,12 @@ export const run = (launchFilePath: string): void => {
         () => `Launched with args: ${JSON.stringify(args, null, "    ")}`,
     );
 
-    const comments = ((args.comments: any): string).split(",").filter(c => !!c);
+    const comments = ((args.comments: any): string)
+        .split(",")
+        .filter((c) => !!c);
     const ignoreGlobs = ((args.ignore: any): string)
         .split(",")
-        .filter(c => !!c);
+        .filter((c) => !!c);
 
     const ignoreFileGlobs = args.noIgnoreFile
         ? []
@@ -107,7 +109,7 @@ export const run = (launchFilePath: string): void => {
             dryRun: args.dryRun === true,
         },
         log,
-    ).then(exitCode => {
+    ).then((exitCode) => {
         log.verbose(() => `Exiting with code ${exitCode}`);
         process.exit(exitCode);
     });
