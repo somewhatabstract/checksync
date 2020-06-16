@@ -1,4 +1,5 @@
 // @flow
+import path from "path";
 import Logger from "./logger.js";
 
 /**
@@ -14,7 +15,15 @@ class StringLoggerInternal {
     _groupIndent: number = 0;
 
     _log = (...args: Array<string>) => {
-        this._buffer.push(`${"  ".repeat(this._groupIndent)}${args.join("")}`);
+        /**
+         * We want to normalize the string in case it contains filepaths.
+         * This ensures that snapshots are standardized across platforms.
+         */
+        const normalize = (snippet: string): string =>
+            snippet.replace(path.sep, "/");
+        this._buffer.push(
+            `${"  ".repeat(this._groupIndent)}${args.map(normalize).join("")}`,
+        );
     };
 
     getLog = () => this._buffer.join("\n");
