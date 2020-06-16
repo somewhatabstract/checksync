@@ -43,7 +43,6 @@
         "babel-jest": "^26.0.0",
         "babelrc-rollup": "^3.0.0",
         "chalk": "^4.0.0",
-        "codecov": "^3.5.0",
         "eslint": "^7.0.0",
         "eslint-plugin-flowtype": "^5.1.0",
         "fast-glob": "^3.0.4",

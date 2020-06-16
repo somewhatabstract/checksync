@@ -53,9 +53,9 @@ jobs:
     - name: Run tests with coverage
       run: yarn coverage
     - name: Upload coverage
-      run: yarn codecov
-      env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
 
 
   integrationtests:
