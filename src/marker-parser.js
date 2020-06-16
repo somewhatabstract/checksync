@@ -31,7 +31,7 @@ type TrackedTarget = {
 
 type TrackedTargets = {
     [target: string]: TrackedTarget,
-    ...,
+    ...
 };
 
 type TrackedMarker = {
@@ -59,7 +59,7 @@ type TrackedMarker = {
 
 type TrackedMarkers = {
     [id: string]: TrackedMarker,
-    ...,
+    ...
 };
 
 type addMarkerFn = (
@@ -129,7 +129,7 @@ export default class MarkerParser {
         this._lineNumber = 1;
 
         const commentsString = comments
-            .map(c => `(?:${escapeRegExp(c)})`)
+            .map((c) => `(?:${escapeRegExp(c)})`)
             .join("|");
 
         /**
@@ -179,7 +179,14 @@ export default class MarkerParser {
         this._endTagDecodeRegExp = new RegExp(`^(\\S+)\\s*$`);
     }
 
-    _recordMarkerStart = (
+    _recordMarkerStart: (
+        id: string,
+        file: string,
+        line: number,
+        checksum: string,
+        comment: string,
+        declaration: string,
+    ) => void = (
         id: string,
         file: string,
         line: number,
@@ -231,7 +238,10 @@ export default class MarkerParser {
         };
     };
 
-    _recordMarkerEnd = (id: string, line: number) => {
+    _recordMarkerEnd: (id: string, line: number) => void = (
+        id: string,
+        line: number,
+    ) => {
         const marker = this._openMarkers[id];
         if (marker == null) {
             this._log.warn(
@@ -252,13 +262,13 @@ export default class MarkerParser {
         this._addMarker(id, checksum, targets, marker.comment);
     };
 
-    _addContentToOpenMarkers = (line: string) => {
+    _addContentToOpenMarkers: (line: string) => void = (line: string) => {
         for (const id of Object.keys(this._openMarkers)) {
             this._openMarkers[id].content.push(line + "\n");
         }
     };
 
-    reportUnterminatedMarkers = () => {
+    reportUnterminatedMarkers: () => void = () => {
         for (const id of Object.keys(this._openMarkers)) {
             const openMarker = this._openMarkers[id];
             const targetFile = Object.keys(openMarker.targets)[0];
@@ -279,7 +289,7 @@ export default class MarkerParser {
      * @memberof MarkerParser
      * @param {string} content The line content to be parsed.
      */
-    parseLine = (content: string): void => {
+    parseLine: (content: string) => void = (content: string): void => {
         const lineNumber = this._lineNumber++;
 
         const tagSearch = content.trim();

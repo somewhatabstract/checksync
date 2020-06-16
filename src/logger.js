@@ -24,38 +24,40 @@ export default class Logging implements ILog {
         this._verbose = !!verbose;
     }
 
-    setVerbose = () => (this._verbose = true);
+    setVerbose: () => boolean = () => (this._verbose = true);
 
     get errorsLogged(): boolean {
         return this._errorsLogged;
     }
 
-    group = (...labels: Array<string>) => {
+    group: (...labels: Array<string>) => void = (...labels: Array<string>) => {
         this._logger && this._logger.group(...labels);
     };
 
-    groupEnd = () => {
+    groupEnd: () => void = () => {
         this._logger && this._logger.groupEnd();
     };
 
-    log = (message: string): void => {
+    log: (message: string) => void = (message: string): void => {
         this._logger && this._logger.log(message);
     };
 
-    info = (message: string): void => {
+    info: (message: string) => void = (message: string): void => {
         this._logger && this._logger.info(Format.info(message));
     };
 
-    error = (message: string): void => {
+    error: (message: string) => void = (message: string): void => {
         this._errorsLogged = true;
         this._logger && this._logger.error(Format.error(message));
     };
 
-    warn = (message: string): void => {
+    warn: (message: string) => void = (message: string): void => {
         this._logger && this._logger.warn(Format.warn(message));
     };
 
-    verbose = (messageBuilder: () => string): void => {
+    verbose: (messageBuilder: () => string) => void = (
+        messageBuilder: () => string,
+    ): void => {
         this._verbose && this.log(Format.verbose(messageBuilder()));
     };
 }
