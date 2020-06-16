@@ -183,29 +183,6 @@ exports[`Integration Tests should report example no_self_reference to match snap
 🛑  Aborting tag updates due to parsing errors. Fix these errors and try again."
 `;
 
-exports[`Integration Tests should report example symlinked_checksums_need_updating to match snapshot 1`] = `
-" MISMATCH  __examples__/symlinked_checksums_need_updating/a.js:4 Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (45678 != 249234014)
- MISMATCH  __examples__/symlinked_checksums_need_updating/a.js:5 Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/c.jsx:3'. Make sure you've made the parallel changes in the source file, if necessary (1234 != 1992689801)
- MISMATCH  __examples__/symlinked_checksums_need_updating/b.py:3 Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/a.js:4'. Make sure you've made the parallel changes in the source file, if necessary (4567 != 2050223083)
-
-<group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
-  
-  checksync -c \\"#,//,{/*\\" -u __examples__/symlinked_checksums_need_updating/a.js __examples__/symlinked_checksums_need_updating/b.py
-<end_group>"
-`;
-
-exports[`Integration Tests should report example symlinked_checksums_need_updating to match snapshot with autofix dryrun 1`] = `
-" INFO  DRY-RUN: Files will not be modified
- MISMATCH  __examples__/symlinked_checksums_need_updating/a.js:4 Updating checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/b.py:3' from 45678 to 249234014.
- MISMATCH  __examples__/symlinked_checksums_need_updating/a.js:5 Updating checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/c.jsx:3' from 1234 to 1992689801.
- MISMATCH  __examples__/symlinked_checksums_need_updating/b.py:3 Updating checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/a.js:4' from 4567 to 2050223083.
-<group 2 file(s) would have been fixed. To fix, run: >
-  
-  checksync -c \\"#,//,{/*\\" -u __examples__/symlinked_checksums_need_updating/a.js __examples__/symlinked_checksums_need_updating/b.py
-<end_group>
-🎉  Everything is in sync!"
-`;
-
 exports[`Integration Tests should report example unterminated_marker to match snapshot 1`] = `
 " ERROR  __examples__/unterminated_marker/example_two-b.py:3 Sync-start 'example_two' has no corresponding sync-end
  ERROR  __examples__/unterminated_marker/example_two-b.py does not contain a tag named 'example_two' that points to '__examples__/unterminated_marker/example_two-a.js'
