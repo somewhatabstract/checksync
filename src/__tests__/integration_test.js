@@ -9,25 +9,31 @@ import checkSync from "../check-sync.js";
 jest.mock("../get-launch-string.js", () => () => "checksync");
 
 describe("Integration Tests", () => {
-    const getExampleDirs = () => {
+    const getExampleGlobs = () => {
         const __examples__ = path.join(ancesdir(), "__examples__");
-        return fs
-            .readdirSync(__examples__)
-            .map((name) => [name, path.join(__examples__, name)])
-            .filter(([_, dirPath]) => fs.lstatSync(dirPath).isDirectory());
+        return (
+            fs
+                .readdirSync(__examples__)
+                .map((name) => [name, path.join(__examples__, name)])
+                .filter(([_, dirPath]) => fs.lstatSync(dirPath).isDirectory())
+                // Globs use forward slashes, so make sure this works for windows.
+                .map(([name, dirPath]) => [
+                    name,
+                    dirPath.replace(path.sep, "/"),
+                ])
+        );
     };
-    const exampleDirs = getExampleDirs();
-
-    it.each(exampleDirs)(
+    const exampleGlobs = getExampleGlobs();
+    it.each(exampleGlobs)(
         "should report example %s to match snapshot",
-        async (name, dirPath) => {
+        async (name, glob) => {
             // Arrange
             const stringLogger = new StringLogger();
 
             // Act
             await checkSync(
                 {
-                    includeGlobs: [dirPath],
+                    includeGlobs: [glob],
                     autoFix: false,
                     comments: ["//", "#", "{/*"],
                     dryRun: false,
@@ -42,16 +48,16 @@ describe("Integration Tests", () => {
         },
     );
 
-    it.each(exampleDirs)(
+    it.each(exampleGlobs)(
         "should report example %s to match snapshot with autofix dryrun",
-        async (name, dirPath) => {
+        async (name, glob) => {
             // Arrange
             const stringLogger = new StringLogger();
 
             // Act
             await checkSync(
                 {
-                    includeGlobs: [dirPath],
+                    includeGlobs: [glob],
                     autoFix: true,
                     comments: ["//", "#", "{/*"],
                     dryRun: true,
