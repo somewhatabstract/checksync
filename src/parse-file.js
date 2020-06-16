@@ -55,7 +55,8 @@ export default function parseFile(
         id: string,
         checksum: string,
         targets: Targets,
-        comment: string,
+        commentStart: string,
+        commentEnd: string,
     ): void => {
         for (const line of Object.keys(targets)) {
             if (markers[id]) {
@@ -72,7 +73,7 @@ export default function parseFile(
             }
         }
 
-        markers[id] = {fixable, checksum, targets, comment};
+        markers[id] = {fixable, checksum, targets, commentStart, commentEnd};
     };
 
     const referencedFiles: Array<string> = [];
@@ -123,7 +124,7 @@ export default function parseFile(
             reject(e);
         }
     }).then(
-        res => res,
+        (res) => res,
         (reason: Error) => {
             fileRefLogger.error(`Could not parse file: ${reason.message}`);
             return {

@@ -12,7 +12,9 @@ import type {MarkerEdge} from "../generate-marker-edges.js";
 import type {Options} from "../types.js";
 
 const invokeEvent = (mocked: $Call<typeof jest.fn>, event: string, ...args) => {
-    const eventHandlerCall = mocked.mock.calls.find(call => call[0] === event);
+    const eventHandlerCall = mocked.mock.calls.find(
+        (call) => call[0] === event,
+    );
     if (eventHandlerCall == null) {
         throw new Error(
             "Event handler not found on our fake readline interface",
@@ -62,12 +64,13 @@ describe("#validateAndFix", () => {
             fakeInterface,
         );
         jest.spyOn(RootRelativePath, "default").mockImplementation(
-            t => `ROOT_REL:${t}`,
+            (t) => `ROOT_REL:${t}`,
         );
         jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([
             ({
                 markerID: "MARKER_ID",
-                sourceComment: "//",
+                sourceCommentStart: "//",
+                sourceCommentEnd: "",
                 sourceChecksum: "SRC_CHECKSUM",
                 sourceDeclaration: "BROKEN_DECLARATION",
                 sourceLine: "42",
@@ -111,12 +114,13 @@ describe("#validateAndFix", () => {
             fakeInterface,
         );
         jest.spyOn(RootRelativePath, "default").mockImplementation(
-            t => `ROOT_REL:${t}`,
+            (t) => `ROOT_REL:${t}`,
         );
         jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([
             ({
                 markerID: "MARKER_ID",
-                sourceComment: "//",
+                sourceCommentStart: "//",
+                sourceCommentEnd: "",
                 sourceChecksum: "SRC_CHECKSUM",
                 sourceDeclaration: "BROKEN_DECLARATION",
                 sourceLine: "42",
@@ -166,12 +170,13 @@ describe("#validateAndFix", () => {
             fakeInterface,
         );
         jest.spyOn(RootRelativePath, "default").mockImplementation(
-            t => `ROOT_REL:${t}`,
+            (t) => `ROOT_REL:${t}`,
         );
         jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([
             ({
                 markerID: "MARKER_ID",
-                sourceComment: "//",
+                sourceCommentStart: "//",
+                sourceCommentEnd: "",
                 sourceChecksum: "SRC_CHECKSUM",
                 sourceDeclaration: "BROKEN_DECLARATION",
                 sourceLine: "42",
@@ -220,12 +225,13 @@ describe("#validateAndFix", () => {
             fakeInterface,
         );
         jest.spyOn(RootRelativePath, "default").mockImplementation(
-            t => `ROOT_REL:${t}`,
+            (t) => `ROOT_REL:${t}`,
         );
         jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([
             ({
                 markerID: "MARKER_ID",
-                sourceComment: "//",
+                sourceCommentStart: "//",
+                sourceCommentEnd: "",
                 sourceChecksum: "",
                 sourceDeclaration: "BROKEN_DECLARATION",
                 sourceLine: "42",
@@ -277,12 +283,13 @@ describe("#validateAndFix", () => {
             fakeInterface,
         );
         jest.spyOn(RootRelativePath, "default").mockImplementation(
-            t => `ROOT_REL:${t}`,
+            (t) => `ROOT_REL:${t}`,
         );
         jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([
             ({
                 markerID: "MARKER_ID",
-                sourceComment: "//",
+                sourceCommentStart: "//",
+                sourceCommentEnd: "",
                 sourceChecksum: "",
                 sourceDeclaration: "BROKEN_DECLARATION",
                 sourceLine: "42",

@@ -50,11 +50,18 @@ type TrackedMarker = {
     targets: TrackedTargets,
 
     /**
-     * The comment style we detected.
+     * The comment start style we detected.
      *
      * @type {string}
      */
-    comment: string,
+    commentStart: string,
+
+    /**
+     * The comment end style we detected.
+     *
+     * @type {string}
+     */
+    commentEnd: string,
 };
 
 type TrackedMarkers = {
@@ -66,7 +73,8 @@ type addMarkerFn = (
     id: string,
     checksum: string,
     targets: Targets,
-    comment: string,
+    commentStart: string,
+    commentEnd: string,
 ) => void;
 
 /**
@@ -153,6 +161,7 @@ export default class MarkerParser {
          *     1: The tag id
          *     2: The checksum (optional)
          *     3: The target filename
+         *     4: The optional comment end
          */
         this._startTagDecodeRegExp = new RegExp(
             `^([^\\s]+)\\s+([0-9]*)?\\s*(\\S*)$`,
@@ -184,20 +193,23 @@ export default class MarkerParser {
         file: string,
         line: number,
         checksum: string,
-        comment: string,
+        commentStart: string,
+        commentEnd: string,
         declaration: string,
     ) => void = (
         id: string,
         file: string,
         line: number,
         checksum: string,
-        comment: string,
+        commentStart: string,
+        commentEnd: string,
         declaration: string,
     ) => {
         this._openMarkers[id] = this._openMarkers[id] || {
             content: [],
             targets: {},
-            comment,
+            commentStart,
+            commentEnd,
         };
 
         const normalized = this._normalizePath(file);
@@ -259,7 +271,13 @@ export default class MarkerParser {
 
         delete this._openMarkers[id];
         const targets = targetsFromTrackedTargets(marker.targets);
-        this._addMarker(id, checksum, targets, marker.comment);
+        this._addMarker(
+            id,
+            checksum,
+            targets,
+            marker.commentStart,
+            marker.commentEnd,
+        );
     };
 
     _addContentToOpenMarkers: (line: string) => void = (line: string) => {
@@ -298,7 +316,7 @@ export default class MarkerParser {
             const startDecode = this._startTagDecodeRegExp.exec(startMatch[2]);
             if (startDecode == null) {
                 this._log.error(
-                    `Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename>\\n'`,
+                    `Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>\\n'`,
                     lineNumber,
                 );
             } else {
@@ -308,6 +326,7 @@ export default class MarkerParser {
                     lineNumber,
                     startDecode[2],
                     startMatch[1],
+                    startMatch[4],
                     content,
                 );
             }

@@ -28,7 +28,8 @@ describe("#generateMarkerEdges", () => {
                 aliases: [],
                 markers: {
                     marker: ({
-                        comment: "//",
+                        commentStart: "//",
+                        commentEnd: undefined,
                         fixable: false,
                         checksum: "",
                         targets: {
@@ -45,7 +46,8 @@ describe("#generateMarkerEdges", () => {
                 aliases: [],
                 markers: {
                     marker: ({
-                        comment: "//",
+                        commentStart: "//",
+                        commentEnd: undefined,
                         fixable: true,
                         checksum: "",
                         targets: {
@@ -77,7 +79,8 @@ describe("#generateMarkerEdges", () => {
                 aliases: ["filea"],
                 markers: {
                     marker: ({
-                        comment: "//",
+                        commentStart: "//",
+                        commentEnd: undefined,
                         fixable: false,
                         checksum: "",
                         targets: {
@@ -94,7 +97,8 @@ describe("#generateMarkerEdges", () => {
                 aliases: ["fileb"],
                 markers: {
                     marker: ({
-                        comment: "//",
+                        commentStart: "//",
+                        commentEnd: undefined,
                         fixable: true,
                         checksum: "",
                         targets: ({
@@ -121,7 +125,8 @@ describe("#generateMarkerEdges", () => {
                 sourceChecksum: "1234",
                 sourceDeclaration: "// sync-start:marker 1234 filea",
                 sourceLine: "1",
-                sourceComment: "//",
+                sourceCommentStart: "//",
+                sourceCommentEnd: undefined,
                 targetChecksum: "",
                 targetFile: "filea",
                 targetLine: "1",
@@ -138,7 +143,8 @@ describe("#generateMarkerEdges", () => {
                 aliases: ["filea"],
                 markers: {
                     marker: ({
-                        comment: "//",
+                        commentStart: "//",
+                        commentEnd: undefined,
                         fixable: true,
                         checksum: "",
                         targets: {
@@ -171,7 +177,8 @@ describe("#generateMarkerEdges", () => {
                 aliases: ["filea"],
                 markers: {
                     marker: ({
-                        comment: "//",
+                        commentStart: "//",
+                        commentEnd: undefined,
                         fixable: true,
                         checksum: "",
                         targets: {
@@ -188,7 +195,8 @@ describe("#generateMarkerEdges", () => {
                 aliases: ["fileb"],
                 markers: {
                     marker: ({
-                        comment: "//",
+                        commentStart: "//",
+                        commentEnd: undefined,
                         fixable: true,
                         checksum: "",
                         targets: {},
@@ -214,7 +222,8 @@ describe("#generateMarkerEdges", () => {
                 aliases: ["filea"],
                 markers: {
                     marker: ({
-                        comment: "//",
+                        commentStart: "//",
+                        commentEnd: undefined,
                         fixable: true,
                         checksum: "1234",
                         targets: {
@@ -231,7 +240,8 @@ describe("#generateMarkerEdges", () => {
                 aliases: ["fileb"],
                 markers: {
                     marker: ({
-                        comment: "//",
+                        commentStart: "//",
+                        commentEnd: undefined,
                         fixable: true,
                         checksum: "5678",
                         targets: {
@@ -263,7 +273,8 @@ describe("#generateMarkerEdges", () => {
                 aliases: ["filea"],
                 markers: {
                     marker: ({
-                        comment: "//",
+                        commentStart: "//",
+                        commentEnd: undefined,
                         fixable: true,
                         checksum: "4321",
                         targets: {
@@ -280,7 +291,8 @@ describe("#generateMarkerEdges", () => {
                 aliases: ["fileb"],
                 markers: {
                     marker: ({
-                        comment: "//",
+                        commentStart: "//",
+                        commentEnd: undefined,
                         fixable: true,
                         checksum: "8765",
                         targets: {
@@ -307,7 +319,8 @@ describe("#generateMarkerEdges", () => {
                 sourceChecksum: "1234",
                 sourceDeclaration: "// sync-start:marker 1234 filea",
                 sourceLine: "1",
-                sourceComment: "//",
+                sourceCommentStart: "//",
+                sourceCommentEnd: undefined,
                 targetChecksum: "4321",
                 targetFile: "filea",
                 targetLine: "1",

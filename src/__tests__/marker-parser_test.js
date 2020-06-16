@@ -10,7 +10,7 @@ describe("MarkerParser", () => {
             // Arrange
             const errorSpy = jest.spyOn(NullLogger, "error");
             const parser = new MarkerParser(
-                target => ({file: target, exists: true}),
+                (target) => ({file: target, exists: true}),
                 jest.fn(),
                 [],
                 NullLogger,
@@ -27,7 +27,7 @@ describe("MarkerParser", () => {
             // Arrange
             const errorSpy = jest.spyOn(NullLogger, "error");
             const parser = new MarkerParser(
-                target => ({file: target, exists: true}),
+                (target) => ({file: target, exists: true}),
                 jest.fn(),
                 [],
                 NullLogger,
@@ -48,7 +48,7 @@ describe("MarkerParser", () => {
             // Arrange
             const errorSpy = jest.spyOn(NullLogger, "error");
             const parser = new MarkerParser(
-                target => ({file: target, exists: true}),
+                (target) => ({file: target, exists: true}),
                 jest.fn(),
                 [],
                 NullLogger,
@@ -73,7 +73,7 @@ describe("MarkerParser", () => {
             // Arrange
             const errorSpy = jest.spyOn(NullLogger, "error");
             const parser = new MarkerParser(
-                target => ({file: target, exists: true}),
+                (target) => ({file: target, exists: true}),
                 jest.fn(),
                 [],
                 NullLogger,
@@ -84,7 +84,7 @@ describe("MarkerParser", () => {
 
             // Assert
             expect(errorSpy.mock.calls[0][0]).toMatchInlineSnapshot(
-                `"Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename>\\\\n'"`,
+                `"Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>\\\\n'"`,
             );
         });
 
@@ -92,7 +92,7 @@ describe("MarkerParser", () => {
             // Arrange
             const errorSpy = jest.spyOn(NullLogger, "error");
             const parser = new MarkerParser(
-                target => ({file: target, exists: true}),
+                (target) => ({file: target, exists: true}),
                 jest.fn(),
                 [],
                 NullLogger,
@@ -111,7 +111,7 @@ describe("MarkerParser", () => {
             // Arrange
             const warnSpy = jest.spyOn(NullLogger, "warn");
             const parser = new MarkerParser(
-                target => ({file: target, exists: true}),
+                (target) => ({file: target, exists: true}),
                 jest.fn(),
                 [],
                 NullLogger,
@@ -130,7 +130,7 @@ describe("MarkerParser", () => {
             // Arrange
             const errorSpy = jest.spyOn(NullLogger, "error");
             const parser = new MarkerParser(
-                target => ({file: target, exists: false}),
+                (target) => ({file: target, exists: false}),
                 jest.fn(),
                 [],
                 NullLogger,
@@ -149,7 +149,7 @@ describe("MarkerParser", () => {
             // Arrange
             const errorSpy = jest.spyOn(NullLogger, "error");
             const parser = new MarkerParser(
-                target => ({file: target, exists: true}),
+                (target) => ({file: target, exists: true}),
                 jest.fn(),
                 [],
                 NullLogger,
@@ -170,7 +170,7 @@ describe("MarkerParser", () => {
             // Arrange
             const warnSpy = jest.spyOn(NullLogger, "warn");
             const parser = new MarkerParser(
-                target => ({file: target, exists: true}),
+                (target) => ({file: target, exists: true}),
                 jest.fn(),
                 [],
                 NullLogger,
@@ -210,7 +210,7 @@ describe("MarkerParser", () => {
             // Arrange
             const addMarker = jest.fn();
             const parser = new MarkerParser(
-                target => ({file: target, exists: true}),
+                (target) => ({file: target, exists: true}),
                 addMarker,
                 ["//", "#"],
                 NullLogger,
@@ -235,6 +235,7 @@ describe("MarkerParser", () => {
                     }),
                 }),
                 "//",
+                undefined,
             );
             expect(addMarker).toHaveBeenCalledWith(
                 "markerid2",
@@ -250,6 +251,7 @@ describe("MarkerParser", () => {
                     }),
                 }),
                 "#",
+                undefined,
             );
         });
     });
