@@ -26,9 +26,14 @@ export type MarkerEdge = {
     +sourceDeclaration: string,
 
     /**
-     * The comment style that the source file uses.
+     * The start of the tag comment that the source file uses.
      */
-    +sourceComment: string,
+    +sourceCommentStart: string,
+
+    /**
+     * The end of the tag comment that the source file uses.
+     */
+    +sourceCommentEnd: ?string,
 
     /**
      * The path to the target file of the marker.
@@ -138,7 +143,8 @@ export default function* generateMarkerEdges(
                 markerID,
                 sourceLine,
                 sourceChecksum,
-                sourceComment: sourceMarker.comment,
+                sourceCommentStart: sourceMarker.commentStart,
+                sourceCommentEnd: sourceMarker.commentEnd,
                 sourceDeclaration: targetRef.declaration,
                 targetFile: targetRef.file,
                 targetLine: targetDetails.line,

@@ -2,21 +2,25 @@
 
 exports[`Integration Tests should report example checksums_need_updating to match snapshot 1`] = `
 " MISMATCH  __examples__/checksums_need_updating/a.js:4 Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (45678 != 249234014)
+ MISMATCH  __examples__/checksums_need_updating/a.js:5 Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/c.jsx:3'. Make sure you've made the parallel changes in the source file, if necessary (1234 != 1992689801)
  MISMATCH  __examples__/checksums_need_updating/b.py:3 Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/a.js:4'. Make sure you've made the parallel changes in the source file, if necessary (4567 != 2050223083)
+ MISMATCH  __examples__/checksums_need_updating/c.jsx:3 Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/a.js:5'. Make sure you've made the parallel changes in the source file, if necessary (123 != 2050223083)
 
 <group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
   
-  checksync -u __examples__/checksums_need_updating/a.js __examples__/checksums_need_updating/b.py
+  checksync -c \\"#,//,{/*\\" -u __examples__/checksums_need_updating/a.js __examples__/checksums_need_updating/b.py __examples__/checksums_need_updating/c.jsx
 <end_group>"
 `;
 
 exports[`Integration Tests should report example checksums_need_updating to match snapshot with autofix dryrun 1`] = `
 " INFO  DRY-RUN: Files will not be modified
  MISMATCH  __examples__/checksums_need_updating/a.js:4 Updating checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/b.py:3' from 45678 to 249234014.
+ MISMATCH  __examples__/checksums_need_updating/a.js:5 Updating checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/c.jsx:3' from 1234 to 1992689801.
  MISMATCH  __examples__/checksums_need_updating/b.py:3 Updating checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/a.js:4' from 4567 to 2050223083.
-<group 2 file(s) would have been fixed. To fix, run: >
+ MISMATCH  __examples__/checksums_need_updating/c.jsx:3 Updating checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/a.js:5' from 123 to 2050223083.
+<group 3 file(s) would have been fixed. To fix, run: >
   
-  checksync -u __examples__/checksums_need_updating/a.js __examples__/checksums_need_updating/b.py
+  checksync -c \\"#,//,{/*\\" -u __examples__/checksums_need_updating/a.js __examples__/checksums_need_updating/b.py __examples__/checksums_need_updating/c.jsx
 <end_group>
 🎉  Everything is in sync!"
 `;
@@ -30,7 +34,7 @@ exports[`Integration Tests should report example content_after_start to match sn
 
 <group 🛑  Desynchronized blocks detected and parsing errors found. Fix the errors, update the blocks, then update the sync-start tags using: >
   
-  checksync -u __examples__/content_after_start/a.js __examples__/content_after_start/b.py __examples__/content_after_start/c.js
+  checksync -c \\"#,//,{/*\\" -u __examples__/content_after_start/a.js __examples__/content_after_start/b.py __examples__/content_after_start/c.js
 <end_group>"
 `;
 
@@ -97,22 +101,22 @@ exports[`Integration Tests should report example malformed_end to match snapshot
 `;
 
 exports[`Integration Tests should report example malformed_start to match snapshot 1`] = `
-" ERROR  __examples__/malformed_start/malformed_badchecksum.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename>\\\\n'
+" ERROR  __examples__/malformed_start/malformed_badchecksum.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>\\\\n'
  WARNING  __examples__/malformed_start/malformed_badchecksum.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
- ERROR  __examples__/malformed_start/malformed_badid.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename>\\\\n'
+ ERROR  __examples__/malformed_start/malformed_badid.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>\\\\n'
  WARNING  __examples__/malformed_start/malformed_badid.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
- ERROR  __examples__/malformed_start/malformed_onlytagid.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename>\\\\n'
+ ERROR  __examples__/malformed_start/malformed_onlytagid.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>\\\\n'
  WARNING  __examples__/malformed_start/malformed_onlytagid.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
 🛑  Errors occurred during processing"
 `;
 
 exports[`Integration Tests should report example malformed_start to match snapshot with autofix dryrun 1`] = `
 " INFO  DRY-RUN: Files will not be modified
- ERROR  __examples__/malformed_start/malformed_badchecksum.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename>\\\\n'
+ ERROR  __examples__/malformed_start/malformed_badchecksum.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>\\\\n'
  WARNING  __examples__/malformed_start/malformed_badchecksum.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
- ERROR  __examples__/malformed_start/malformed_badid.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename>\\\\n'
+ ERROR  __examples__/malformed_start/malformed_badid.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>\\\\n'
  WARNING  __examples__/malformed_start/malformed_badid.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
- ERROR  __examples__/malformed_start/malformed_onlytagid.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename>\\\\n'
+ ERROR  __examples__/malformed_start/malformed_onlytagid.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>\\\\n'
  WARNING  __examples__/malformed_start/malformed_onlytagid.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
 
 🛑  Aborting tag updates due to parsing errors. Fix these errors and try again."
@@ -147,7 +151,7 @@ exports[`Integration Tests should report example no_checksums to match snapshot 
 
 <group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
   
-  checksync -u __examples__/no_checksums/example_one-a.js __examples__/no_checksums/example_one-b.py
+  checksync -c \\"#,//,{/*\\" -u __examples__/no_checksums/example_one-a.js __examples__/no_checksums/example_one-b.py
 <end_group>"
 `;
 
@@ -157,7 +161,7 @@ exports[`Integration Tests should report example no_checksums to match snapshot 
  MISMATCH  __examples__/no_checksums/example_one-b.py:3 Updating checksum for sync-tag 'example_one' referencing '__examples__/no_checksums/example_one-a.js:3' from No checksum to 770446101.
 <group 2 file(s) would have been fixed. To fix, run: >
   
-  checksync -u __examples__/no_checksums/example_one-a.js __examples__/no_checksums/example_one-b.py
+  checksync -c \\"#,//,{/*\\" -u __examples__/no_checksums/example_one-a.js __examples__/no_checksums/example_one-b.py
 <end_group>
 🎉  Everything is in sync!"
 `;
@@ -168,7 +172,7 @@ exports[`Integration Tests should report example no_self_reference to match snap
 
 <group 🛑  Desynchronized blocks detected and parsing errors found. Fix the errors, update the blocks, then update the sync-start tags using: >
   
-  checksync -u __examples__/no_self_reference/example.js
+  checksync -c \\"#,//,{/*\\" -u __examples__/no_self_reference/example.js
 <end_group>"
 `;
 
@@ -181,21 +185,23 @@ exports[`Integration Tests should report example no_self_reference to match snap
 
 exports[`Integration Tests should report example symlinked_checksums_need_updating to match snapshot 1`] = `
 " MISMATCH  __examples__/symlinked_checksums_need_updating/a.js:4 Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (45678 != 249234014)
+ MISMATCH  __examples__/symlinked_checksums_need_updating/a.js:5 Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/c.jsx:3'. Make sure you've made the parallel changes in the source file, if necessary (1234 != 1992689801)
  MISMATCH  __examples__/symlinked_checksums_need_updating/b.py:3 Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/a.js:4'. Make sure you've made the parallel changes in the source file, if necessary (4567 != 2050223083)
 
 <group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
   
-  checksync -u __examples__/symlinked_checksums_need_updating/a.js __examples__/symlinked_checksums_need_updating/b.py
+  checksync -c \\"#,//,{/*\\" -u __examples__/symlinked_checksums_need_updating/a.js __examples__/symlinked_checksums_need_updating/b.py
 <end_group>"
 `;
 
 exports[`Integration Tests should report example symlinked_checksums_need_updating to match snapshot with autofix dryrun 1`] = `
 " INFO  DRY-RUN: Files will not be modified
  MISMATCH  __examples__/symlinked_checksums_need_updating/a.js:4 Updating checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/b.py:3' from 45678 to 249234014.
+ MISMATCH  __examples__/symlinked_checksums_need_updating/a.js:5 Updating checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/c.jsx:3' from 1234 to 1992689801.
  MISMATCH  __examples__/symlinked_checksums_need_updating/b.py:3 Updating checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/a.js:4' from 4567 to 2050223083.
 <group 2 file(s) would have been fixed. To fix, run: >
   
-  checksync -u __examples__/symlinked_checksums_need_updating/a.js __examples__/symlinked_checksums_need_updating/b.py
+  checksync -c \\"#,//,{/*\\" -u __examples__/symlinked_checksums_need_updating/a.js __examples__/symlinked_checksums_need_updating/b.py
 <end_group>
 🎉  Everything is in sync!"
 `;

@@ -6,6 +6,7 @@ console.log(someCode);
 // sync-end:correct
 
 // sync-start:correct2 279463297 __examples__/correct_checksums/b.py
+// sync-start:correct2 1992689801 __examples__/correct_checksums/c.jsx
 const outputDir = path.join(rootDir, "genwebpack/khan-apollo");
 
 // Handle auto-building the GraphQL Schemas + Fragment Types

@@ -26,19 +26,19 @@ const formatEdgeFix = (
     rootMarker: ?string,
     brokenEdge: MarkerEdge,
 ): string => {
-    const startOfComment = brokenEdge.sourceComment
-        ? brokenEdge.sourceDeclaration.indexOf(brokenEdge.sourceComment)
+    const startOfComment = brokenEdge.sourceCommentStart
+        ? brokenEdge.sourceDeclaration.indexOf(brokenEdge.sourceCommentStart)
         : -1;
     const indent =
         startOfComment > 0
             ? brokenEdge.sourceDeclaration.substring(0, startOfComment)
             : "";
-    return `${indent}${brokenEdge.sourceComment} sync-start:${
+    return `${indent}${brokenEdge.sourceCommentStart} sync-start:${
         brokenEdge.markerID
     } ${brokenEdge.targetChecksum} ${rootRelativePath(
         brokenEdge.targetFile,
         rootMarker,
-    )}`;
+    )}${brokenEdge.sourceCommentEnd || ""}`;
 };
 
 /**

@@ -7,7 +7,7 @@ import type {FileInfo} from "../types.js";
 describe("#cloneAsUnfixable", () => {
     it.each([null, undefined])(
         "should return the same value if null/undefined",
-        testCase => {
+        (testCase) => {
             // Arrange
 
             // Act
@@ -27,7 +27,8 @@ describe("#cloneAsUnfixable", () => {
                     fixable: true,
                     targets: {},
                     checksum: "CHECKSUM",
-                    comment: "COMMENT",
+                    commentStart: "COMMENT",
+                    commentEnd: undefined,
                 },
             },
         };
@@ -43,7 +44,8 @@ describe("#cloneAsUnfixable", () => {
                     fixable: false,
                     targets: {},
                     checksum: "CHECKSUM",
-                    comment: "COMMENT",
+                    commentStart: "COMMENT",
+                    commentEnd: undefined,
                 },
             },
         });

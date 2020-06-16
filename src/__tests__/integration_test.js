@@ -13,7 +13,7 @@ describe("Integration Tests", () => {
         const __examples__ = path.join(ancesdir(), "__examples__");
         return fs
             .readdirSync(__examples__)
-            .map(name => [name, path.join(__examples__, name)])
+            .map((name) => [name, path.join(__examples__, name)])
             .filter(([_, dirPath]) => fs.lstatSync(dirPath).isDirectory());
     };
     const exampleDirs = getExampleDirs();
@@ -29,7 +29,7 @@ describe("Integration Tests", () => {
                 {
                     includeGlobs: [dirPath],
                     autoFix: false,
-                    comments: ["//", "#"],
+                    comments: ["//", "#", "{/*"],
                     dryRun: false,
                     excludeGlobs: ["**/excluded/**"],
                 },
@@ -53,7 +53,7 @@ describe("Integration Tests", () => {
                 {
                     includeGlobs: [dirPath],
                     autoFix: true,
-                    comments: ["//", "#"],
+                    comments: ["//", "#", "{/*"],
                     dryRun: true,
                     excludeGlobs: ["**/excluded/**"],
                 },

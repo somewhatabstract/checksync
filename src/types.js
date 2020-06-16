@@ -62,7 +62,7 @@ export type Target = {
  */
 export type Targets = {
     [line: string | number]: Target,
-    ...,
+    ...
 };
 
 /**
@@ -85,9 +85,14 @@ export type Marker = {
     +targets: Targets,
 
     /**
-     * The comment style detected.
+     * The comment start detected for the marker.
      */
-    +comment: string,
+    +commentStart: string,
+
+    /**
+     * The comment end detected for the marker.
+     */
+    +commentEnd: ?string,
 };
 
 /**
@@ -98,7 +103,7 @@ export type Markers = {
      * Marker id to the marker details.
      */
     [id: string]: Marker,
-    ...,
+    ...
 };
 
 export type FileInfo = {
@@ -114,7 +119,7 @@ export type MarkerCache = {
      * A file path mapped to the markers within it.
      */
     [file: string]: ?FileInfo,
-    ...,
+    ...
 };
 
 /**

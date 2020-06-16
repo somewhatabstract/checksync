@@ -16,7 +16,8 @@ describe("#processCache", () => {
             aliases: ["filea"],
             markers: {
                 marker1: ({
-                    comment: "//",
+                    commentStart: "//",
+                    commentEnd: undefined,
                     fixable: true,
                     checksum: "5678",
                     targets: {
@@ -29,7 +30,8 @@ describe("#processCache", () => {
                     },
                 }: Marker),
                 marker2: ({
-                    comment: "//",
+                    commentStart: "//",
+                    commentEnd: undefined,
                     fixable: true,
                     checksum: "5678",
                     targets: {
@@ -47,7 +49,8 @@ describe("#processCache", () => {
             aliases: ["fileb"],
             markers: {
                 marker1: ({
-                    comment: "//",
+                    commentStart: "//",
+                    commentEnd: undefined,
                     fixable: true,
                     checksum: "TARGET_CHECKSUM",
                     targets: {
@@ -59,7 +62,8 @@ describe("#processCache", () => {
                     },
                 }: Marker),
                 marker2: ({
-                    comment: "//",
+                    commentStart: "//",
+                    commentEnd: undefined,
                     fixable: true,
                     checksum: "TARGET_CHECKSUM",
                     targets: {
