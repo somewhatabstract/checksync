@@ -185,7 +185,7 @@ export default class MarkerParser {
          * Groups:
          *     1: The tag id
          */
-        this._endTagDecodeRegExp = new RegExp(`^(\\S+)\\s*(\\S*)?$`);
+        this._endTagDecodeRegExp = new RegExp(`^(\\S+)\\s*\\S*$`);
     }
 
     _recordMarkerStart: (
