@@ -83,40 +83,40 @@ exports[`Integration Tests should report example excluded to match snapshot with
 `;
 
 exports[`Integration Tests should report example malformed_end to match snapshot 1`] = `
-" ERROR  __examples__/malformed_end/malformed_badid.js:7 Malformed sync-end: format should be 'sync-end:<label>\\\\n'
+" ERROR  __examples__/malformed_end/malformed_badid.js:7 Malformed sync-end: format should be 'sync-end:<label>'
  ERROR  __examples__/malformed_end/malformed_badid.js:4 Sync-start 'tagid' has no corresponding sync-end
- ERROR  __examples__/malformed_end/malformed_noid.js:7 Malformed sync-end: format should be 'sync-end:<label>\\\\n'
+ ERROR  __examples__/malformed_end/malformed_noid.js:7 Malformed sync-end: format should be 'sync-end:<label>'
  ERROR  __examples__/malformed_end/malformed_noid.js:4 Sync-start 'tagid' has no corresponding sync-end
 🛑  Errors occurred during processing"
 `;
 
 exports[`Integration Tests should report example malformed_end to match snapshot with autofix dryrun 1`] = `
 " INFO  DRY-RUN: Files will not be modified
- ERROR  __examples__/malformed_end/malformed_badid.js:7 Malformed sync-end: format should be 'sync-end:<label>\\\\n'
+ ERROR  __examples__/malformed_end/malformed_badid.js:7 Malformed sync-end: format should be 'sync-end:<label>'
  ERROR  __examples__/malformed_end/malformed_badid.js:4 Sync-start 'tagid' has no corresponding sync-end
- ERROR  __examples__/malformed_end/malformed_noid.js:7 Malformed sync-end: format should be 'sync-end:<label>\\\\n'
+ ERROR  __examples__/malformed_end/malformed_noid.js:7 Malformed sync-end: format should be 'sync-end:<label>'
  ERROR  __examples__/malformed_end/malformed_noid.js:4 Sync-start 'tagid' has no corresponding sync-end
 
 🛑  Aborting tag updates due to parsing errors. Fix these errors and try again."
 `;
 
 exports[`Integration Tests should report example malformed_start to match snapshot 1`] = `
-" ERROR  __examples__/malformed_start/malformed_badchecksum.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>\\\\n'
+" ERROR  __examples__/malformed_start/malformed_badchecksum.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
  WARNING  __examples__/malformed_start/malformed_badchecksum.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
- ERROR  __examples__/malformed_start/malformed_badid.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>\\\\n'
+ ERROR  __examples__/malformed_start/malformed_badid.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
  WARNING  __examples__/malformed_start/malformed_badid.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
- ERROR  __examples__/malformed_start/malformed_onlytagid.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>\\\\n'
+ ERROR  __examples__/malformed_start/malformed_onlytagid.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
  WARNING  __examples__/malformed_start/malformed_onlytagid.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
 🛑  Errors occurred during processing"
 `;
 
 exports[`Integration Tests should report example malformed_start to match snapshot with autofix dryrun 1`] = `
 " INFO  DRY-RUN: Files will not be modified
- ERROR  __examples__/malformed_start/malformed_badchecksum.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>\\\\n'
+ ERROR  __examples__/malformed_start/malformed_badchecksum.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
  WARNING  __examples__/malformed_start/malformed_badchecksum.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
- ERROR  __examples__/malformed_start/malformed_badid.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>\\\\n'
+ ERROR  __examples__/malformed_start/malformed_badid.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
  WARNING  __examples__/malformed_start/malformed_badid.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
- ERROR  __examples__/malformed_start/malformed_onlytagid.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>\\\\n'
+ ERROR  __examples__/malformed_start/malformed_onlytagid.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
  WARNING  __examples__/malformed_start/malformed_onlytagid.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
 
 🛑  Aborting tag updates due to parsing errors. Fix these errors and try again."

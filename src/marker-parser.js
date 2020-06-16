@@ -324,7 +324,7 @@ export default class MarkerParser {
             const startDecode = this._startTagDecodeRegExp.exec(startMatch[2]);
             if (startDecode == null) {
                 this._log.error(
-                    `Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>\\n'`,
+                    `Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'`,
                     lineNumber,
                 );
             } else {
@@ -346,7 +346,7 @@ export default class MarkerParser {
             const endDecode = this._endTagDecodeRegExp.exec(endMatch[1]);
             if (endDecode == null) {
                 this._log.error(
-                    `Malformed sync-end: format should be 'sync-end:<label>\\n'`,
+                    `Malformed sync-end: format should be 'sync-end:<label>'`,
                     lineNumber,
                 );
             } else {

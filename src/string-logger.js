@@ -20,8 +20,9 @@ class StringLoggerInternal {
          * We want to normalize the string in case it contains filepaths.
          * This ensures that snapshots are standardized across platforms.
          */
+        const regex = new RegExp(escapeRegExp(path.sep), "g");
         const normalize = (snippet: string): string =>
-            snippet.replace(new RegExp(escapeRegExp(path.sep), "g"), "/");
+            snippet.replace(regex, "/");
         this._buffer.push(
             `${"  ".repeat(this._groupIndent)}${args.map(normalize).join("")}`,
         );

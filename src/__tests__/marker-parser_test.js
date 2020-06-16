@@ -84,7 +84,7 @@ describe("MarkerParser", () => {
 
             // Assert
             expect(errorSpy.mock.calls[0][0]).toMatchInlineSnapshot(
-                `"Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>\\\\n'"`,
+                `"Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'"`,
             );
         });
 
@@ -103,7 +103,7 @@ describe("MarkerParser", () => {
 
             // Assert
             expect(errorSpy.mock.calls[0][0]).toMatchInlineSnapshot(
-                `"Malformed sync-end: format should be 'sync-end:<label>\\\\n'"`,
+                `"Malformed sync-end: format should be 'sync-end:<label>'"`,
             );
         });
 

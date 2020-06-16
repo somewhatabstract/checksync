@@ -14,7 +14,7 @@ describe("#getNormalizedTargetFileInfo", () => {
             args.join("|"),
         );
         jest.spyOn(path, "normalize").mockImplementation(
-            s => `normalized|${s}`,
+            (s) => `normalized|${s}`,
         );
         jest.spyOn(fs, "existsSync").mockReturnValue(false);
 
@@ -27,6 +27,11 @@ describe("#getNormalizedTargetFileInfo", () => {
 
     it("should set exists to false if the path does not exist", () => {
         // Arrange
+        jest.spyOn(path, "join").mockImplementation((...args) => {
+            const realPath = jest.requireActual("path");
+            return realPath.join(...args);
+        });
+        jest.spyOn(path, "normalize").mockImplementation((s) => s);
         jest.spyOn(fs, "existsSync").mockReturnValue(false);
 
         // Act
@@ -38,6 +43,11 @@ describe("#getNormalizedTargetFileInfo", () => {
 
     it("should set exists to false if the path exists but is not a file", () => {
         // Arrange
+        jest.spyOn(path, "join").mockImplementation((...args) => {
+            const realPath = jest.requireActual("path");
+            return realPath.join(...args);
+        });
+        jest.spyOn(path, "normalize").mockImplementation((s) => s);
         jest.spyOn(fs, "existsSync").mockReturnValue(true);
         jest.spyOn(fs, "lstatSync").mockReturnValue({
             isFile: () => false,
@@ -52,6 +62,11 @@ describe("#getNormalizedTargetFileInfo", () => {
 
     it("should set exists to true if the path exists and it is a file", () => {
         // Arrange
+        jest.spyOn(path, "join").mockImplementation((...args) => {
+            const realPath = jest.requireActual("path");
+            return realPath.join(...args);
+        });
+        jest.spyOn(path, "normalize").mockImplementation((s) => s);
         jest.spyOn(fs, "existsSync").mockReturnValue(true);
         jest.spyOn(fs, "lstatSync").mockReturnValue({
             isFile: () => true,
