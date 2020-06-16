@@ -70,6 +70,8 @@ export default function parseFile(
                     `Sync-tag '${id}' cannot target itself`,
                     line,
                 );
+            } else {
+                console.log(`${file} -> ${targets[line].file}`);
             }
         }
 

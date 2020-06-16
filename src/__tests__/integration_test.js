@@ -15,6 +15,17 @@ describe("Integration Tests", () => {
         return (
             fs
                 .readdirSync(__examples__)
+                /**
+                 * The whole symlink test is not going to work right on windows
+                 * so let's just skip it.
+                 */
+                .filter(
+                    (p) =>
+                        !(
+                            process.platform === "win32" &&
+                            p.includes("symlink")
+                        ),
+                )
                 .map((name) => [name, path.join(__examples__, name)])
                 .filter(([_, dirPath]) => fs.lstatSync(dirPath).isDirectory())
                 // Globs use forward slashes and we need to strip off the root
