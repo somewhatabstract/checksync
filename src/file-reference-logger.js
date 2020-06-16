@@ -23,26 +23,40 @@ export default class FileReferenceLogger implements IPositionLog {
         this._file = file;
     }
 
-    log = (message: string, line?: string | number): void =>
-        this._log.log(this._format(message, line));
-    info = (message: string, line?: string | number): void =>
-        this._log.info(this._format(message, line));
-    warn = (message: string, line?: string | number): void =>
-        this._log.warn(this._format(message, line));
-    error = (message: string, line?: string | number): void =>
-        this._log.error(this._format(message, line));
-    group = (...labels: Array<string>): void => this._log.group(...labels);
-    groupEnd = (): void => this._log.groupEnd();
-    verbose = (messageBuilder: () => string, line?: string | number): void =>
-        this._log.verbose(() => this._format(messageBuilder(), line));
+    log: (message: string, line?: string | number) => void = (
+        message: string,
+        line?: string | number,
+    ): void => this._log.log(this._format(message, line));
+    info: (message: string, line?: string | number) => void = (
+        message: string,
+        line?: string | number,
+    ): void => this._log.info(this._format(message, line));
+    warn: (message: string, line?: string | number) => void = (
+        message: string,
+        line?: string | number,
+    ): void => this._log.warn(this._format(message, line));
+    error: (message: string, line?: string | number) => void = (
+        message: string,
+        line?: string | number,
+    ): void => this._log.error(this._format(message, line));
+    group: (...labels: Array<string>) => void = (
+        ...labels: Array<string>
+    ): void => this._log.group(...labels);
+    groupEnd: () => void = (): void => this._log.groupEnd();
+    verbose: (messageBuilder: () => string, line?: string | number) => void = (
+        messageBuilder: () => string,
+        line?: string | number,
+    ): void => this._log.verbose(() => this._format(messageBuilder(), line));
 
-    _format = (message: string, line?: string | number) =>
-        `${this._formatRef(line)} ${message}`;
+    _format: (message: string, line?: string | number) => string = (
+        message: string,
+        line?: string | number,
+    ) => `${this._formatRef(line)} ${message}`;
 
-    _formatRef = (line?: string | number) =>
+    _formatRef: (line?: string | number) => string = (line?: string | number) =>
         Format.cwdFilePath(`${this._file}${(line && `:${line}`) || ""}`);
 
-    get errorsLogged() {
+    get errorsLogged(): boolean {
         return this._log.errorsLogged;
     }
 }
