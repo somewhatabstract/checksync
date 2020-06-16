@@ -206,21 +206,44 @@ describe("MarkerParser", () => {
             );
         });
 
+        it("should error if tag id used in two different comment styles", () => {
+            // Arrange
+            const errorSpy = jest.spyOn(NullLogger, "error");
+            const parser = new MarkerParser(
+                (target) => ({file: target, exists: true}),
+                jest.fn(),
+                ["//", "#", "{/*"],
+                NullLogger,
+            );
+
+            // Act
+            parser.parseLine("# sync-start:markerid2 9876 target2");
+            parser.parseLine("{/* sync-start:markerid2 12345 target1 */}");
+            parser.parseLine("Some super important content!");
+            parser.parseLine("# sync-end:markerid2");
+
+            // Assert
+            expect(errorSpy.mock.calls[0][0]).toMatchInlineSnapshot(
+                `"Sync-start tags for 'markerid2' given in different comment styles. Please use the same style for all sync-start tags that have identical identifiers."`,
+            );
+        });
+
         it("should call addMarker for parsed markers", () => {
             // Arrange
             const addMarker = jest.fn();
             const parser = new MarkerParser(
                 (target) => ({file: target, exists: true}),
                 addMarker,
-                ["//", "#"],
+                ["//", "#", "{/*"],
                 NullLogger,
             );
 
             // Act
             parser.parseLine("// sync-start:markerid1 target1");
             parser.parseLine("# sync-start:markerid2 9876 target2");
-            parser.parseLine("// sync-start:markerid2 12345 target1");
+            parser.parseLine("{/* sync-start:markerid3 12345 target1 */}");
             parser.parseLine("Some super important content!");
+            parser.parseLine("# sync-end:markerid3");
             parser.parseLine("# sync-end:markerid2");
             parser.parseLine("# sync-end:markerid1");
 
@@ -229,10 +252,11 @@ describe("MarkerParser", () => {
                 "markerid1",
                 "1284371662",
                 expect.objectContaining({
-                    "1": expect.objectContaining({
+                    "1": {
                         checksum: undefined,
+                        declaration: "// sync-start:markerid1 target1",
                         file: "target1",
-                    }),
+                    },
                 }),
                 "//",
                 undefined,
@@ -241,17 +265,28 @@ describe("MarkerParser", () => {
                 "markerid2",
                 "1284371662",
                 expect.objectContaining({
-                    "2": expect.objectContaining({
+                    "2": {
                         checksum: "9876",
+                        declaration: "# sync-start:markerid2 9876 target2",
                         file: "target2",
-                    }),
-                    "3": expect.objectContaining({
-                        checksum: "12345",
-                        file: "target1",
-                    }),
+                    },
                 }),
                 "#",
                 undefined,
+            );
+            expect(addMarker).toHaveBeenCalledWith(
+                "markerid3",
+                "1284371662",
+                expect.objectContaining({
+                    "3": {
+                        checksum: "12345",
+                        declaration:
+                            "{/* sync-start:markerid3 12345 target1 */}",
+                        file: "target1",
+                    },
+                }),
+                "{/*",
+                " */}",
             );
         });
     });

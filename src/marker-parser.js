@@ -212,6 +212,14 @@ export default class MarkerParser {
             commentEnd,
         };
 
+        if (this._openMarkers[id].commentStart !== commentStart) {
+            this._log.error(
+                `Sync-start tags for '${id}' given in different comment styles. Please use the same style for all sync-start tags that have identical identifiers.`,
+                line,
+            );
+            return;
+        }
+
         const normalized = this._normalizePath(file);
 
         if (normalized == null) {
