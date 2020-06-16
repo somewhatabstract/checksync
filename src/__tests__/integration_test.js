@@ -16,14 +16,17 @@ describe("Integration Tests", () => {
                 .readdirSync(__examples__)
                 .map((name) => [name, path.join(__examples__, name)])
                 .filter(([_, dirPath]) => fs.lstatSync(dirPath).isDirectory())
-                // Globs use forward slashes, so make sure this works for windows.
+                // Globs use forward slashes and we need to strip off the root
+                // to make sure this works for Windows.
                 .map(([name, dirPath]) => [
                     name,
-                    dirPath.replace(path.sep, "/"),
+                    dirPath.replace(ancesdir(), ".").replace(path.sep, "/"),
                 ])
         );
     };
     const exampleGlobs = getExampleGlobs();
+    console.log(exampleGlobs);
+
     it.each(exampleGlobs)(
         "should report example %s to match snapshot",
         async (name, glob) => {
