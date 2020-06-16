@@ -19,10 +19,12 @@ const getNormalizedTargetFileInfo = (
 ): NormalizedFileInfo => {
     // Target paths are relative to the root location.
     const normalizedFileRef = path.normalize(path.join(rootPath, fileRef));
-    const exists =
-        fs.existsSync(normalizedFileRef) &&
-        fs.lstatSync(normalizedFileRef).isFile();
-    return {file: normalizedFileRef, exists};
+
+    // Also, we want to ensure we're always using OS-specific pathing
+    // internally.
+    const osPathSep = normalizedFileRef.replace(new RegExp("/", "g"), path.sep);
+    const exists = fs.existsSync(osPathSep) && fs.lstatSync(osPathSep).isFile();
+    return {file: osPathSep, exists};
 };
 
 export default getNormalizedTargetFileInfo;

@@ -1,4 +1,6 @@
 // @flow
+import path from "path";
+import escapeRegExp from "lodash/escapeRegExp";
 import Format from "./format.js";
 import cwdRelativePath from "./cwd-relative-path.js";
 
@@ -36,7 +38,10 @@ export type MarkerEdge = {
     +sourceCommentEnd: ?string,
 
     /**
-     * The path to the target file of the marker.
+     * The tag path to the target file of the marker.
+     *
+     * This is normalized to use the / character as a path separator,
+     * regardless of OS.
      */
     +targetFile: string,
 
@@ -139,6 +144,11 @@ export default function* generateMarkerEdges(
                 continue;
             }
 
+            const normalizedTargetFile = targetRef.file.replace(
+                new RegExp(escapeRegExp(path.sep), "g"),
+                "/",
+            );
+
             yield {
                 markerID,
                 sourceLine,
@@ -146,7 +156,7 @@ export default function* generateMarkerEdges(
                 sourceCommentStart: sourceMarker.commentStart,
                 sourceCommentEnd: sourceMarker.commentEnd,
                 sourceDeclaration: targetRef.declaration,
-                targetFile: targetRef.file,
+                targetFile: normalizedTargetFile,
                 targetLine: targetDetails.line,
                 targetChecksum,
             };

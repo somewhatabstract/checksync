@@ -66,9 +66,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        # TODO(somewhatabstract): Add windows-latest when we have normalized the
-        # paths in the snapshots.
-        os: [ubuntu-latest, macOS-latest]
+        os: [ubuntu-latest, macOS-latest, windows-latest]
         node-version: [10.x, 12.x]
     steps:
     - uses: actions/checkout@v1
