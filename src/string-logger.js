@@ -1,5 +1,6 @@
 // @flow
 import path from "path";
+import escapeRegExp from "lodash/escapeRegExp";
 import Logger from "./logger.js";
 
 /**
@@ -20,7 +21,7 @@ class StringLoggerInternal {
          * This ensures that snapshots are standardized across platforms.
          */
         const normalize = (snippet: string): string =>
-            snippet.replace(path.sep, "/");
+            snippet.replace(new RegExp(escapeRegExp(path.sep), "g"), "/");
         this._buffer.push(
             `${"  ".repeat(this._groupIndent)}${args.map(normalize).join("")}`,
         );

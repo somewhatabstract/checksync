@@ -2,6 +2,7 @@
 import fs from "fs";
 import path from "path";
 import ancesdir from "ancesdir";
+import escapeRegExp from "lodash/escapeRegExp";
 import StringLogger from "../string-logger.js";
 
 import checkSync from "../check-sync.js";
@@ -20,7 +21,9 @@ describe("Integration Tests", () => {
                 // to make sure this works for Windows.
                 .map(([name, dirPath]) => [
                     name,
-                    dirPath.replace(ancesdir(), ".").replace(path.sep, "/"),
+                    dirPath
+                        .replace(ancesdir(), ".")
+                        .replace(new RegExp(escapeRegExp(path.sep), "g"), "/"),
                 ])
         );
     };
