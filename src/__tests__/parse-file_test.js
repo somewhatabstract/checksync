@@ -17,7 +17,9 @@ jest.mock("ancesdir");
 jest.mock("../get-normalized-target-file-info.js");
 
 const invokeEvent = (mocked: $Call<typeof jest.fn>, event: string, ...args) => {
-    const eventHandlerCall = mocked.mock.calls.find(call => call[0] === event);
+    const eventHandlerCall = mocked.mock.calls.find(
+        (call) => call[0] === event,
+    );
     if (eventHandlerCall == null) {
         throw new Error(
             "Event handler not found on our fake readline interface",
@@ -26,22 +28,8 @@ const invokeEvent = (mocked: $Call<typeof jest.fn>, event: string, ...args) => {
     eventHandlerCall[1](...args);
 };
 
-/**
- *
-        jest.spyOn(fs, "realpathSync").mockImplementation(a => a);
-        jest.spyOn(fs, "existsSync").mockReturnValue(true);
-        jest.spyOn(fs, "lstatSync").mockReturnValue({isFile: () => true});
-        const pathSpy = jest
-            .spyOn(path, "join")
-            .mockReturnValue("resolved.path");
-        jest.spyOn(path, "normalize").mockReturnValue("normalized.path");
-        const ancesdirSpy = jest
-            .spyOn(Ancesdir, "default")
-            .mockReturnValue("file.dirname");
- */
-
 describe("#parseFile", () => {
-    const setupMarkerParser = function() {
+    const setupMarkerParser = function () {
         const mockParser = {
             reportUnterminatedMarkers: jest.fn(),
             parseLine: jest.fn(),
@@ -52,7 +40,7 @@ describe("#parseFile", () => {
         return mockParser;
     };
 
-    const setupFileReferenceLogger = function() {
+    const setupFileReferenceLogger = function () {
         const mockFileReferenceLogger = {
             error: jest.fn(),
         };

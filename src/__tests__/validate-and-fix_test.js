@@ -176,7 +176,7 @@ describe("#validateAndFix", () => {
             ({
                 markerID: "MARKER_ID",
                 sourceCommentStart: "//",
-                sourceCommentEnd: "",
+                sourceCommentEnd: undefined,
                 sourceChecksum: "SRC_CHECKSUM",
                 sourceDeclaration: "BROKEN_DECLARATION",
                 sourceLine: "42",
@@ -231,7 +231,7 @@ describe("#validateAndFix", () => {
             ({
                 markerID: "MARKER_ID",
                 sourceCommentStart: "//",
-                sourceCommentEnd: "",
+                sourceCommentEnd: " COMMENT_END",
                 sourceChecksum: "",
                 sourceDeclaration: "BROKEN_DECLARATION",
                 sourceLine: "42",
@@ -252,7 +252,7 @@ describe("#validateAndFix", () => {
 
         // Assert
         expect(fakeWriteStream.write).toHaveBeenCalledWith(
-            "// sync-start:MARKER_ID TARGET_CHECKSUM ROOT_REL:fileb\n",
+            "// sync-start:MARKER_ID TARGET_CHECKSUM ROOT_REL:fileb COMMENT_END\n",
         );
         expect(fakeWriteStream.write).not.toHaveBeenCalledWith(
             "BROKEN_DECLARATION\n",
@@ -289,7 +289,7 @@ describe("#validateAndFix", () => {
             ({
                 markerID: "MARKER_ID",
                 sourceCommentStart: "//",
-                sourceCommentEnd: "",
+                sourceCommentEnd: "COMMENT_END",
                 sourceChecksum: "",
                 sourceDeclaration: "BROKEN_DECLARATION",
                 sourceLine: "42",

@@ -164,7 +164,7 @@ export default class MarkerParser {
          *     4: The optional comment end
          */
         this._startTagDecodeRegExp = new RegExp(
-            `^([^\\s]+)\\s+([0-9]*)?\\s*(\\S*)$`,
+            `^([^\\s]+)\\s+([0-9]*)?\\s*(\\S*)(\\s+[^\\s\\w]*)?$`,
         );
 
         /**
@@ -185,7 +185,7 @@ export default class MarkerParser {
          * Groups:
          *     1: The tag id
          */
-        this._endTagDecodeRegExp = new RegExp(`^(\\S+)\\s*$`);
+        this._endTagDecodeRegExp = new RegExp(`^(\\S+)\\s*(\\S*)?$`);
     }
 
     _recordMarkerStart: (
@@ -326,7 +326,7 @@ export default class MarkerParser {
                     lineNumber,
                     startDecode[2],
                     startMatch[1],
-                    startMatch[4],
+                    startDecode[4],
                     content,
                 );
             }
@@ -342,7 +342,7 @@ export default class MarkerParser {
                     lineNumber,
                 );
             } else {
-                this._recordMarkerEnd(endMatch[1], lineNumber);
+                this._recordMarkerEnd(endDecode[1], lineNumber);
             }
             return;
         }
