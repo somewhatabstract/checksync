@@ -55,7 +55,9 @@ export default async function getFiles(
         absolute: true,
         ignore: excludePatterns,
     });
-    const sortedPaths = paths.sort();
+    const sortedPaths = paths
+        .map((p) => p.replace(new RegExp("/", "g"), path.sep))
+        .sort();
     log.verbose(
         () => `Discovered paths: ${JSON.stringify(sortedPaths, null, "    ")}`,
     );
