@@ -68,7 +68,10 @@
         "rollup-plugin-visualizer": "^4.0.1"
     },
     "resolutions": {
-        "babel-eslint/eslint-scope": "^5.0.0"
+        "babel-eslint/eslint-scope": "^5.0.0",
+        "nanomatch/kind-of": "^6.0.3",
+        "micromatch/kind-of": "^6.0.3",
+        "is-descriptor/kind-of": "^6.0.3"
     },
     "scripts": {
         "prepublishOnly": "yarn clean && yarn test && yarn build",
