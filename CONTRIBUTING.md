@@ -70,10 +70,10 @@ To run a `checksync` build, use `./bin/checksync.js` instead.
 
 Publishing an updated package is reserved for those with appropriate credentials. Coordinate with the repository owners to get your changes into a published release. The steps for publishing are:
 
-1. Ensure all PRs are reviewed and merged to `master`
+1. Ensure all PRs are reviewed and merged to `main`
 1. Wait for all testing to pass (if it does not, we have a problem)
 1. Locally:
-    1. `git checkout master && git pull`
+    1. `git checkout main && git pull`
     1. Edit the `package.json` to update the package version
     1. Commit the changes and push
     1. `git tag vX.Y.Z` where X is the major version from the `package.json`, Y is the minor version, and Z is the patch version
