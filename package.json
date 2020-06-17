@@ -36,7 +36,10 @@
         "@babel/preset-env": "^7.8.4",
         "@babel/preset-flow": "^7.8.3",
         "@babel/register": "^7.8.3",
+        "@rollup/plugin-babel": "^5.0.3",
+        "@rollup/plugin-commonjs": "^13.0.0",
         "@rollup/plugin-json": "^4.0.3",
+        "@rollup/plugin-node-resolve": "^8.0.1",
         "adler-32": "^1.2.0",
         "ancesdir": "^2.0.0",
         "babel-eslint": "^10.0.3",
@@ -60,10 +63,7 @@
         "pretty-quick": "^2.0.0",
         "rollup": "^2.0.6",
         "rollup-plugin-analyzer": "^3.1.2",
-        "rollup-plugin-babel": "^4.3.3",
-        "rollup-plugin-babel-minify": "^10.0.0",
-        "rollup-plugin-commonjs": "^10.1.0",
-        "rollup-plugin-node-resolve": "^5.2.0",
+        "rollup-plugin-terser": "^6.1.0",
         "rollup-plugin-visualizer": "^4.0.1"
     },
     "resolutions": {

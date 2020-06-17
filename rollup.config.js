@@ -1,10 +1,11 @@
-import resolve from "rollup-plugin-node-resolve";
-import babel from "rollup-plugin-babel";
-import commonjs from "rollup-plugin-commonjs";
-import minify from "rollup-plugin-babel-minify";
-import analyzer from "rollup-plugin-analyzer";
-import visualizer from "rollup-plugin-visualizer";
+import babel from "@rollup/plugin-babel";
+import commonjs from "@rollup/plugin-commonjs";
 import json from "@rollup/plugin-json";
+import resolve from "@rollup/plugin-node-resolve";
+
+import analyzer from "rollup-plugin-analyzer";
+import {terser} from "rollup-plugin-terser";
+import visualizer from "rollup-plugin-visualizer";
 
 const getOptionalPlugins = () => {
     if (process.env.NODE_ENV === "CI") {
@@ -34,13 +35,13 @@ export default {
         json(),
         resolve({preferBuiltins: true}),
         babel({
+            babelHelpers: "bundled",
             exclude: "node_modules/**", // only transpile our source code
         }),
         commonjs({
             sourceMap: false,
-            namedExports: {"promise.prototype.finally": ["shim"]},
         }),
-        minify({comments: false, sourceMap: false, mangle: false}),
+        terser(),
         ...getOptionalPlugins(),
     ],
 };
