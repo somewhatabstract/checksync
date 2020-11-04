@@ -2,6 +2,7 @@
 import * as minimist from "minimist";
 
 import fs from "fs";
+import path from "path";
 import {run} from "../cli.js";
 import * as CheckSync from "../check-sync.js";
 import ErrorCodes from "../error-codes.js";
@@ -19,12 +20,13 @@ jest.mock("../logger.js", () => {
         }
         jest.spyOn(log, key);
     }
-    return function() {
+    return function () {
         return log;
     };
 });
 jest.mock("parse-gitignore");
 jest.mock("fs");
+jest.mock("path");
 
 describe("#run", () => {
     it("should parse args", () => {
@@ -313,6 +315,34 @@ describe("#run", () => {
 
             // Act
             const result = unknownHandler("/Some/Path/To/.bin/checksync");
+
+            // Assert
+            expect(result).toBeFalse();
+        });
+
+        it("should return false for symlinked launch file", () => {
+            // Arrange
+            const fakeParsedArgs = {
+                ...defaultArgs,
+                fix: false,
+                comments: "//,#",
+            };
+            jest.spyOn(CheckSync, "default").mockReturnValue({then: jest.fn()});
+            const minimistSpy = jest
+                .spyOn(minimist, "default")
+                .mockReturnValue(fakeParsedArgs);
+            jest.spyOn(ParseGitIgnore, "default").mockReturnValue([
+                "madeupglob",
+            ]);
+            jest.spyOn(fs, "readlinkSync").mockReturnValue("/doesnt/matter");
+            jest.spyOn(path, "resolve").mockReturnValue(
+                __filename, // Symlink resolves to our run file
+            );
+            run(__filename);
+            const unknownHandler = minimistSpy.mock.calls[0][1].unknown;
+
+            // Act
+            const result = unknownHandler("/usr/local/bin/checksync");
 
             // Assert
             expect(result).toBeFalse();
