@@ -1598,9 +1598,9 @@ ajv@^6.10.0, ajv@^6.10.2, ajv@^6.12.4, ajv@^6.5.5:
     uri-js "^4.2.2"
 
 ancesdir@^2.0.0:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/ancesdir/-/ancesdir-2.0.1.tgz#8b8eb91bc0605ca040789937be915ca83e843ee5"
-  integrity sha512-Ja1w4knA/IdhWX0RhGfKrEeJDtb5ZbCG4cnM2ME4ezXqHTEXWQSLqxb75R17k3fpgRNleaRQ3imrtxt9RK5fLQ==
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/ancesdir/-/ancesdir-2.0.2.tgz#5006a43e3e212c9ba0d7cdd91cfca1f88967e9fe"
+  integrity sha512-xdE0k/jTXIXNKcIH1rKwXKriDijJUY2Y8QHsZ7GFXJyI3upmz2EWMQ2WKdBS8qO7u52+Sa9IT6/NpKl4nkYeGg==
 
 ansi-colors@^3.2.1:
   version "3.2.4"
