@@ -3,6 +3,7 @@
  * The implementation of our command line utility.
  */
 import fs from "fs";
+import path from "path";
 import chalk from "chalk";
 import minimist from "minimist";
 import checkSync from "./check-sync.js";
@@ -62,6 +63,13 @@ export const run = (launchFilePath: string): void => {
             if (arg === launchFilePath) return false;
             // Filter out the command that yarn/npm might install.
             if (arg.endsWith(".bin/checksync")) return false;
+            // Handle the entry point being a symlink
+            try {
+                const realpath = path.resolve(fs.readlinkSync(arg));
+                if (realpath == launchFilePath) return false;
+            } catch {
+                /* ignore errors, the arg may not be a path at all */
+            }
 
             if (arg.startsWith("-")) {
                 log.error(`Unknown argument: ${arg}`);
