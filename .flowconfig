@@ -12,5 +12,3 @@
 emoji=true
 exact_by_default=true
 module.use_strict=true
-well_formed_exports=true
-types_first=true
