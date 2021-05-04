@@ -39,7 +39,7 @@
         "@rollup/plugin-babel": "^5.0.3",
         "@rollup/plugin-commonjs": "^18.0.0",
         "@rollup/plugin-json": "^4.0.3",
-        "@rollup/plugin-node-resolve": "^11.0.0",
+        "@rollup/plugin-node-resolve": "^13.0.0",
         "adler-32": "^1.2.0",
         "ancesdir": "^2.0.0",
         "babel-eslint": "^10.0.3",
