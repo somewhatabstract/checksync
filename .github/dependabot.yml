@@ -1,0 +1,27 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "09:00"
+    timezone: America/Chicago
+  open-pull-requests-limit: 10
+  reviewers:
+  - somewhatabstract
+  ignore:
+  - dependency-name: rollup-plugin-visualizer
+    versions:
+    - 4.2.1
+    - 5.4.0
+  - dependency-name: eslint-plugin-flowtype
+    versions:
+    - 5.7.1
+  - dependency-name: "@babel/core"
+    versions:
+    - 7.13.13
+  - dependency-name: flow-bin
+    versions:
+    - 0.143.1
+    - 0.144.0
+    - 0.145.0
