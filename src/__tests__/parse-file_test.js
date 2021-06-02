@@ -65,6 +65,8 @@ describe("#parseFile", () => {
             rootMarker: "rootmarker",
             dryRun: false,
             excludeGlobs: [],
+            json: false,
+            silent: false,
         };
 
         // Act
@@ -95,6 +97,8 @@ describe("#parseFile", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            json: false,
+            silent: false,
         };
 
         // Act
@@ -123,6 +127,8 @@ describe("#parseFile", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            json: false,
+            silent: false,
         };
 
         // Act
@@ -154,6 +160,8 @@ describe("#parseFile", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            json: false,
+            silent: false,
         };
 
         // Act
@@ -180,6 +188,8 @@ describe("#parseFile", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            json: false,
+            silent: false,
         };
 
         // Act
@@ -211,6 +221,8 @@ describe("#parseFile", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            json: false,
+            silent: false,
         };
 
         // Act
@@ -248,6 +260,8 @@ describe("#parseFile", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            json: false,
+            silent: false,
         };
 
         // Act
@@ -285,6 +299,8 @@ describe("#parseFile", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            json: false,
+            silent: false,
         };
 
         // Act
@@ -329,6 +345,8 @@ describe("#parseFile", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            json: false,
+            silent: false,
         };
 
         // Act
@@ -370,6 +388,8 @@ describe("#parseFile", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            json: false,
+            silent: false,
         };
 
         // Act
@@ -409,6 +429,8 @@ describe("#parseFile", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            json: false,
+            silent: false,
         };
 
         // Act
@@ -444,6 +466,8 @@ describe("#parseFile", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            json: false,
+            silent: false,
         };
         const promise = parseFile(options, "file.js", true, NullLogger);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
@@ -507,6 +531,8 @@ describe("#parseFile", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            json: false,
+            silent: false,
         };
         const promise = parseFile(options, "file.js", true, NullLogger);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
@@ -548,6 +574,8 @@ describe("#parseFile", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            json: false,
+            silent: false,
         };
 
         // Act

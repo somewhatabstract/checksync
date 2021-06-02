@@ -2,6 +2,7 @@
 import processCache from "../process-cache.js";
 import Logger from "../logger.js";
 import ErrorCodes from "../error-codes.js";
+import FileReferenceLogger from "../file-reference-logger.js";
 
 import * as ValidateAndReport from "../validate-and-report.js";
 import * as ValidateAndFix from "../validate-and-fix.js";
@@ -92,6 +93,8 @@ describe("#processCache", () => {
                 rootMarker: null,
                 dryRun: false,
                 excludeGlobs: [],
+                json: false,
+                silent: false,
             };
 
             // Act
@@ -102,13 +105,17 @@ describe("#processCache", () => {
                 options,
                 "filea",
                 TestCache,
-                NullLogger,
+                expect.objectContaining(
+                    new FileReferenceLogger("filea", NullLogger, []),
+                ),
             );
             expect(spy).toHaveBeenCalledWith(
                 options,
                 "fileb",
                 TestCache,
-                NullLogger,
+                expect.objectContaining(
+                    new FileReferenceLogger("fileb", NullLogger, []),
+                ),
             );
         });
 
@@ -125,6 +132,8 @@ describe("#processCache", () => {
                 rootMarker: null,
                 dryRun: false,
                 excludeGlobs: [],
+                json: false,
+                silent: false,
             };
 
             // Act
@@ -147,6 +156,8 @@ describe("#processCache", () => {
                 rootMarker: "marker",
                 dryRun: false,
                 excludeGlobs: [],
+                json: false,
+                silent: false,
             };
 
             // Act
@@ -170,6 +181,8 @@ describe("#processCache", () => {
                 autoFix: false,
                 dryRun: false,
                 excludeGlobs: [],
+                json: false,
+                silent: false,
             };
 
             // Act
@@ -198,6 +211,8 @@ describe("#processCache", () => {
                 autoFix: false,
                 dryRun: false,
                 excludeGlobs: [],
+                json: false,
+                silent: false,
             };
 
             // Act
@@ -228,6 +243,8 @@ describe("#processCache", () => {
                 rootMarker: null,
                 dryRun: false,
                 excludeGlobs: [],
+                json: false,
+                silent: false,
             };
 
             // Act
@@ -261,6 +278,8 @@ describe("#processCache", () => {
                 rootMarker: null,
                 dryRun: false,
                 excludeGlobs: [],
+                json: false,
+                silent: false,
             };
 
             // Act
@@ -283,6 +302,8 @@ describe("#processCache", () => {
                 rootMarker: "marker",
                 dryRun: false,
                 excludeGlobs: [],
+                json: false,
+                silent: false,
             };
 
             // Act
@@ -306,6 +327,8 @@ describe("#processCache", () => {
                 rootMarker: "marker",
                 dryRun: false,
                 excludeGlobs: [],
+                json: false,
+                silent: false,
             };
 
             // Act
@@ -330,6 +353,8 @@ describe("#processCache", () => {
                 rootMarker: "marker",
                 dryRun: true,
                 excludeGlobs: [],
+                json: false,
+                silent: false,
             };
 
             // Act
@@ -358,6 +383,8 @@ describe("#processCache", () => {
                 rootMarker: "marker",
                 dryRun: true,
                 excludeGlobs: [],
+                json: false,
+                silent: false,
             };
 
             // Act
@@ -384,6 +411,8 @@ describe("#processCache", () => {
             rootMarker: "marker",
             dryRun: false,
             excludeGlobs: [],
+            json: false,
+            silent: false,
         };
 
         // Act
@@ -412,6 +441,8 @@ describe("#processCache", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            json: false,
+            silent: false,
         };
 
         // Act

@@ -17,28 +17,98 @@ import type {ILog, IPositionLog} from "./types.js";
 export default class FileReferenceLogger implements IPositionLog {
     _log: ILog;
     _file: string;
+    _middlewares: Array<any>;
 
-    constructor(file: string, log: ILog) {
+    constructor(file: string, log: ILog, middlewares: Array<any> = []) {
         this._log = log;
         this._file = file;
+        this._middlewares = middlewares;
     }
 
     log: (message: string, line?: string | number) => void = (
         message: string,
         line?: string | number,
-    ): void => this._log.log(this._format(message, line));
+    ): void => {
+        let datum = {
+            type: "log",
+            message,
+            line,
+        };
+        for (const middleware of this._middlewares) {
+            datum = middleware.process(datum);
+            if (!datum) {
+                return;
+            }
+        }
+        this._log.log(this._format(message, line));
+    };
     info: (message: string, line?: string | number) => void = (
         message: string,
         line?: string | number,
-    ): void => this._log.info(this._format(message, line));
+    ): void => {
+        let datum = {
+            type: "info",
+            message,
+            line,
+        };
+        for (const middleware of this._middlewares) {
+            datum = middleware.process(datum);
+            if (!datum) {
+                return;
+            }
+        }
+        this._log.info(this._format(message, line));
+    };
     warn: (message: string, line?: string | number) => void = (
         message: string,
         line?: string | number,
-    ): void => this._log.warn(this._format(message, line));
+    ): void => {
+        let datum = {
+            type: "warn",
+            message,
+            line,
+        };
+        for (const middleware of this._middlewares) {
+            datum = middleware.process(datum);
+            if (!datum) {
+                return;
+            }
+        }
+        this._log.warn(this._format(message, line));
+    };
+    violation: (message: string, line?: string | number, fix?: string) => void =
+        (message: string, line?: string | number, fix?: string): void => {
+            let datum = {
+                type: "violation",
+                message,
+                line,
+                fix,
+            };
+            for (const middleware of this._middlewares) {
+                datum = middleware.process(datum);
+                if (!datum) {
+                    return;
+                }
+            }
+            this._log.violation(this._format(message, line));
+        };
     error: (message: string, line?: string | number) => void = (
         message: string,
         line?: string | number,
-    ): void => this._log.error(this._format(message, line));
+    ): void => {
+        let datum = {
+            type: "error",
+            message,
+            line,
+        };
+        for (const middleware of this._middlewares) {
+            datum = middleware.process(datum);
+            if (!datum) {
+                return;
+            }
+        }
+        this._log.error(this._format(message, line));
+    };
     group: (...labels: Array<string>) => void = (
         ...labels: Array<string>
     ): void => this._log.group(...labels);
@@ -47,6 +117,8 @@ export default class FileReferenceLogger implements IPositionLog {
         messageBuilder: () => string,
         line?: string | number,
     ): void => this._log.verbose(() => this._format(messageBuilder(), line));
+    mute: () => void = (): void => this._log.mute();
+    unmute: () => void = (): void => this._log.unmute();
 
     _format: (message: string, line?: string | number) => string = (
         message: string,

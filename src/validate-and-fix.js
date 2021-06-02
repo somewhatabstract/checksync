@@ -7,7 +7,12 @@ import Format from "./format.js";
 import cwdRelativePath from "./cwd-relative-path.js";
 import rootRelativePath from "./root-relative-path.js";
 
-import type {ILog, MarkerCache, Options, FileProcessor} from "./types.js";
+import type {
+    IPositionLog,
+    MarkerCache,
+    Options,
+    FileProcessor,
+} from "./types.js";
 import type {MarkerEdge} from "./generate-marker-edges.js";
 
 type EdgeMap = {
@@ -56,7 +61,8 @@ const mapEdgeFix = (
 const reportBrokenEdge = (
     sourceFile: string,
     brokenEdge: MarkerEdge,
-    log: ILog,
+    log: IPositionLog,
+    fix: string,
 ): void => {
     const {
         markerID,
@@ -69,14 +75,14 @@ const reportBrokenEdge = (
 
     const NO_CHECKSUM = "No checksum";
     const sourceFileRef = Format.cwdFilePath(`${sourceFile}:${sourceLine}`);
-    log.log(
-        Format.violation(
-            `${sourceFileRef} Updating checksum for sync-tag '${markerID}' referencing '${cwdRelativePath(
-                targetFile,
-            )}:${targetLine}' from ${
-                sourceChecksum || NO_CHECKSUM
-            } to ${targetChecksum}.`,
-        ),
+    log.violation(
+        `${sourceFileRef} Updating checksum for sync-tag '${markerID}' referencing '${cwdRelativePath(
+            targetFile,
+        )}:${targetLine}' from ${
+            sourceChecksum || NO_CHECKSUM
+        } to ${targetChecksum}.`,
+        targetLine,
+        fix,
     );
 };
 
@@ -84,7 +90,7 @@ const validateAndFix: FileProcessor = (
     options: Options,
     file: string,
     cache: $ReadOnly<MarkerCache>,
-    log: ILog,
+    log: IPositionLog,
 ): Promise<boolean> => {
     return new Promise((resolve, reject) => {
         // First, we need to know what tags we're fixing.
@@ -154,13 +160,14 @@ const validateAndFix: FileProcessor = (
             .on("line", (line: string) => {
                 // Let's see if this is something we need to fix.
                 const mappedFix = brokenEdgeMap[line];
+                const fix = `${mappedFix == null ? line : mappedFix.fix}\n`;
                 if (mappedFix != null) {
-                    reportBrokenEdge(file, mappedFix.edge, log);
+                    reportBrokenEdge(file, mappedFix.edge, log, fix);
                 }
 
                 // If we have a fix, use it, otherwise, just output the line
                 // as it is (we have to add the newline).
-                ws.write(`${mappedFix == null ? line : mappedFix.fix}\n`);
+                ws.write(fix);
             })
             .on("close", () => {
                 // We have finished reading, so let's tell the write stream

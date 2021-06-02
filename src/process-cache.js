@@ -2,7 +2,9 @@
 import getLaunchString from "./get-launch-string.js";
 import cwdRelativePath from "./cwd-relative-path.js";
 import ErrorCodes from "./error-codes.js";
+import FileReferenceLogger from "./file-reference-logger.js";
 import Format from "./format.js";
+import JsonMiddleware from "./json-middleware.js";
 import validateAndFix from "./validate-and-fix.js";
 import validateAndReport from "./validate-and-report.js";
 
@@ -19,9 +21,11 @@ export default async function processCache(
     const {autoFix} = options;
     const violationFileNames: Array<string> = [];
     const fileValidator = autoFix ? validateAndFix : validateAndReport;
+    const middlewares = options.json ? [new JsonMiddleware()] : [];
     for (const file of Object.keys(cache)) {
+        const fileRefLogger = new FileReferenceLogger(file, log, middlewares);
         try {
-            if (!(await fileValidator(options, file, cache, log))) {
+            if (!(await fileValidator(options, file, cache, fileRefLogger))) {
                 violationFileNames.push(file);
             }
         } catch (e) {
@@ -30,6 +34,16 @@ export default async function processCache(
                     cwdRelativePath(file),
                 )} update encountered error: ${e.message}`,
             );
+        }
+    }
+
+    if (middlewares[0]) {
+        if (options.silent) {
+            log.unmute();
+        }
+        log.log(middlewares[0].output());
+        if (options.silent) {
+            log.mute();
         }
     }
 

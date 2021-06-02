@@ -3,6 +3,7 @@ import fs from "fs";
 import readline from "readline";
 
 import Logger from "../logger.js";
+import FileReferenceLogger from "../file-reference-logger.js";
 import validateAndFix from "../validate-and-fix.js";
 
 import * as GenerateMarkerEdges from "../generate-marker-edges.js";
@@ -31,6 +32,8 @@ describe("#validateAndFix", () => {
         autoFix: true,
         comments: [],
         rootMarker: null,
+        silent: false,
+        json: false,
     };
 
     it("should resolve true if there are no broken edges in file", async () => {
@@ -93,6 +96,10 @@ describe("#validateAndFix", () => {
     it("should report broken edges to the log", async () => {
         // Arrange
         const NullLogger = new Logger(null);
+        const NullFileRerenceLogger = new FileReferenceLogger(
+            "filea",
+            NullLogger,
+        );
         const fakeWriteStream = {
             once: jest.fn(),
             write: jest.fn(),
@@ -129,20 +136,27 @@ describe("#validateAndFix", () => {
                 targetLine: "99",
             }: MarkerEdge),
         ]);
-        const logSpy = jest.spyOn(NullLogger, "log");
+        const violationSpy = jest.spyOn(NullFileRerenceLogger, "violation");
         const readLineFromFile = (line: string) =>
             invokeEvent(fakeInterface.on, "line", line);
         const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
 
         // Act
-        const promise = validateAndFix(options, "filea", {}, NullLogger);
+        const promise = validateAndFix(
+            options,
+            "filea",
+            {},
+            NullFileRerenceLogger,
+        );
         readLineFromFile("BROKEN_DECLARATION");
         finishReadingFile();
         await promise;
 
         // Assert
-        expect(logSpy).toHaveBeenCalledWith(
-            " MISMATCH  filea:42 Updating checksum for sync-tag 'MARKER_ID' referencing 'fileb:99' from SRC_CHECKSUM to TARGET_CHECKSUM.",
+        expect(violationSpy).toHaveBeenCalledWith(
+            "filea:42 Updating checksum for sync-tag 'MARKER_ID' referencing 'fileb:99' from SRC_CHECKSUM to TARGET_CHECKSUM.",
+            "99",
+            "// sync-start:MARKER_ID TARGET_CHECKSUM ROOT_REL:fileb\n",
         );
     });
 

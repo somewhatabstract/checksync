@@ -22,15 +22,52 @@ export interface ILog {
     +error: (message: string) => void;
     +info: (message: string) => void;
     +log: (message: string) => void;
+    +violation: (message: string) => void;
     +warn: (message: string) => void;
     +verbose: (() => string) => void;
+    +mute: () => void;
+    +unmute: () => void;
 }
 
 export interface IPositionLog extends ILog {
     +error: (message: string, line?: string | number) => void;
     +info: (message: string, line?: string | number) => void;
     +log: (message: string, line?: string | number) => void;
+    +violation: (message: string, line?: string | number, fix?: string) => void;
     +warn: (message: string, line?: string | number) => void;
+}
+
+export type MiddlewareDatum =
+    | {
+          type: "error",
+          message: string,
+          line?: string | number,
+      }
+    | {
+          type: "info",
+          message: string,
+          line?: string | number,
+      }
+    | {
+          type: "log",
+          message: string,
+          line?: string | number,
+      }
+    | {
+          type: "violation",
+          message: string,
+          line?: string | number,
+          fix?: string,
+      }
+    | {
+          type: "warn",
+          message: string,
+          line?: string | number,
+      };
+
+// Middlewares can't affect the operation of what's reported or not.
+export interface Middleware {
+    +process: (data: MiddlewareDatum) => ?MiddlewareDatum;
 }
 
 /**
@@ -132,12 +169,10 @@ export type FileProcessor = (
     options: Options,
     file: string,
     cache: $ReadOnly<MarkerCache>,
-    log: ILog,
+    log: IPositionLog,
 ) => Promise<boolean>;
 
-export type normalizePathFn = (
-    relativeFile: string,
-) => ?{
+export type normalizePathFn = (relativeFile: string) => ?{
     file: string,
     exists: boolean,
 };
@@ -148,6 +183,8 @@ export type Options = {
     autoFix: boolean,
     comments: Array<string>,
     dryRun: boolean,
+    json: boolean,
+    silent: boolean,
     rootMarker?: ?string,
 };
 

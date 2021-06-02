@@ -66,6 +66,11 @@ Where:
                        Ignored if \`--no-ignore-file\` is present.
                        Defaults to \`.gitignore\`.
 
+    \`--json,-j\`          Ouptut errors, warnings, and violations as a JSON
+                       array of objects that can be consumed by other tools.
+                       If paired with \`--update-tags\`, violations will include
+                       a \`'fix'\`.
+
     \`--no-ignore-file\`   When \`true\`, does not use any ignore file. This is
                        useful when the default value for \`--ignore-file\` is not
                        wanted.
@@ -80,6 +85,9 @@ Where:
                        For example, \`--root-marker .gitignore\` would mean
                        the first ancestor directory containing a
                        \`.gitignore\` file.
+
+    \`--silent,-s\`        Prevents output from being logged to the console
+                       except for JSON output.
 
     \`--update-tags,-u\`   Updates tags with incorrect target checksums. This
                        modifies files in place; run with \`--dry-run\` to see what

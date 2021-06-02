@@ -15,6 +15,8 @@ describe("#validateAndReport", () => {
         autoFix: false,
         comments: [],
         rootMarker: null,
+        json: false,
+        silent: false,
     };
 
     it("should report violation", async () => {

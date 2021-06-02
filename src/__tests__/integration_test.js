@@ -55,6 +55,8 @@ describe("Integration Tests", () => {
                     comments: ["//", "#", "{/*"],
                     dryRun: false,
                     excludeGlobs: ["**/excluded/**"],
+                    json: false,
+                    silent: false,
                 },
                 stringLogger,
             );
@@ -79,6 +81,8 @@ describe("Integration Tests", () => {
                     comments: ["//", "#", "{/*"],
                     dryRun: true,
                     excludeGlobs: ["**/excluded/**"],
+                    json: false,
+                    silent: false,
                 },
                 stringLogger,
             );
