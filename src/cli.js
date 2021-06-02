@@ -12,6 +12,7 @@ import ErrorCodes from "./error-codes.js";
 import logHelp from "./help.js";
 import defaultArgs from "./default-args.js";
 import parseGitIgnore from "parse-gitignore";
+import {version} from "../package.json";
 
 const ignoreFilesToExcludes = (ignoreFilesArg: string): Array<string> => {
     const ignoreFiles = ignoreFilesArg.split(",").filter((c) => !!c);
@@ -41,7 +42,14 @@ export const run = (launchFilePath: string): void => {
     // TODO(somewhatabstract): Verbose logging (make sure any caught errors
     // verbose their error messages)
     const args = minimist(process.argv, {
-        boolean: ["updateTags", "dryRun", "help", "noIgnoreFile", "verbose"],
+        boolean: [
+            "updateTags",
+            "dryRun",
+            "help",
+            "noIgnoreFile",
+            "verbose",
+            "version",
+        ],
         string: ["comments", "rootMarker", "ignore", "ignoreFiles"],
         default: {
             ...defaultArgs,
@@ -78,6 +86,11 @@ export const run = (launchFilePath: string): void => {
             return true;
         },
     });
+
+    if (args.version) {
+        log.log(version);
+        process.exit(ErrorCodes.SUCCESS);
+    }
 
     if (args.help) {
         logHelp(log);
