@@ -13,6 +13,7 @@ describe("rootRelativePath", () => {
         const ancesdirSpy = jest
             .spyOn(Ancesdir, "default")
             .mockReturnValue("ROOT");
+        jest.spyOn(path, "isAbsolute").mockReturnValue(true);
 
         // Act
         rootRelativePath("FILE", "MARKER");
@@ -27,6 +28,7 @@ describe("rootRelativePath", () => {
         const pathSpy = jest
             .spyOn(path, "relative")
             .mockReturnValue("RELATIVE_PATH");
+        jest.spyOn(path, "isAbsolute").mockReturnValue(true);
 
         // Act
         const result = rootRelativePath("FILE");
@@ -34,5 +36,16 @@ describe("rootRelativePath", () => {
         // Assert
         expect(result).toBe("RELATIVE_PATH");
         expect(pathSpy).toHaveBeenCalledWith("ROOT", "FILE");
+    });
+
+    it("should get original file path if it isn't absolute", () => {
+        // Arrange
+        jest.spyOn(path, "isAbsolute").mockReturnValue(false);
+
+        // Act
+        const result = rootRelativePath("FILE");
+
+        // Assert
+        expect(result).toBe("FILE");
     });
 });
