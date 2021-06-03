@@ -92,6 +92,7 @@ describe("#processCache", () => {
                 rootMarker: null,
                 dryRun: false,
                 excludeGlobs: [],
+                json: false,
             };
 
             // Act
@@ -125,6 +126,7 @@ describe("#processCache", () => {
                 rootMarker: null,
                 dryRun: false,
                 excludeGlobs: [],
+                json: false,
             };
 
             // Act
@@ -147,6 +149,7 @@ describe("#processCache", () => {
                 rootMarker: "marker",
                 dryRun: false,
                 excludeGlobs: [],
+                json: false,
             };
 
             // Act
@@ -170,6 +173,7 @@ describe("#processCache", () => {
                 autoFix: false,
                 dryRun: false,
                 excludeGlobs: [],
+                json: false,
             };
 
             // Act
@@ -198,6 +202,7 @@ describe("#processCache", () => {
                 autoFix: false,
                 dryRun: false,
                 excludeGlobs: [],
+                json: false,
             };
 
             // Act
@@ -228,6 +233,7 @@ describe("#processCache", () => {
                 rootMarker: null,
                 dryRun: false,
                 excludeGlobs: [],
+                json: false,
             };
 
             // Act
@@ -261,6 +267,7 @@ describe("#processCache", () => {
                 rootMarker: null,
                 dryRun: false,
                 excludeGlobs: [],
+                json: false,
             };
 
             // Act
@@ -283,6 +290,7 @@ describe("#processCache", () => {
                 rootMarker: "marker",
                 dryRun: false,
                 excludeGlobs: [],
+                json: false,
             };
 
             // Act
@@ -306,6 +314,7 @@ describe("#processCache", () => {
                 rootMarker: "marker",
                 dryRun: false,
                 excludeGlobs: [],
+                json: false,
             };
 
             // Act
@@ -330,6 +339,7 @@ describe("#processCache", () => {
                 rootMarker: "marker",
                 dryRun: true,
                 excludeGlobs: [],
+                json: false,
             };
 
             // Act
@@ -358,6 +368,7 @@ describe("#processCache", () => {
                 rootMarker: "marker",
                 dryRun: true,
                 excludeGlobs: [],
+                json: false,
             };
 
             // Act
@@ -384,6 +395,7 @@ describe("#processCache", () => {
             rootMarker: "marker",
             dryRun: false,
             excludeGlobs: [],
+            json: false,
         };
 
         // Act
@@ -412,6 +424,7 @@ describe("#processCache", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            json: false,
         };
 
         // Act

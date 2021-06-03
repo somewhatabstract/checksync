@@ -147,6 +147,8 @@ describe("#run", () => {
                 dryRun: false,
                 autoFix: true,
                 comments: ["COMMENT1", "COMMENT2"],
+                json: false,
+                rootMarker: undefined,
             },
             expect.any(Object),
         );
@@ -177,6 +179,8 @@ describe("#run", () => {
                 dryRun: false,
                 autoFix: true,
                 comments: ["COMMENT1", "COMMENT2"],
+                json: false,
+                rootMarker: undefined,
             },
             expect.any(Object),
         );
@@ -209,6 +213,8 @@ describe("#run", () => {
                 dryRun: false,
                 autoFix: true,
                 comments: ["COMMENT1", "COMMENT2"],
+                json: false,
+                rootMarker: undefined,
             },
             expect.any(Object),
         );
@@ -247,6 +253,8 @@ describe("#run", () => {
                 dryRun: false,
                 autoFix: true,
                 comments: ["COMMENT1", "COMMENT2"],
+                json: false,
+                rootMarker: undefined,
             },
             expect.any(Object),
         );

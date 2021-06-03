@@ -49,6 +49,7 @@ export const run = (launchFilePath: string): void => {
             "noIgnoreFile",
             "verbose",
             "version",
+            "json",
         ],
         string: ["comments", "rootMarker", "ignore", "ignoreFiles"],
         default: {
@@ -125,6 +126,7 @@ export const run = (launchFilePath: string): void => {
             includeGlobs,
             excludeGlobs,
             autoFix: args.updateTags === true,
+            json: args.json === true,
             comments,
             rootMarker: (args.rootMarker: any),
             dryRun: args.dryRun === true,

@@ -1,6 +1,7 @@
 // @flow
 const defaultArgs = {
     updateTags: false,
+    json: false,
     comments: `${["#,//"].sort().join(",")}`,
     ignore: "",
     help: false,

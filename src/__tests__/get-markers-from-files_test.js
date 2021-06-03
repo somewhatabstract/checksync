@@ -19,7 +19,7 @@ describe("#fromFiles", () => {
         const parseSpy = jest
             .spyOn(ParseFile, "default")
             .mockReturnValue(Promise.resolve());
-        jest.spyOn(fs, "realpathSync").mockImplementation(a => a);
+        jest.spyOn(fs, "realpathSync").mockImplementation((a) => a);
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
             comments: ["//"],
@@ -27,6 +27,7 @@ describe("#fromFiles", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            json: false,
         };
 
         // Act
@@ -63,7 +64,7 @@ describe("#fromFiles", () => {
                     referencedFiles: [],
                 });
             });
-        jest.spyOn(fs, "realpathSync").mockImplementation(a => a);
+        jest.spyOn(fs, "realpathSync").mockImplementation((a) => a);
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
             comments: ["//"],
@@ -71,6 +72,7 @@ describe("#fromFiles", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            json: false,
         };
 
         // Act
@@ -98,7 +100,7 @@ describe("#fromFiles", () => {
                 }
                 return Promise.resolve({markers: {}, referencedFiles: []});
             });
-        jest.spyOn(fs, "realpathSync").mockImplementation(a => a);
+        jest.spyOn(fs, "realpathSync").mockImplementation((a) => a);
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
             comments: ["//"],
@@ -106,6 +108,7 @@ describe("#fromFiles", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            json: false,
         };
 
         // Act
@@ -145,7 +148,7 @@ describe("#fromFiles", () => {
                     referencedFiles: [],
                 }),
         );
-        jest.spyOn(fs, "realpathSync").mockImplementation(a => a);
+        jest.spyOn(fs, "realpathSync").mockImplementation((a) => a);
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
             comments: ["//"],
@@ -153,6 +156,7 @@ describe("#fromFiles", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            json: false,
         };
 
         // Act
@@ -194,7 +198,7 @@ describe("#fromFiles", () => {
                 });
             },
         );
-        jest.spyOn(fs, "realpathSync").mockImplementation(a => a);
+        jest.spyOn(fs, "realpathSync").mockImplementation((a) => a);
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
             comments: ["//"],
@@ -202,6 +206,7 @@ describe("#fromFiles", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            json: false,
         };
 
         // Act
@@ -235,7 +240,7 @@ describe("#fromFiles", () => {
                 });
             },
         );
-        jest.spyOn(fs, "realpathSync").mockImplementation(a => {
+        jest.spyOn(fs, "realpathSync").mockImplementation((a) => {
             // When we get to file c.js, which is referenced rather than in the
             // original file set, it is being processed after a and b.
             // We return that it is the same path as a.js, and hence an alias.
@@ -253,6 +258,7 @@ describe("#fromFiles", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            json: false,
         };
 
         // Act
@@ -281,7 +287,7 @@ describe("#fromFiles", () => {
                 });
             },
         );
-        jest.spyOn(fs, "realpathSync").mockImplementation(a => {
+        jest.spyOn(fs, "realpathSync").mockImplementation((a) => {
             // When we get to file a.js, which is in the original file set
             // we report that it is a symlink to c.js.
             // This means that after we parse a.js, we'll clone its markers
@@ -299,6 +305,7 @@ describe("#fromFiles", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            json: false,
         };
 
         // Act
@@ -313,10 +320,10 @@ describe("#fromFiles", () => {
 
     it("should log an error if the file doesn't exist", async () => {
         // Arrange
-        jest.spyOn(fs, "realpathSync").mockImplementation(a => {
+        jest.spyOn(fs, "realpathSync").mockImplementation((a) => {
             throw new Error("This isn't a file!");
         });
-        jest.spyOn(Format, "cwdFilePath").mockImplementation(f => f);
+        jest.spyOn(Format, "cwdFilePath").mockImplementation((f) => f);
         const logSpy = jest.spyOn(NullLogger, "error");
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
@@ -325,6 +332,7 @@ describe("#fromFiles", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            json: false,
         };
 
         // Act

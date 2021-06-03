@@ -4,32 +4,51 @@ import cwdRelativePath from "./cwd-relative-path.js";
 import ErrorCodes from "./error-codes.js";
 import Format from "./format.js";
 import validateAndFix from "./validate-and-fix.js";
+import validateAndJson from "./validate-and-json.js";
 import validateAndReport from "./validate-and-report.js";
 
 import defaultArgs from "./default-args.js";
 
 import type {ErrorCode} from "./error-codes.js";
-import type {MarkerCache, ILog, Options} from "./types";
+import type {MarkerCache, ILog, Options, JsonItem} from "./types";
 
 export default async function processCache(
     options: Options,
     cache: $ReadOnly<MarkerCache>,
     log: ILog,
 ): Promise<ErrorCode> {
-    const {autoFix} = options;
+    const {autoFix, json} = options;
     const violationFileNames: Array<string> = [];
-    const fileValidator = autoFix ? validateAndFix : validateAndReport;
-    for (const file of Object.keys(cache)) {
-        try {
-            if (!(await fileValidator(options, file, cache, log))) {
-                violationFileNames.push(file);
+
+    if (json) {
+        const jsonItems: Array<JsonItem> = [];
+        for (const file of Object.keys(cache)) {
+            try {
+                validateAndJson(options, file, cache, jsonItems);
+            } catch (e) {
+                log.error(
+                    `${Format.cwdFilePath(
+                        cwdRelativePath(file),
+                    )} update encountered error: ${e.message}`,
+                );
             }
-        } catch (e) {
-            log.error(
-                `${Format.cwdFilePath(
-                    cwdRelativePath(file),
-                )} update encountered error: ${e.message}`,
-            );
+        }
+        log.log(JSON.stringify(jsonItems, null, 4));
+        return ErrorCodes.SUCCESS;
+    } else {
+        const fileValidator = autoFix ? validateAndFix : validateAndReport;
+        for (const file of Object.keys(cache)) {
+            try {
+                if (!(await fileValidator(options, file, cache, log))) {
+                    violationFileNames.push(file);
+                }
+            } catch (e) {
+                log.error(
+                    `${Format.cwdFilePath(
+                        cwdRelativePath(file),
+                    )} update encountered error: ${e.message}`,
+                );
+            }
         }
     }
 

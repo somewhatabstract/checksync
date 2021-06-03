@@ -29,6 +29,7 @@ describe("#checkSync", () => {
                 dryRun: true,
                 autoFix: true,
                 comments: ["//"],
+                json: false,
             },
             NullLogger,
         );
@@ -52,6 +53,7 @@ describe("#checkSync", () => {
                 dryRun: false,
                 autoFix: true,
                 comments: ["//"],
+                json: false,
             },
             NullLogger,
         );
@@ -69,12 +71,13 @@ describe("#checkSync", () => {
         const NullLogger = new Logger();
         jest.spyOn(GetFiles, "default").mockReturnValue([]);
         const errorSpy = jest.spyOn(NullLogger, "error");
-        const options = {
+        const options: Options = {
             includeGlobs: ["glob1", "glob2"],
             excludeGlobs: [],
             dryRun: false,
             autoFix: false,
             comments: ["//"],
+            json: false,
         };
 
         // Act
@@ -94,6 +97,7 @@ describe("#checkSync", () => {
             dryRun: false,
             autoFix: false,
             comments: ["//"],
+            json: false,
         };
 
         // Act
@@ -117,6 +121,7 @@ describe("#checkSync", () => {
             dryRun: false,
             autoFix: true,
             comments: ["//"],
+            json: false,
         };
 
         // Act
@@ -145,6 +150,7 @@ describe("#checkSync", () => {
             dryRun: false,
             autoFix: true,
             comments: ["//"],
+            json: false,
         };
 
         // Act
@@ -170,6 +176,7 @@ describe("#checkSync", () => {
             dryRun: false,
             autoFix: true,
             comments: ["//"],
+            json: false,
         };
 
         // Act
@@ -195,6 +202,7 @@ describe("#checkSync", () => {
             autoFix: false,
             comments: ["//"],
             rootMarker: "marker",
+            json: false,
         };
 
         // Act
@@ -224,6 +232,7 @@ describe("#checkSync", () => {
                 autoFix: false,
                 comments: ["//"],
                 dryRun: false,
+                json: false,
             },
             NullLogger,
         );

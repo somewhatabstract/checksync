@@ -3,8 +3,13 @@ import Format from "./format.js";
 import cwdRelativePath from "./cwd-relative-path.js";
 import generateMarkerEdges from "./generate-marker-edges.js";
 
-import type {MarkerCache, ILog, Options, FileProcessor} from "./types.js";
-import type {MarkerEdge} from "./generate-marker-edges.js";
+import type {
+    MarkerCache,
+    ILog,
+    Options,
+    FileProcessor,
+    MarkerEdge,
+} from "./types.js";
 
 const reportBrokenEdge = (
     sourceFile: string,
