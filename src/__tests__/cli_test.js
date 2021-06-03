@@ -9,6 +9,7 @@ import ErrorCodes from "../error-codes.js";
 import Logger from "../logger.js";
 import defaultArgs from "../default-args.js";
 import * as ParseGitIgnore from "parse-gitignore";
+import {version} from "../../package.json";
 
 jest.mock("minimist");
 jest.mock("../logger.js", () => {
@@ -52,29 +53,53 @@ describe("#run", () => {
         );
     });
 
-    it("should exit with success if help arg present", () => {
+    it.each(["help", "version"])(
+        "should exit with success if %s arg present",
+        (argName) => {
+            // Arrange
+            const fakeParsedArgs = {
+                ...defaultArgs,
+                [argName]: true,
+            };
+            jest.spyOn(CheckSync, "default");
+            jest.spyOn(minimist, "default").mockReturnValue(fakeParsedArgs);
+            const exitSpy = jest
+                .spyOn(process, "exit")
+                .mockImplementationOnce(() => {
+                    throw new Error("PRETEND PROCESS EXIT!");
+                });
+
+            // Act
+            const underTest = () => run(__filename);
+
+            // Assert
+            expect(underTest).toThrowError("PRETEND PROCESS EXIT!");
+            expect(exitSpy).toHaveBeenCalledWith(ErrorCodes.SUCCESS);
+        },
+    );
+
+    it("should log version if version arg present", () => {
         // Arrange
         const fakeParsedArgs = {
             ...defaultArgs,
-            help: true,
+            version: true,
         };
         jest.spyOn(CheckSync, "default");
         jest.spyOn(minimist, "default").mockReturnValue(fakeParsedArgs);
-        const exitSpy = jest
-            .spyOn(process, "exit")
-            .mockImplementationOnce(() => {
-                throw new Error("PRETEND PROCESS EXIT!");
-            });
+        jest.spyOn(process, "exit").mockImplementationOnce(() => {
+            throw new Error("PRETEND PROCESS EXIT!");
+        });
+        const logSpy = jest.spyOn(new Logger(null), "log");
 
         // Act
         const underTest = () => run(__filename);
 
         // Assert
-        expect(underTest).toThrowError("PRETEND PROCESS EXIT!");
-        expect(exitSpy).toHaveBeenCalledWith(ErrorCodes.SUCCESS);
+        expect(underTest).toThrow();
+        expect(logSpy).toHaveBeenCalledWith(version);
     });
 
-    it("should log help info help arg present", () => {
+    it("should log help info if help arg present", () => {
         // Arrange
         const fakeParsedArgs = {
             ...defaultArgs,
