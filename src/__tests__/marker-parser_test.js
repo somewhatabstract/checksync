@@ -253,13 +253,13 @@ describe("MarkerParser", () => {
                 "1284371662",
                 expect.objectContaining({
                     "1": {
-                        checksum: undefined,
+                        checksum: "",
                         declaration: "// sync-start:markerid1 target1",
                         file: "target1",
                     },
                 }),
                 "//",
-                undefined,
+                "",
             );
             expect(addMarker).toHaveBeenCalledWith(
                 "markerid2",
@@ -272,7 +272,7 @@ describe("MarkerParser", () => {
                     },
                 }),
                 "#",
-                undefined,
+                "",
             );
             expect(addMarker).toHaveBeenCalledWith(
                 "markerid3",

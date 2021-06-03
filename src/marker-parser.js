@@ -95,6 +95,13 @@ const targetsFromTrackedTargets = (trackedTargets: TrackedTargets): Targets => {
     return targets;
 };
 
+const TagDecodeGroup = Object.freeze({
+    tagId: 1,
+    checksum: 2,
+    targetFileName: 3,
+    commentEnd: 4,
+});
+
 /**
  * Parser to extract sync markers from lines of text.
  *
@@ -162,6 +169,8 @@ export default class MarkerParser {
          *     2: The checksum (optional)
          *     3: The target filename
          *     4: The optional comment end
+         *
+         * See `TagDecodeGroup` above.
          */
         this._startTagDecodeRegExp = new RegExp(
             `^([^\\s]+)\\s+([0-9]*)?\\s*(\\S*)(\\s+[^\\s\\w]*)?$`,
@@ -328,13 +337,16 @@ export default class MarkerParser {
                     lineNumber,
                 );
             } else {
+                // Turns out that an empty optional tag group, though typed as
+                // string can actually be undefined. So, for the optional bits
+                // we'll just make sure they get coerced to empty strings.
                 this._recordMarkerStart(
-                    startDecode[1],
-                    startDecode[3],
+                    startDecode[TagDecodeGroup.tagId],
+                    startDecode[TagDecodeGroup.targetFileName],
                     lineNumber,
-                    startDecode[2],
+                    startDecode[TagDecodeGroup.checksum] || "",
                     startMatch[1],
-                    startDecode[4],
+                    startDecode[TagDecodeGroup.commentEnd] || "",
                     content,
                 );
             }

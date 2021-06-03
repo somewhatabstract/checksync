@@ -45,6 +45,115 @@ describe("#validateAndFix", () => {
         expect(result).toBeTrue();
     });
 
+    it("should resolve false if the target of a tag does not exist", async () => {
+        // Arrange
+        const NullLogger = new Logger(null);
+        const fakeWriteStream = {
+            once: jest.fn(),
+            write: jest.fn(),
+            end: jest.fn(),
+        };
+        fakeWriteStream.once.mockReturnValue(fakeWriteStream);
+        fakeWriteStream.end.mockImplementation(() => {
+            invokeEvent(fakeWriteStream.once, "close");
+        });
+        const fakeInterface = {on: jest.fn()};
+        fakeInterface.on.mockReturnValue(fakeInterface);
+
+        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
+        jest.spyOn(fs, "createWriteStream").mockReturnValueOnce(
+            fakeWriteStream,
+        );
+        jest.spyOn(fs, "createReadStream").mockReturnValueOnce({});
+        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
+            fakeInterface,
+        );
+        jest.spyOn(RootRelativePath, "default").mockImplementation(
+            (t) => `ROOT_REL:${t}`,
+        );
+        jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([
+            {
+                markerID: "MARKER_ID",
+                sourceCommentStart: "//",
+                sourceCommentEnd: "",
+                sourceChecksum: "SRC_CHECKSUM",
+                sourceDeclaration: "BROKEN_DECLARATION",
+                sourceLine: "42",
+                targetFile: "fileb",
+                targetChecksum: undefined,
+                targetLine: undefined,
+            },
+        ]);
+        const readLineFromFile = (line: string) =>
+            invokeEvent(fakeInterface.on, "line", line);
+        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
+
+        // Act
+        const promise = validateAndFix(options, "filea", {}, NullLogger);
+        readLineFromFile("BROKEN_DECLARATION");
+        finishReadingFile();
+        const result = await promise;
+
+        // Assert
+        expect(result).toBeFalse();
+    });
+
+    it("should log error if the target of the tag does not exist", async () => {
+        // Arrange
+        const NullLogger = new Logger(null);
+        const fakeWriteStream = {
+            once: jest.fn(),
+            write: jest.fn(),
+            end: jest.fn(),
+        };
+        fakeWriteStream.once.mockReturnValue(fakeWriteStream);
+        fakeWriteStream.end.mockImplementation(() => {
+            invokeEvent(fakeWriteStream.once, "close");
+        });
+        const fakeInterface = {on: jest.fn()};
+        fakeInterface.on.mockReturnValue(fakeInterface);
+
+        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
+        jest.spyOn(fs, "createWriteStream").mockReturnValueOnce(
+            fakeWriteStream,
+        );
+        jest.spyOn(fs, "createReadStream").mockReturnValueOnce({});
+        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
+            fakeInterface,
+        );
+        jest.spyOn(RootRelativePath, "default").mockImplementation(
+            (t) => `ROOT_REL:${t}`,
+        );
+        jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([
+            {
+                markerID: "MARKER_ID",
+                sourceCommentStart: "//",
+                sourceCommentEnd: "",
+                sourceChecksum: "SRC_CHECKSUM",
+                sourceDeclaration: "BROKEN_DECLARATION",
+                sourceLine: "42",
+                targetFile: "fileb",
+                targetChecksum: undefined,
+                targetLine: undefined,
+            },
+        ]);
+        const readLineFromFile = (line: string) =>
+            invokeEvent(fakeInterface.on, "line", line);
+        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
+        const logSpy = jest.spyOn(NullLogger, "error");
+
+        // Act
+        const promise = validateAndFix(options, "filea", {}, NullLogger);
+        readLineFromFile("BROKEN_DECLARATION");
+        finishReadingFile();
+        await promise;
+
+        // Assert
+        expect(logSpy).toHaveBeenCalledWith(
+            "fileb does not contain a tag named 'MARKER_ID' that points to 'filea'",
+        );
+    });
+
     it("should return false if file contains broken edges", async () => {
         // Arrange
         const NullLogger = new Logger(null);

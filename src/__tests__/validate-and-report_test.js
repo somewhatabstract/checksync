@@ -17,7 +17,7 @@ describe("#validateAndReport", () => {
         rootMarker: null,
     };
 
-    it("should report violation", async () => {
+    it("should report checksum mismatch violation", async () => {
         // Arrange
         const NullLogger = new Logger();
         jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([
@@ -89,7 +89,57 @@ describe("#validateAndReport", () => {
         );
     });
 
-    it("should return true if file has no mismatches", async () => {
+    it("should return false if the target of the tag does not exist", async () => {
+        // Arrange
+        const NullLogger = new Logger();
+        jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([
+            {
+                markerID: "marker",
+                sourceChecksum: "1234",
+                sourceLine: "1",
+                targetChecksum: undefined,
+                targetFile: "filea",
+                targetLine: undefined,
+            },
+        ]);
+
+        // Act
+        const result = await validateAndReport(
+            options,
+            "fileb",
+            {},
+            NullLogger,
+        );
+
+        // Assert
+        expect(result).toBeFalse();
+    });
+
+    it("should log error if the target of the tag does not exist", async () => {
+        // Arrange
+        const NullLogger = new Logger();
+        jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([
+            {
+                markerID: "marker",
+                sourceChecksum: "1234",
+                sourceLine: "1",
+                targetChecksum: undefined,
+                targetFile: "filea",
+                targetLine: undefined,
+            },
+        ]);
+        const logSpy = jest.spyOn(NullLogger, "error");
+
+        // Act
+        await validateAndReport(options, "fileb", {}, NullLogger);
+
+        // Assert
+        expect(logSpy).toHaveBeenCalledWith(
+            "filea does not contain a tag named 'marker' that points to 'fileb'",
+        );
+    });
+
+    it("should return true if file has no mismatches or errors", async () => {
         // Arrange
         const NullLogger = new Logger();
         jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([]);

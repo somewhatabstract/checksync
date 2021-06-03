@@ -26,19 +26,32 @@ const formatEdgeFix = (
     rootMarker: ?string,
     brokenEdge: MarkerEdge,
 ): string => {
-    const startOfComment = brokenEdge.sourceCommentStart
-        ? brokenEdge.sourceDeclaration.indexOf(brokenEdge.sourceCommentStart)
+    const {
+        markerID,
+        targetLine,
+        targetFile,
+        targetChecksum,
+        sourceCommentStart,
+        sourceDeclaration,
+        sourceCommentEnd,
+    } = brokenEdge;
+
+    if (targetLine == null || targetChecksum == null) {
+        // This target doesn't exist. We don't "fix" bad references.
+        return sourceDeclaration;
+    }
+
+    const startOfComment = sourceCommentStart
+        ? sourceDeclaration.indexOf(sourceCommentStart)
         : -1;
     const indent =
         startOfComment > 0
-            ? brokenEdge.sourceDeclaration.substring(0, startOfComment)
+            ? sourceDeclaration.substring(0, startOfComment)
             : "";
-    return `${indent}${brokenEdge.sourceCommentStart} sync-start:${
-        brokenEdge.markerID
-    } ${brokenEdge.targetChecksum} ${rootRelativePath(
-        brokenEdge.targetFile,
+    return `${indent}${sourceCommentStart} sync-start:${markerID} ${targetChecksum} ${rootRelativePath(
+        targetFile,
         rootMarker,
-    )}${brokenEdge.sourceCommentEnd || ""}`;
+    )}${sourceCommentEnd || ""}`;
 };
 
 /**
@@ -67,6 +80,17 @@ const reportBrokenEdge = (
         targetChecksum,
     } = brokenEdge;
 
+    if (targetLine == null || targetChecksum == null) {
+        log.error(
+            `${Format.cwdFilePath(
+                targetFile,
+            )} does not contain a tag named '${markerID}' that points to '${cwdRelativePath(
+                sourceFile,
+            )}'`,
+        );
+        return;
+    }
+
     const NO_CHECKSUM = "No checksum";
     const sourceFileRef = Format.cwdFilePath(`${sourceFile}:${sourceLine}`);
     log.log(
@@ -89,7 +113,7 @@ const validateAndFix: FileProcessor = (
     return new Promise((resolve, reject) => {
         // First, we need to know what tags we're fixing.
         // Let's make a lookup of old declaration to new.
-        const brokenEdges = Array.from(generateMarkerEdges(file, cache, log));
+        const brokenEdges = Array.from(generateMarkerEdges(file, cache));
         if (brokenEdges.length === 0) {
             resolve(true);
             return;
