@@ -1,10 +1,8 @@
 // @flow
 import path from "path";
 import escapeRegExp from "lodash/escapeRegExp";
-import Format from "./format.js";
-import cwdRelativePath from "./cwd-relative-path.js";
 
-import type {FileInfo, ILog, Marker, MarkerCache} from "./types.js";
+import type {FileInfo, Marker, MarkerCache} from "./types.js";
 
 export type MarkerEdge = {
     /**
@@ -47,13 +45,15 @@ export type MarkerEdge = {
 
     /**
      * The line number in the target file where the marker begins.
+     * Null if the target file doesn't exist or doesn't have a return reference.
      */
-    +targetLine: string,
+    +targetLine: ?string,
 
     /**
      * The actual checksum of the target content.
+     * Null if the target file doesn't exist or doesn't have a return reference.
      */
-    +targetChecksum: string,
+    +targetChecksum: ?string,
 };
 
 /**
@@ -70,7 +70,6 @@ export type MarkerEdge = {
 export default function* generateMarkerEdges(
     file: string,
     cache: $ReadOnly<MarkerCache>,
-    log: ILog,
 ): Iterator<MarkerEdge> {
     const getTargetDetail = (targetMarker: ?Marker, aliases: Array<string>) => {
         if (targetMarker == null) {
@@ -78,9 +77,9 @@ export default function* generateMarkerEdges(
         }
         // We look for a target that points to our file or an alias of our
         // file - the file is considered its own alias.
-        const matchingTargets = Object.entries(
-            targetMarker.targets,
-        ).filter(([_, target]) => aliases.includes((target: any).file));
+        const matchingTargets = Object.entries(targetMarker.targets).filter(
+            ([_, target]) => aliases.includes((target: any).file),
+        );
         if (matchingTargets.length === 0) {
             return null;
         }
@@ -122,23 +121,9 @@ export default function* generateMarkerEdges(
                 targetInfo && targetInfo.markers[markerID];
 
             const targetDetails = getTargetDetail(targetMarker, aliases);
-            if (targetDetails == null) {
-                // If we got no details, then either the target file is not in
-                // the cache, does not contain the marker, or does not have
-                // a marker that points back to our source file, so we need
-                // to report that.
-                log.error(
-                    `${Format.cwdFilePath(
-                        targetRef.file,
-                    )} does not contain a tag named '${markerID}' that points to '${cwdRelativePath(
-                        file,
-                    )}'`,
-                );
-                continue;
-            }
 
             const sourceChecksum = targetRef.checksum;
-            const targetChecksum = targetDetails.checksum;
+            const targetChecksum = targetDetails?.checksum;
             if (sourceChecksum === targetChecksum) {
                 // If the checksum matches, we can skip this edge.
                 continue;
@@ -157,7 +142,7 @@ export default function* generateMarkerEdges(
                 sourceCommentEnd: sourceMarker.commentEnd,
                 sourceDeclaration: targetRef.declaration,
                 targetFile: normalizedTargetFile,
-                targetLine: targetDetails.line,
+                targetLine: targetDetails?.line,
                 targetChecksum,
             };
         }

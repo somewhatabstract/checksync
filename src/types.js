@@ -135,9 +135,7 @@ export type FileProcessor = (
     log: ILog,
 ) => Promise<boolean>;
 
-export type normalizePathFn = (
-    relativeFile: string,
-) => ?{
+export type normalizePathFn = (relativeFile: string) => ?{
     file: string,
     exists: boolean,
 };

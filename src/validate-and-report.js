@@ -20,10 +20,22 @@ const reportBrokenEdge = (
         targetChecksum,
     } = brokenEdge;
 
+    if (targetLine == null || targetChecksum == null) {
+        log.error(
+            `${Format.cwdFilePath(
+                targetFile,
+            )} does not contain a tag named '${markerID}' that points to '${cwdRelativePath(
+                sourceFile,
+            )}'`,
+        );
+        return;
+    }
+
     const NO_CHECKSUM = "No checksum";
     const sourceFileRef = Format.cwdFilePath(`${sourceFile}:${sourceLine}`);
-    const checksums = `${sourceChecksum || NO_CHECKSUM} != ${targetChecksum ||
-        NO_CHECKSUM}`;
+    const checksums = `${sourceChecksum || NO_CHECKSUM} != ${
+        targetChecksum || NO_CHECKSUM
+    }`;
     log.log(
         Format.violation(
             `${sourceFileRef} Looks like you changed the target content for sync-tag '${markerID}' in '${cwdRelativePath(
@@ -40,7 +52,7 @@ const validateAndReport: FileProcessor = (
     log: ILog,
 ): Promise<boolean> => {
     let fileNeedsFixing = false;
-    for (const brokenEdge of generateMarkerEdges(file, cache, log)) {
+    for (const brokenEdge of generateMarkerEdges(file, cache)) {
         fileNeedsFixing = true;
         reportBrokenEdge(file, brokenEdge, log);
     }
