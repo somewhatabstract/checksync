@@ -19,7 +19,6 @@ describe("#validateAndJson", () => {
 
     it("should report checksum mismatch violation", () => {
         // Arrange
-        const jsonItems = [];
         jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([
             {
                 markerID: "marker",
@@ -32,10 +31,10 @@ describe("#validateAndJson", () => {
         ]);
 
         // Act
-        validateAndJson(options, "fileb", {}, jsonItems);
+        const result = validateAndJson(options, "fileb", {});
 
         // Assert
-        expect(jsonItems).toMatchInlineSnapshot(`
+        expect(result).toMatchInlineSnapshot(`
             Array [
               Object {
                 "fix": "undefined sync-start:marker 4321 filea",
@@ -52,7 +51,6 @@ describe("#validateAndJson", () => {
 
     it("should report no checksum if source checksum absent", () => {
         // Arrange
-        const jsonItems = [];
         jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([
             {
                 markerID: "marker",
@@ -65,10 +63,10 @@ describe("#validateAndJson", () => {
         ]);
 
         // Act
-        validateAndJson(options, "fileb", {}, jsonItems);
+        const result = validateAndJson(options, "fileb", {});
 
         // Assert
-        expect(jsonItems).toMatchInlineSnapshot(`
+        expect(result).toMatchInlineSnapshot(`
             Array [
               Object {
                 "fix": "undefined sync-start:marker 1234 filea",
@@ -85,7 +83,6 @@ describe("#validateAndJson", () => {
 
     it("should report no checksum if target checksum absent", () => {
         // Arrange
-        const jsonItems = [];
         jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([
             {
                 markerID: "marker",
@@ -98,10 +95,10 @@ describe("#validateAndJson", () => {
         ]);
 
         // Act
-        validateAndJson(options, "fileb", {}, jsonItems);
+        const result = validateAndJson(options, "fileb", {});
 
         // Assert
-        expect(jsonItems).toMatchInlineSnapshot(`
+        expect(result).toMatchInlineSnapshot(`
             Array [
               Object {
                 "fix": "undefined sync-start:marker  filea",
@@ -118,7 +115,6 @@ describe("#validateAndJson", () => {
 
     it("should report an error if the target of the tag does not exist", () => {
         // Arrange
-        const jsonItems = [];
         jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([
             {
                 markerID: "marker",
@@ -131,10 +127,10 @@ describe("#validateAndJson", () => {
         ]);
 
         // Act
-        validateAndJson(options, "fileb", {}, jsonItems);
+        const result = validateAndJson(options, "fileb", {});
 
         // Assert
-        expect(jsonItems).toMatchInlineSnapshot(`
+        expect(result).toMatchInlineSnapshot(`
             Array [
               Object {
                 "message": "filea does not contain a tag named 'marker' that points to 'fileb",
@@ -148,7 +144,6 @@ describe("#validateAndJson", () => {
 
     it("should report an error if the target of the tag does not exist", () => {
         // Arrange
-        const jsonItems = [];
         jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([
             {
                 markerID: "marker",
@@ -161,10 +156,10 @@ describe("#validateAndJson", () => {
         ]);
 
         // Act
-        validateAndJson(options, "fileb", {}, jsonItems);
+        const result = validateAndJson(options, "fileb", {});
 
         // Assert
-        expect(jsonItems).toMatchInlineSnapshot(`
+        expect(result).toMatchInlineSnapshot(`
             Array [
               Object {
                 "message": "filea does not contain a tag named 'marker' that points to 'fileb",
@@ -178,13 +173,12 @@ describe("#validateAndJson", () => {
 
     it("should report nothing if file has no mismatches or errors", () => {
         // Arrange
-        const jsonItems = [];
         jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([]);
 
         // Act
-        validateAndJson(options, "fileb", {}, jsonItems);
+        const result = validateAndJson(options, "fileb", {});
 
         // Assert
-        expect(jsonItems).toMatchInlineSnapshot(`Array []`);
+        expect(result).toMatchInlineSnapshot(`Array []`);
     });
 });

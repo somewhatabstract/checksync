@@ -11,8 +11,7 @@ const reportBrokenEdge = (
         fix: string,
         edge: MarkerEdge,
     },
-    jsonItems: Array<JsonItem>,
-): void => {
+): JsonItem => {
     const {
         markerID,
         sourceLine,
@@ -23,7 +22,7 @@ const reportBrokenEdge = (
     } = mappedFix.edge;
 
     if (targetLine == null || targetChecksum == null) {
-        jsonItems.push({
+        return {
             type: "error",
             sourceFile: sourceFile,
             targetFile: targetFile,
@@ -34,8 +33,7 @@ const reportBrokenEdge = (
                 sourceFile,
                 options.rootMarker,
             )}`,
-        });
-        return;
+        };
     }
 
     const NO_CHECKSUM = "No checksum";
@@ -43,7 +41,8 @@ const reportBrokenEdge = (
         `${sourceFile}:${sourceLine}`,
         options.rootMarker,
     );
-    jsonItems.push({
+
+    return {
         type: "violation",
         sourceFile: rootRelativePath(sourceFile, options.rootMarker),
         sourceLine: sourceLine,
@@ -56,25 +55,26 @@ const reportBrokenEdge = (
             sourceChecksum || NO_CHECKSUM
         } to ${targetChecksum}.`,
         fix: mappedFix.fix,
-    });
+    };
 };
 
 const validateAndJson = (
     options: Options,
     file: string,
     cache: $ReadOnly<MarkerCache>,
-    jsonItems: Array<JsonItem>,
-): void => {
+): Array<JsonItem> => {
     const brokenEdgeMap = generateBrokenEdgeMap(options, file, cache);
 
     if (!brokenEdgeMap) {
-        return;
+        return [];
     }
 
+    const result: Array<JsonItem> = [];
     for (const line of Object.keys(brokenEdgeMap)) {
         const mappedFix = brokenEdgeMap[line];
-        reportBrokenEdge(options, file, mappedFix, jsonItems);
+        result.push(reportBrokenEdge(options, file, mappedFix));
     }
+    return result;
 };
 
 export default validateAndJson;
