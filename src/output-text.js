@@ -11,7 +11,7 @@ const outputText = (
     options: Options,
     violationFileNames: Array<string>,
     log: ILog,
-): ?ErrorCode => {
+): ErrorCode => {
     const {autoFix} = options;
 
     if (violationFileNames.length > 0) {
@@ -70,6 +70,14 @@ const outputText = (
             return ErrorCodes.DESYNCHRONIZED_BLOCKS;
         }
     }
+
+    if (log.errorsLogged) {
+        log.log("🛑  Errors occurred during processing");
+        return ErrorCodes.PARSE_ERRORS;
+    }
+
+    log.log("🎉  Everything is in sync!");
+    return ErrorCodes.SUCCESS;
 };
 
 export default outputText;

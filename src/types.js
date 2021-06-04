@@ -211,9 +211,9 @@ export type JsonItem =
     | {
           type: "violation",
           sourceFile: string,
-          sourceLine: string,
+          sourceLine: number,
           targetFile: string,
-          targetLine: string,
+          targetLine: number,
           message: string,
           fix?: string,
       }

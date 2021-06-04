@@ -61,6 +61,7 @@ export const run = (launchFilePath: string): void => {
             help: ["h", "?"],
             ignore: ["i"],
             ignoreFiles: ["ignore-files"],
+            json: ["j"],
             noIgnoreFile: ["no-ignore-file"],
             rootMarker: ["m", "root-marker"],
             updateTags: ["u", "update-tags"],

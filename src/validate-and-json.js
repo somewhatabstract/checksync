@@ -45,9 +45,9 @@ const reportBrokenEdge = (
     return {
         type: "violation",
         sourceFile: rootRelativePath(sourceFile, options.rootMarker),
-        sourceLine: sourceLine,
+        sourceLine: parseInt(sourceLine, 10),
         targetFile: rootRelativePath(targetFile, options.rootMarker),
-        targetLine: targetLine,
+        targetLine: parseInt(targetLine, 10),
         message: `${sourceFileRef} Updating checksum for sync-tag '${markerID}' referencing '${rootRelativePath(
             targetFile,
             options.rootMarker,

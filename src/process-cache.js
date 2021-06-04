@@ -1,6 +1,5 @@
 // @flow
 import cwdRelativePath from "./cwd-relative-path.js";
-import ErrorCodes from "./error-codes.js";
 import Format from "./format.js";
 import validateAndFix from "./validate-and-fix.js";
 import validateAndJson from "./validate-and-json.js";
@@ -58,17 +57,5 @@ export default async function processCache(
         return outputJson(log, jsonItems);
     }
 
-    const errorCode = outputText(options, violationFileNames, log);
-
-    if (errorCode) {
-        return errorCode;
-    }
-
-    if (log.errorsLogged) {
-        log.log("🛑  Errors occurred during processing");
-        return ErrorCodes.PARSE_ERRORS;
-    }
-
-    log.log("🎉  Everything is in sync!");
-    return ErrorCodes.SUCCESS;
+    return outputText(options, violationFileNames, log);
 }

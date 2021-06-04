@@ -66,6 +66,8 @@ Where:
                        Ignored if \`--no-ignore-file\` is present.
                        Defaults to \`.gitignore\`.
 
+    \`--json,-j\`          Output errors and violations as JSON.
+
     \`--no-ignore-file\`   When \`true\`, does not use any ignore file. This is
                        useful when the default value for \`--ignore-file\` is not
                        wanted.
