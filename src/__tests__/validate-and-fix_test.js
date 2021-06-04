@@ -45,7 +45,7 @@ describe("#validateAndFix", () => {
         expect(result).toBeTrue();
     });
 
-    it("should resolve false if the target of a tag does not exist", async () => {
+    it("should resolve false where target file does not reference source file", async () => {
         // Arrange
         const NullLogger = new Logger(null);
         const fakeWriteStream = {
