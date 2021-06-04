@@ -1,8 +1,9 @@
 // @flow
-import validateAndJson from "../validate-and-json.js";
+import {getValidateAndJson} from "../validate-and-json.js";
+import Logger from "../logger.js";
 import * as GenerateMarkerEdges from "../generate-marker-edges.js";
 
-import type {Options} from "../types.js";
+import type {Options, JsonItem} from "../types.js";
 
 jest.mock("../generate-marker-edges.js");
 
@@ -17,8 +18,10 @@ describe("#validateAndJson", () => {
         json: false,
     };
 
-    it("should report checksum mismatch violation", () => {
+    it("should report checksum mismatch violation", async () => {
         // Arrange
+        const jsonItems: Array<JsonItem> = [];
+        const NullLogger = new Logger();
         jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([
             {
                 markerID: "marker",
@@ -29,12 +32,13 @@ describe("#validateAndJson", () => {
                 targetLine: "1",
             },
         ]);
+        const validateAndJson = getValidateAndJson(jsonItems);
 
         // Act
-        const result = validateAndJson(options, "fileb", {});
+        await validateAndJson(options, "fileb", {}, NullLogger);
 
         // Assert
-        expect(result).toMatchInlineSnapshot(`
+        expect(jsonItems).toMatchInlineSnapshot(`
             Array [
               Object {
                 "fix": "undefined sync-start:marker 4321 filea",
@@ -49,8 +53,10 @@ describe("#validateAndJson", () => {
         `);
     });
 
-    it("should report no checksum if source checksum absent", () => {
+    it("should report no checksum if source checksum absent", async () => {
         // Arrange
+        const jsonItems: Array<JsonItem> = [];
+        const NullLogger = new Logger();
         jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([
             {
                 markerID: "marker",
@@ -61,12 +67,13 @@ describe("#validateAndJson", () => {
                 targetLine: "1",
             },
         ]);
+        const validateAndJson = getValidateAndJson(jsonItems);
 
         // Act
-        const result = validateAndJson(options, "fileb", {});
+        await validateAndJson(options, "fileb", {}, NullLogger);
 
         // Assert
-        expect(result).toMatchInlineSnapshot(`
+        expect(jsonItems).toMatchInlineSnapshot(`
             Array [
               Object {
                 "fix": "undefined sync-start:marker 1234 filea",
@@ -81,8 +88,10 @@ describe("#validateAndJson", () => {
         `);
     });
 
-    it("should report no checksum if target checksum absent", () => {
+    it("should report no checksum if target checksum absent", async () => {
         // Arrange
+        const jsonItems: Array<JsonItem> = [];
+        const NullLogger = new Logger();
         jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([
             {
                 markerID: "marker",
@@ -93,12 +102,13 @@ describe("#validateAndJson", () => {
                 targetLine: "1",
             },
         ]);
+        const validateAndJson = getValidateAndJson(jsonItems);
 
         // Act
-        const result = validateAndJson(options, "fileb", {});
+        await validateAndJson(options, "fileb", {}, NullLogger);
 
         // Assert
-        expect(result).toMatchInlineSnapshot(`
+        expect(jsonItems).toMatchInlineSnapshot(`
             Array [
               Object {
                 "fix": "undefined sync-start:marker  filea",
@@ -113,8 +123,10 @@ describe("#validateAndJson", () => {
         `);
     });
 
-    it("should report an error if the target of the tag does not exist", () => {
+    it("should report an error if the target of the tag does not exist", async () => {
         // Arrange
+        const jsonItems: Array<JsonItem> = [];
+        const NullLogger = new Logger();
         jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([
             {
                 markerID: "marker",
@@ -125,12 +137,13 @@ describe("#validateAndJson", () => {
                 targetLine: undefined,
             },
         ]);
+        const validateAndJson = getValidateAndJson(jsonItems);
 
         // Act
-        const result = validateAndJson(options, "fileb", {});
+        await validateAndJson(options, "fileb", {}, NullLogger);
 
         // Assert
-        expect(result).toMatchInlineSnapshot(`
+        expect(jsonItems).toMatchInlineSnapshot(`
             Array [
               Object {
                 "message": "filea does not contain a tag named 'marker' that points to 'fileb",
@@ -142,8 +155,10 @@ describe("#validateAndJson", () => {
         `);
     });
 
-    it("should report an error if the target of the tag does not exist", () => {
+    it("should report an error if the target of the tag does not exist", async () => {
         // Arrange
+        const jsonItems: Array<JsonItem> = [];
+        const NullLogger = new Logger();
         jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([
             {
                 markerID: "marker",
@@ -154,12 +169,13 @@ describe("#validateAndJson", () => {
                 targetLine: undefined,
             },
         ]);
+        const validateAndJson = getValidateAndJson(jsonItems);
 
         // Act
-        const result = validateAndJson(options, "fileb", {});
+        await validateAndJson(options, "fileb", {}, NullLogger);
 
         // Assert
-        expect(result).toMatchInlineSnapshot(`
+        expect(jsonItems).toMatchInlineSnapshot(`
             Array [
               Object {
                 "message": "filea does not contain a tag named 'marker' that points to 'fileb",
@@ -171,14 +187,52 @@ describe("#validateAndJson", () => {
         `);
     });
 
-    it("should report nothing if file has no mismatches or errors", () => {
+    it("should report nothing if file has no mismatches or errors", async () => {
         // Arrange
+        const jsonItems: Array<JsonItem> = [];
+        const NullLogger = new Logger();
         jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([]);
+        const validateAndJson = getValidateAndJson(jsonItems);
 
         // Act
-        const result = validateAndJson(options, "fileb", {});
+        await validateAndJson(options, "fileb", {}, NullLogger);
 
         // Assert
-        expect(result).toMatchInlineSnapshot(`Array []`);
+        expect(jsonItems).toEqual([]);
+    });
+
+    it("should return true if file has no mismatches or errors", async () => {
+        // Arrange
+        const NullLogger = new Logger();
+        jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([]);
+        const validateAndJson = getValidateAndJson([]);
+
+        // Act
+        const result = await validateAndJson(options, "fileb", {}, NullLogger);
+
+        // Assert
+        expect(result).toBeTrue();
+    });
+
+    it("should return false if file has mismatches", async () => {
+        // Arrange
+        const NullLogger = new Logger();
+        jest.spyOn(GenerateMarkerEdges, "default").mockReturnValue([
+            {
+                markerID: "marker",
+                sourceChecksum: "1234",
+                sourceLine: "1",
+                targetChecksum: "1235",
+                targetFile: "filea",
+                targetLine: "1",
+            },
+        ]);
+        const validateAndJson = getValidateAndJson([]);
+
+        // Act
+        const result = await validateAndJson(options, "fileb", {}, NullLogger);
+
+        // Assert
+        expect(result).toBeFalse();
     });
 });

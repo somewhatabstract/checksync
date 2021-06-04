@@ -5,12 +5,13 @@ import ErrorCodes from "./error-codes.js";
 import defaultArgs from "./default-args.js";
 
 import type {ErrorCode} from "./error-codes.js";
-import type {ILog, Options} from "./types";
+import type {ILog, Options, JsonItem} from "./types";
 
 const outputText = (
     options: Options,
-    violationFileNames: Array<string>,
     log: ILog,
+    jsonItems: Array<JsonItem>,
+    violationFileNames: Array<string>,
 ): ErrorCode => {
     const {autoFix} = options;
 

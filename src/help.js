@@ -91,6 +91,8 @@ Where:
                        option is provided. This is useful when determining if
                        provided glob patterns are applying as expected, for
                        example.
+
+    \`--version\`          Outputs the version and exits.
 `;
 
 export default function logHelp(log: ILog) {

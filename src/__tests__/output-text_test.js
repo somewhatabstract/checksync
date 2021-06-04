@@ -23,7 +23,7 @@ describe("#outputText", () => {
             };
 
             // Act
-            const result = outputText(options, [], NullLogger);
+            const result = outputText(options, NullLogger, [], []);
 
             // Assert
             expect(result).toBe(ErrorCodes.SUCCESS);
@@ -43,7 +43,12 @@ describe("#outputText", () => {
             };
 
             // Act
-            const result = outputText(options, ["filea", "fileb"], NullLogger);
+            const result = outputText(
+                options,
+                NullLogger,
+                [],
+                ["filea", "fileb"],
+            );
 
             // Assert
             expect(result).toBe(ErrorCodes.DESYNCHRONIZED_BLOCKS);
@@ -64,7 +69,7 @@ describe("#outputText", () => {
             };
 
             // Act
-            outputText(options, ["filea", "fileb"], NullLogger);
+            outputText(options, NullLogger, [], ["filea", "fileb"]);
 
             // Assert
             expect(groupSpy).toHaveBeenCalledWith(
@@ -91,7 +96,7 @@ describe("#outputText", () => {
 
             // Act
             NullLogger.error("This was an error during parsing!");
-            outputText(options, ["filea", "fileb"], NullLogger);
+            outputText(options, NullLogger, [], ["filea", "fileb"]);
 
             // Assert
             expect(groupSpy).toHaveBeenCalledWith(
@@ -118,7 +123,7 @@ describe("#outputText", () => {
             };
 
             // Act
-            const result = outputText(options, [], NullLogger);
+            const result = outputText(options, NullLogger, [], []);
 
             // Assert
             expect(result).toBe(ErrorCodes.SUCCESS);
@@ -138,7 +143,12 @@ describe("#outputText", () => {
             };
 
             // Act
-            const result = outputText(options, ["filea", "fileb"], NullLogger);
+            const result = outputText(
+                options,
+                NullLogger,
+                [],
+                ["filea", "fileb"],
+            );
 
             // Assert
             expect(result).toBe(ErrorCodes.SUCCESS);
@@ -159,7 +169,7 @@ describe("#outputText", () => {
             };
 
             // Act
-            outputText(options, ["filea", "fileb"], NullLogger);
+            outputText(options, NullLogger, [], ["filea", "fileb"]);
 
             // Assert
             expect(logSpy).toHaveBeenCalledWith("Fixed 2 file(s)");
@@ -181,7 +191,7 @@ describe("#outputText", () => {
             };
 
             // Act
-            outputText(options, ["filea", "fileb"], NullLogger);
+            outputText(options, NullLogger, [], ["filea", "fileb"]);
 
             // Assert
             expect(groupSpy).toHaveBeenCalledWith(
@@ -207,7 +217,7 @@ describe("#outputText", () => {
             };
 
             // Act
-            outputText(options, ["filea", "fileb"], NullLogger);
+            outputText(options, NullLogger, [], ["filea", "fileb"]);
 
             // Assert
             expect(logSpy).toHaveBeenCalledWith(

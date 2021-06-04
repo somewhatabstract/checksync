@@ -89,5 +89,7 @@ Where:
                        option is provided. This is useful when determining if
                        provided glob patterns are applying as expected, for
                        example.
+
+    [1m[33m--version[39m[22m          Outputs the version and exits.
 "
 `;

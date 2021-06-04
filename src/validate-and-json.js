@@ -2,7 +2,13 @@
 import rootRelativePath from "./root-relative-path.js";
 import generateBrokenEdgeMap from "./generate-broken-edge-map.js";
 
-import type {MarkerCache, Options, JsonItem, MarkerEdge} from "./types.js";
+import type {
+    MarkerCache,
+    Options,
+    JsonItem,
+    MarkerEdge,
+    FileProcessor,
+} from "./types.js";
 
 const reportBrokenEdge = (
     options: Options,
@@ -58,23 +64,23 @@ const reportBrokenEdge = (
     };
 };
 
-const validateAndJson = (
-    options: Options,
-    file: string,
-    cache: $ReadOnly<MarkerCache>,
-): Array<JsonItem> => {
-    const brokenEdgeMap = generateBrokenEdgeMap(options, file, cache);
+export const getValidateAndJson =
+    (items: Array<JsonItem>): FileProcessor =>
+    async (
+        options: Options,
+        file: string,
+        cache: $ReadOnly<MarkerCache>,
+    ): Promise<boolean> => {
+        const brokenEdgeMap = generateBrokenEdgeMap(options, file, cache);
 
-    if (!brokenEdgeMap) {
-        return [];
-    }
+        if (!brokenEdgeMap) {
+            return true;
+        }
 
-    const result: Array<JsonItem> = [];
-    for (const line of Object.keys(brokenEdgeMap)) {
-        const mappedFix = brokenEdgeMap[line];
-        result.push(reportBrokenEdge(options, file, mappedFix));
-    }
-    return result;
-};
+        for (const line of Object.keys(brokenEdgeMap)) {
+            const mappedFix = brokenEdgeMap[line];
+            items.push(reportBrokenEdge(options, file, mappedFix));
+        }
 
-export default validateAndJson;
+        return items.length === 0;
+    };

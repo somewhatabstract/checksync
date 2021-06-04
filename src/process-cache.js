@@ -1,49 +1,27 @@
 // @flow
 import cwdRelativePath from "./cwd-relative-path.js";
 import Format from "./format.js";
-import validateAndFix from "./validate-and-fix.js";
-import validateAndJson from "./validate-and-json.js";
-import validateAndReport from "./validate-and-report.js";
-import outputJson from "./output-json.js";
-import outputText from "./output-text.js";
+import getOutput from "./get-output.js";
+import getValidator from "./get-validator.js";
 
 import type {ErrorCode} from "./error-codes.js";
 import type {MarkerCache, ILog, Options, JsonItem} from "./types";
-
-type Validator = (
-    options: Options,
-    file: string,
-    cache: $ReadOnly<MarkerCache>,
-) => Promise<void>;
 
 export default async function processCache(
     options: Options,
     cache: $ReadOnly<MarkerCache>,
     log: ILog,
 ): Promise<ErrorCode> {
-    const {autoFix, json} = options;
     const violationFileNames: Array<string> = [];
     const jsonItems: Array<JsonItem> = [];
 
-    const getValidator = (): Validator => {
-        if (options.json) {
-            return async (options, file, cache) => {
-                jsonItems.push(...validateAndJson(options, file, cache));
-            };
-        }
-        const fileValidator = autoFix ? validateAndFix : validateAndReport;
-        return async (options, file, cache) => {
-            if (!(await fileValidator(options, file, cache, log))) {
-                violationFileNames.push(file);
-            }
-        };
-    };
-
-    const validator = getValidator();
+    const validator = getValidator(options, jsonItems);
 
     for (const file of Object.keys(cache)) {
         try {
-            await validator(options, file, cache);
+            if (!(await validator(options, file, cache, log))) {
+                violationFileNames.push(file);
+            }
         } catch (e) {
             log.error(
                 `${Format.cwdFilePath(
@@ -53,9 +31,7 @@ export default async function processCache(
         }
     }
 
-    if (json) {
-        return outputJson(log, jsonItems);
-    }
+    const output = getOutput(options);
 
-    return outputText(options, violationFileNames, log);
+    return output(options, log, jsonItems, violationFileNames);
 }

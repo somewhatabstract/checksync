@@ -4,9 +4,14 @@ import ErrorCodes from "./error-codes.js";
 import {version} from "../package.json";
 
 import type {ErrorCode} from "./error-codes.js";
-import type {ILog, JsonItem} from "./types";
+import type {ILog, JsonItem, Options} from "./types";
 
-const outputJson = (log: ILog, jsonItems: Array<JsonItem>): ErrorCode => {
+const outputJson = (
+    options: Options,
+    log: ILog,
+    jsonItems: Array<JsonItem>,
+    violationFileNames: Array<string>,
+): ErrorCode => {
     log.log(
         JSON.stringify(
             {
