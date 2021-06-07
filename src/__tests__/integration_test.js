@@ -90,4 +90,29 @@ describe("Integration Tests", () => {
             expect(result).toMatchSnapshot();
         },
     );
+
+    it.each(exampleGlobs)(
+        "should report example %s to match snapshot with json",
+        async (name, glob) => {
+            // Arrange
+            const stringLogger = new StringLogger();
+
+            // Act
+            await checkSync(
+                {
+                    includeGlobs: [glob],
+                    autoFix: false,
+                    comments: ["//", "#", "{/*"],
+                    dryRun: false,
+                    excludeGlobs: ["**/excluded/**"],
+                    json: true,
+                },
+                stringLogger,
+            );
+            const result = stringLogger.getLog();
+
+            // Assert
+            expect(result).toMatchSnapshot();
+        },
+    );
 });
