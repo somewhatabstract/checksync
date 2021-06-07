@@ -27,18 +27,15 @@ const reportBrokenEdge = (
         targetChecksum,
     } = mappedFix.edge;
 
+    const relSourceFile = rootRelativePath(sourceFile, options.rootMarker);
+    const relTargetFile = rootRelativePath(targetFile, options.rootMarker);
+
     if (targetLine == null || targetChecksum == null) {
         return {
             type: "error",
-            sourceFile: sourceFile,
-            targetFile: targetFile,
-            message: `${rootRelativePath(
-                targetFile,
-                options.rootMarker,
-            )} does not contain a tag named '${markerID}' that points to '${rootRelativePath(
-                sourceFile,
-                options.rootMarker,
-            )}`,
+            sourceFile: relSourceFile,
+            targetFile: relTargetFile,
+            message: `${relTargetFile} does not contain a tag named '${markerID}' that points to '${relSourceFile}`,
         };
     }
 
@@ -50,14 +47,11 @@ const reportBrokenEdge = (
 
     return {
         type: "violation",
-        sourceFile: rootRelativePath(sourceFile, options.rootMarker),
+        sourceFile: relSourceFile,
         sourceLine: parseInt(sourceLine, 10),
-        targetFile: rootRelativePath(targetFile, options.rootMarker),
+        targetFile: relTargetFile,
         targetLine: parseInt(targetLine, 10),
-        message: `${sourceFileRef} Updating checksum for sync-tag '${markerID}' referencing '${rootRelativePath(
-            targetFile,
-            options.rootMarker,
-        )}:${targetLine}' from ${
+        message: `${sourceFileRef} Updating checksum for sync-tag '${markerID}' referencing '${relTargetFile}:${targetLine}' from ${
             sourceChecksum || NO_CHECKSUM
         } to ${targetChecksum}.`,
         fix: mappedFix.fix,

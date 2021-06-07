@@ -374,8 +374,8 @@ exports[
     \\"items\\": [
         {
             \\"type\\": \\"error\\",
-            \\"sourceFile\\": \\"/Users/kevinbarabash/khan/checksync/__examples__/no_back_reference/file1.js\\",
-            \\"targetFile\\": \\"/Users/kevinbarabash/khan/checksync/__examples__/no_back_reference/file2.js\\",
+            \\"sourceFile\\": \\"__examples__/no_back_reference/file1.js\\",
+            \\"targetFile\\": \\"__examples__/no_back_reference/file2.js\\",
             \\"message\\": \\"__examples__/no_back_reference/file2.js does not contain a tag named 'markerID' that points to '__examples__/no_back_reference/file1.js\\"
         }
     ]
@@ -509,8 +509,8 @@ exports[
     \\"items\\": [
         {
             \\"type\\": \\"error\\",
-            \\"sourceFile\\": \\"/Users/kevinbarabash/khan/checksync/__examples__/unterminated_marker/example_two-a.js\\",
-            \\"targetFile\\": \\"/Users/kevinbarabash/khan/checksync/__examples__/unterminated_marker/example_two-b.py\\",
+            \\"sourceFile\\": \\"__examples__/unterminated_marker/example_two-a.js\\",
+            \\"targetFile\\": \\"__examples__/unterminated_marker/example_two-b.py\\",
             \\"message\\": \\"__examples__/unterminated_marker/example_two-b.py does not contain a tag named 'example_two' that points to '__examples__/unterminated_marker/example_two-a.js\\"
         }
     ]
