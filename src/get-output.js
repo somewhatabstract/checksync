@@ -3,15 +3,7 @@
 import outputJson from "./output-json.js";
 import outputText from "./output-text.js";
 
-import type {ErrorCode} from "./error-codes.js";
-import type {Options, ILog, JsonItem} from "./types.js";
-
-type OutputFn = (
-    options: Options,
-    log: ILog,
-    jsonItems: Array<JsonItem>,
-    violationFileNames: Array<string>,
-) => ErrorCode;
+import type {Options, OutputFn} from "./types.js";
 
 const getOutput = (options: Options): OutputFn => {
     const {json} = options;

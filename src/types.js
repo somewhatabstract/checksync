@@ -1,4 +1,5 @@
 // @flow
+import type {ErrorCode} from "./error-codes.js";
 
 // const exampleMarkersA = {
 //     filea: {
@@ -223,3 +224,10 @@ export type JsonItem =
           targetFile: string,
           message: string,
       };
+
+export type OutputFn = (
+    options: Options,
+    log: ILog,
+    jsonItems: Array<JsonItem>,
+    violationFileNames: Array<string>,
+) => ErrorCode;
