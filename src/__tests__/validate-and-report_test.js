@@ -15,6 +15,7 @@ describe("#validateAndReport", () => {
         autoFix: false,
         comments: [],
         rootMarker: null,
+        json: false,
     };
 
     it("should report checksum mismatch violation", async () => {

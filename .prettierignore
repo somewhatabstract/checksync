@@ -9,3 +9,4 @@ dist
 __examples__
 .flowconfig
 .prettierignore
+yarn.lock

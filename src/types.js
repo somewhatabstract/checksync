@@ -1,4 +1,5 @@
 // @flow
+import type {ErrorCode} from "./error-codes.js";
 
 // const exampleMarkersA = {
 //     filea: {
@@ -106,6 +107,58 @@ export type Markers = {
     ...
 };
 
+export type MarkerEdge = {
+    /**
+     * The marker identifier.
+     */
+    +markerID: string,
+
+    /**
+     * The line number in the source file where the marker is declared.
+     */
+    +sourceLine: string,
+
+    /**
+     * The checksum that the source file has recorded for the target content.
+     */
+    +sourceChecksum: string,
+
+    /**
+     * The full tag declaration of the marker target in the source file.
+     */
+    +sourceDeclaration: string,
+
+    /**
+     * The start of the tag comment that the source file uses.
+     */
+    +sourceCommentStart: string,
+
+    /**
+     * The end of the tag comment that the source file uses.
+     */
+    +sourceCommentEnd: ?string,
+
+    /**
+     * The tag path to the target file of the marker.
+     *
+     * This is normalized to use the / character as a path separator,
+     * regardless of OS.
+     */
+    +targetFile: string,
+
+    /**
+     * The line number in the target file where the marker begins.
+     * Null if the target file doesn't exist or doesn't have a return reference.
+     */
+    +targetLine: ?string,
+
+    /**
+     * The actual checksum of the target content.
+     * Null if the target file doesn't exist or doesn't have a return reference.
+     */
+    +targetChecksum: ?string,
+};
+
 export type FileInfo = {
     aliases: Array<string>,
     markers: Markers,
@@ -144,6 +197,7 @@ export type Options = {
     includeGlobs: Array<string>,
     excludeGlobs: Array<string>,
     autoFix: boolean,
+    json: boolean,
     comments: Array<string>,
     dryRun: boolean,
     rootMarker?: ?string,
@@ -153,3 +207,27 @@ export type NormalizedFileInfo = {
     file: string,
     exists: boolean,
 };
+
+export type JsonItem =
+    | {
+          type: "violation",
+          sourceFile: string,
+          sourceLine: number,
+          targetFile: string,
+          targetLine: number,
+          message: string,
+          fix?: string,
+      }
+    | {
+          type: "error",
+          sourceFile: string,
+          targetFile: string,
+          message: string,
+      };
+
+export type OutputFn = (
+    options: Options,
+    log: ILog,
+    jsonItems: Array<JsonItem>,
+    violationFileNames: Array<string>,
+) => ErrorCode;

@@ -8,8 +8,7 @@ import validateAndFix from "../validate-and-fix.js";
 import * as GenerateMarkerEdges from "../generate-marker-edges.js";
 import * as RootRelativePath from "../root-relative-path.js";
 
-import type {MarkerEdge} from "../generate-marker-edges.js";
-import type {Options} from "../types.js";
+import type {Options, MarkerEdge} from "../types.js";
 
 const invokeEvent = (mocked: $Call<typeof jest.fn>, event: string, ...args) => {
     const eventHandlerCall = mocked.mock.calls.find(
@@ -31,6 +30,7 @@ describe("#validateAndFix", () => {
         autoFix: true,
         comments: [],
         rootMarker: null,
+        json: false,
     };
 
     it("should resolve true if there are no broken edges in file", async () => {

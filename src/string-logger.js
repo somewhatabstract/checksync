@@ -2,6 +2,7 @@
 import path from "path";
 import escapeRegExp from "lodash/escapeRegExp";
 import Logger from "./logger.js";
+import {getPathSeparator} from "./get-path-separator.js";
 
 /**
  * Rather than directly use this implementation, we wrap it with the main
@@ -16,11 +17,23 @@ class StringLoggerInternal {
     _groupIndent: number = 0;
 
     _log = (...args: Array<string>) => {
+        const sep = getPathSeparator();
         /**
          * We want to normalize the string in case it contains filepaths.
          * This ensures that snapshots are standardized across platforms.
          */
-        const regex = new RegExp(escapeRegExp(path.sep), "g");
+        const regex =
+            /**
+             * If the path separator is a backslash we create a regex that
+             * recognizes a double backslash or a single backslash.  This is
+             * to handle the escaping from JSON.stringify() in output-json.js.
+             */
+            sep === "\\"
+                ? new RegExp(
+                      `${escapeRegExp(sep + sep)}|${escapeRegExp(sep)}`,
+                      "g",
+                  )
+                : new RegExp(escapeRegExp(path.sep), "g");
         const normalize = (snippet: string): string =>
             snippet.replace(regex, "/");
         this._buffer.push(

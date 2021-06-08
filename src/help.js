@@ -66,6 +66,8 @@ Where:
                        Ignored if \`--no-ignore-file\` is present.
                        Defaults to \`.gitignore\`.
 
+    \`--json,-j\`          Output errors and violations as JSON.
+
     \`--no-ignore-file\`   When \`true\`, does not use any ignore file. This is
                        useful when the default value for \`--ignore-file\` is not
                        wanted.
@@ -89,6 +91,8 @@ Where:
                        option is provided. This is useful when determining if
                        provided glob patterns are applying as expected, for
                        example.
+
+    \`--version\`          Outputs the version and exits.
 `;
 
 export default function logHelp(log: ILog) {

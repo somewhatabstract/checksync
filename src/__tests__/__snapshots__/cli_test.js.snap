@@ -64,6 +64,8 @@ Where:
                        Ignored if [1m[33m--no-ignore-file[39m[22m is present.
                        Defaults to [1m[33m.gitignore[39m[22m.
 
+    [1m[33m--json,-j[39m[22m          Output errors and violations as JSON.
+
     [1m[33m--no-ignore-file[39m[22m   When [1m[33mtrue[39m[22m, does not use any ignore file. This is
                        useful when the default value for [1m[33m--ignore-file[39m[22m is not
                        wanted.
@@ -87,5 +89,7 @@ Where:
                        option is provided. This is useful when determining if
                        provided glob patterns are applying as expected, for
                        example.
+
+    [1m[33m--version[39m[22m          Outputs the version and exits.
 "
 `;
