@@ -40,10 +40,6 @@ const reportBrokenEdge = (
     }
 
     const NO_CHECKSUM = "No checksum";
-    const sourceFileRef = rootRelativePath(
-        `${sourceFile}:${sourceLine}`,
-        options.rootMarker,
-    );
 
     return {
         type: "violation",
@@ -51,7 +47,7 @@ const reportBrokenEdge = (
         sourceLine: parseInt(sourceLine, 10),
         targetFile: relTargetFile,
         targetLine: parseInt(targetLine, 10),
-        message: `${sourceFileRef} Updating checksum for sync-tag '${markerID}' referencing '${relTargetFile}:${targetLine}' from ${
+        message: `${relSourceFile}:${sourceLine} Updating checksum for sync-tag '${markerID}' referencing '${relTargetFile}:${targetLine}' from ${
             sourceChecksum || NO_CHECKSUM
         } to ${targetChecksum}.`,
         fix: mappedFix.fix,
