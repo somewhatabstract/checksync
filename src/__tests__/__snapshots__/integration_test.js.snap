@@ -33,7 +33,7 @@ exports[
     `Integration Tests should report example checksums_need_updating to match snapshot with json 1`
 ] = `
 "{
-    \\"version\\": \\"2.2.3\\",
+    \\"version\\": \\"2.3.0\\",
     \\"launchString\\": \\"checksync\\",
     \\"items\\": [
         {
@@ -105,7 +105,7 @@ exports[
 ] = `
 " ERROR  __examples__/content_after_start/c.js:5 Sync-start for 'content_after_start' found after content started
 {
-    \\"version\\": \\"2.2.3\\",
+    \\"version\\": \\"2.3.0\\",
     \\"launchString\\": \\"checksync\\",
     \\"items\\": [
         {
@@ -163,7 +163,7 @@ exports[
     `Integration Tests should report example correct_checksums to match snapshot with json 1`
 ] = `
 "{
-    \\"version\\": \\"2.2.3\\",
+    \\"version\\": \\"2.3.0\\",
     \\"launchString\\": \\"checksync\\",
     \\"items\\": []
 }"
@@ -190,7 +190,7 @@ exports[
 ] = `
 " ERROR  __examples__/directory_target/example.js:3 Sync-start for 'directory_target' points to '__examples__/directory_target/a_directory', which does not exist or is a directory
 {
-    \\"version\\": \\"2.2.3\\",
+    \\"version\\": \\"2.3.0\\",
     \\"launchString\\": \\"checksync\\",
     \\"items\\": []
 }"
@@ -216,7 +216,7 @@ exports[
 ] = `
 " WARNING  __examples__/end_with_no_start/example.js:5 Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start
 {
-    \\"version\\": \\"2.2.3\\",
+    \\"version\\": \\"2.3.0\\",
     \\"launchString\\": \\"checksync\\",
     \\"items\\": []
 }"
@@ -267,7 +267,7 @@ exports[
  ERROR  __examples__/malformed_end/malformed_noid.js:7 Malformed sync-end: format should be 'sync-end:<label>'
  ERROR  __examples__/malformed_end/malformed_noid.js:4 Sync-start 'tagid' has no corresponding sync-end
 {
-    \\"version\\": \\"2.2.3\\",
+    \\"version\\": \\"2.3.0\\",
     \\"launchString\\": \\"checksync\\",
     \\"items\\": []
 }"
@@ -309,7 +309,7 @@ exports[
  ERROR  __examples__/malformed_start/malformed_onlytagid.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
  WARNING  __examples__/malformed_start/malformed_onlytagid.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
 {
-    \\"version\\": \\"2.2.3\\",
+    \\"version\\": \\"2.3.0\\",
     \\"launchString\\": \\"checksync\\",
     \\"items\\": []
 }"
@@ -336,7 +336,7 @@ exports[
 ] = `
 " ERROR  __examples__/missing_target/example.js:3 Sync-start for 'missing_target' points to '__examples__/missing_target/missing_target.py', which does not exist or is a directory
 {
-    \\"version\\": \\"2.2.3\\",
+    \\"version\\": \\"2.3.0\\",
     \\"launchString\\": \\"checksync\\",
     \\"items\\": []
 }"
@@ -369,7 +369,7 @@ exports[
     `Integration Tests should report example no_back_reference to match snapshot with json 1`
 ] = `
 "{
-    \\"version\\": \\"2.2.3\\",
+    \\"version\\": \\"2.3.0\\",
     \\"launchString\\": \\"checksync\\",
     \\"items\\": [
         {
@@ -411,7 +411,7 @@ exports[
     `Integration Tests should report example no_checksums to match snapshot with json 1`
 ] = `
 "{
-    \\"version\\": \\"2.2.3\\",
+    \\"version\\": \\"2.3.0\\",
     \\"launchString\\": \\"checksync\\",
     \\"items\\": [
         {
@@ -462,7 +462,7 @@ exports[
 ] = `
 " ERROR  __examples__/no_self_reference/example.js:3 Sync-tag 'example_three' cannot target itself
 {
-    \\"version\\": \\"2.2.3\\",
+    \\"version\\": \\"2.3.0\\",
     \\"launchString\\": \\"checksync\\",
     \\"items\\": [
         {
@@ -504,7 +504,7 @@ exports[
 ] = `
 " ERROR  __examples__/unterminated_marker/example_two-b.py:3 Sync-start 'example_two' has no corresponding sync-end
 {
-    \\"version\\": \\"2.2.3\\",
+    \\"version\\": \\"2.3.0\\",
     \\"launchString\\": \\"checksync\\",
     \\"items\\": [
         {
