@@ -5,9 +5,8 @@
 import fs from "fs";
 import parseFile from "./parse-file.js";
 import cloneAsUnfixable from "./clone-as-unfixable.js";
-import Format from "./format.js";
 
-import type {ILog, FileInfo, MarkerCache, Options} from "./types.js";
+import type {FileInfo, MarkerCache, Options} from "./types.js";
 
 /**
  * Generate a marker cache from the given files.
@@ -20,7 +19,6 @@ import type {ILog, FileInfo, MarkerCache, Options} from "./types.js";
 export default async function getMarkersFromFiles(
     options: Options,
     files: Array<string>,
-    log: ILog,
 ): Promise<MarkerCache> {
     const cacheData: MarkerCache = {};
     const referencedFiles: Array<string> = [];
@@ -53,12 +51,7 @@ export default async function getMarkersFromFiles(
                     continue;
                 }
 
-                const parseResult = await parseFile(
-                    options,
-                    file,
-                    fixable,
-                    log,
-                );
+                const parseResult = await parseFile(options, file, fixable);
                 setCacheData(
                     file,
                     parseResult.markers
@@ -91,10 +84,9 @@ export default async function getMarkersFromFiles(
                     aliases: [],
                     error: {
                         code: "could-not-parse",
-                        message: e.message,
+                        message: `Could not parse file: ${e.message}`,
                     },
                 });
-                log.error(`Cannot parse file: ${Format.cwdFilePath(file)}`);
             }
         }
     };

@@ -10,7 +10,7 @@ const Format = {
     info: (text: string): string => `${chalk.black.bgBlue(" INFO ")} ${text}`,
     warn: (text: string): string =>
         `${chalk.bold.black.bgYellow(" WARNING ")} ${text}`,
-    violation: (text: string): string =>
+    mismatch: (text: string): string =>
         `${chalk.bold.black.bgYellowBright(" MISMATCH ")} ${text}`,
     cwdFilePath: (filePath: string): string =>
         chalk.gray(cwdRelativePath(filePath)),

@@ -13,6 +13,7 @@ import type {ErrorCode} from "./error-codes.js";
 //         },
 //     },
 // };
+export const NoChecksum = "No checksum";
 
 export interface IStandardLog {
     +group: (...labels: Array<string>) => void;
@@ -34,6 +35,7 @@ export interface IPositionLog extends ILog {
     +info: (message: string, line?: string | number) => void;
     +log: (message: string, line?: string | number) => void;
     +warn: (message: string, line?: string | number) => void;
+    +mismatch: (message: string, line?: string | number) => void;
 }
 
 export const FileError = Object.freeze({
@@ -41,20 +43,21 @@ export const FileError = Object.freeze({
 });
 
 export const MarkerError = Object.freeze({
-    duplicate: "duplicate",
+    duplicate: "duplicate-marker",
     empty: "empty",
     endTagWithoutStartTag: "end-tag-without-start-tag",
     malformedEndTag: "malformed-end-tag",
+    selfTargeting: "self-targeting",
+    startTagWithoutEndTag: "start-tag-witout-end-tag",
 });
 
 export const TargetError = Object.freeze({
-    selfTargeting: "self-targeting",
+    malformedStartTag: "malformed-start-tag",
     differentCommentSyntax: "different-comment-syntax",
     fileDoesNotExist: "file-does-not-exist",
-    duplicate: "duplicate",
+    duplicate: "duplicate-target",
     startTagAfterContent: "start-tag-after-content",
-    startTagWithoutEndTag: "start-tag-witout-end-tag",
-    malformedStartTag: "malformed-start-tag",
+    noReturnTag: "no-return-tag",
 });
 
 type FileErrorDetails = {
@@ -174,7 +177,14 @@ export type Markers = {
     ...
 };
 
+export type EdgeErrorDetails = TargetErrorDetails | MarkerErrorDetails;
+
 export type MarkerEdge = {
+    /**
+     * The errors for this marker edge.
+     */
+    +errors: $ReadOnlyArray<EdgeErrorDetails>,
+
     /**
      * The marker identifier.
      */
@@ -183,7 +193,7 @@ export type MarkerEdge = {
     /**
      * The line number in the source file where the marker is declared.
      */
-    +sourceLine: string,
+    +sourceLine: number,
 
     /**
      * The checksum that the source file has recorded for the target content.

@@ -1,7 +1,8 @@
 // @flow
-import Format from "./format.js";
 import cwdRelativePath from "./cwd-relative-path.js";
 import generateMarkerEdges from "./generate-marker-edges.js";
+import FileReferenceLogger from "./file-reference-logger.js";
+import {NoChecksum} from "./types.js";
 
 import type {
     MarkerCache,
@@ -9,13 +10,14 @@ import type {
     Options,
     FileProcessor,
     MarkerEdge,
+    IPositionLog,
 } from "./types.js";
 
 const reportBrokenEdge = (
     sourceFile: string,
     brokenEdge: MarkerEdge,
-    log: ILog,
-): void => {
+    log: IPositionLog,
+): boolean => {
     const {
         markerID,
         sourceLine,
@@ -23,31 +25,35 @@ const reportBrokenEdge = (
         targetFile,
         sourceChecksum,
         targetChecksum,
+        errors,
     } = brokenEdge;
 
-    if (targetLine == null || targetChecksum == null) {
-        log.error(
-            `${Format.cwdFilePath(
-                targetFile,
-            )} does not contain a tag named '${markerID}' that points to '${cwdRelativePath(
-                sourceFile,
-            )}'`,
-        );
-        return;
+    if (targetLine == null) {
+        // If we don't have a target, then we can't report a violation.
+        return false;
     }
 
-    const NO_CHECKSUM = "No checksum";
-    const sourceFileRef = Format.cwdFilePath(`${sourceFile}:${sourceLine}`);
-    const checksums = `${sourceChecksum || NO_CHECKSUM} != ${
-        targetChecksum || NO_CHECKSUM
+    if (
+        targetFile === sourceFile ||
+        targetChecksum === sourceChecksum ||
+        errors.length > 0
+    ) {
+        // Nothing to fix here.
+        // The source checksum being unset means a bad edge beyond fixing.
+        // And if the checksums match, then there's nothing to fix.
+        return false;
+    }
+
+    const checksums = `${sourceChecksum || NoChecksum} != ${
+        targetChecksum || NoChecksum
     }`;
-    log.log(
-        Format.violation(
-            `${sourceFileRef} Looks like you changed the target content for sync-tag '${markerID}' in '${cwdRelativePath(
-                targetFile,
-            )}:${targetLine}'. Make sure you've made the parallel changes in the source file, if necessary (${checksums})`,
-        ),
+    log.mismatch(
+        `Looks like you changed the target content for sync-tag '${markerID}' in '${cwdRelativePath(
+            targetFile,
+        )}:${targetLine}'. Make sure you've made the parallel changes in the source file, if necessary (${checksums})`,
+        sourceLine,
     );
+    return true;
 };
 
 const validateAndReport: FileProcessor = (
@@ -56,10 +62,12 @@ const validateAndReport: FileProcessor = (
     cache: $ReadOnly<MarkerCache>,
     log: ILog,
 ): Promise<boolean> => {
+    const fileRefLogger = new FileReferenceLogger(file, log);
     let fileNeedsFixing = false;
-    for (const brokenEdge of generateMarkerEdges(file, cache, log)) {
-        fileNeedsFixing = true;
-        reportBrokenEdge(file, brokenEdge, log);
+    for (const brokenEdge of generateMarkerEdges(file, cache, fileRefLogger)) {
+        fileNeedsFixing =
+            fileNeedsFixing ||
+            reportBrokenEdge(file, brokenEdge, fileRefLogger);
     }
     return Promise.resolve(!fileNeedsFixing);
 };

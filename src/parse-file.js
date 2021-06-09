@@ -9,8 +9,8 @@ import ancesdir from "ancesdir";
 
 import Format from "./format.js";
 import MarkerParser from "./marker-parser.js";
-import FileReferenceLogger from "./file-reference-logger.js";
 import getNormalizedTargetFileInfo from "./get-normalized-target-file-info.js";
+import {MarkerError} from "./types.js";
 
 import type {
     ILog,
@@ -32,9 +32,6 @@ import type {
  * considered as fixable.
  * @param {Array<string>} comments An array of strings that specify the comment
  * syntax to look for at the start of marker tags.
- * @param {ILog} log The interface through which to log user feedback.
- * @param {(fileRef: string) => mixed} [logFileRef] A callback to register any
- * target files that are referenced by markers in this file.
  * @returns {Promise<FileParseResult>} The promise of the markers this file contains or
  * null if there were no markers or errors.
  */
@@ -42,10 +39,8 @@ export default function parseFile(
     options: Options,
     file: string,
     fixable: boolean,
-    log: ILog,
 ): Promise<FileParseResult> {
     const rootPath = ancesdir(file, options.rootMarker);
-    const fileRefLogger = new FileReferenceLogger(file, log);
     const markers: Markers = {};
 
     const addMarker = (
@@ -56,31 +51,37 @@ export default function parseFile(
         commentEnd: string,
         error: ?MarkerErrorDetails,
     ): void => {
-        const targetLines = Object.keys(targets);
-        const duplicateMarkerLine = markers[id] && targetLines[0];
-
         const errors = [];
         if (error != null) {
             errors.push(error);
         }
-        if (duplicateMarkerLine) {
-            errors.push({
-                message: `Sync-tag '${id}' cannot target itself`,
-                line: parseInt(duplicateMarkerLine),
-                code: "duplicate",
-            });
-            fileRefLogger.error(
-                `Sync-tag '${id}' declared multiple times`,
-                duplicateMarkerLine,
-            );
-        }
+
         for (const line of Object.keys(targets)) {
-            if (targets[parseInt(line)].file === file) {
-                fileRefLogger.error(
-                    `Sync-tag '${id}' cannot target itself`,
-                    line,
-                );
+            const lineNumber = parseInt(line);
+            if (markers[id]) {
+                errors.push({
+                    message: `Sync-tag '${id}' declared multiple times`,
+                    line: lineNumber,
+                    code: MarkerError.duplicate,
+                });
             }
+
+            const target = targets[lineNumber];
+            if (target.file === file) {
+                errors.push({
+                    message: `Sync-tag '${id}' cannot target itself`,
+                    line: lineNumber,
+                    code: MarkerError.selfTargeting,
+                });
+            }
+        }
+
+        if (markers[id] != null) {
+            markers[id] = {
+                ...markers[id],
+                errors: [...markers[id].errors, ...errors],
+            };
+            return;
         }
 
         markers[id] = {
@@ -111,7 +112,6 @@ export default function parseFile(
                 normalizeFileRef,
                 addMarker,
                 options.comments,
-                fileRefLogger,
             );
 
             // Open the file synchronously so we get a nice error if the file
@@ -127,7 +127,7 @@ export default function parseFile(
                 })
                 .on("line", (line: string) => markerParser.parseLine(line))
                 .on("close", () => {
-                    markerParser.reportUnterminatedMarkers();
+                    markerParser.recordUnterminatedMarkers();
 
                     const markerCount = Object.keys(markers).length;
                     const result = {
@@ -144,13 +144,12 @@ export default function parseFile(
     }).then(
         (res) => res,
         (reason: Error) => {
-            fileRefLogger.error(`Could not parse file: ${reason.message}`);
             return {
                 markers: null,
                 referencedFiles: [],
                 error: {
                     code: "could-not-parse",
-                    message: reason.message,
+                    message: `Could not parse file: ${reason.message}`,
                 },
             };
         },

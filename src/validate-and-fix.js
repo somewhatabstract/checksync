@@ -5,6 +5,7 @@ import fs from "fs";
 import generateBrokenEdgeMap from "./generate-broken-edge-map.js";
 import Format from "./format.js";
 import cwdRelativePath from "./cwd-relative-path.js";
+import FileReferenceLogger from "./file-reference-logger.js";
 
 import type {
     ILog,
@@ -29,20 +30,14 @@ const reportBrokenEdge = (
     } = brokenEdge;
 
     if (targetLine == null || targetChecksum == null) {
-        log.error(
-            `${Format.cwdFilePath(
-                targetFile,
-            )} does not contain a tag named '${markerID}' that points to '${cwdRelativePath(
-                sourceFile,
-            )}'`,
-        );
+        // We can't do anything with this.
         return;
     }
 
     const NO_CHECKSUM = "No checksum";
     const sourceFileRef = Format.cwdFilePath(`${sourceFile}:${sourceLine}`);
     log.log(
-        Format.violation(
+        Format.mismatch(
             `${sourceFileRef} Updating checksum for sync-tag '${markerID}' referencing '${cwdRelativePath(
                 targetFile,
             )}:${targetLine}' from ${
@@ -58,8 +53,14 @@ const validateAndFix: FileProcessor = (
     cache: $ReadOnly<MarkerCache>,
     log: ILog,
 ): Promise<boolean> => {
+    const fileRefLogger = new FileReferenceLogger(file, log);
     return new Promise((resolve, reject) => {
-        const brokenEdgeMap = generateBrokenEdgeMap(options, file, cache, log);
+        const brokenEdgeMap = generateBrokenEdgeMap(
+            options,
+            file,
+            cache,
+            fileRefLogger,
+        );
         if (!brokenEdgeMap) {
             resolve(true);
             return;

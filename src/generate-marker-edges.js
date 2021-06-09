@@ -1,8 +1,16 @@
 // @flow
 import path from "path";
 import escapeRegExp from "lodash/escapeRegExp";
+import Format from "./format.js";
+import reportErrors from "./report-errors.js";
 
-import type {ILog, FileInfo, Marker, MarkerCache, MarkerEdge} from "./types.js";
+import type {
+    IPositionLog,
+    FileInfo,
+    Marker,
+    MarkerCache,
+    MarkerEdge,
+} from "./types.js";
 
 /**
  * Generate marker edges from source file to target file.
@@ -18,7 +26,7 @@ import type {ILog, FileInfo, Marker, MarkerCache, MarkerEdge} from "./types.js";
 export default function* generateMarkerEdges(
     file: string,
     cache: $ReadOnly<MarkerCache>,
-    log: ILog,
+    log: IPositionLog,
 ): Iterator<MarkerEdge> {
     const getTargetDetail = (targetMarker: ?Marker, aliases: Array<string>) => {
         if (targetMarker == null) {
@@ -43,10 +51,10 @@ export default function* generateMarkerEdges(
     };
 
     const fileInfo = cache[file];
-    // TODO: Check for fileInfo.error and report that to the log.
-    if (fileInfo == null) {
-        // This means a target reference that couldn't be found and we can
-        // totally ignore it at this level.
+    if (fileInfo.error != null) {
+        // This means the file couldn't be parse.
+        // So we'll log this error and skip on.
+        log.error(fileInfo.error.message);
         return;
     }
 
@@ -59,32 +67,57 @@ export default function* generateMarkerEdges(
             // as a target of a fixable marker.
             continue;
         }
+        reportErrors(log, sourceMarker.errors);
+
+        const targetLines = Object.keys(sourceMarker.targets).map((line) =>
+            parseInt(line),
+        );
 
         /**
          * Here we iterate all the targets (the sync-start tags) in the source
          * file and then try to map them to the target marker they reference.
          */
-        for (const sourceLine of Object.keys(sourceMarker.targets)) {
-            const targetRef = sourceMarker.targets[parseInt(sourceLine)];
+        for (const sourceLine of targetLines) {
+            const targetRef = sourceMarker.targets[sourceLine];
             const targetInfo: ?FileInfo = cache[targetRef.file];
-            const targetMarker: ?Marker =
-                targetInfo && targetInfo.markers[markerID];
+            const targetMarker: ?Marker = targetInfo?.markers[markerID];
 
             const targetDetails = getTargetDetail(targetMarker, aliases);
 
+            const errors = [];
+            if (targetRef.error) {
+                errors.push(targetRef.error);
+            }
+            if (sourceMarker !== targetMarker && targetMarker?.errors) {
+                errors.push(...targetMarker.errors);
+            }
+
             const sourceChecksum = targetRef.checksum;
             const targetChecksum = targetDetails?.checksum;
-            if (sourceChecksum === targetChecksum) {
-                // If the checksum matches, we can skip this edge.
+            if (sourceChecksum === targetChecksum && errors.length === 0) {
+                // If the checksum matches and we have no errors, we can skip
+                // this edge.
                 continue;
+            }
+
+            if (targetDetails?.line == null || targetChecksum == null) {
+                errors.push({
+                    message: `No return tag named '${markerID}' in '${Format.cwdFilePath(
+                        targetRef.file,
+                    )}'`,
+                    code: "no-return-tag",
+                    line: sourceLine,
+                });
             }
 
             const normalizedTargetFile = targetRef.file.replace(
                 new RegExp(escapeRegExp(path.sep), "g"),
                 "/",
             );
+            reportErrors(log, errors);
 
             yield {
+                errors,
                 markerID,
                 sourceLine,
                 sourceChecksum,

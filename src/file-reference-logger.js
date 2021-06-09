@@ -23,6 +23,10 @@ export default class FileReferenceLogger implements IPositionLog {
         this._file = file;
     }
 
+    mismatch: (message: string, line?: string | number) => void = (
+        message: string,
+        line?: string | number,
+    ): void => this._log.log(Format.mismatch(this._format(message, line)));
     log: (message: string, line?: string | number) => void = (
         message: string,
         line?: string | number,

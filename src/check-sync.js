@@ -31,7 +31,7 @@ export default async function checkSync(
         return ErrorCodes.NO_FILES;
     }
 
-    const cache = await getMarkersFromFiles(options, files, log);
+    const cache = await getMarkersFromFiles(options, files);
     if (log.errorsLogged && autoFix) {
         log.log("");
         log.log(

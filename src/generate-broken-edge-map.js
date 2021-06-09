@@ -2,7 +2,7 @@
 import generateMarkerEdges from "./generate-marker-edges.js";
 import rootRelativePath from "./root-relative-path.js";
 
-import type {MarkerCache, MarkerEdge, Options, ILog} from "./types.js";
+import type {MarkerCache, MarkerEdge, Options, IPositionLog} from "./types.js";
 
 type EdgeMap = {
     [brokenDeclaration: string]: {
@@ -64,7 +64,7 @@ const generateBrokenEdgeMap = (
     options: Options,
     file: string,
     cache: $ReadOnly<MarkerCache>,
-    log: ILog,
+    log: IPositionLog,
 ): ?EdgeMap => {
     // First, we need to know what tags we're fixing.
     // Let's make a lookup of old declaration to new.

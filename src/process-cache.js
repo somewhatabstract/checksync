@@ -53,7 +53,7 @@ export default async function processCache(
             log.error(
                 `${Format.cwdFilePath(
                     cwdRelativePath(file),
-                )} update encountered error: ${e.message}`,
+                )} update encountered error: ${e.stack}`,
             );
         }
     }

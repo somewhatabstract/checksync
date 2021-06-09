@@ -1,6 +1,7 @@
 // @flow
 import rootRelativePath from "./root-relative-path.js";
 import generateBrokenEdgeMap from "./generate-broken-edge-map.js";
+import FileReferenceLogger from "./file-reference-logger.js";
 
 import type {
     MarkerCache,
@@ -31,6 +32,8 @@ const reportBrokenEdge = (
     const relSourceFile = rootRelativePath(sourceFile, options.rootMarker);
     const relTargetFile = rootRelativePath(targetFile, options.rootMarker);
 
+    // TODO: Allow for more than one JsonItem so that all errors can be
+    // recorded.
     if (targetLine == null || targetChecksum == null) {
         return {
             type: "error",
@@ -63,7 +66,13 @@ export const getValidateAndJson =
         cache: $ReadOnly<MarkerCache>,
         log: ILog,
     ): Promise<boolean> => {
-        const brokenEdgeMap = generateBrokenEdgeMap(options, file, cache, log);
+        const fileRefLogger = new FileReferenceLogger(file, log);
+        const brokenEdgeMap = generateBrokenEdgeMap(
+            options,
+            file,
+            cache,
+            fileRefLogger,
+        );
 
         if (!brokenEdgeMap) {
             return true;
