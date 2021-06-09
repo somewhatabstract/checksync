@@ -57,7 +57,7 @@ const validateAndReport: FileProcessor = (
     log: ILog,
 ): Promise<boolean> => {
     let fileNeedsFixing = false;
-    for (const brokenEdge of generateMarkerEdges(file, cache)) {
+    for (const brokenEdge of generateMarkerEdges(file, cache, log)) {
         fileNeedsFixing = true;
         reportBrokenEdge(file, brokenEdge, log);
     }

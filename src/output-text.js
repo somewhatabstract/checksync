@@ -11,11 +11,11 @@ const outputText = (
     options: Options,
     log: ILog,
     jsonItems: Array<JsonItem>,
-    violationFileNames: Array<string>,
+    fixableFileNames: Array<string>,
 ): ErrorCode => {
     const {autoFix} = options;
 
-    if (violationFileNames.length > 0) {
+    if (fixableFileNames.length > 0) {
         const outputRerunCommand = () => {
             log.log("");
             /**
@@ -41,7 +41,7 @@ const outputText = (
             }
             updateCommandParts.push("-u");
             updateCommandParts.push(
-                violationFileNames.map(cwdRelativePath).join(" "),
+                fixableFileNames.map(cwdRelativePath).join(" "),
             );
 
             log.log(updateCommandParts.join(" "));
@@ -50,13 +50,13 @@ const outputText = (
         if (autoFix) {
             if (options.dryRun) {
                 log.group(
-                    `${violationFileNames.length} file(s) would have been fixed. To fix, run:`,
+                    `${fixableFileNames.length} file(s) would have been fixed. To fix, run:`,
                 );
                 outputRerunCommand();
                 log.groupEnd();
             } else {
                 // Output a summary of what we fixed.
-                log.info(`Fixed ${violationFileNames.length} file(s)`);
+                log.info(`Fixed ${fixableFileNames.length} file(s)`);
             }
         } else {
             // Output how to fix any violations we found if we're not running

@@ -2,7 +2,7 @@
 import path from "path";
 import escapeRegExp from "lodash/escapeRegExp";
 
-import type {FileInfo, Marker, MarkerCache, MarkerEdge} from "./types.js";
+import type {ILog, FileInfo, Marker, MarkerCache, MarkerEdge} from "./types.js";
 
 /**
  * Generate marker edges from source file to target file.
@@ -18,6 +18,7 @@ import type {FileInfo, Marker, MarkerCache, MarkerEdge} from "./types.js";
 export default function* generateMarkerEdges(
     file: string,
     cache: $ReadOnly<MarkerCache>,
+    log: ILog,
 ): Iterator<MarkerEdge> {
     const getTargetDetail = (targetMarker: ?Marker, aliases: Array<string>) => {
         if (targetMarker == null) {
@@ -42,6 +43,7 @@ export default function* generateMarkerEdges(
     };
 
     const fileInfo = cache[file];
+    // TODO: Check for fileInfo.error and report that to the log.
     if (fileInfo == null) {
         // This means a target reference that couldn't be found and we can
         // totally ignore it at this level.

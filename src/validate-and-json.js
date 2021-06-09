@@ -8,6 +8,7 @@ import type {
     JsonItem,
     MarkerEdge,
     FileProcessor,
+    ILog,
 } from "./types.js";
 
 const reportBrokenEdge = (
@@ -60,8 +61,9 @@ export const getValidateAndJson =
         options: Options,
         file: string,
         cache: $ReadOnly<MarkerCache>,
+        log: ILog,
     ): Promise<boolean> => {
-        const brokenEdgeMap = generateBrokenEdgeMap(options, file, cache);
+        const brokenEdgeMap = generateBrokenEdgeMap(options, file, cache, log);
 
         if (!brokenEdgeMap) {
             return true;

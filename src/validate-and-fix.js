@@ -59,7 +59,7 @@ const validateAndFix: FileProcessor = (
     log: ILog,
 ): Promise<boolean> => {
     return new Promise((resolve, reject) => {
-        const brokenEdgeMap = generateBrokenEdgeMap(options, file, cache);
+        const brokenEdgeMap = generateBrokenEdgeMap(options, file, cache, log);
         if (!brokenEdgeMap) {
             resolve(true);
             return;

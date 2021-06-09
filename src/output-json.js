@@ -10,7 +10,7 @@ const outputJson = (
     options: Options,
     log: ILog,
     jsonItems: Array<JsonItem>,
-    violationFileNames: Array<string>,
+    fixableFileNames: Array<string>,
 ): ErrorCode => {
     log.log(
         JSON.stringify(
