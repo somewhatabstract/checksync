@@ -1,20 +1,15 @@
 // @flow
-
 import type {FileInfo, Markers} from "./types.js";
 
 /**
  * Copy the given file info, marking markers as unfixable.
  *
  * @export
- * @param {?Markers} markers The markers to be copied.
- * @returns {?Markers} The copied markers.
+ * @param {FileInfo} fileInfo The file info to be copied.
+ * @returns {FileInfo} The copied file info.
  */
-export default function cloneAsUnfixable(fileInfo: ?FileInfo): ?FileInfo {
-    if (fileInfo == null) {
-        return fileInfo;
-    }
-
-    const {markers, aliases} = fileInfo;
+export default function cloneAsUnfixable(fileInfo: FileInfo): FileInfo {
+    const {markers, aliases, error} = fileInfo;
     const clonedMarkers: Markers = {};
     for (const key of Object.keys(markers)) {
         clonedMarkers[key] = {
@@ -24,6 +19,7 @@ export default function cloneAsUnfixable(fileInfo: ?FileInfo): ?FileInfo {
     }
     return {
         markers: clonedMarkers,
-        aliases: aliases,
+        aliases,
+        error,
     };
 }

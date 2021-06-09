@@ -3,7 +3,13 @@ import escapeRegExp from "lodash/escapeRegExp";
 
 import calcChecksum from "./checksum.js";
 
-import type {IPositionLog, Targets, normalizePathFn} from "./types.js";
+import type {
+    IPositionLog,
+    Targets,
+    normalizePathFn,
+    TargetErrorDetails,
+    MarkerErrorDetails,
+} from "./types.js";
 
 type TrackedTarget = {
     /**
@@ -27,6 +33,13 @@ type TrackedTarget = {
      * @type {string}
      */
     declaration: string,
+
+    /**
+     * The error detail for this target, or null if there is no error.
+     *
+     * @type {TargetErrorDetails}
+     */
+    error: ?TargetErrorDetails,
 };
 
 type TrackedTargets = {
@@ -75,6 +88,7 @@ type addMarkerFn = (
     targets: Targets,
     commentStart: string,
     commentEnd: string,
+    error: ?MarkerErrorDetails,
 ) => void;
 
 /**
@@ -84,11 +98,12 @@ const targetsFromTrackedTargets = (trackedTargets: TrackedTargets): Targets => {
     const targets: Targets = {};
 
     for (const file of Object.keys(trackedTargets)) {
-        const {line, checksum, declaration} = trackedTargets[file];
+        const {line, checksum, declaration, error} = trackedTargets[file];
         targets[line] = {
             file,
             checksum,
             declaration,
+            error,
         };
     }
 
@@ -221,7 +236,26 @@ export default class MarkerParser {
             commentEnd,
         };
 
+        const normalized = this._normalizePath(file);
+        if (normalized == null) {
+            // We're not logging targets for this marker.
+            return;
+        }
+
+        // TODO: Turn all these error cases into tracked target errors.
+        const target: TrackedTarget = {
+            line,
+            checksum,
+            declaration,
+            error: null,
+        };
+
         if (this._openMarkers[id].commentStart !== commentStart) {
+            target.error = {
+                message: `Sync-start tags for '${id}' given in different comment styles. Please use the same style for all sync-start tags that have identical identifiers.`,
+                line,
+                code: "different-comment-syntax",
+            };
             this._log.error(
                 `Sync-start tags for '${id}' given in different comment styles. Please use the same style for all sync-start tags that have identical identifiers.`,
                 line,
@@ -229,14 +263,12 @@ export default class MarkerParser {
             return;
         }
 
-        const normalized = this._normalizePath(file);
-
-        if (normalized == null) {
-            // We're not logging targets for this marker.
-            return;
-        }
-
         if (!normalized.exists) {
+            target.error = {
+                message: `Sync-start for '${id}' points to '${file}', which does not exist or is a directory`,
+                line,
+                code: "file-does-not-exist",
+            };
             this._log.error(
                 `Sync-start for '${id}' points to '${file}', which does not exist or is a directory`,
                 line,
@@ -245,6 +277,11 @@ export default class MarkerParser {
         }
 
         if (this._openMarkers[id].targets[normalized.file]) {
+            target.error = {
+                message: `Duplicate target '${file}' for sync-tag '${id}'`,
+                line,
+                code: "duplicate",
+            };
             this._log.warn(
                 `Duplicate target '${file}' for sync-tag '${id}'`,
                 line,
@@ -253,6 +290,11 @@ export default class MarkerParser {
         }
 
         if (this._openMarkers[id].content.length !== 0) {
+            target.error = {
+                message: `Sync-start for '${id}' found after content started`,
+                line,
+                code: "start-tag-after-content",
+            };
             this._log.error(
                 `Sync-start for '${id}' found after content started`,
                 line,
@@ -260,11 +302,7 @@ export default class MarkerParser {
             return;
         }
 
-        this._openMarkers[id].targets[normalized.file] = {
-            line,
-            checksum,
-            declaration,
-        };
+        this._openMarkers[id].targets[normalized.file] = target;
     };
 
     _recordMarkerEnd: (id: string, line: number) => void = (
@@ -272,6 +310,20 @@ export default class MarkerParser {
         line: number,
     ) => {
         const marker = this._openMarkers[id];
+        const error: ?MarkerErrorDetails =
+            marker == null
+                ? {
+                      message: `Sync-end for '${id}' found, but there was no corresponding sync-start`,
+                      line,
+                      code: "end-tag-without-start-tag",
+                  }
+                : marker.content.length === 0
+                ? {
+                      message: `Sync-tag '${id}' has no content`,
+                      line,
+                      code: "empty",
+                  }
+                : null;
         if (marker == null) {
             this._log.warn(
                 `Sync-end for '${id}' found, but there was no corresponding sync-start`,
@@ -281,6 +333,7 @@ export default class MarkerParser {
         }
 
         if (marker.content.length === 0) {
+            // This is a marker error?
             this._log.warn(`Sync-tag '${id}' has no content`, line);
         }
 
@@ -294,6 +347,7 @@ export default class MarkerParser {
             targets,
             marker.commentStart,
             marker.commentEnd,
+            error,
         );
     };
 

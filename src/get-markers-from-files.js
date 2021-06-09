@@ -25,11 +25,9 @@ export default async function getMarkersFromFiles(
     const cacheData: MarkerCache = {};
     const referencedFiles: Array<string> = [];
 
-    const setCacheData = (file: string, info: ?FileInfo) => {
+    const setCacheData = (file: string, info: FileInfo) => {
         cacheData[file] = info;
-        if (info != null) {
-            info.aliases.push(file);
-        }
+        info.aliases.push(file);
     };
 
     const cacheFiles = async (files: Array<string>, fixable: boolean) => {
@@ -67,8 +65,13 @@ export default async function getMarkersFromFiles(
                         ? {
                               markers: parseResult.markers,
                               aliases: [],
+                              error: parseResult.error,
                           }
-                        : null,
+                        : {
+                              markers: {},
+                              aliases: [],
+                              error: parseResult.error,
+                          },
                 );
                 referencedFiles.push(...parseResult.referencedFiles);
 
@@ -83,6 +86,14 @@ export default async function getMarkersFromFiles(
                     );
                 }
             } catch (e) {
+                setCacheData(file, {
+                    markers: {},
+                    aliases: [],
+                    error: {
+                        code: "could-not-parse",
+                        message: e.message,
+                    },
+                });
                 log.error(`Cannot parse file: ${Format.cwdFilePath(file)}`);
             }
         }

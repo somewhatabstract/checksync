@@ -63,7 +63,7 @@ export default function* generateMarkerEdges(
          * file and then try to map them to the target marker they reference.
          */
         for (const sourceLine of Object.keys(sourceMarker.targets)) {
-            const targetRef = sourceMarker.targets[sourceLine];
+            const targetRef = sourceMarker.targets[parseInt(sourceLine)];
             const targetInfo: ?FileInfo = cache[targetRef.file];
             const targetMarker: ?Marker =
                 targetInfo && targetInfo.markers[markerID];

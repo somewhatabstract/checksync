@@ -36,6 +36,41 @@ export interface IPositionLog extends ILog {
     +warn: (message: string, line?: string | number) => void;
 }
 
+export const FileError = Object.freeze({
+    couldNotParse: "could-not-parse",
+});
+
+export const MarkerError = Object.freeze({
+    duplicate: "duplicate",
+    empty: "empty",
+    endTagWithoutStartTag: "end-tag-without-start-tag",
+    malformedEndTag: "malformed-end-tag",
+});
+
+export const TargetError = Object.freeze({
+    selfTargeting: "self-targeting",
+    differentCommentSyntax: "different-comment-syntax",
+    fileDoesNotExist: "file-does-not-exist",
+    duplicate: "duplicate",
+    startTagAfterContent: "start-tag-after-content",
+    startTagWithoutEndTag: "start-tag-witout-end-tag",
+    malformedStartTag: "malformed-start-tag",
+});
+
+type FileErrorDetails = {
+    message: string,
+    code: $Values<typeof FileError>,
+};
+
+type LineErrorDetails<TCodes: string> = {
+    message: string,
+    code: TCodes,
+    line: number,
+};
+
+export type TargetErrorDetails = LineErrorDetails<$Values<typeof TargetError>>;
+export type MarkerErrorDetails = LineErrorDetails<$Values<typeof MarkerError>>;
+
 /**
  * A marker target.
  */
@@ -56,6 +91,11 @@ export type Target = {
      * The full line of text declaring the sync-start for this target.
      */
     +declaration: string,
+
+    /**
+     * The error detail for this target, or null if there is no error.
+     */
+    +error: ?TargetErrorDetails,
 };
 
 /**
@@ -64,14 +104,39 @@ export type Target = {
  * is incorrect.
  */
 export type Targets = {
-    [line: string | number]: Target,
+    [line: number]: Target,
     ...
+};
+
+/**
+ * The result of parsing a file.
+ */
+export type FileParseResult = {
+    /**
+     * The markers found in the file, if any.
+     */
+    markers: ?Markers,
+
+    /**
+     * The files referenced by this file.
+     */
+    referencedFiles: Array<string>,
+
+    /**
+     * Error details for the file parse result, or null if there was no error.
+     */
+    error: ?FileErrorDetails,
 };
 
 /**
  * A marker.
  */
 export type Marker = {
+    /**
+     * The error details for this marker.
+     */
+    +errors: $ReadOnlyArray<MarkerErrorDetails>,
+
     /**
      * Indicates if this marker's checksum can be updated during fixing.
      */
@@ -162,8 +227,9 @@ export type MarkerEdge = {
 };
 
 export type FileInfo = {
-    aliases: Array<string>,
-    markers: Markers,
+    +aliases: Array<string>,
+    +markers: Markers,
+    +error: ?FileErrorDetails,
 };
 
 /**
@@ -173,7 +239,7 @@ export type MarkerCache = {
     /**
      * A file path mapped to the markers within it.
      */
-    [file: string]: ?FileInfo,
+    [file: string]: FileInfo,
     ...
 };
 

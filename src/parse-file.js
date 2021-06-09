@@ -19,12 +19,9 @@ import type {
     Target,
     normalizePathFn,
     Options,
+    FileParseResult,
+    MarkerErrorDetails,
 } from "./types.js";
-
-type ParseResult = {
-    markers: ?Markers,
-    referencedFiles: Array<string>,
-};
 
 /**
  * Parse the given file and extract sync markers.
@@ -38,7 +35,7 @@ type ParseResult = {
  * @param {ILog} log The interface through which to log user feedback.
  * @param {(fileRef: string) => mixed} [logFileRef] A callback to register any
  * target files that are referenced by markers in this file.
- * @returns {Promise<ParseResult>} The promise of the markers this file contains or
+ * @returns {Promise<FileParseResult>} The promise of the markers this file contains or
  * null if there were no markers or errors.
  */
 export default function parseFile(
@@ -46,7 +43,7 @@ export default function parseFile(
     file: string,
     fixable: boolean,
     log: ILog,
-): Promise<ParseResult> {
+): Promise<FileParseResult> {
     const rootPath = ancesdir(file, options.rootMarker);
     const fileRefLogger = new FileReferenceLogger(file, log);
     const markers: Markers = {};
@@ -57,15 +54,28 @@ export default function parseFile(
         targets: Targets,
         commentStart: string,
         commentEnd: string,
+        error: ?MarkerErrorDetails,
     ): void => {
+        const targetLines = Object.keys(targets);
+        const duplicateMarkerLine = markers[id] && targetLines[0];
+
+        const errors = [];
+        if (error != null) {
+            errors.push(error);
+        }
+        if (duplicateMarkerLine) {
+            errors.push({
+                message: `Sync-tag '${id}' cannot target itself`,
+                line: parseInt(duplicateMarkerLine),
+                code: "duplicate",
+            });
+            fileRefLogger.error(
+                `Sync-tag '${id}' declared multiple times`,
+                duplicateMarkerLine,
+            );
+        }
         for (const line of Object.keys(targets)) {
-            if (markers[id]) {
-                fileRefLogger.error(
-                    `Sync-tag '${id}' declared multiple times`,
-                    line,
-                );
-            }
-            if (targets[line].file === file) {
+            if (targets[parseInt(line)].file === file) {
                 fileRefLogger.error(
                     `Sync-tag '${id}' cannot target itself`,
                     line,
@@ -73,7 +83,14 @@ export default function parseFile(
             }
         }
 
-        markers[id] = {fixable, checksum, targets, commentStart, commentEnd};
+        markers[id] = {
+            errors,
+            fixable,
+            checksum,
+            targets,
+            commentStart,
+            commentEnd,
+        };
     };
 
     const referencedFiles: Array<string> = [];
@@ -116,6 +133,7 @@ export default function parseFile(
                     const result = {
                         markers: markerCount === 0 ? null : markers,
                         referencedFiles,
+                        error: null,
                     };
 
                     resolve(result);
@@ -130,6 +148,10 @@ export default function parseFile(
             return {
                 markers: null,
                 referencedFiles: [],
+                error: {
+                    code: "could-not-parse",
+                    message: reason.message,
+                },
             };
         },
     );
