@@ -1,34 +1,38 @@
 // @flow
-import generateMarkerEdges from "../generate-marker-edges.js";
+import generateErrorsForFile from "../generate-errors-for-file.js";
 
-import type {MarkerCache, Target, Marker} from "../types.js";
+import type {MarkerCache, Target, Marker, Options} from "../types.js";
 
 describe("#generateMarkerEdges", () => {
-    it("should return empty sequence if cache does not contain file", () => {
+    it("should yield empty sequence if cache does not contain file", () => {
         // Arrange
+        const options: Options = ({}: any);
         const markerCache: MarkerCache = {};
-        markerCache["filea"] = null;
 
         // Act
-        const result = Array.from(generateMarkerEdges("filea", markerCache));
+        const result = Array.from(
+            generateErrorsForFile(options, "filea", markerCache),
+        );
 
         // Assert
         expect(result).toBeEmpty();
     });
 
-    it("should not return unfixable edges", () => {
+    it("should not yield checksum errors from read-only files", () => {
         // Arrange
+        const options: Options = ({}: any);
         const markerCache: MarkerCache = {
             filea: {
+                errors: [],
+                readOnly: true,
                 aliases: [],
                 markers: {
                     marker: ({
                         commentStart: "//",
                         commentEnd: undefined,
-                        fixable: false,
                         checksum: "",
                         targets: {
-                            "1": ({
+                            [1]: ({
                                 checksum: "5678",
                                 file: "fileb",
                                 declaration: "// sync-start:marker 5678 fileb",
@@ -38,15 +42,16 @@ describe("#generateMarkerEdges", () => {
                 },
             },
             fileb: {
+                errors: [],
+                readOnly: false,
                 aliases: [],
                 markers: {
                     marker: ({
                         commentStart: "//",
                         commentEnd: undefined,
-                        fixable: true,
                         checksum: "",
                         targets: {
-                            "1": ({
+                            [1]: ({
                                 checksum: "1234",
                                 file: "filea",
                                 declaration: "// sync-start:marker 1234 filea",
@@ -58,25 +63,29 @@ describe("#generateMarkerEdges", () => {
         };
 
         // Act
-        const result = Array.from(generateMarkerEdges("filea", markerCache));
+        const result = Array.from(
+            generateErrorsForFile(options, "filea", markerCache),
+        );
 
         // Assert
         expect(result).toBeEmpty();
     });
 
-    it("should return fixable edges", () => {
+    it("should yield checksum mismatch errors from files that are not read-only", () => {
         // Arrange
+        const options: Options = ({}: any);
         const markerCache: MarkerCache = {
             filea: {
+                errors: [],
+                readOnly: true,
                 aliases: ["filea"],
                 markers: {
                     marker: ({
                         commentStart: "//",
                         commentEnd: undefined,
-                        fixable: false,
-                        checksum: "",
+                        checksum: "1234",
                         targets: {
-                            "1": ({
+                            [1]: ({
                                 checksum: "5678",
                                 file: "fileb",
                                 declaration: "// sync-start:marker 5678 fileb",
@@ -86,18 +95,19 @@ describe("#generateMarkerEdges", () => {
                 },
             },
             fileb: {
+                errors: [],
+                readOnly: false,
                 aliases: ["fileb"],
                 markers: {
                     marker: ({
                         commentStart: "//",
                         commentEnd: undefined,
-                        fixable: true,
-                        checksum: "",
+                        checksum: "5678",
                         targets: ({
-                            "1": ({
-                                checksum: "1234",
+                            [1]: ({
+                                checksum: "WRONG",
                                 file: "filea",
-                                declaration: "// sync-start:marker 1234 filea",
+                                declaration: "// sync-start:marker WRONG filea",
                             }: Target),
                         }: any),
                     }: Marker),
@@ -106,121 +116,49 @@ describe("#generateMarkerEdges", () => {
         };
 
         // Act
-        const result = Array.from(generateMarkerEdges("fileb", markerCache));
+        const result = Array.from(
+            generateErrorsForFile(options, "fileb", markerCache),
+        );
 
         // Assert
         expect(result).toEqual([
             {
-                markerID: "marker",
-                sourceChecksum: "1234",
-                sourceDeclaration: "// sync-start:marker 1234 filea",
-                sourceLine: "1",
-                sourceCommentStart: "//",
-                sourceCommentEnd: undefined,
-                targetChecksum: "",
-                targetFile: "filea",
-                targetLine: "1",
-            },
-        ]);
-    });
-
-    it("should mark one way edges where target file is missing", () => {
-        // Arrange
-        const markerCache: MarkerCache = {
-            filea: {
-                aliases: ["filea"],
-                markers: {
-                    marker: ({
-                        commentStart: "//",
-                        commentEnd: undefined,
-                        fixable: true,
-                        checksum: "",
-                        targets: {
-                            "1": ({
-                                checksum: "5678",
-                                file: "fileb",
-                                declaration: "// sync-start:marker 5678 fileb",
-                            }: Target),
-                        },
-                    }: Marker),
+                code: "mismatched-checksum",
+                reason: "Looks like you changed the target content for sync-tag 'marker' in 'filea:1'. Make sure you've made the parallel changes in the source file, if necessary (WRONG != 1234)",
+                location: {line: 1},
+                fix: {
+                    line: 1,
+                    type: "replace",
+                    text: "// sync-start:marker 1234 filea",
+                    declaration: "// sync-start:marker WRONG filea",
+                    description:
+                        "Updated checksum for sync-tag 'marker' referencing 'filea:1' from WRONG to 1234.",
                 },
             },
-        };
-
-        // Act
-        const result = Array.from(generateMarkerEdges("filea", markerCache));
-
-        // Assert
-        expect(result).toEqual([
-            {
-                markerID: "marker",
-                sourceChecksum: "5678",
-                sourceDeclaration: "// sync-start:marker 5678 fileb",
-                sourceLine: "1",
-                sourceCommentStart: "//",
-                sourceCommentEnd: undefined,
-                targetChecksum: undefined,
-                targetFile: "fileb",
-                targetLine: undefined,
-            },
         ]);
     });
 
-    it("should mark one way edges where target file is missing and source has no checksum yet", () => {
+    it("should yield errors reported during file parsing", () => {
         // Arrange
+        const options: Options = ({}: any);
         const markerCache: MarkerCache = {
             filea: {
+                readOnly: false,
+                errors: [
+                    {
+                        reason: "It's an error from a fixable file",
+                        code: ("error-code": any),
+                        location: {line: 10, startColumn: 5, endColumn: 10},
+                    },
+                ],
                 aliases: ["filea"],
                 markers: {
                     marker: ({
                         commentStart: "//",
                         commentEnd: undefined,
-                        fixable: true,
-                        checksum: "",
+                        checksum: "1234",
                         targets: {
-                            "1": ({
-                                checksum: "",
-                                file: "fileb",
-                                declaration: "// sync-start:marker fileb",
-                            }: Target),
-                        },
-                    }: Marker),
-                },
-            },
-        };
-
-        // Act
-        const result = Array.from(generateMarkerEdges("filea", markerCache));
-
-        // Assert
-        expect(result).toEqual([
-            {
-                markerID: "marker",
-                sourceChecksum: "",
-                sourceDeclaration: "// sync-start:marker fileb",
-                sourceLine: "1",
-                sourceCommentStart: "//",
-                sourceCommentEnd: undefined,
-                targetChecksum: undefined,
-                targetFile: "fileb",
-                targetLine: undefined,
-            },
-        ]);
-    });
-
-    it("should mark one way edge where target file does not reference source file", () => {
-        // Arrange
-        const markerCache: MarkerCache = {
-            filea: {
-                aliases: ["filea"],
-                markers: {
-                    marker: ({
-                        commentStart: "//",
-                        commentEnd: undefined,
-                        fixable: true,
-                        checksum: "",
-                        targets: {
-                            "1": ({
+                            [1]: ({
                                 checksum: "5678",
                                 file: "fileb",
                                 declaration: "// sync-start:marker 5678 fileb",
@@ -230,12 +168,118 @@ describe("#generateMarkerEdges", () => {
                 },
             },
             fileb: {
+                readOnly: false,
+                errors: [
+                    {
+                        reason: "It's an error from a read-only file",
+                        code: ("error-code": any),
+                        location: {line: 10},
+                    },
+                ],
                 aliases: ["fileb"],
                 markers: {
                     marker: ({
                         commentStart: "//",
                         commentEnd: undefined,
-                        fixable: true,
+                        checksum: "5678",
+                        targets: {
+                            [1]: ({
+                                checksum: "1234",
+                                file: "filea",
+                                declaration: "// sync-start:marker 1234 filea",
+                            }: Target),
+                        },
+                    }: Marker),
+                },
+            },
+        };
+
+        // Act
+        const result = Array.from(
+            generateErrorsForFile(options, "filea", markerCache),
+        );
+
+        // Assert
+        expect(result).toEqual(markerCache.filea.errors);
+    });
+
+    it("should yield an error when the marker does not exist in the target file", () => {
+        // Arrange
+        const options: Options = ({}: any);
+        const markerCache: MarkerCache = {
+            filea: {
+                readOnly: false,
+                errors: [],
+                aliases: ["filea"],
+                markers: {
+                    marker: ({
+                        commentStart: "//",
+                        commentEnd: undefined,
+                        checksum: "",
+                        targets: {
+                            [1]: ({
+                                checksum: "5678",
+                                file: "fileb",
+                                declaration: "// sync-start:marker 5678 fileb",
+                            }: Target),
+                        },
+                    }: Marker),
+                },
+            },
+            fileb: {
+                readOnly: false,
+                errors: [],
+                aliases: ["fileb"],
+                markers: {},
+            },
+        };
+
+        // Act
+        const result = Array.from(
+            generateErrorsForFile(options, "filea", markerCache),
+        );
+
+        // Assert
+        expect(result).toEqual([
+            {
+                code: "no-return-tag",
+                location: {line: 1},
+                reason: "No return tag named 'marker' in 'fileb'",
+            },
+        ]);
+    });
+
+    it("should yield an error when the marker in the target file does not reference source file", () => {
+        // Arrange
+        const options: Options = ({}: any);
+        const markerCache: MarkerCache = {
+            filea: {
+                readOnly: false,
+                errors: [],
+                aliases: ["filea"],
+                markers: {
+                    marker: ({
+                        commentStart: "//",
+                        commentEnd: undefined,
+                        checksum: "",
+                        targets: {
+                            [1]: ({
+                                checksum: "5678",
+                                file: "fileb",
+                                declaration: "// sync-start:marker 5678 fileb",
+                            }: Target),
+                        },
+                    }: Marker),
+                },
+            },
+            fileb: {
+                readOnly: false,
+                errors: [],
+                aliases: ["fileb"],
+                markers: {
+                    marker: ({
+                        commentStart: "//",
+                        commentEnd: undefined,
                         checksum: "",
                         targets: {},
                     }: Marker),
@@ -244,37 +288,35 @@ describe("#generateMarkerEdges", () => {
         };
 
         // Act
-        const result = Array.from(generateMarkerEdges("filea", markerCache));
+        const result = Array.from(
+            generateErrorsForFile(options, "filea", markerCache),
+        );
 
         // Assert
         expect(result).toEqual([
             {
-                markerID: "marker",
-                sourceChecksum: "5678",
-                sourceDeclaration: "// sync-start:marker 5678 fileb",
-                sourceLine: "1",
-                sourceCommentStart: "//",
-                sourceCommentEnd: undefined,
-                targetChecksum: undefined,
-                targetFile: "fileb",
-                targetLine: undefined,
+                code: "no-return-tag",
+                location: {line: 1},
+                reason: "No return tag named 'marker' in 'fileb'",
             },
         ]);
     });
 
-    it("should not return edges that have matching checksums", () => {
+    it("should not yield errors when checksums match", () => {
         // Arrange
+        const options: Options = ({}: any);
         const markerCache: MarkerCache = {
             filea: {
+                readOnly: false,
+                errors: [],
                 aliases: ["filea"],
                 markers: {
                     marker: ({
                         commentStart: "//",
                         commentEnd: undefined,
-                        fixable: true,
                         checksum: "1234",
                         targets: {
-                            "1": ({
+                            [1]: ({
                                 checksum: "5678",
                                 file: "fileb",
                                 declaration: "// sync-start:marker 5678 fileb",
@@ -284,15 +326,16 @@ describe("#generateMarkerEdges", () => {
                 },
             },
             fileb: {
+                readOnly: false,
+                errors: [],
                 aliases: ["fileb"],
                 markers: {
                     marker: ({
                         commentStart: "//",
                         commentEnd: undefined,
-                        fixable: true,
                         checksum: "5678",
                         targets: {
-                            "1": ({
+                            [1]: ({
                                 checksum: "1234",
                                 file: "filea",
                                 declaration: "// sync-start:marker 1234 filea",
@@ -304,69 +347,11 @@ describe("#generateMarkerEdges", () => {
         };
 
         // Act
-        const result = Array.from(generateMarkerEdges("fileb", markerCache));
+        const result = Array.from(
+            generateErrorsForFile(options, "fileb", markerCache),
+        );
 
         // Assert
         expect(result).toBeEmpty();
-    });
-
-    it("should return edges with mismatched checksums", () => {
-        // Arrange
-        const markerCache: MarkerCache = {
-            filea: {
-                aliases: ["filea"],
-                markers: {
-                    marker: ({
-                        commentStart: "//",
-                        commentEnd: undefined,
-                        fixable: true,
-                        checksum: "4321",
-                        targets: {
-                            "1": ({
-                                checksum: "5678",
-                                file: "fileb",
-                                declaration: "// sync-start:marker 4321 fileb",
-                            }: Target),
-                        },
-                    }: Marker),
-                },
-            },
-            fileb: {
-                aliases: ["fileb"],
-                markers: {
-                    marker: ({
-                        commentStart: "//",
-                        commentEnd: undefined,
-                        fixable: true,
-                        checksum: "8765",
-                        targets: {
-                            "1": ({
-                                checksum: "1234",
-                                file: "filea",
-                                declaration: "// sync-start:marker 1234 filea",
-                            }: Target),
-                        },
-                    }: Marker),
-                },
-            },
-        };
-
-        // Act
-        const result = Array.from(generateMarkerEdges("fileb", markerCache));
-
-        // Assert
-        expect(result).toEqual([
-            {
-                markerID: "marker",
-                sourceChecksum: "1234",
-                sourceDeclaration: "// sync-start:marker 1234 filea",
-                sourceLine: "1",
-                sourceCommentStart: "//",
-                sourceCommentEnd: undefined,
-                targetChecksum: "4321",
-                targetFile: "filea",
-                targetLine: "1",
-            },
-        ]);
     });
 });

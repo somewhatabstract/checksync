@@ -3,21 +3,6 @@ import Logger from "../logger.js";
 import FileReferenceLogger from "../file-reference-logger.js";
 
 describe("FileReferenceLogger", () => {
-    it("should return errorsLogged from underlying logger", () => {
-        // Arrange
-        const NullLogger = new Logger();
-        const spy = jest.spyOn(NullLogger, "errorsLogged", "get");
-        const logger = new FileReferenceLogger("FILE", NullLogger);
-
-        // Act
-        NullLogger.error("ERROR!");
-        const result = logger.errorsLogged;
-
-        // Assert
-        expect(result).toBeTrue();
-        expect(spy).toHaveBeenCalled();
-    });
-
     it("should pass group through to underlying logger", () => {
         // Arrange
         const NullLogger = new Logger();
@@ -42,6 +27,20 @@ describe("FileReferenceLogger", () => {
 
         // Assert
         expect(spy).toHaveBeenCalled();
+    });
+
+    describe("#file", () => {
+        it("should return file path", () => {
+            // Arrange
+            const NullLogger = new Logger();
+            const logger = new FileReferenceLogger("FILE", NullLogger);
+
+            // Act
+            const result = logger.file;
+
+            // Assert
+            expect(result).toBe("FILE");
+        });
     });
 
     describe("#verbose", () => {
@@ -74,7 +73,39 @@ describe("FileReferenceLogger", () => {
         });
     });
 
-    describe.each(["error", "log", "warn", "info"])("#%s", testCase => {
+    describe.each(["mismatch", "fix"])("#%s", (testCase) => {
+        it("should prefix with default file reference and message type", () => {
+            // Arrange
+            const NullLogger = new Logger();
+            const spy = jest.spyOn(NullLogger, "log");
+            const logger = new FileReferenceLogger("FILE", NullLogger);
+
+            // Act
+            (logger: any)[testCase]("MESSAGE");
+
+            // Assert
+            expect(spy).toHaveBeenCalledWith(
+                ` ${testCase.toUpperCase()}  FILE MESSAGE`,
+            );
+        });
+
+        it("should prefix with file:line reference", () => {
+            // Arrange
+            const NullLogger = new Logger();
+            const spy = jest.spyOn(NullLogger, "log");
+            const logger = new FileReferenceLogger("FILE", NullLogger);
+
+            // Act
+            (logger: any)[testCase]("MESSAGE", 42);
+
+            // Assert
+            expect(spy).toHaveBeenCalledWith(
+                ` ${testCase.toUpperCase()}  FILE:42 MESSAGE`,
+            );
+        });
+    });
+
+    describe.each(["error", "log", "warn", "info"])("#%s", (testCase) => {
         it("should prefix with default file reference", () => {
             // Arrange
             const NullLogger = new Logger();

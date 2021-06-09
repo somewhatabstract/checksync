@@ -4,7 +4,7 @@ import * as minimist from "minimist";
 import fs from "fs";
 import {run} from "../cli.js";
 import * as CheckSync from "../check-sync.js";
-import ErrorCodes from "../error-codes.js";
+import ExitCodes from "../exit-codes.js";
 import Logger from "../logger.js";
 import defaultArgs from "../default-args.js";
 import * as ParseGitIgnore from "parse-gitignore";
@@ -72,7 +72,7 @@ describe("#run", () => {
 
             // Assert
             expect(underTest).toThrowError("PRETEND PROCESS EXIT!");
-            expect(exitSpy).toHaveBeenCalledWith(ErrorCodes.SUCCESS);
+            expect(exitSpy).toHaveBeenCalledWith(ExitCodes.SUCCESS);
         },
     );
 
@@ -278,6 +278,79 @@ describe("#run", () => {
         expect(setVerboseSpy).toHaveBeenCalledTimes(1);
     });
 
+    it("should exit process with given exit code when checkSync method resolves", () => {
+        // Arrange
+        const fakeParsedArgs = {
+            ...defaultArgs,
+            fix: false,
+            comments: "//,#",
+        };
+        const thenMock = jest.fn();
+        jest.spyOn(CheckSync, "default").mockReturnValue({then: thenMock});
+        jest.spyOn(minimist, "default").mockReturnValue(fakeParsedArgs);
+        const exitSpy = jest
+            .spyOn(process, "exit")
+            .mockImplementation(jest.fn());
+        jest.spyOn(ParseGitIgnore, "default").mockReturnValue(["madeupglob"]);
+        run(__filename);
+        const resolveHandler = thenMock.mock.calls[0][0];
+
+        // Act
+        resolveHandler(99);
+
+        // Assert
+        expect(exitSpy).toHaveBeenCalledWith(99);
+    });
+
+    it("should log error on rejection of checkSync method", () => {
+        // Arrange
+        const fakeParsedArgs = {
+            ...defaultArgs,
+            fix: false,
+            comments: "//,#",
+        };
+        const thenMock = jest.fn();
+        jest.spyOn(CheckSync, "default").mockReturnValue({then: thenMock});
+        jest.spyOn(minimist, "default").mockReturnValue(fakeParsedArgs);
+        jest.spyOn(process, "exit").mockImplementation(jest.fn());
+        jest.spyOn(ParseGitIgnore, "default").mockReturnValue(["madeupglob"]);
+        const logSpy = jest.spyOn(new Logger(null), "error");
+        run(__filename);
+        const rejectHandler = thenMock.mock.calls[0][1];
+
+        // Act
+        rejectHandler(new Error("Oh no, booms!"));
+
+        // Assert
+        expect(logSpy).toHaveBeenCalledWith(
+            "Unexpected error: Error: Oh no, booms!",
+        );
+    });
+
+    it("should exit with CATASTROPHIC code on rejection of checkSync method", () => {
+        // Arrange
+        const fakeParsedArgs = {
+            ...defaultArgs,
+            fix: false,
+            comments: "//,#",
+        };
+        const thenMock = jest.fn();
+        jest.spyOn(CheckSync, "default").mockReturnValue({then: thenMock});
+        jest.spyOn(minimist, "default").mockReturnValue(fakeParsedArgs);
+        const exitSpy = jest
+            .spyOn(process, "exit")
+            .mockImplementation(jest.fn());
+        jest.spyOn(ParseGitIgnore, "default").mockReturnValue(["madeupglob"]);
+        run(__filename);
+        const rejectHandler = thenMock.mock.calls[0][1];
+
+        // Act
+        rejectHandler();
+
+        // Assert
+        expect(exitSpy).toHaveBeenCalledWith(ExitCodes.CATASTROPHIC);
+    });
+
     describe("unknown arg handling", () => {
         it("should return false for process.execPath", () => {
             // Arrange
@@ -402,7 +475,7 @@ describe("#run", () => {
             unknownHandler("--imadethisup");
 
             // Assert
-            expect(exitSpy).toHaveBeenCalledWith(ErrorCodes.UNKNOWN_ARGS);
+            expect(exitSpy).toHaveBeenCalledWith(ExitCodes.UNKNOWN_ARGS);
         });
 
         it("should report unknown arguments starting with -", () => {
@@ -455,32 +528,6 @@ describe("#run", () => {
 
             // Assert
             expect(result).toBeTrue();
-        });
-
-        it("should exit process with given exit code", () => {
-            // Arrange
-            const fakeParsedArgs = {
-                ...defaultArgs,
-                fix: false,
-                comments: "//,#",
-            };
-            const thenMock = jest.fn();
-            jest.spyOn(CheckSync, "default").mockReturnValue({then: thenMock});
-            jest.spyOn(minimist, "default").mockReturnValue(fakeParsedArgs);
-            const exitSpy = jest
-                .spyOn(process, "exit")
-                .mockImplementation(jest.fn());
-            jest.spyOn(ParseGitIgnore, "default").mockReturnValue([
-                "madeupglob",
-            ]);
-            run(__filename);
-            const thenHandler = thenMock.mock.calls[0][0];
-
-            // Act
-            thenHandler(99);
-
-            // Assert
-            expect(exitSpy).toHaveBeenCalledWith(99);
         });
     });
 });

@@ -23,6 +23,18 @@ export default class FileReferenceLogger implements IPositionLog {
         this._file = file;
     }
 
+    get file(): string {
+        return this._file;
+    }
+
+    mismatch: (message: string, line?: string | number) => void = (
+        message: string,
+        line?: string | number,
+    ): void => this._log.log(Format.mismatch(this._format(message, line)));
+    fix: (message: string, line?: string | number) => void = (
+        message: string,
+        line?: string | number,
+    ): void => this._log.log(Format.fix(this._format(message, line)));
     log: (message: string, line?: string | number) => void = (
         message: string,
         line?: string | number,
@@ -55,8 +67,4 @@ export default class FileReferenceLogger implements IPositionLog {
 
     _formatRef: (line?: string | number) => string = (line?: string | number) =>
         Format.cwdFilePath(`${this._file}${(line && `:${line}`) || ""}`);
-
-    get errorsLogged(): boolean {
-        return this._log.errorsLogged;
-    }
 }

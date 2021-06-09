@@ -1,158 +1,174 @@
 // @flow
 import MarkerParser from "../marker-parser.js";
-import Logger from "../logger.js";
-
-const NullLogger = new Logger();
 
 describe("MarkerParser", () => {
-    describe("#reportUnterminatedMarkers", () => {
-        it("should report nothing when no markers parsed", () => {
+    describe("#recordUnterminatedMarkers", () => {
+        it("should record nothing when no markers parsed", () => {
             // Arrange
-            const errorSpy = jest.spyOn(NullLogger, "error");
+            const addMarker = jest.fn();
+            const recordError = jest.fn();
             const parser = new MarkerParser(
                 (target) => ({file: target, exists: true}),
-                jest.fn(),
+                addMarker,
+                recordError,
                 [],
-                NullLogger,
             );
 
             // Act
-            parser.reportUnterminatedMarkers();
+            parser.recordUnterminatedMarkers();
 
             // Assert
-            expect(errorSpy).not.toHaveBeenCalled();
+            expect(addMarker).not.toHaveBeenCalled();
+            expect(recordError).not.toHaveBeenCalled();
         });
 
-        it("should report nothing when all markers are terminated", () => {
+        it("should record nothing when all markers are terminated", () => {
             // Arrange
-            const errorSpy = jest.spyOn(NullLogger, "error");
+            const addMarker = jest.fn();
+            const recordError = jest.fn();
             const parser = new MarkerParser(
                 (target) => ({file: target, exists: true}),
-                jest.fn(),
+                addMarker,
+                recordError,
                 [],
-                NullLogger,
             );
             parser.parseLine("sync-start:tag1 1234 file.js");
             parser.parseLine("sync-start:tag2 example.js");
+            parser.parseLine("const thisIs = 'some content';");
             parser.parseLine("sync-end:tag1");
             parser.parseLine("sync-end:tag2");
 
             // Act
-            parser.reportUnterminatedMarkers();
+            parser.recordUnterminatedMarkers();
 
             // Assert
-            expect(errorSpy).not.toHaveBeenCalled();
+            expect(recordError).not.toHaveBeenCalled();
         });
 
-        it("should report unterminated markers", () => {
+        it("should record unterminated markers", () => {
             // Arrange
-            const errorSpy = jest.spyOn(NullLogger, "error");
+            const addMarker = jest.fn();
+            const recordError = jest.fn();
             const parser = new MarkerParser(
                 (target) => ({file: target, exists: true}),
-                jest.fn(),
+                addMarker,
+                recordError,
                 [],
-                NullLogger,
             );
             parser.parseLine("sync-start:tag1 1234 file.js");
             parser.parseLine("sync-start:tag2 example.js");
             parser.parseLine("sync-end:tag1");
 
             // Act
-            parser.reportUnterminatedMarkers();
+            parser.recordUnterminatedMarkers();
 
             // Assert
-            expect(errorSpy).toHaveBeenCalledWith(
-                "Sync-start 'tag2' has no corresponding sync-end",
-                2,
-            );
+            expect(recordError).toHaveBeenCalledWith({
+                code: "start-tag-witout-end-tag",
+                location: {line: 2},
+                reason: "Sync-start 'tag2' has no corresponding sync-end",
+            });
         });
     });
 
     describe("#parseLine", () => {
-        it("should error if sync-start is malformed", () => {
+        it("should record error if sync-start is malformed", () => {
             // Arrange
-            const errorSpy = jest.spyOn(NullLogger, "error");
+            const addMarker = jest.fn();
+            const recordError = jest.fn();
             const parser = new MarkerParser(
                 (target) => ({file: target, exists: true}),
-                jest.fn(),
+                addMarker,
+                recordError,
                 [],
-                NullLogger,
             );
 
             // Act
             parser.parseLine("sync-start:badstart");
 
             // Assert
-            expect(errorSpy.mock.calls[0][0]).toMatchInlineSnapshot(
-                `"Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'"`,
-            );
+            expect(recordError).toHaveBeenCalledWith({
+                code: "malformed-start-tag",
+                location: {line: 1},
+                reason: "Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'",
+            });
         });
 
-        it("should error if sync-end is malformed", () => {
+        it("should record error if sync-end is malformed", () => {
             // Arrange
-            const errorSpy = jest.spyOn(NullLogger, "error");
+            const addMarker = jest.fn();
+            const recordError = jest.fn();
             const parser = new MarkerParser(
                 (target) => ({file: target, exists: true}),
-                jest.fn(),
+                addMarker,
+                recordError,
                 [],
-                NullLogger,
             );
 
             // Act
             parser.parseLine("sync-end:");
 
             // Assert
-            expect(errorSpy.mock.calls[0][0]).toMatchInlineSnapshot(
-                `"Malformed sync-end: format should be 'sync-end:<label>'"`,
-            );
+            expect(recordError).toHaveBeenCalledWith({
+                code: "malformed-end-tag",
+                location: {line: 1},
+                reason: "Malformed sync-end: format should be 'sync-end:<label>'",
+            });
         });
 
-        it("should warn if marker never started but is ended", () => {
+        it("should record error if marker never started but is ended", () => {
             // Arrange
-            const warnSpy = jest.spyOn(NullLogger, "warn");
+            const addMarker = jest.fn();
+            const recordError = jest.fn();
             const parser = new MarkerParser(
                 (target) => ({file: target, exists: true}),
-                jest.fn(),
+                addMarker,
+                recordError,
                 [],
-                NullLogger,
             );
 
             // Act
             parser.parseLine("sync-end:notstarted");
 
             // Assert
-            expect(warnSpy.mock.calls[0][0]).toMatchInlineSnapshot(
-                `"Sync-end for 'notstarted' found, but there was no corresponding sync-start"`,
-            );
+            expect(recordError).toHaveBeenCalledWith({
+                code: "end-tag-without-start-tag",
+                location: {line: 1},
+                reason: "Sync-end for 'notstarted' found, but there was no corresponding sync-start",
+            });
         });
 
-        it("should error if target does not exist", () => {
+        it("should record error if target does not exist", () => {
             // Arrange
-            const errorSpy = jest.spyOn(NullLogger, "error");
+            const addMarker = jest.fn();
+            const recordError = jest.fn();
             const parser = new MarkerParser(
                 (target) => ({file: target, exists: false}),
-                jest.fn(),
+                addMarker,
+                recordError,
                 [],
-                NullLogger,
             );
 
             // Act
             parser.parseLine("sync-start:markerid target1");
 
             // Assert
-            expect(errorSpy.mock.calls[0][0]).toMatchInlineSnapshot(
-                `"Sync-start for 'markerid' points to 'target1', which does not exist or is a directory"`,
-            );
+            expect(recordError).toHaveBeenCalledWith({
+                code: "file-does-not-exist",
+                location: {line: 1},
+                reason: "Sync-start for 'markerid' points to 'target1', which does not exist or is a directory",
+            });
         });
 
-        it("should error if marker started after marker content", () => {
+        it("should record error if marker started after marker content", () => {
             // Arrange
-            const errorSpy = jest.spyOn(NullLogger, "error");
+            const addMarker = jest.fn();
+            const recordError = jest.fn();
             const parser = new MarkerParser(
                 (target) => ({file: target, exists: true}),
-                jest.fn(),
+                addMarker,
+                recordError,
                 [],
-                NullLogger,
             );
 
             // Act
@@ -161,19 +177,22 @@ describe("MarkerParser", () => {
             parser.parseLine("sync-start:markerid target2");
 
             // Assert
-            expect(errorSpy.mock.calls[0][0]).toMatchInlineSnapshot(
-                `"Sync-start for 'markerid' found after content started"`,
-            );
+            expect(recordError).toHaveBeenCalledWith({
+                code: "start-tag-after-content",
+                location: {line: 3},
+                reason: "Sync-start for 'markerid' found after content started",
+            });
         });
 
-        it("should warn if target repeated for same marker", () => {
+        it("should record error if target repeated for same marker", () => {
             // Arrange
-            const warnSpy = jest.spyOn(NullLogger, "warn");
+            const addMarker = jest.fn();
+            const recordError = jest.fn();
             const parser = new MarkerParser(
                 (target) => ({file: target, exists: true}),
-                jest.fn(),
+                addMarker,
+                recordError,
                 [],
-                NullLogger,
             );
 
             // Act
@@ -181,19 +200,29 @@ describe("MarkerParser", () => {
             parser.parseLine("sync-start:markerid target1");
 
             // Assert
-            expect(warnSpy.mock.calls[0][0]).toMatchInlineSnapshot(
-                `"Duplicate target 'target1' for sync-tag 'markerid'"`,
-            );
+            expect(recordError).toHaveBeenCalledWith({
+                code: "duplicate-target",
+                location: {line: 2},
+                reason: "Duplicate target for sync-tag 'markerid'",
+                fix: {
+                    declaration: "sync-start:markerid target1",
+                    description:
+                        "Removed duplicate target for sync-tag 'markerid'",
+                    line: 2,
+                    type: "delete",
+                },
+            });
         });
 
-        it("should warn if marker is empty", () => {
+        it("should record error if marker is empty", () => {
             // Arrange
-            const warnSpy = jest.spyOn(NullLogger, "warn");
+            const addMarker = jest.fn();
+            const recordError = jest.fn();
             const parser = new MarkerParser(
-                jest.fn(),
-                jest.fn(),
+                (target) => ({file: target, exists: true}),
+                addMarker,
+                recordError,
                 [],
-                NullLogger,
             );
 
             // Act
@@ -201,19 +230,22 @@ describe("MarkerParser", () => {
             parser.parseLine("sync-end:markerid");
 
             // Assert
-            expect(warnSpy.mock.calls[0][0]).toMatchInlineSnapshot(
-                `"Sync-tag 'markerid' has no content"`,
-            );
+            expect(recordError).toHaveBeenCalledWith({
+                code: "empty-marker",
+                location: {line: 2},
+                reason: "Sync-tag 'markerid' has no content",
+            });
         });
 
-        it("should error if tag id used in two different comment styles", () => {
+        it("should record error if tag id used in two different comment styles", () => {
             // Arrange
-            const errorSpy = jest.spyOn(NullLogger, "error");
+            const addMarker = jest.fn();
+            const recordError = jest.fn();
             const parser = new MarkerParser(
                 (target) => ({file: target, exists: true}),
-                jest.fn(),
+                addMarker,
+                recordError,
                 ["//", "#", "{/*"],
-                NullLogger,
             );
 
             // Act
@@ -223,19 +255,22 @@ describe("MarkerParser", () => {
             parser.parseLine("# sync-end:markerid2");
 
             // Assert
-            expect(errorSpy.mock.calls[0][0]).toMatchInlineSnapshot(
-                `"Sync-start tags for 'markerid2' given in different comment styles. Please use the same style for all sync-start tags that have identical identifiers."`,
-            );
+            expect(recordError).toHaveBeenCalledWith({
+                code: "different-comment-syntax",
+                location: {line: 2},
+                reason: "Sync-start tags for 'markerid2' given in different comment styles. Please use the same style for all sync-start tags that have identical identifiers.",
+            });
         });
 
         it("should call addMarker for parsed markers", () => {
             // Arrange
             const addMarker = jest.fn();
+            const recordError = jest.fn();
             const parser = new MarkerParser(
                 (target) => ({file: target, exists: true}),
                 addMarker,
+                recordError,
                 ["//", "#", "{/*"],
-                NullLogger,
             );
 
             // Act

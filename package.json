@@ -72,22 +72,22 @@
         "is-descriptor/kind-of": "^6.0.3"
     },
     "scripts": {
-        "prepublishOnly": "yarn clean && yarn test && yarn build",
+        "prepublishOnly": "yarn clean && yarn test:unit && yarn build",
         "flow:ci": "flow check",
         "clean": "rm -rf dist && rm -rf obj",
-        "build": "yarn test && rollup -c",
-        "test": "jest --colors --config jest.config.js --testPathIgnorePatterns integration_test.js",
+        "build": "yarn test:unit && rollup -c",
+        "test:unit": "jest --colors --config jest.config.js --testPathIgnorePatterns integration_test.js",
         "test:integration": "jest --colors --config jest.config.js integration_test.js",
-        "test:all": "jest --colors --config jest.config.js",
-        "coverage": "jest --colors --config jest.config.js --coverage --testPathIgnorePatterns integration_test.js",
+        "test": "jest --colors --config jest.config.js",
+        "coverage:unit": "jest --colors --config jest.config.js --coverage --testPathIgnorePatterns integration_test.js",
         "coverage:integration": "jest --colors --config jest.config.js --coverage integration_test.js",
-        "coverage:all": "jest --colors --config jest.config.js --coverage",
+        "coverage": "jest --colors --config jest.config.js --coverage",
         "pretty-quick": "pretty-quick --staged",
         "lint": "flow && eslint --report-unused-disable-directives --config .eslintrc.json '{src,bin,__{tests,mocks}__}/**/*.js'"
     },
     "pre-commit": [
         "pretty-quick",
         "lint",
-        "test:all"
+        "test"
     ]
 }

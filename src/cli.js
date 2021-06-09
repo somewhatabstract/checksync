@@ -7,7 +7,7 @@ import chalk from "chalk";
 import minimist from "minimist";
 import checkSync from "./check-sync.js";
 import Logger from "./logger.js";
-import ErrorCodes from "./error-codes.js";
+import ExitCodes from "./exit-codes.js";
 import logHelp from "./help.js";
 import defaultArgs from "./default-args.js";
 import parseGitIgnore from "parse-gitignore";
@@ -82,7 +82,7 @@ export const run = (launchFilePath: string): void => {
 
             if (arg.startsWith("-")) {
                 log.error(`Unknown argument: ${arg}`);
-                process.exit(ErrorCodes.UNKNOWN_ARGS);
+                process.exit(ExitCodes.UNKNOWN_ARGS);
             }
             return true;
         },
@@ -90,12 +90,12 @@ export const run = (launchFilePath: string): void => {
 
     if (args.version) {
         log.log(version);
-        process.exit(ErrorCodes.SUCCESS);
+        process.exit(ExitCodes.SUCCESS);
     }
 
     if (args.help) {
         logHelp(log);
-        process.exit(ErrorCodes.SUCCESS);
+        process.exit(ExitCodes.SUCCESS);
     }
 
     if (args.verbose) {
@@ -132,8 +132,15 @@ export const run = (launchFilePath: string): void => {
             dryRun: args.dryRun === true,
         },
         log,
-    ).then((exitCode) => {
-        log.verbose(() => `Exiting with code ${exitCode}`);
-        process.exit(exitCode);
-    });
+    ).then(
+        (exitCode) => {
+            log.verbose(() => `Exiting with code ${exitCode}`);
+            process.exit(exitCode);
+        },
+        (e) => {
+            log.error(`Unexpected error: ${e}`);
+            log.verbose(() => `Exiting with code ${ExitCodes.CATASTROPHIC}`);
+            process.exit(ExitCodes.CATASTROPHIC);
+        },
+    );
 };

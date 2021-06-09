@@ -2,16 +2,12 @@
 import fs from "fs";
 import getMarkersFromFiles from "../get-markers-from-files.js";
 import * as ParseFile from "../parse-file.js";
-import Logger from "../logger.js";
-import * as CloneAsFixable from "../clone-as-unfixable.js";
 import Format from "../format.js";
 
 import type {Options} from "../types.js";
 
 jest.mock("../parse-file.js");
 jest.mock("fs");
-
-const NullLogger = new Logger();
 
 describe("#fromFiles", () => {
     it("should parse each file as fixable", async () => {
@@ -31,28 +27,18 @@ describe("#fromFiles", () => {
         };
 
         // Act
-        await getMarkersFromFiles(options, ["a.js", "b.js"], NullLogger);
+        await getMarkersFromFiles(options, ["a.js", "b.js"]);
 
         // Assert
-        expect(parseSpy).toHaveBeenCalledWith(
-            options,
-            "a.js",
-            true,
-            NullLogger,
-        );
-        expect(parseSpy).toHaveBeenCalledWith(
-            options,
-            "b.js",
-            true,
-            NullLogger,
-        );
+        expect(parseSpy).toHaveBeenCalledWith(options, "a.js", false);
+        expect(parseSpy).toHaveBeenCalledWith(options, "b.js", false);
     });
 
-    it("should parse each existing referenced file as unfixable", async () => {
+    it("should parse each existing referenced file as readOnly", async () => {
         // Arrange
         const parseSpy = jest
             .spyOn(ParseFile, "default")
-            .mockImplementation((options, file, fixable, logger) => {
+            .mockImplementation((options, file, readOnly) => {
                 if (file === "a.js") {
                     return Promise.resolve({
                         markers: {},
@@ -76,15 +62,10 @@ describe("#fromFiles", () => {
         };
 
         // Act
-        await getMarkersFromFiles(options, ["a.js"], NullLogger);
+        await getMarkersFromFiles(options, ["a.js"]);
 
         // Assert
-        expect(parseSpy).toHaveBeenCalledWith(
-            options,
-            "referenced.file",
-            false,
-            NullLogger,
-        );
+        expect(parseSpy).toHaveBeenCalledWith(options, "referenced.file", true);
     });
 
     it("should not parse already parsed files", async () => {
@@ -112,38 +93,133 @@ describe("#fromFiles", () => {
         };
 
         // Act
-        await getMarkersFromFiles(options, ["a.js", "b.js"], NullLogger);
+        await getMarkersFromFiles(options, ["a.js", "b.js"]);
 
         // Assert
         expect(parseSpy).toHaveBeenCalledTimes(3);
-        expect(parseSpy).toHaveBeenCalledWith(
-            options,
-            "a.js",
-            true,
-            NullLogger,
-        );
-        expect(parseSpy).toHaveBeenCalledWith(
-            options,
-            "b.js",
-            true,
-            NullLogger,
-        );
-        expect(parseSpy).toHaveBeenCalledWith(
-            options,
-            "c.js",
-            false,
-            NullLogger,
-        );
+        expect(parseSpy).toHaveBeenCalledWith(options, "a.js", false);
+        expect(parseSpy).toHaveBeenCalledWith(options, "b.js", false);
+        expect(parseSpy).toHaveBeenCalledWith(options, "c.js", true);
+    });
+
+    it("should cache symlinked files of already parsed files as read only", async () => {
+        // Arrange
+        const parseSpy = jest
+            .spyOn(ParseFile, "default")
+            .mockImplementation((options, file, fixable, logger) => {
+                if (file === "a.js") {
+                    return Promise.resolve({
+                        markers: {},
+                        referencedFiles: ["c.js"],
+                    });
+                }
+                return Promise.resolve({markers: {}, referencedFiles: []});
+            });
+        jest.spyOn(fs, "realpathSync").mockImplementation((a) => "a.js");
+        const options: Options = {
+            includeGlobs: ["a.js"],
+            comments: ["//"],
+            autoFix: true,
+            rootMarker: null,
+            dryRun: false,
+            excludeGlobs: [],
+            json: false,
+        };
+
+        // Act
+        const result = await getMarkersFromFiles(options, ["a.js", "b.js"]);
+
+        // Assert
+        expect(parseSpy).toHaveBeenCalledWith(options, "a.js", false);
+        expect(parseSpy).not.toHaveBeenCalledWith(options, "b.js", false);
+        expect(result).toStrictEqual({
+            "a.js": {
+                aliases: ["a.js", "b.js", "c.js"],
+                errors: undefined,
+                lineCount: undefined,
+                markers: {},
+                readOnly: false,
+            },
+            "b.js": {
+                aliases: ["a.js", "b.js", "c.js"],
+                errors: undefined,
+                lineCount: undefined,
+                markers: {},
+                readOnly: true,
+            },
+            "c.js": {
+                aliases: ["a.js", "b.js", "c.js"],
+                errors: undefined,
+                lineCount: undefined,
+                markers: {},
+                readOnly: true,
+            },
+        });
+    });
+
+    it("should cache real files of already parsed symlinks as read only", async () => {
+        // Arrange
+        const parseSpy = jest
+            .spyOn(ParseFile, "default")
+            .mockImplementation((options, file, fixable, logger) => {
+                if (file === "a.js") {
+                    return Promise.resolve({
+                        markers: {},
+                        referencedFiles: ["c.js"],
+                    });
+                }
+                return Promise.resolve({markers: {}, referencedFiles: []});
+            });
+        jest.spyOn(fs, "realpathSync").mockImplementation((a) => "b.js");
+        const options: Options = {
+            includeGlobs: ["a.js"],
+            comments: ["//"],
+            autoFix: true,
+            rootMarker: null,
+            dryRun: false,
+            excludeGlobs: [],
+            json: false,
+        };
+
+        // Act
+        const result = await getMarkersFromFiles(options, ["a.js", "b.js"]);
+
+        // Assert
+        expect(parseSpy).toHaveBeenCalledWith(options, "a.js", false);
+        expect(parseSpy).not.toHaveBeenCalledWith(options, "b.js", false);
+        expect(result).toStrictEqual({
+            "a.js": {
+                aliases: ["a.js", "b.js", "c.js"],
+                errors: undefined,
+                lineCount: undefined,
+                markers: {},
+                readOnly: false,
+            },
+            "b.js": {
+                aliases: ["a.js", "b.js", "c.js"],
+                errors: undefined,
+                lineCount: undefined,
+                markers: {},
+                readOnly: true,
+            },
+            "c.js": {
+                aliases: ["a.js", "b.js", "c.js"],
+                errors: undefined,
+                lineCount: undefined,
+                markers: {},
+                readOnly: true,
+            },
+        });
     });
 
     it("should return file cache", async () => {
         // Arrange
         jest.spyOn(ParseFile, "default").mockImplementation(
-            (options, file, fixable) =>
+            (options, file, readOnly) =>
                 Promise.resolve({
+                    errors: [],
                     markers: {
                         file,
-                        fixable,
                     },
                     referencedFiles: [],
                 }),
@@ -160,26 +236,26 @@ describe("#fromFiles", () => {
         };
 
         // Act
-        const result = await getMarkersFromFiles(
-            options,
-            ["a.js", "b.js"],
-            NullLogger,
-        );
+        const result = await getMarkersFromFiles(options, ["a.js", "b.js"]);
 
         // Assert
         expect(result).toStrictEqual({
             "a.js": {
+                lineCount: undefined,
+                errors: [],
+                readOnly: false,
                 aliases: ["a.js"],
                 markers: {
                     file: "a.js",
-                    fixable: true,
                 },
             },
             "b.js": {
+                lineCount: undefined,
+                errors: [],
+                readOnly: false,
                 aliases: ["b.js"],
                 markers: {
                     file: "b.js",
-                    fixable: true,
                 },
             },
         });
@@ -188,11 +264,12 @@ describe("#fromFiles", () => {
     it("should include files that had no markers", async () => {
         // Arrange
         jest.spyOn(ParseFile, "default").mockImplementation(
-            (options, file, fixable, logger) => {
+            (options, file, readOnly) => {
                 if (file !== "b.js") {
-                    return {markers: null, referencedFiles: []};
+                    return {errors: [], markers: null, referencedFiles: []};
                 }
                 return Promise.resolve({
+                    errors: [],
                     markers: file,
                     referencedFiles: ["c.js"],
                 });
@@ -210,121 +287,40 @@ describe("#fromFiles", () => {
         };
 
         // Act
-        const result = await getMarkersFromFiles(
-            options,
-            ["a.js", "b.js"],
-            NullLogger,
-        );
+        const result = await getMarkersFromFiles(options, ["a.js", "b.js"]);
 
         // Assert
         expect(result).toStrictEqual({
-            "a.js": null,
-            "b.js": {aliases: ["b.js"], markers: "b.js"},
-            "c.js": null,
-        });
-    });
-
-    it("should clone existing file markers if the target of a symlink is already parsed", async () => {
-        // Arrange
-        jest.spyOn(ParseFile, "default").mockImplementation(
-            (options, file, fixable, logger) => {
-                if (file !== "a.js") {
-                    return Promise.resolve({
-                        markers: file,
-                        referencedFiles: ["b.js", "c.js"],
-                    });
-                }
-                return Promise.resolve({
-                    markers: file,
-                    referencedFiles: [],
-                });
+            "a.js": {
+                lineCount: undefined,
+                errors: [],
+                markers: {},
+                readOnly: false,
+                aliases: ["a.js"],
             },
-        );
-        jest.spyOn(fs, "realpathSync").mockImplementation((a) => {
-            // When we get to file c.js, which is referenced rather than in the
-            // original file set, it is being processed after a and b.
-            // We return that it is the same path as a.js, and hence an alias.
-            // That means that rather than parse c.js, we'll clone a.js markers.
-            if (a === "c.js") {
-                return "a.js";
-            }
-            return a;
-        });
-        const cloneSpy = jest.spyOn(CloneAsFixable, "default");
-        const options: Options = {
-            includeGlobs: ["a.js", "b.js"],
-            comments: ["//"],
-            autoFix: true,
-            rootMarker: null,
-            dryRun: false,
-            excludeGlobs: [],
-            json: false,
-        };
-
-        // Act
-        await getMarkersFromFiles(options, ["a.js", "b.js"], NullLogger);
-
-        // Assert
-        expect(cloneSpy).toHaveBeenCalledWith({
-            aliases: ["a.js", "c.js"],
-            markers: "a.js",
-        });
-    });
-
-    it("should clone symlink parsed file markers to real target", async () => {
-        // Arrange
-        jest.spyOn(ParseFile, "default").mockImplementation(
-            (options, file, fixable, logger) => {
-                if (file !== "a.js") {
-                    return Promise.resolve({
-                        markers: file,
-                        referencedFiles: ["b.js", "c.js"],
-                    });
-                }
-                return Promise.resolve({
-                    markers: file,
-                    referencedFiles: [],
-                });
+            "b.js": {
+                lineCount: undefined,
+                errors: [],
+                readOnly: false,
+                aliases: ["b.js"],
+                markers: "b.js",
             },
-        );
-        jest.spyOn(fs, "realpathSync").mockImplementation((a) => {
-            // When we get to file a.js, which is in the original file set
-            // we report that it is a symlink to c.js.
-            // This means that after we parse a.js, we'll clone its markers
-            // for c.js too.
-            if (a === "a.js") {
-                return "c.js";
-            }
-            return a;
-        });
-        const cloneSpy = jest.spyOn(CloneAsFixable, "default");
-        const options: Options = {
-            includeGlobs: ["a.js", "b.js"],
-            comments: ["//"],
-            autoFix: true,
-            rootMarker: null,
-            dryRun: false,
-            excludeGlobs: [],
-            json: false,
-        };
-
-        // Act
-        await getMarkersFromFiles(options, ["a.js", "b.js"], NullLogger);
-
-        // Assert
-        expect(cloneSpy).toHaveBeenCalledWith({
-            aliases: ["a.js", "c.js"],
-            markers: "a.js",
+            "c.js": {
+                lineCount: undefined,
+                errors: [],
+                markers: {},
+                readOnly: true,
+                aliases: ["c.js"],
+            },
         });
     });
 
-    it("should log an error if the file doesn't exist", async () => {
+    it("should record error if the file doesn't exist", async () => {
         // Arrange
         jest.spyOn(fs, "realpathSync").mockImplementation((a) => {
             throw new Error("This isn't a file!");
         });
         jest.spyOn(Format, "cwdFilePath").mockImplementation((f) => f);
-        const logSpy = jest.spyOn(NullLogger, "error");
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
             comments: ["//"],
@@ -336,9 +332,32 @@ describe("#fromFiles", () => {
         };
 
         // Act
-        await getMarkersFromFiles(options, ["a.js", "b.js"], NullLogger);
+        const result = await getMarkersFromFiles(options, ["a.js", "b.js"]);
 
         // Assert
-        expect(logSpy).toHaveBeenCalledWith("Cannot parse file: a.js");
+        expect(result).toStrictEqual({
+            "a.js": {
+                aliases: ["a.js"],
+                errors: [
+                    {
+                        code: "could-not-parse",
+                        reason: "Could not parse a.js: This isn't a file!",
+                    },
+                ],
+                markers: {},
+                readOnly: false,
+            },
+            "b.js": {
+                aliases: ["b.js"],
+                errors: [
+                    {
+                        code: "could-not-parse",
+                        reason: "Could not parse b.js: This isn't a file!",
+                    },
+                ],
+                markers: {},
+                readOnly: false,
+            },
+        });
     });
 });

@@ -1,37 +1,36 @@
 // @flow
 import cwdRelativePath from "./cwd-relative-path.js";
-import Format from "./format.js";
-import getOutput from "./get-output.js";
-import getValidator from "./get-validator.js";
+import generateErrorsForFile from "./generate-errors-for-file.js";
+import OutputSink from "./output-sink.js";
 
-import type {ErrorCode} from "./error-codes.js";
-import type {MarkerCache, ILog, Options, JsonItem} from "./types";
+import type {ExitCode} from "./exit-codes.js";
+import type {MarkerCache, ILog, Options} from "./types";
 
 export default async function processCache(
     options: Options,
     cache: $ReadOnly<MarkerCache>,
     log: ILog,
-): Promise<ErrorCode> {
-    const violationFileNames: Array<string> = [];
-    const jsonItems: Array<JsonItem> = [];
-
-    const validator = getValidator(options, jsonItems);
-
+): Promise<ExitCode> {
+    /**
+     * We process the cache file by file, generating errors to be processed.
+     */
+    const outputSink = new OutputSink(options, log);
     for (const file of Object.keys(cache)) {
+        outputSink.startFile(file);
         try {
-            if (!(await validator(options, file, cache, log))) {
-                violationFileNames.push(file);
+            for (const errorDetails of generateErrorsForFile(
+                options,
+                file,
+                cache,
+            )) {
+                outputSink.processError(errorDetails);
             }
         } catch (e) {
             log.error(
-                `${Format.cwdFilePath(
-                    cwdRelativePath(file),
-                )} update encountered error: ${e.message}`,
+                `${cwdRelativePath(file)} update encountered error: ${e.stack}`,
             );
         }
+        await outputSink.endFile();
     }
-
-    const output = getOutput(options);
-
-    return output(options, log, jsonItems, violationFileNames);
+    return outputSink.end();
 }

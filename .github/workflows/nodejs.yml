@@ -51,7 +51,7 @@ jobs:
     - name: Install dependencies
       run: yarn install
     - name: Run tests with coverage
-      run: yarn coverage
+      run: yarn coverage:unit
     - name: Upload coverage
       uses: codecov/codecov-action@v1
       with:

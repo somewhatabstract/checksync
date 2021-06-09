@@ -9,19 +9,13 @@ import type {ILog, IStandardLog} from "./types.js";
 export default class Logging implements ILog {
     _logger: ?IStandardLog;
     _verbose: boolean;
-    _errorsLogged: boolean;
 
     constructor(logger: ?IStandardLog, verbose?: boolean) {
         this._logger = logger;
-        this._errorsLogged = false;
         this._verbose = !!verbose;
     }
 
     setVerbose: () => boolean = () => (this._verbose = true);
-
-    get errorsLogged(): boolean {
-        return this._errorsLogged;
-    }
 
     group: (...labels: Array<string>) => void = (...labels: Array<string>) => {
         this._logger && this._logger.group(...labels);
@@ -40,7 +34,6 @@ export default class Logging implements ILog {
     };
 
     error: (message: string) => void = (message: string): void => {
-        this._errorsLogged = true;
         this._logger && this._logger.error(Format.error(message));
     };
 

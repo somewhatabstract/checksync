@@ -5,7 +5,7 @@ import * as ProcessCache from "../process-cache.js";
 import Logger from "../logger.js";
 
 import checkSync from "../check-sync.js";
-import ErrorCodes from "../error-codes.js";
+import ExitCodes from "../exit-codes.js";
 
 import type {Options} from "../types.js";
 
@@ -104,7 +104,7 @@ describe("#checkSync", () => {
         const result = await checkSync(options, NullLogger);
 
         // Assert
-        expect(result).toBe(ErrorCodes.NO_FILES);
+        expect(result).toBe(ExitCodes.NO_FILES);
     });
 
     it("should build a marker cache from the files", async () => {
@@ -128,62 +128,10 @@ describe("#checkSync", () => {
         await checkSync(options, NullLogger);
 
         // Assert
-        expect(getMarkersFromFilesSpy).toHaveBeenCalledWith(
-            options,
-            ["filea", "fileb"],
-            NullLogger,
-        );
-    });
-
-    it("should log error if there were errors during cache build with autoFix", async () => {
-        // Arrange
-        const NullLogger = new Logger();
-        jest.spyOn(GetFiles, "default").mockReturnValue(["filea", "fileb"]);
-        const logSpy = jest.spyOn(NullLogger, "log");
-        jest.spyOn(GetMarkersFromFiles, "default").mockImplementation(() => {
-            NullLogger.error("Oh no!");
-            return {};
-        });
-        const options: Options = {
-            includeGlobs: ["glob1", "glob2"],
-            excludeGlobs: [],
-            dryRun: false,
-            autoFix: true,
-            comments: ["//"],
-            json: false,
-        };
-
-        // Act
-        await checkSync(options, NullLogger);
-
-        // Assert
-        expect(logSpy).toHaveBeenCalledWith(
-            "🛑  Aborting tag updates due to parsing errors. Fix these errors and try again.",
-        );
-    });
-
-    it("should return PARSE_ERRORS when there are no matching files", async () => {
-        // Arrange
-        const NullLogger = new Logger();
-        jest.spyOn(GetFiles, "default").mockReturnValue(["filea", "fileb"]);
-        jest.spyOn(GetMarkersFromFiles, "default").mockImplementation(() => {
-            NullLogger.error("Oh no!");
-            return {};
-        });
-        const options: Options = {
-            includeGlobs: ["glob1", "glob2"],
-            excludeGlobs: [],
-            dryRun: false,
-            autoFix: true,
-            comments: ["//"],
-            json: false,
-        };
-
-        // Act
-        const result = await checkSync(options, NullLogger);
-
-        // Assert
-        expect(result).toBe(ErrorCodes.PARSE_ERRORS);
+        expect(getMarkersFromFilesSpy).toHaveBeenCalledWith(options, [
+            "filea",
+            "fileb",
+        ]);
     });
 
     it("should invoke ProcessCache with options, cache, and log", async () => {
@@ -222,7 +170,7 @@ describe("#checkSync", () => {
         const fakeCache = {};
         jest.spyOn(GetFiles, "default").mockReturnValue(["filea", "fileb"]);
         jest.spyOn(GetMarkersFromFiles, "default").mockReturnValue(fakeCache);
-        jest.spyOn(ProcessCache, "default").mockReturnValue(ErrorCodes.SUCCESS);
+        jest.spyOn(ProcessCache, "default").mockReturnValue(ExitCodes.SUCCESS);
 
         // Act
         const result = await checkSync(
@@ -238,6 +186,6 @@ describe("#checkSync", () => {
         );
 
         // Assert
-        expect(result).toBe(ErrorCodes.SUCCESS);
+        expect(result).toBe(ExitCodes.SUCCESS);
     });
 });

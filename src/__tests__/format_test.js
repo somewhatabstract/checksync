@@ -38,12 +38,12 @@ describe("Format", () => {
         });
     });
 
-    describe("#violation", () => {
+    describe("#mismatch", () => {
         it("should prefix with _MISMATCH__", () => {
             // Arrange
 
             // Act
-            const result = Format.violation("Test");
+            const result = Format.mismatch("Test");
 
             // Assert
             expect(result).toBe(" MISMATCH  Test");
