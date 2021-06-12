@@ -75,7 +75,7 @@ export const run = (launchFilePath: string): void => {
             if (arg.endsWith(".bin/checksync")) return false;
             // Handle the entry point being a symlink
             try {
-                const realpath = path.resolve(fs.readlinkSync(arg));
+                const realpath = fs.realpathSync(arg);
                 if (realpath == launchFilePath) return false;
             } catch {
                 /* ignore errors, the arg may not be a path at all */

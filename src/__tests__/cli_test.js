@@ -2,7 +2,6 @@
 import * as minimist from "minimist";
 
 import fs from "fs";
-import path from "path";
 import {run} from "../cli.js";
 import * as CheckSync from "../check-sync.js";
 import ErrorCodes from "../error-codes.js";
@@ -27,7 +26,6 @@ jest.mock("../logger.js", () => {
 });
 jest.mock("parse-gitignore");
 jest.mock("fs");
-jest.mock("path");
 
 describe("#run", () => {
     it("should parse args", () => {
@@ -367,8 +365,7 @@ describe("#run", () => {
             jest.spyOn(ParseGitIgnore, "default").mockReturnValue([
                 "madeupglob",
             ]);
-            jest.spyOn(fs, "readlinkSync").mockReturnValue("/doesnt/matter");
-            jest.spyOn(path, "resolve").mockReturnValue(
+            jest.spyOn(fs, "realpathSync").mockReturnValue(
                 __filename, // Symlink resolves to our run file
             );
             run(__filename);
