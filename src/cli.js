@@ -3,7 +3,6 @@
  * The implementation of our command line utility.
  */
 import fs from "fs";
-import path from "path";
 import chalk from "chalk";
 import minimist from "minimist";
 import checkSync from "./check-sync.js";
