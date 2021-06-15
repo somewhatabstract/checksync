@@ -99,17 +99,22 @@ export type FileParseResult = {
     /**
      * The markers found in the file, if any.
      */
-    markers: ?Markers,
+    +markers: ?Markers,
 
     /**
      * The files referenced by this file.
      */
-    referencedFiles: Array<string>,
+    +referencedFiles: Array<string>,
 
     /**
      * Error details for the file parse result, or null if there was no error.
      */
-    errors: Array<ErrorDetails>,
+    +errors: Array<ErrorDetails>,
+
+    /**
+     * How many lines we found in this file.
+     */
+    +lineCount?: number,
 };
 
 /**

@@ -112,13 +112,18 @@ export default function parseFile(
             const fd = fs.openSync(file, "r");
             const fileStream = fs.createReadStream(file, {fd});
 
+            let lineCount = 0;
+
             // Start the parsing.
             readline
                 .createInterface({
                     input: fileStream,
                     crlfDelay: Infinity,
                 })
-                .on("line", (line: string) => markerParser.parseLine(line))
+                .on("line", (line: string) => {
+                    lineCount++;
+                    markerParser.parseLine(line);
+                })
                 .on("close", () => {
                     markerParser.recordUnterminatedMarkers();
 
@@ -127,6 +132,7 @@ export default function parseFile(
                         markers: markerCount === 0 ? null : markers,
                         referencedFiles,
                         errors,
+                        lineCount,
                     };
 
                     resolve({...result, readOnly});
