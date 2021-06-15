@@ -4,10 +4,8 @@ import readline from "readline";
 import * as Ancesdir from "ancesdir";
 
 import * as MarkerParser from "../marker-parser.js";
-import * as FileReferenceLogger from "../file-reference-logger.js";
 import * as GetNormalizedTargetFileInfo from "../get-normalized-target-file-info.js";
 
-import Logger from "../logger.js";
 import parseFile from "../parse-file.js";
 
 import type {Options} from "../types.js";
@@ -31,7 +29,7 @@ const invokeEvent = (mocked: $Call<typeof jest.fn>, event: string, ...args) => {
 describe("#parseFile", () => {
     const setupMarkerParser = function () {
         const mockParser = {
-            reportUnterminatedMarkers: jest.fn(),
+            recordUnterminatedMarkers: jest.fn(),
             parseLine: jest.fn(),
         };
         jest.spyOn(MarkerParser, "default").mockImplementationOnce(
@@ -40,21 +38,10 @@ describe("#parseFile", () => {
         return mockParser;
     };
 
-    const setupFileReferenceLogger = function () {
-        const mockFileReferenceLogger = {
-            error: jest.fn(),
-        };
-        jest.spyOn(FileReferenceLogger, "default").mockImplementationOnce(
-            () => mockFileReferenceLogger,
-        );
-        return mockFileReferenceLogger;
-    };
-
     it("should get the rootPath for the file being processes", async () => {
         // Arrange
         setupMarkerParser();
-        setupFileReferenceLogger();
-        const NullLogger = new Logger();
+
         const ancesdirSpy = jest
             .spyOn(Ancesdir, "default")
             .mockReturnValue("file.dirname");
@@ -69,52 +56,14 @@ describe("#parseFile", () => {
         };
 
         // Act
-        await parseFile(options, "file", false, NullLogger);
+        await parseFile(options, "file", false);
 
         // Assert
         expect(ancesdirSpy).toHaveBeenCalledWith("file", "rootmarker");
     });
 
-    it("should create scoped logger for file", async () => {
+    it("should record parse error on failure", async () => {
         // Arrange
-        setupMarkerParser();
-        setupFileReferenceLogger();
-        const NullLogger = new Logger();
-        const fakeInterface = {on: jest.fn()};
-        fakeInterface.on.mockReturnValue(fakeInterface);
-        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
-        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
-        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
-            fakeInterface,
-        );
-        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
-        const fileRefLoggerSpy = jest.spyOn(FileReferenceLogger, "default");
-        const options: Options = {
-            includeGlobs: ["a.js", "b.js"],
-            comments: [],
-            autoFix: true,
-            rootMarker: null,
-            dryRun: false,
-            excludeGlobs: [],
-            json: false,
-        };
-
-        // Act
-        const promise = parseFile(options, "file.js", true, NullLogger);
-        finishReadingFile();
-        await promise;
-
-        // Assert
-        expect(fileRefLoggerSpy).toHaveBeenCalledWith(
-            expect.stringContaining("file.js"),
-            NullLogger,
-        );
-    });
-
-    it("should log parse error on failure", async () => {
-        // Arrange
-        const NullLogger = new Logger();
-        const logger = setupFileReferenceLogger();
         jest.spyOn(fs, "openSync").mockImplementationOnce(() => {
             throw new Error("ERROR_STRING");
         });
@@ -129,19 +78,20 @@ describe("#parseFile", () => {
         };
 
         // Act
-        await parseFile(options, "file.js", true, NullLogger);
+        const result = await parseFile(options, "file.js", false);
 
         // Assert
-        expect(logger.error).toHaveBeenCalledWith(
-            "Could not parse file: ERROR_STRING",
-        );
+        expect(result.errors).toContainAllValues([
+            {
+                code: "could-not-parse",
+                reason: "Could not parse file: ERROR_STRING",
+            },
+        ]);
     });
 
     it("should resolve with null if zero markers are found", async () => {
         // Arrange
-        const NullLogger = new Logger();
         setupMarkerParser();
-        const logger = setupFileReferenceLogger();
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
@@ -161,19 +111,21 @@ describe("#parseFile", () => {
         };
 
         // Act
-        const promise = parseFile(options, "file.js", true, NullLogger);
+        const promise = parseFile(options, "file.js", false);
         finishReadingFile();
         const result = await promise;
 
         // Assert
-        expect(result).toStrictEqual({markers: null, referencedFiles: []});
-        expect(logger.error).not.toHaveBeenCalled(); // <- Verifies we're testing success
+        expect(result).toStrictEqual({
+            errors: [],
+            readOnly: false,
+            markers: null,
+            referencedFiles: [],
+        });
     });
 
     it("should resolve with null on error", async () => {
         // Arrange
-        const NullLogger = new Logger();
-        const mockFileReferenceLogger = setupFileReferenceLogger();
         jest.spyOn(fs, "openSync").mockImplementationOnce(() => {
             throw new Error("ERROR_STRING");
         });
@@ -188,16 +140,24 @@ describe("#parseFile", () => {
         };
 
         // Act
-        const result = await parseFile(options, "file.js", true, NullLogger);
+        const result = await parseFile(options, "file.js", false);
 
         // Assert
-        expect(result).toStrictEqual({markers: null, referencedFiles: []});
-        expect(mockFileReferenceLogger.error).toHaveBeenCalled(); // <- Verifies we're testing failure
+        expect(result).toStrictEqual({
+            errors: [
+                {
+                    code: "could-not-parse",
+                    reason: "Could not parse file: ERROR_STRING",
+                },
+            ],
+            readOnly: false,
+            markers: null,
+            referencedFiles: [],
+        });
     });
 
     it("should invoke MarkerParser.parseLine for each line", async () => {
         // Arrange
-        const NullLogger = new Logger();
         const mockMarkerParser = setupMarkerParser();
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
@@ -220,7 +180,7 @@ describe("#parseFile", () => {
         };
 
         // Act
-        const promise = parseFile(options, "file.js", true, NullLogger);
+        const promise = parseFile(options, "file.js", true);
         readLine("Line1");
         readLine("Line2");
         finishReadingFile();
@@ -234,7 +194,7 @@ describe("#parseFile", () => {
 
     it("should initialize MarkerParser with callbacks, comments, and log", async () => {
         // Arrange
-        const NullLogger = new Logger();
+
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
@@ -243,7 +203,6 @@ describe("#parseFile", () => {
             fakeInterface,
         );
         const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
-        const mockFileReferenceLogger = setupFileReferenceLogger();
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
         const commentsArray = ["COMMENT1", "COMMENT2"];
@@ -258,7 +217,7 @@ describe("#parseFile", () => {
         };
 
         // Act
-        const promise = parseFile(options, "file.js", true, NullLogger);
+        const promise = parseFile(options, "file.js", true);
         finishReadingFile();
         await promise;
 
@@ -266,14 +225,13 @@ describe("#parseFile", () => {
         expect(markerParserSpy).toHaveBeenCalledWith(
             expect.any(Function),
             expect.any(Function),
+            expect.any(Function),
             commentsArray,
-            mockFileReferenceLogger,
         );
     });
 
-    it("should log error if a marker targets its containing file", async () => {
+    it("should record error if a marker targets its containing file", async () => {
         // Arrange
-        const NullLogger = new Logger();
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
@@ -282,7 +240,6 @@ describe("#parseFile", () => {
             fakeInterface,
         );
         const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
-        const mockFileReferenceLogger = setupFileReferenceLogger();
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
         const options: Options = {
@@ -296,25 +253,40 @@ describe("#parseFile", () => {
         };
 
         // Act
-        const promise = parseFile(options, "file.js", true, NullLogger);
+        const promise = parseFile(options, "file.js", true);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
         addMarkerCb("MARKER_ID1", "ID1_CHECKSUM", {
-            LINE_NUMBER1: {file: "file.js", checksum: "TARGET_CHECKSUM1"},
+            [1]: {file: "file.js", checksum: "TARGET_CHECKSUM1"},
         });
         finishReadingFile();
-        await promise;
+        const result = await promise;
 
         // Assert
-        expect(mockFileReferenceLogger.error).toHaveBeenCalledWith(
-            "Sync-tag 'MARKER_ID1' cannot target itself",
-            "LINE_NUMBER1",
-        );
+        expect(result).toStrictEqual({
+            errors: [
+                {
+                    code: "self-targeting",
+                    location: {end: {line: 1}, start: {line: 1}},
+                    reason: "Sync-tag 'MARKER_ID1' cannot target itself",
+                },
+            ],
+            markers: {
+                MARKER_ID1: {
+                    checksum: "ID1_CHECKSUM",
+                    commentEnd: undefined,
+                    commentStart: undefined,
+                    targets: {
+                        "1": {checksum: "TARGET_CHECKSUM1", file: "file.js"},
+                    },
+                },
+            },
+            readOnly: true,
+            referencedFiles: [],
+        });
     });
 
     it("should normalize referenced files for marker parser", async () => {
         // Arrange
-        // Arrange
-        const NullLogger = new Logger();
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
         jest.spyOn(Ancesdir, "default").mockReturnValue("root.path");
@@ -324,7 +296,6 @@ describe("#parseFile", () => {
             fakeInterface,
         );
         const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
-        setupFileReferenceLogger();
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
         const getNormalizedTargetFileInfoSpy = jest
@@ -341,7 +312,7 @@ describe("#parseFile", () => {
         };
 
         // Act
-        const promise = parseFile(options, "file.js", true, NullLogger);
+        const promise = parseFile(options, "file.js", true);
         const normalizeFn = markerParserSpy.mock.calls[0][0];
         normalizeFn("FILE_REF");
         finishReadingFile();
@@ -354,9 +325,8 @@ describe("#parseFile", () => {
         );
     });
 
-    it("when fixable, should return referenced files that exist", async () => {
+    it("when not read-only, should return referenced files that exist", async () => {
         // Arrange
-        const NullLogger = new Logger();
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
         jest.spyOn(Ancesdir, "default").mockReturnValue("root.path");
@@ -366,7 +336,6 @@ describe("#parseFile", () => {
             fakeInterface,
         );
         const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
-        setupFileReferenceLogger();
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
         jest.spyOn(GetNormalizedTargetFileInfo, "default")
@@ -383,7 +352,7 @@ describe("#parseFile", () => {
         };
 
         // Act
-        const promise = parseFile(options, "file.js", true, NullLogger);
+        const promise = parseFile(options, "file.js", false);
         const normalizeFn = markerParserSpy.mock.calls[0][0];
         normalizeFn("FILE_REF_A");
         normalizeFn("FILE_REF_B");
@@ -394,9 +363,8 @@ describe("#parseFile", () => {
         expect(result.referencedFiles).toStrictEqual(["NORMALIZED_B"]);
     });
 
-    it("when not fixable, should not return any referenced files", async () => {
+    it("when read-only, should not return any referenced files", async () => {
         // Arrange
-        const NullLogger = new Logger();
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
         jest.spyOn(Ancesdir, "default").mockReturnValue("root.path");
@@ -406,7 +374,6 @@ describe("#parseFile", () => {
             fakeInterface,
         );
         const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
-        setupFileReferenceLogger();
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
         jest.spyOn(GetNormalizedTargetFileInfo, "default")
@@ -423,7 +390,7 @@ describe("#parseFile", () => {
         };
 
         // Act
-        const promise = parseFile(options, "file.js", false, NullLogger);
+        const promise = parseFile(options, "file.js", true);
         const normalizeFn = markerParserSpy.mock.calls[0][0];
         normalizeFn("FILE_REF_A");
         normalizeFn("FILE_REF_B");
@@ -436,8 +403,6 @@ describe("#parseFile", () => {
 
     it("should resolve with found markers", async () => {
         // Arrange
-        const NullLogger = new Logger();
-        setupFileReferenceLogger();
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
         const fakeInterface = {on: jest.fn()};
@@ -457,37 +422,37 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             json: false,
         };
-        const promise = parseFile(options, "file.js", true, NullLogger);
+        const promise = parseFile(options, "file.js", false);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
 
         // Act
         addMarkerCb("MARKER_ID1", "ID1_CHECKSUM", {
-            LINE_NUMBER1: {file: "TARGET_FILE1", checksum: "TARGET_CHECKSUM1"},
+            [1]: {file: "TARGET_FILE1", checksum: "TARGET_CHECKSUM1"},
         });
         addMarkerCb("MARKER_ID2", "ID2_CHECKSUM", {
-            LINE_NUMBER2: {file: "TARGET_FILE2", checksum: "TARGET_CHECKSUM2"},
+            [34]: {file: "TARGET_FILE2", checksum: "TARGET_CHECKSUM2"},
         });
         finishReadingFile();
         const result = await promise;
 
         // Assert
         expect(result).toEqual({
+            errors: [],
+            readOnly: false,
             markers: {
                 MARKER_ID1: {
-                    fixable: true,
                     checksum: "ID1_CHECKSUM",
                     targets: {
-                        LINE_NUMBER1: {
+                        [1]: {
                             file: "TARGET_FILE1",
                             checksum: "TARGET_CHECKSUM1",
                         },
                     },
                 },
                 MARKER_ID2: {
-                    fixable: true,
                     checksum: "ID2_CHECKSUM",
                     targets: {
-                        LINE_NUMBER2: {
+                        [34]: {
                             file: "TARGET_FILE2",
                             checksum: "TARGET_CHECKSUM2",
                         },
@@ -498,9 +463,8 @@ describe("#parseFile", () => {
         });
     });
 
-    it("should output error if marker added multiple times", async () => {
+    it("should record error if marker added multiple times", async () => {
         // Arrange
-        const NullLogger = new Logger();
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
         const fakeInterface = {on: jest.fn()};
@@ -511,7 +475,6 @@ describe("#parseFile", () => {
             fakeInterface,
         );
         const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
-        const mockFileReferenceLogger = setupFileReferenceLogger();
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
             comments: [],
@@ -521,73 +484,37 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             json: false,
         };
-        const promise = parseFile(options, "file.js", true, NullLogger);
+        const promise = parseFile(options, "file.js", false);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
 
         // Act
         addMarkerCb("MARKER_ID1", "ID1_CHECKSUM", {
-            LINE_NUMBER1: {file: "target.a"},
+            [1]: {file: "target.a"},
         });
         addMarkerCb("MARKER_ID1", "ID2_CHECKSUM", {
-            LINE_NUMBER2: {file: "target.2"},
-        });
-        finishReadingFile();
-        await promise;
-
-        // Assert
-        expect(mockFileReferenceLogger.error).toHaveBeenCalledWith(
-            "Sync-tag 'MARKER_ID1' declared multiple times",
-            "LINE_NUMBER2",
-        );
-    });
-
-    it("should use fixable value provided in args", async () => {
-        // Arrange
-        const markerParserSpy = jest.spyOn(MarkerParser, "default");
-        setupMarkerParser();
-        const NullLogger = new Logger();
-        const fakeInterface = {on: jest.fn()};
-        fakeInterface.on.mockReturnValue(fakeInterface);
-        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
-        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
-        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
-            fakeInterface,
-        );
-        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
-        const options: Options = {
-            includeGlobs: ["a.js", "b.js"],
-            comments: [],
-            autoFix: false,
-            rootMarker: null,
-            dryRun: false,
-            excludeGlobs: [],
-            json: false,
-        };
-
-        // Act
-        const promise = parseFile(options, "file.js", false, NullLogger);
-        const addMarkerCb = markerParserSpy.mock.calls[0][1];
-        addMarkerCb("MARKER_ID1", "ID1_CHECKSUM", {
-            LINE_NUMBER1: {file: "TARGET_FILE1", checksum: "TARGET_CHECKSUM1"},
+            [1]: {file: "target.2"},
         });
         finishReadingFile();
         const result = await promise;
 
         // Assert
-        expect(result).toEqual({
+        expect(result).toStrictEqual({
+            errors: [
+                {
+                    code: "duplicate-marker",
+                    location: {end: {line: 1}, start: {line: 1}},
+                    reason: "Sync-tag 'MARKER_ID1' declared multiple times",
+                },
+            ],
             markers: {
                 MARKER_ID1: {
-                    fixable: false,
-                    checksum: "ID1_CHECKSUM",
-                    comment: undefined,
-                    targets: {
-                        LINE_NUMBER1: {
-                            file: "TARGET_FILE1",
-                            checksum: "TARGET_CHECKSUM1",
-                        },
-                    },
+                    checksum: "ID2_CHECKSUM",
+                    commentEnd: undefined,
+                    commentStart: undefined,
+                    targets: {"1": {file: "target.2"}},
                 },
             },
+            readOnly: false,
             referencedFiles: [],
         });
     });

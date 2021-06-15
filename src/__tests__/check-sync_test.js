@@ -5,7 +5,7 @@ import * as ProcessCache from "../process-cache.js";
 import Logger from "../logger.js";
 
 import checkSync from "../check-sync.js";
-import ErrorCodes from "../error-codes.js";
+import ExitCodes from "../exit-codes.js";
 
 import type {Options} from "../types.js";
 
@@ -104,7 +104,7 @@ describe("#checkSync", () => {
         const result = await checkSync(options, NullLogger);
 
         // Assert
-        expect(result).toBe(ErrorCodes.NO_FILES);
+        expect(result).toBe(ExitCodes.NO_FILES);
     });
 
     it("should build a marker cache from the files", async () => {
@@ -183,7 +183,7 @@ describe("#checkSync", () => {
         const result = await checkSync(options, NullLogger);
 
         // Assert
-        expect(result).toBe(ErrorCodes.PARSE_ERRORS);
+        expect(result).toBe(ExitCodes.PARSE_ERRORS);
     });
 
     it("should invoke ProcessCache with options, cache, and log", async () => {
@@ -222,7 +222,7 @@ describe("#checkSync", () => {
         const fakeCache = {};
         jest.spyOn(GetFiles, "default").mockReturnValue(["filea", "fileb"]);
         jest.spyOn(GetMarkersFromFiles, "default").mockReturnValue(fakeCache);
-        jest.spyOn(ProcessCache, "default").mockReturnValue(ErrorCodes.SUCCESS);
+        jest.spyOn(ProcessCache, "default").mockReturnValue(ExitCodes.SUCCESS);
 
         // Act
         const result = await checkSync(
@@ -238,6 +238,6 @@ describe("#checkSync", () => {
         );
 
         // Assert
-        expect(result).toBe(ErrorCodes.SUCCESS);
+        expect(result).toBe(ExitCodes.SUCCESS);
     });
 });

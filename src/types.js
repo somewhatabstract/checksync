@@ -1,18 +1,6 @@
 // @flow
 import type {ErrorCode} from "./error-codes.js";
 
-// const exampleMarkersA = {
-//     filea: {
-//         markerA: {
-//             fixable: true,
-//             checksum: "345678", // The actual checksum
-//             targets: [
-//                 { line: 10, file: "fileb", checksum: "2345678" /* What this file thinks this checksum should be for this marker */  },
-//                 { line: 104, file: "filec", checksum: "2345678" },
-//             ],
-//         },
-//     },
-// };
 export const NoChecksum = "No checksum";
 
 export interface IStandardLog {
@@ -38,41 +26,35 @@ export interface IPositionLog extends ILog {
     +mismatch: (message: string, line?: string | number) => void;
 }
 
-export const FileError = Object.freeze({
-    couldNotParse: "could-not-parse",
-});
+export type FixAction =
+    | {
+          type: "delete",
+          line: number,
+          description: string,
+          // The original declaration being deleted.
+          declaration: string,
+      }
+    | {
+          type: "replace",
+          line: number,
+          text: string,
+          description: string,
+          // The original declaration being replaced.
+          declaration: string,
+      };
 
-export const MarkerError = Object.freeze({
-    duplicate: "duplicate-marker",
-    empty: "empty",
-    endTagWithoutStartTag: "end-tag-without-start-tag",
-    malformedEndTag: "malformed-end-tag",
-    selfTargeting: "self-targeting",
-    startTagWithoutEndTag: "start-tag-witout-end-tag",
-});
-
-export const TargetError = Object.freeze({
-    malformedStartTag: "malformed-start-tag",
-    differentCommentSyntax: "different-comment-syntax",
-    fileDoesNotExist: "file-does-not-exist",
-    duplicate: "duplicate-target",
-    startTagAfterContent: "start-tag-after-content",
-    noReturnTag: "no-return-tag",
-});
-
-type FileErrorDetails = {
-    message: string,
-    code: $Values<typeof FileError>,
+export type ErrorDetails = {
+    // The text we would log to the user about this.
+    reason: string,
+    // The type of error. This is an enumeration of strings
+    // giving semantic meaning to the error.
+    code: ErrorCode,
+    // This is the specific range of the error.
+    // Useful for highlighting the specific issue.
+    location?: {line: number, startColumn?: number, endColumn?: number},
+    // This describes how to fix the issue.
+    fix?: FixAction,
 };
-
-type LineErrorDetails<TCodes: string> = {
-    message: string,
-    code: TCodes,
-    line: number,
-};
-
-export type TargetErrorDetails = LineErrorDetails<$Values<typeof TargetError>>;
-export type MarkerErrorDetails = LineErrorDetails<$Values<typeof MarkerError>>;
 
 /**
  * A marker target.
@@ -94,11 +76,6 @@ export type Target = {
      * The full line of text declaring the sync-start for this target.
      */
     +declaration: string,
-
-    /**
-     * The error detail for this target, or null if there is no error.
-     */
-    +error: ?TargetErrorDetails,
 };
 
 /**
@@ -116,6 +93,10 @@ export type Targets = {
  */
 export type FileParseResult = {
     /**
+     * The file is read-only, or not.
+     */
+    +readOnly: boolean,
+    /**
      * The markers found in the file, if any.
      */
     markers: ?Markers,
@@ -128,23 +109,18 @@ export type FileParseResult = {
     /**
      * Error details for the file parse result, or null if there was no error.
      */
-    error: ?FileErrorDetails,
+    errors: Array<ErrorDetails>,
 };
 
 /**
  * A marker.
+ *
+ * This represents a marker with a given ID and chunk of content.
+ * It points to other markers in other locations that it is synced with.
+ * Each of those other markers is a target - file, line number, and checksum
+ * of its content.
  */
 export type Marker = {
-    /**
-     * The error details for this marker.
-     */
-    +errors: $ReadOnlyArray<MarkerErrorDetails>,
-
-    /**
-     * Indicates if this marker's checksum can be updated during fixing.
-     */
-    +fixable: boolean,
-
     /**
      * The actual checksum value of the marker content.
      */
@@ -177,69 +153,11 @@ export type Markers = {
     ...
 };
 
-export type EdgeErrorDetails = TargetErrorDetails | MarkerErrorDetails;
-
-export type MarkerEdge = {
-    /**
-     * The errors for this marker edge.
-     */
-    +errors: $ReadOnlyArray<EdgeErrorDetails>,
-
-    /**
-     * The marker identifier.
-     */
-    +markerID: string,
-
-    /**
-     * The line number in the source file where the marker is declared.
-     */
-    +sourceLine: number,
-
-    /**
-     * The checksum that the source file has recorded for the target content.
-     */
-    +sourceChecksum: string,
-
-    /**
-     * The full tag declaration of the marker target in the source file.
-     */
-    +sourceDeclaration: string,
-
-    /**
-     * The start of the tag comment that the source file uses.
-     */
-    +sourceCommentStart: string,
-
-    /**
-     * The end of the tag comment that the source file uses.
-     */
-    +sourceCommentEnd: ?string,
-
-    /**
-     * The tag path to the target file of the marker.
-     *
-     * This is normalized to use the / character as a path separator,
-     * regardless of OS.
-     */
-    +targetFile: string,
-
-    /**
-     * The line number in the target file where the marker begins.
-     * Null if the target file doesn't exist or doesn't have a return reference.
-     */
-    +targetLine: ?string,
-
-    /**
-     * The actual checksum of the target content.
-     * Null if the target file doesn't exist or doesn't have a return reference.
-     */
-    +targetChecksum: ?string,
-};
-
 export type FileInfo = {
+    +readOnly: boolean,
     +aliases: Array<string>,
     +markers: Markers,
-    +error: ?FileErrorDetails,
+    +errors: Array<ErrorDetails>,
 };
 
 /**
@@ -252,19 +170,6 @@ export type MarkerCache = {
     [file: string]: FileInfo,
     ...
 };
-
-/**
- * Process a file.
- *
- * @returns {boolean} True, if the file was ok; false, if there was a checksum
- * mismatch violation.
- */
-export type FileProcessor = (
-    options: Options,
-    file: string,
-    cache: $ReadOnly<MarkerCache>,
-    log: ILog,
-) => Promise<boolean>;
 
 export type normalizePathFn = (relativeFile: string) => ?{
     file: string,
@@ -303,9 +208,7 @@ export type JsonItem =
           message: string,
       };
 
-export type OutputFn = (
-    options: Options,
-    log: ILog,
-    jsonItems: Array<JsonItem>,
-    violationFileNames: Array<string>,
-) => ErrorCode;
+export type ErrorDetailsByDeclaration = {
+    [key: string]: ErrorDetails,
+    ...
+};

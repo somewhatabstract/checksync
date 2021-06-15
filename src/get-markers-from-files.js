@@ -4,7 +4,6 @@
  */
 import fs from "fs";
 import parseFile from "./parse-file.js";
-import cloneAsUnfixable from "./clone-as-unfixable.js";
 
 import type {FileInfo, MarkerCache, Options} from "./types.js";
 
@@ -28,7 +27,7 @@ export default async function getMarkersFromFiles(
         info.aliases.push(file);
     };
 
-    const cacheFiles = async (files: Array<string>, fixable: boolean) => {
+    const cacheFiles = async (files: Array<string>, readOnly: boolean) => {
         for (const file of files) {
             if (cacheData[file] !== undefined) {
                 continue;
@@ -44,28 +43,20 @@ export default async function getMarkersFromFiles(
                 ) {
                     // Clone as unfixable, since this file already exists in
                     // a fixable version, and we don't need to fix it twice.
-                    setCacheData(
-                        file,
-                        cloneAsUnfixable(cacheData[realFilePath]),
-                    );
+                    setCacheData(file, {
+                        ...cacheData[realFilePath],
+                        readOnly: true,
+                    });
                     continue;
                 }
 
-                const parseResult = await parseFile(options, file, fixable);
-                setCacheData(
-                    file,
-                    parseResult.markers
-                        ? {
-                              markers: parseResult.markers,
-                              aliases: [],
-                              error: parseResult.error,
-                          }
-                        : {
-                              markers: {},
-                              aliases: [],
-                              error: parseResult.error,
-                          },
-                );
+                const parseResult = await parseFile(options, file, readOnly);
+                setCacheData(file, {
+                    readOnly,
+                    markers: parseResult.markers || {},
+                    aliases: [],
+                    errors: parseResult.errors,
+                });
                 referencedFiles.push(...parseResult.referencedFiles);
 
                 // Since this might be a symlink source, let's make sure we store the
@@ -73,35 +64,37 @@ export default async function getMarkersFromFiles(
                 if (realFilePath !== file) {
                     // Close as unfixable, since this file already exists in
                     // a fixable version, and we don't need to fix it twice.
-                    setCacheData(
-                        realFilePath,
-                        cloneAsUnfixable(cacheData[file]),
-                    );
+                    setCacheData(realFilePath, {
+                        ...cacheData[file],
+                        readOnly: true,
+                    });
                 }
             } catch (e) {
                 setCacheData(file, {
+                    readOnly,
                     markers: {},
                     aliases: [],
-                    error: {
-                        code: "could-not-parse",
-                        message: `Could not parse file: ${e.message}`,
-                    },
+                    errors: [
+                        {
+                            code: "could-not-parse",
+                            reason: `Could not parse ${file}: ${e.message}`,
+                        },
+                    ],
                 });
             }
         }
     };
 
     // Process the main file set. These are considered "fixable" as they
-    // are the files that our user requested be processed directly.
-    await cacheFiles(files, true);
+    // are the files that our user requested be processed directly so we
+    // pass readOnly as false.
+    await cacheFiles(files, false);
 
     /**
-     * In this second pass, we load the files that are not in the original
-     * set, and capture their markers. We don't care about going any level
-     * deeper (though perhaps repeating till all referenced files are
-     * loaded would be a mode folks might want).
+     * In this second pass, we load the files that were referenced by the
+     * files we just processed and capture their markers.
      */
-    await cacheFiles(referencedFiles, false);
+    await cacheFiles(referencedFiles, true);
 
     return cacheData;
 }

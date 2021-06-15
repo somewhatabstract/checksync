@@ -2,67 +2,36 @@
 import readline from "readline";
 import fs from "fs";
 
-import generateBrokenEdgeMap from "./generate-broken-edge-map.js";
-import Format from "./format.js";
-import cwdRelativePath from "./cwd-relative-path.js";
-import FileReferenceLogger from "./file-reference-logger.js";
-
 import type {
-    ILog,
-    MarkerCache,
+    IPositionLog,
     Options,
-    FileProcessor,
-    MarkerEdge,
+    ErrorDetails,
+    ErrorDetailsByDeclaration,
 } from "./types.js";
 
-const reportBrokenEdge = (
+const reportFix = (
     sourceFile: string,
-    brokenEdge: MarkerEdge,
-    log: ILog,
+    errorDetail: ErrorDetails,
+    log: IPositionLog,
 ): void => {
-    const {
-        markerID,
-        sourceLine,
-        targetLine,
-        targetFile,
-        sourceChecksum,
-        targetChecksum,
-    } = brokenEdge;
+    const {fix, location} = errorDetail;
 
-    if (targetLine == null || targetChecksum == null) {
+    if (location == null || fix == null) {
         // We can't do anything with this.
         return;
     }
-
-    const NO_CHECKSUM = "No checksum";
-    const sourceFileRef = Format.cwdFilePath(`${sourceFile}:${sourceLine}`);
-    log.log(
-        Format.mismatch(
-            `${sourceFileRef} Updating checksum for sync-tag '${markerID}' referencing '${cwdRelativePath(
-                targetFile,
-            )}:${targetLine}' from ${
-                sourceChecksum || NO_CHECKSUM
-            } to ${targetChecksum}.`,
-        ),
-    );
+    log.mismatch(fix.description, location.line);
 };
 
-const validateAndFix: FileProcessor = (
+export default function fixFile(
     options: Options,
     file: string,
-    cache: $ReadOnly<MarkerCache>,
-    log: ILog,
-): Promise<boolean> => {
-    const fileRefLogger = new FileReferenceLogger(file, log);
+    log: IPositionLog,
+    errorsByDeclaration: ErrorDetailsByDeclaration,
+): Promise<void> {
     return new Promise((resolve, reject) => {
-        const brokenEdgeMap = generateBrokenEdgeMap(
-            options,
-            file,
-            cache,
-            fileRefLogger,
-        );
-        if (!brokenEdgeMap) {
-            resolve(true);
+        if (Object.keys(errorsByDeclaration).length === 0) {
+            resolve();
             return;
         }
 
@@ -78,10 +47,10 @@ const validateAndFix: FileProcessor = (
         const ws = options.dryRun
             ? {
                   write: (content: string) => {},
-                  end: () => resolve(false),
+                  end: () => resolve(),
               }
             : fs.createWriteStream(file, {fd, start: 0}).once("close", () => {
-                  resolve(false);
+                  resolve();
               });
 
         // Now, we'll read line by line and process what we get against
@@ -106,14 +75,23 @@ const validateAndFix: FileProcessor = (
             })
             .on("line", (line: string) => {
                 // Let's see if this is something we need to fix.
-                const mappedFix = brokenEdgeMap[line];
-                if (mappedFix != null) {
-                    reportBrokenEdge(file, mappedFix.edge, log);
+                // TODO: Work this out. We can't look up lines by the text
+                // being replaced anymore.
+                const errorDetails = errorsByDeclaration[line];
+                if (errorDetails != null) {
+                    reportFix(file, errorDetails, log);
                 }
 
-                // If we have a fix, use it, otherwise, just output the line
-                // as it is (we have to add the newline).
-                ws.write(`${mappedFix == null ? line : mappedFix.fix}\n`);
+                if (errorDetails?.fix?.type === "delete") {
+                    ws.write("");
+                } else if (errorDetails?.fix?.type === "replace") {
+                    // If we have a fix, use it.
+                    ws.write(`${errorDetails?.fix?.text}\n`);
+                } else {
+                    // Otherwise, just output the line as it is (we have to add
+                    // the newline)
+                    ws.write(`${line}\n`);
+                }
             })
             .on("close", () => {
                 // We have finished reading, so let's tell the write stream
@@ -123,6 +101,4 @@ const validateAndFix: FileProcessor = (
                 ws.end();
             });
     });
-};
-
-export default validateAndFix;
+}

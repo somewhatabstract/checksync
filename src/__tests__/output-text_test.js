@@ -1,6 +1,6 @@
 // @flow
 import Logger from "../logger.js";
-import ErrorCodes from "../error-codes.js";
+import ExitCodes from "../exit-codes.js";
 import outputText from "../output-text.js";
 
 import type {Options} from "../types.js";
@@ -9,7 +9,7 @@ jest.mock("../get-launch-string.js", () => () => "checksync");
 
 describe("#outputText", () => {
     describe("autofix is false", () => {
-        it("should return ErrorCodes.SUCCESS if all files are valid", async () => {
+        it("should return ExitCodes.SUCCESS if all files are valid", async () => {
             // Arrange
             const NullLogger = new Logger();
             const options: Options = {
@@ -26,10 +26,10 @@ describe("#outputText", () => {
             const result = outputText(options, NullLogger, [], []);
 
             // Assert
-            expect(result).toBe(ErrorCodes.SUCCESS);
+            expect(result).toBe(ExitCodes.SUCCESS);
         });
 
-        it("should return ErrorCodes.DESYNCHRONIZED_BLOCKS if some files are invalid", async () => {
+        it("should return ExitCodes.DESYNCHRONIZED_BLOCKS if some files are invalid", async () => {
             // Arrange
             const NullLogger = new Logger();
             const options: Options = {
@@ -51,7 +51,7 @@ describe("#outputText", () => {
             );
 
             // Assert
-            expect(result).toBe(ErrorCodes.DESYNCHRONIZED_BLOCKS);
+            expect(result).toBe(ExitCodes.DESYNCHRONIZED_BLOCKS);
         });
 
         it("should output guidance if syntax is valid but blocks mismatch", async () => {
@@ -109,7 +109,7 @@ describe("#outputText", () => {
     });
 
     describe("autofix is true", () => {
-        it("should return ErrorCodes.SUCCESS if no files were fixed", async () => {
+        it("should return ExitCodes.SUCCESS if no files were fixed", async () => {
             // Arrange
             const NullLogger = new Logger();
             const options: Options = {
@@ -126,10 +126,10 @@ describe("#outputText", () => {
             const result = outputText(options, NullLogger, [], []);
 
             // Assert
-            expect(result).toBe(ErrorCodes.SUCCESS);
+            expect(result).toBe(ExitCodes.SUCCESS);
         });
 
-        it("should return ErrorCodes.SUCCESS if files were fixed", async () => {
+        it("should return ExitCodes.SUCCESS if files were fixed", async () => {
             // Arrange
             const NullLogger = new Logger();
             const options: Options = {
@@ -151,7 +151,7 @@ describe("#outputText", () => {
             );
 
             // Assert
-            expect(result).toBe(ErrorCodes.SUCCESS);
+            expect(result).toBe(ExitCodes.SUCCESS);
         });
 
         it("should log how many files were fixed when not dry run", async () => {

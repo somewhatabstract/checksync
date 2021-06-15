@@ -2,7 +2,7 @@
 const defaultArgs = {
     updateTags: false,
     json: false,
-    comments: `${["#,//"].sort().join(",")}`,
+    comments: `${["#", "//", "{/*"].sort().join(",")}`,
     ignore: "",
     help: false,
     dryRun: false,

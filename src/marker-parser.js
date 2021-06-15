@@ -2,14 +2,10 @@
 import escapeRegExp from "lodash/escapeRegExp";
 
 import calcChecksum from "./checksum.js";
-import {MarkerError, TargetError, NoChecksum} from "./types.js";
+import {NoChecksum} from "./types.js";
+import ErrorCodes from "./error-codes.js";
 
-import type {
-    Targets,
-    normalizePathFn,
-    TargetErrorDetails,
-    MarkerErrorDetails,
-} from "./types.js";
+import type {Targets, normalizePathFn, ErrorDetails} from "./types.js";
 
 type TrackedTarget = {
     /**
@@ -33,13 +29,6 @@ type TrackedTarget = {
      * @type {string}
      */
     declaration: string,
-
-    /**
-     * The error detail for this target, or null if there is no error.
-     *
-     * @type {TargetErrorDetails}
-     */
-    error: ?TargetErrorDetails,
 };
 
 type TrackedTargets = {
@@ -88,8 +77,9 @@ type addMarkerFn = (
     targets: Targets,
     commentStart: string,
     commentEnd: string,
-    error: ?MarkerErrorDetails,
 ) => void;
+
+type recordErrorFn = (error: ErrorDetails) => void;
 
 /**
  * Convert our tracked targets object into a regular targets object.
@@ -98,12 +88,11 @@ const targetsFromTrackedTargets = (trackedTargets: TrackedTargets): Targets => {
     const targets: Targets = {};
 
     for (const file of Object.keys(trackedTargets)) {
-        const {line, checksum, declaration, error} = trackedTargets[file];
+        const {line, checksum, declaration} = trackedTargets[file];
         targets[line] = {
             file,
             checksum,
             declaration,
-            error,
         };
     }
 
@@ -131,6 +120,7 @@ const TagDecodeGroup = Object.freeze({
 export default class MarkerParser {
     _openMarkers: TrackedMarkers = {};
     _addMarker: addMarkerFn;
+    _recordError: recordErrorFn;
     _normalizePath: normalizePathFn;
     _startTagRegExp: RegExp;
     _startTagDecodeRegExp: RegExp;
@@ -143,14 +133,17 @@ export default class MarkerParser {
      *
      * @param {normalizePathFn} normalizePath - Callback that will normalize a given path.
      * @param {addMarkerFn} addMarker - Callback invoked when a complete marker has been parsed.
+     * @param {recordErrorFn} recordError - Callback invoked to record an error.
      * @param {Array<string>} comments - An array of strings that are used to detect the start of single-line comments.
      */
     constructor(
         normalizePath: normalizePathFn,
         addMarker: addMarkerFn,
+        recordError: recordErrorFn,
         comments: Array<string>,
     ) {
         this._addMarker = addMarker;
+        this._recordError = recordError;
         this._normalizePath = normalizePath;
         this._lineNumber = 1;
 
@@ -242,33 +235,38 @@ export default class MarkerParser {
             line,
             checksum,
             declaration,
-            error: null,
         };
 
         if (this._openMarkers[id].commentStart !== commentStart) {
-            target.error = {
-                message: `Sync-start tags for '${id}' given in different comment styles. Please use the same style for all sync-start tags that have identical identifiers.`,
-                line,
-                code: TargetError.differentCommentSyntax,
-            };
-        } else if (!normalized.exists) {
-            target.error = {
-                message: `Sync-start for '${id}' points to '${file}', which does not exist or is a directory`,
-                line,
-                code: TargetError.fileDoesNotExist,
-            };
-        } else if (this._openMarkers[id].targets[normalized.file]) {
-            target.error = {
-                message: `Duplicate target '${file}' for sync-tag '${id}'`,
-                line,
-                code: TargetError.duplicate,
-            };
-        } else if (this._openMarkers[id].content.length !== 0) {
-            target.error = {
-                message: `Sync-start for '${id}' found after content started`,
-                line,
-                code: TargetError.startTagAfterContent,
-            };
+            this._recordError({
+                reason: `Sync-start tags for '${id}' given in different comment styles. Please use the same style for all sync-start tags that have identical identifiers.`,
+                location: {line},
+                code: ErrorCodes.differentCommentSyntax,
+            });
+        }
+
+        if (!normalized.exists) {
+            this._recordError({
+                reason: `Sync-start for '${id}' points to '${file}', which does not exist or is a directory`,
+                location: {line},
+                code: ErrorCodes.fileDoesNotExist,
+            });
+        }
+
+        if (this._openMarkers[id].targets[normalized.file]) {
+            this._recordError({
+                reason: `Duplicate target '${file}' for sync-tag '${id}'`,
+                location: {line},
+                code: ErrorCodes.duplicateTarget,
+            });
+        }
+
+        if (this._openMarkers[id].content.length !== 0) {
+            this._recordError({
+                reason: `Sync-start for '${id}' found after content started`,
+                location: {line},
+                code: ErrorCodes.startTagAfterContent,
+            });
         }
 
         this._openMarkers[id].targets[normalized.file] = target;
@@ -280,20 +278,19 @@ export default class MarkerParser {
     ) => {
         const marker = this._openMarkers[id];
         delete this._openMarkers[id];
-        const error: ?MarkerErrorDetails =
-            marker == null
-                ? {
-                      message: `Sync-end for '${id}' found, but there was no corresponding sync-start`,
-                      line,
-                      code: MarkerError.endTagWithoutStartTag,
-                  }
-                : marker.content.length === 0
-                ? {
-                      message: `Sync-tag '${id}' has no content`,
-                      line,
-                      code: MarkerError.empty,
-                  }
-                : null;
+        if (marker == null) {
+            this._recordError({
+                reason: `Sync-end for '${id}' found, but there was no corresponding sync-start`,
+                location: {line},
+                code: ErrorCodes.endTagWithoutStartTag,
+            });
+        } else if (marker.content.length === 0) {
+            this._recordError({
+                reason: `Sync-tag '${id}' has no content`,
+                location: {line},
+                code: ErrorCodes.emptyMarker,
+            });
+        }
 
         this._addMarker(
             id,
@@ -301,7 +298,6 @@ export default class MarkerParser {
             marker == null ? {} : targetsFromTrackedTargets(marker.targets),
             marker?.commentStart,
             marker?.commentEnd,
-            error,
         );
     };
 
@@ -310,19 +306,11 @@ export default class MarkerParser {
         delete this._openMarkers[id];
         const targetFile = Object.keys(marker.targets)[0];
         const {line} = marker.targets[targetFile];
-        const targets = targetsFromTrackedTargets(marker.targets);
-        this._addMarker(
-            id,
-            NoChecksum,
-            targets,
-            marker.commentStart,
-            marker.commentEnd,
-            {
-                message: `Sync-start '${id}' has no corresponding sync-end`,
-                line,
-                code: MarkerError.startTagWithoutEndTag,
-            },
-        );
+        this._recordError({
+            reason: `Sync-start '${id}' has no corresponding sync-end`,
+            location: {line},
+            code: ErrorCodes.startTagWithoutEndTag,
+        });
     };
 
     _recordBadMarkerStart: (
@@ -330,35 +318,21 @@ export default class MarkerParser {
         commentStart: string,
         line: number,
     ) => void = (match, commentStart, line) => {
-        this._addMarker(
-            match,
-            NoChecksum,
-            {
-                [line]: {
-                    file: "Unknown",
-                    checksum: NoChecksum,
-                    declaration: match,
-                    error: {
-                        message: `Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'`,
-                        line,
-                        code: TargetError.malformedStartTag,
-                    },
-                },
-            },
-            commentStart,
-            "",
-            null,
-        );
+        this._recordError({
+            reason: `Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'`,
+            location: {line},
+            code: ErrorCodes.malformedStartTag,
+        });
     };
 
     _recordBadMarkerEnd: (match: string, line: number) => void = (
         match,
         line,
     ) => {
-        this._addMarker(match, NoChecksum, {}, "", "", {
-            message: `Malformed sync-end: format should be 'sync-end:<label>'`,
-            line,
-            code: MarkerError.malformedEndTag,
+        this._recordError({
+            reason: `Malformed sync-end: format should be 'sync-end:<label>'`,
+            location: {line},
+            code: ErrorCodes.malformedEndTag,
         });
     };
 

@@ -1,11 +1,11 @@
 // @flow
 import getMarkersFromFiles from "./get-markers-from-files.js";
 import getFiles from "./get-files.js";
-import ErrorCodes from "./error-codes.js";
+import ExitCodes from "./exit-codes.js";
 import processCache from "./process-cache.js";
 
 import type {ILog, Options} from "./types.js";
-import type {ErrorCode} from "./error-codes.js";
+import type {ExitCode} from "./exit-codes.js";
 
 /**
  *
@@ -19,7 +19,7 @@ import type {ErrorCode} from "./error-codes.js";
 export default async function checkSync(
     options: Options,
     log: ILog,
-): Promise<ErrorCode> {
+): Promise<ExitCode> {
     if (options.autoFix && options.dryRun) {
         log.info("DRY-RUN: Files will not be modified");
     }
@@ -28,7 +28,7 @@ export default async function checkSync(
 
     if (files.length === 0) {
         log.error("No matching files");
-        return ErrorCodes.NO_FILES;
+        return ExitCodes.NO_FILES;
     }
 
     const cache = await getMarkersFromFiles(options, files);
@@ -37,7 +37,7 @@ export default async function checkSync(
         log.log(
             "🛑  Aborting tag updates due to parsing errors. Fix these errors and try again.",
         );
-        return ErrorCodes.PARSE_ERRORS;
+        return ExitCodes.PARSE_ERRORS;
     }
 
     const result = processCache(options, cache, log);

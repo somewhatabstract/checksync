@@ -10,7 +10,7 @@ import ancesdir from "ancesdir";
 import Format from "./format.js";
 import MarkerParser from "./marker-parser.js";
 import getNormalizedTargetFileInfo from "./get-normalized-target-file-info.js";
-import {MarkerError} from "./types.js";
+import ErrorCodes from "./error-codes.js";
 
 import type {
     ILog,
@@ -20,7 +20,7 @@ import type {
     normalizePathFn,
     Options,
     FileParseResult,
-    MarkerErrorDetails,
+    ErrorDetails,
 } from "./types.js";
 
 /**
@@ -28,8 +28,7 @@ import type {
  *
  * @export
  * @param {string} file The path of the file to be parsed.
- * @param {boolean} fixable Whether markers imported from this file should be
- * considered as fixable.
+ * @param {boolean} readOnly Whether this file is considered read-only or not.
  * @param {Array<string>} comments An array of strings that specify the comment
  * syntax to look for at the start of marker tags.
  * @returns {Promise<FileParseResult>} The promise of the markers this file contains or
@@ -38,10 +37,15 @@ import type {
 export default function parseFile(
     options: Options,
     file: string,
-    fixable: boolean,
+    readOnly: boolean,
 ): Promise<FileParseResult> {
     const rootPath = ancesdir(file, options.rootMarker);
     const markers: Markers = {};
+    const errors: Array<ErrorDetails> = [];
+
+    const recordError = (e: ErrorDetails): void => {
+        errors.push(e);
+    };
 
     const addMarker = (
         id: string,
@@ -49,44 +53,32 @@ export default function parseFile(
         targets: Targets,
         commentStart: string,
         commentEnd: string,
-        error: ?MarkerErrorDetails,
     ): void => {
-        const errors = [];
-        if (error != null) {
-            errors.push(error);
-        }
-
         for (const line of Object.keys(targets)) {
             const lineNumber = parseInt(line);
             if (markers[id]) {
-                errors.push({
-                    message: `Sync-tag '${id}' declared multiple times`,
-                    line: lineNumber,
-                    code: MarkerError.duplicate,
+                recordError({
+                    reason: `Sync-tag '${id}' declared multiple times`,
+                    location: {
+                        line: lineNumber,
+                    },
+                    code: ErrorCodes.duplicateMarker,
                 });
             }
 
             const target = targets[lineNumber];
             if (target.file === file) {
-                errors.push({
-                    message: `Sync-tag '${id}' cannot target itself`,
-                    line: lineNumber,
-                    code: MarkerError.selfTargeting,
+                recordError({
+                    reason: `Sync-tag '${id}' cannot target itself`,
+                    location: {
+                        line: lineNumber,
+                    },
+                    code: ErrorCodes.selfTargeting,
                 });
             }
         }
 
-        if (markers[id] != null) {
-            markers[id] = {
-                ...markers[id],
-                errors: [...markers[id].errors, ...errors],
-            };
-            return;
-        }
-
         markers[id] = {
-            errors,
-            fixable,
             checksum,
             targets,
             commentStart,
@@ -100,7 +92,7 @@ export default function parseFile(
             rootPath,
             fileRef,
         );
-        if (fixable && normalizedFileInfo.exists) {
+        if (!readOnly && normalizedFileInfo.exists) {
             referencedFiles.push(normalizedFileInfo.file);
         }
         return normalizedFileInfo;
@@ -111,6 +103,7 @@ export default function parseFile(
             const markerParser = new MarkerParser(
                 normalizeFileRef,
                 addMarker,
+                recordError,
                 options.comments,
             );
 
@@ -133,10 +126,10 @@ export default function parseFile(
                     const result = {
                         markers: markerCount === 0 ? null : markers,
                         referencedFiles,
-                        error: null,
+                        errors,
                     };
 
-                    resolve(result);
+                    resolve({...result, readOnly});
                 });
         } catch (e) {
             reject(e);
@@ -144,13 +137,15 @@ export default function parseFile(
     }).then(
         (res) => res,
         (reason: Error) => {
+            recordError({
+                code: "could-not-parse",
+                reason: `Could not parse file: ${reason.message}`,
+            });
             return {
                 markers: null,
                 referencedFiles: [],
-                error: {
-                    code: "could-not-parse",
-                    message: `Could not parse file: ${reason.message}`,
-                },
+                errors,
+                readOnly,
             };
         },
     );

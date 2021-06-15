@@ -4,7 +4,7 @@ import * as minimist from "minimist";
 import fs from "fs";
 import {run} from "../cli.js";
 import * as CheckSync from "../check-sync.js";
-import ErrorCodes from "../error-codes.js";
+import ExitCodes from "../exit-codes.js";
 import Logger from "../logger.js";
 import defaultArgs from "../default-args.js";
 import * as ParseGitIgnore from "parse-gitignore";
@@ -72,7 +72,7 @@ describe("#run", () => {
 
             // Assert
             expect(underTest).toThrowError("PRETEND PROCESS EXIT!");
-            expect(exitSpy).toHaveBeenCalledWith(ErrorCodes.SUCCESS);
+            expect(exitSpy).toHaveBeenCalledWith(ExitCodes.SUCCESS);
         },
     );
 
@@ -402,7 +402,7 @@ describe("#run", () => {
             unknownHandler("--imadethisup");
 
             // Assert
-            expect(exitSpy).toHaveBeenCalledWith(ErrorCodes.UNKNOWN_ARGS);
+            expect(exitSpy).toHaveBeenCalledWith(ExitCodes.UNKNOWN_ARGS);
         });
 
         it("should report unknown arguments starting with -", () => {

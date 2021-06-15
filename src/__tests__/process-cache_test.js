@@ -1,7 +1,7 @@
 // @flow
 import processCache from "../process-cache.js";
 import Logger from "../logger.js";
-import ErrorCodes from "../error-codes.js";
+import ExitCodes from "../exit-codes.js";
 
 import * as ValidateAndReport from "../validate-and-report.js";
 import * as ValidateAndFix from "../validate-and-fix.js";
@@ -113,7 +113,7 @@ describe("#processCache", () => {
             );
         });
 
-        it("should return ErrorCodes.SUCCESS if all files are valid", async () => {
+        it("should return ExitCodes.SUCCESS if all files are valid", async () => {
             // Arrange
             const NullLogger = new Logger();
             jest.spyOn(ValidateAndReport, "default").mockReturnValue(
@@ -133,10 +133,10 @@ describe("#processCache", () => {
             const result = await processCache(options, TestCache, NullLogger);
 
             // Assert
-            expect(result).toBe(ErrorCodes.SUCCESS);
+            expect(result).toBe(ExitCodes.SUCCESS);
         });
 
-        it("should return ErrorCodes.DESYNCHRONIZED_BLOCKS if some files are invalid", async () => {
+        it("should return ExitCodes.DESYNCHRONIZED_BLOCKS if some files are invalid", async () => {
             // Arrange
             const NullLogger = new Logger();
             jest.spyOn(ValidateAndReport, "default").mockReturnValue(
@@ -156,7 +156,7 @@ describe("#processCache", () => {
             const result = await processCache(options, TestCache, NullLogger);
 
             // Assert
-            expect(result).toBe(ErrorCodes.DESYNCHRONIZED_BLOCKS);
+            expect(result).toBe(ExitCodes.DESYNCHRONIZED_BLOCKS);
         });
 
         it("should output guidance if syntax is valid but blocks mismatch", async () => {
@@ -254,7 +254,7 @@ describe("#processCache", () => {
             );
         });
 
-        it("should return ErrorCodes.SUCCESS if no files were fixed", async () => {
+        it("should return ExitCodes.SUCCESS if no files were fixed", async () => {
             // Arrange
             const NullLogger = new Logger();
             jest.spyOn(ValidateAndFix, "default").mockReturnValue(
@@ -274,10 +274,10 @@ describe("#processCache", () => {
             const result = await processCache(options, TestCache, NullLogger);
 
             // Assert
-            expect(result).toBe(ErrorCodes.SUCCESS);
+            expect(result).toBe(ExitCodes.SUCCESS);
         });
 
-        it("should return ErrorCodes.SUCCESS if files were fixed", async () => {
+        it("should return ExitCodes.SUCCESS if files were fixed", async () => {
             // Arrange
             const NullLogger = new Logger();
             jest.spyOn(ValidateAndFix, "default").mockReturnValue(
@@ -297,7 +297,7 @@ describe("#processCache", () => {
             const result = await processCache(options, TestCache, NullLogger);
 
             // Assert
-            expect(result).toBe(ErrorCodes.SUCCESS);
+            expect(result).toBe(ExitCodes.SUCCESS);
         });
 
         it("should log how many files were fixed when not dry run", async () => {
@@ -431,7 +431,7 @@ describe("#processCache", () => {
         const result = await processCache(options, TestCache, NullLogger);
 
         // Assert
-        expect(result).toBe(ErrorCodes.PARSE_ERRORS);
+        expect(result).toBe(ExitCodes.PARSE_ERRORS);
         expect(logSpy).toHaveBeenCalledWith(
             "🛑  Errors occurred during processing",
         );
