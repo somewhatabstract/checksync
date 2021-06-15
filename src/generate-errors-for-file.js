@@ -114,13 +114,8 @@ export default function* generateErrors(
             );
 
             const {commentStart, commentEnd} = sourceMarker;
-            const startOfComment = commentStart
-                ? targetRef.declaration.indexOf(commentStart)
-                : -1;
-            const indent =
-                startOfComment > 0
-                    ? targetRef.declaration.substring(0, startOfComment)
-                    : "";
+            const startOfComment = targetRef.declaration.indexOf(commentStart);
+            const indent = targetRef.declaration.substring(0, startOfComment);
             const checksums = `${sourceChecksum || NoChecksum} != ${
                 targetChecksum || NoChecksum
             }`;

@@ -139,6 +139,7 @@ export const run = (launchFilePath: string): void => {
         },
         (e) => {
             log.error(`Unexpected error: ${e}`);
+            log.verbose(() => `Exiting with code ${ExitCodes.CATASTROPHIC}`);
             process.exit(ExitCodes.CATASTROPHIC);
         },
     );

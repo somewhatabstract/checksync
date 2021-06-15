@@ -203,7 +203,53 @@ describe("#generateMarkerEdges", () => {
         expect(result).toEqual(markerCache.filea.errors);
     });
 
-    it("should yield an error when the target file does not reference source file", () => {
+    it("should yield an error when the marker does not exist in the target file", () => {
+        // Arrange
+        const options: Options = ({}: any);
+        const markerCache: MarkerCache = {
+            filea: {
+                readOnly: false,
+                errors: [],
+                aliases: ["filea"],
+                markers: {
+                    marker: ({
+                        commentStart: "//",
+                        commentEnd: undefined,
+                        checksum: "",
+                        targets: {
+                            [1]: ({
+                                checksum: "5678",
+                                file: "fileb",
+                                declaration: "// sync-start:marker 5678 fileb",
+                            }: Target),
+                        },
+                    }: Marker),
+                },
+            },
+            fileb: {
+                readOnly: false,
+                errors: [],
+                aliases: ["fileb"],
+                markers: {},
+            },
+        };
+
+        // Act
+        const result = Array.from(
+            generateErrorsForFile(options, "filea", markerCache),
+        );
+
+        // Assert
+        expect(result).toEqual([
+            {
+                code: "no-return-tag",
+                location: {line: 1},
+                reason: "No return tag named 'marker' in 'fileb'",
+            },
+        ]);
+    });
+
+    it("should yield an error when the marker in the target file does not reference source file", () => {
         // Arrange
         const options: Options = ({}: any);
         const markerCache: MarkerCache = {

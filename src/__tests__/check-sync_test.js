@@ -128,62 +128,10 @@ describe("#checkSync", () => {
         await checkSync(options, NullLogger);
 
         // Assert
-        expect(getMarkersFromFilesSpy).toHaveBeenCalledWith(
-            options,
-            ["filea", "fileb"],
-            NullLogger,
-        );
-    });
-
-    it("should log error if there were errors during cache build with autoFix", async () => {
-        // Arrange
-        const NullLogger = new Logger();
-        jest.spyOn(GetFiles, "default").mockReturnValue(["filea", "fileb"]);
-        const logSpy = jest.spyOn(NullLogger, "log");
-        jest.spyOn(GetMarkersFromFiles, "default").mockImplementation(() => {
-            NullLogger.error("Oh no!");
-            return {};
-        });
-        const options: Options = {
-            includeGlobs: ["glob1", "glob2"],
-            excludeGlobs: [],
-            dryRun: false,
-            autoFix: true,
-            comments: ["//"],
-            json: false,
-        };
-
-        // Act
-        await checkSync(options, NullLogger);
-
-        // Assert
-        expect(logSpy).toHaveBeenCalledWith(
-            "🛑  Aborting tag updates due to parsing errors. Fix these errors and try again.",
-        );
-    });
-
-    it("should return PARSE_ERRORS when there are no matching files", async () => {
-        // Arrange
-        const NullLogger = new Logger();
-        jest.spyOn(GetFiles, "default").mockReturnValue(["filea", "fileb"]);
-        jest.spyOn(GetMarkersFromFiles, "default").mockImplementation(() => {
-            NullLogger.error("Oh no!");
-            return {};
-        });
-        const options: Options = {
-            includeGlobs: ["glob1", "glob2"],
-            excludeGlobs: [],
-            dryRun: false,
-            autoFix: true,
-            comments: ["//"],
-            json: false,
-        };
-
-        // Act
-        const result = await checkSync(options, NullLogger);
-
-        // Assert
-        expect(result).toBe(ExitCodes.PARSE_ERRORS);
+        expect(getMarkersFromFilesSpy).toHaveBeenCalledWith(options, [
+            "filea",
+            "fileb",
+        ]);
     });
 
     it("should invoke ProcessCache with options, cache, and log", async () => {

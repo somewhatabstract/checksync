@@ -121,6 +121,7 @@ describe("#parseFile", () => {
             readOnly: false,
             markers: null,
             referencedFiles: [],
+            lineCount: 0,
         });
     });
 
@@ -266,7 +267,7 @@ describe("#parseFile", () => {
             errors: [
                 {
                     code: "self-targeting",
-                    location: {end: {line: 1}, start: {line: 1}},
+                    location: {line: 1},
                     reason: "Sync-tag 'MARKER_ID1' cannot target itself",
                 },
             ],
@@ -282,6 +283,7 @@ describe("#parseFile", () => {
             },
             readOnly: true,
             referencedFiles: [],
+            lineCount: 0,
         });
     });
 
@@ -439,6 +441,7 @@ describe("#parseFile", () => {
         expect(result).toEqual({
             errors: [],
             readOnly: false,
+            lineCount: 0,
             markers: {
                 MARKER_ID1: {
                     checksum: "ID1_CHECKSUM",
@@ -448,6 +451,8 @@ describe("#parseFile", () => {
                             checksum: "TARGET_CHECKSUM1",
                         },
                     },
+                    commentStart: undefined,
+                    commentEnd: undefined,
                 },
                 MARKER_ID2: {
                     checksum: "ID2_CHECKSUM",
@@ -457,6 +462,8 @@ describe("#parseFile", () => {
                             checksum: "TARGET_CHECKSUM2",
                         },
                     },
+                    commentStart: undefined,
+                    commentEnd: undefined,
                 },
             },
             referencedFiles: [],
@@ -502,7 +509,7 @@ describe("#parseFile", () => {
             errors: [
                 {
                     code: "duplicate-marker",
-                    location: {end: {line: 1}, start: {line: 1}},
+                    location: {line: 1},
                     reason: "Sync-tag 'MARKER_ID1' declared multiple times",
                 },
             ],
@@ -516,6 +523,7 @@ describe("#parseFile", () => {
             },
             readOnly: false,
             referencedFiles: [],
+            lineCount: 0,
         });
     });
 });

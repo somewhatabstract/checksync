@@ -29,6 +29,20 @@ describe("FileReferenceLogger", () => {
         expect(spy).toHaveBeenCalled();
     });
 
+    describe("#file", () => {
+        it("should return file path", () => {
+            // Arrange
+            const NullLogger = new Logger();
+            const logger = new FileReferenceLogger("FILE", NullLogger);
+
+            // Act
+            const result = logger.file;
+
+            // Assert
+            expect(result).toBe("FILE");
+        });
+    });
+
     describe("#verbose", () => {
         it("should prefix with default file reference", () => {
             // Arrange
@@ -56,6 +70,38 @@ describe("FileReferenceLogger", () => {
             // Assert
             expect(spy).toHaveBeenCalledWith(expect.any(Function));
             expect(spy.mock.calls[0][0]()).toBe("FILE:42 MESSAGE");
+        });
+    });
+
+    describe.each(["mismatch", "fix"])("#%s", (testCase) => {
+        it("should prefix with default file reference and message type", () => {
+            // Arrange
+            const NullLogger = new Logger();
+            const spy = jest.spyOn(NullLogger, "log");
+            const logger = new FileReferenceLogger("FILE", NullLogger);
+
+            // Act
+            (logger: any)[testCase]("MESSAGE");
+
+            // Assert
+            expect(spy).toHaveBeenCalledWith(
+                ` ${testCase.toUpperCase()}  FILE MESSAGE`,
+            );
+        });
+
+        it("should prefix with file:line reference", () => {
+            // Arrange
+            const NullLogger = new Logger();
+            const spy = jest.spyOn(NullLogger, "log");
+            const logger = new FileReferenceLogger("FILE", NullLogger);
+
+            // Act
+            (logger: any)[testCase]("MESSAGE", 42);
+
+            // Assert
+            expect(spy).toHaveBeenCalledWith(
+                ` ${testCase.toUpperCase()}  FILE:42 MESSAGE`,
+            );
         });
     });
 

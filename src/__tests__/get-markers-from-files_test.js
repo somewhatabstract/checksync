@@ -102,6 +102,116 @@ describe("#fromFiles", () => {
         expect(parseSpy).toHaveBeenCalledWith(options, "c.js", true);
     });
 
+    it("should cache symlinked files of already parsed files as read only", async () => {
+        // Arrange
+        const parseSpy = jest
+            .spyOn(ParseFile, "default")
+            .mockImplementation((options, file, fixable, logger) => {
+                if (file === "a.js") {
+                    return Promise.resolve({
+                        markers: {},
+                        referencedFiles: ["c.js"],
+                    });
+                }
+                return Promise.resolve({markers: {}, referencedFiles: []});
+            });
+        jest.spyOn(fs, "realpathSync").mockImplementation((a) => "a.js");
+        const options: Options = {
+            includeGlobs: ["a.js"],
+            comments: ["//"],
+            autoFix: true,
+            rootMarker: null,
+            dryRun: false,
+            excludeGlobs: [],
+            json: false,
+        };
+
+        // Act
+        const result = await getMarkersFromFiles(options, ["a.js", "b.js"]);
+
+        // Assert
+        expect(parseSpy).toHaveBeenCalledWith(options, "a.js", false);
+        expect(parseSpy).not.toHaveBeenCalledWith(options, "b.js", false);
+        expect(result).toStrictEqual({
+            "a.js": {
+                aliases: ["a.js", "b.js", "c.js"],
+                errors: undefined,
+                lineCount: undefined,
+                markers: {},
+                readOnly: false,
+            },
+            "b.js": {
+                aliases: ["a.js", "b.js", "c.js"],
+                errors: undefined,
+                lineCount: undefined,
+                markers: {},
+                readOnly: true,
+            },
+            "c.js": {
+                aliases: ["a.js", "b.js", "c.js"],
+                errors: undefined,
+                lineCount: undefined,
+                markers: {},
+                readOnly: true,
+            },
+        });
+    });
+
+    it("should cache real files of already parsed symlinks as read only", async () => {
+        // Arrange
+        const parseSpy = jest
+            .spyOn(ParseFile, "default")
+            .mockImplementation((options, file, fixable, logger) => {
+                if (file === "a.js") {
+                    return Promise.resolve({
+                        markers: {},
+                        referencedFiles: ["c.js"],
+                    });
+                }
+                return Promise.resolve({markers: {}, referencedFiles: []});
+            });
+        jest.spyOn(fs, "realpathSync").mockImplementation((a) => "b.js");
+        const options: Options = {
+            includeGlobs: ["a.js"],
+            comments: ["//"],
+            autoFix: true,
+            rootMarker: null,
+            dryRun: false,
+            excludeGlobs: [],
+            json: false,
+        };
+
+        // Act
+        const result = await getMarkersFromFiles(options, ["a.js", "b.js"]);
+
+        // Assert
+        expect(parseSpy).toHaveBeenCalledWith(options, "a.js", false);
+        expect(parseSpy).not.toHaveBeenCalledWith(options, "b.js", false);
+        expect(result).toStrictEqual({
+            "a.js": {
+                aliases: ["a.js", "b.js", "c.js"],
+                errors: undefined,
+                lineCount: undefined,
+                markers: {},
+                readOnly: false,
+            },
+            "b.js": {
+                aliases: ["a.js", "b.js", "c.js"],
+                errors: undefined,
+                lineCount: undefined,
+                markers: {},
+                readOnly: true,
+            },
+            "c.js": {
+                aliases: ["a.js", "b.js", "c.js"],
+                errors: undefined,
+                lineCount: undefined,
+                markers: {},
+                readOnly: true,
+            },
+        });
+    });
+
     it("should return file cache", async () => {
         // Arrange
         jest.spyOn(ParseFile, "default").mockImplementation(
