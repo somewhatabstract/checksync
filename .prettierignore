@@ -11,3 +11,4 @@ __examples__
 .prettierignore
 yarn.lock
 .babelrc
+__snapshots__

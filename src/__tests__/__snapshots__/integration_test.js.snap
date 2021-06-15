@@ -1,8 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[
-    `Integration Tests should report example checksums_need_updating to match snapshot 1`
-] = `
+exports[`Integration Tests should report example checksums_need_updating to match snapshot 1`] = `
 " MISMATCH  __examples__/checksums_need_updating/a.js:4 Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (45678 != 249234014)
  MISMATCH  __examples__/checksums_need_updating/a.js:5 Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/c.jsx:3'. Make sure you've made the parallel changes in the source file, if necessary (1234 != 1992689801)
  MISMATCH  __examples__/checksums_need_updating/b.py:3 Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/a.js:4'. Make sure you've made the parallel changes in the source file, if necessary (4567 != 2050223083)
@@ -10,284 +8,460 @@ exports[
 
 <group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
   
-  checksync -c \\"#,//,{/*\\" -u __examples__/checksums_need_updating/a.js __examples__/checksums_need_updating/b.py __examples__/checksums_need_updating/c.jsx
+  checksync -u __examples__/checksums_need_updating/a.js __examples__/checksums_need_updating/b.py __examples__/checksums_need_updating/c.jsx
 <end_group>"
 `;
 
-exports[
-    `Integration Tests should report example checksums_need_updating to match snapshot with autofix dryrun 1`
-] = `
+exports[`Integration Tests should report example checksums_need_updating to match snapshot with autofix dryrun 1`] = `
 " INFO  DRY-RUN: Files will not be modified
- MISMATCH  __examples__/checksums_need_updating/a.js:4 Updating checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/b.py:3' from 45678 to 249234014.
- MISMATCH  __examples__/checksums_need_updating/a.js:5 Updating checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/c.jsx:3' from 1234 to 1992689801.
- MISMATCH  __examples__/checksums_need_updating/b.py:3 Updating checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/a.js:4' from 4567 to 2050223083.
- MISMATCH  __examples__/checksums_need_updating/c.jsx:3 Updating checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/a.js:5' from 123 to 2050223083.
+ FIX  __examples__/checksums_need_updating/a.js:4 Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/b.py:3' from 45678 to 249234014.
+ FIX  __examples__/checksums_need_updating/a.js:5 Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/c.jsx:3' from 1234 to 1992689801.
+ FIX  __examples__/checksums_need_updating/b.py:3 Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/a.js:4' from 4567 to 2050223083.
+ FIX  __examples__/checksums_need_updating/c.jsx:3 Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/a.js:5' from 123 to 2050223083.
 <group 3 file(s) would have been fixed. To fix, run: >
   
-  checksync -c \\"#,//,{/*\\" -u __examples__/checksums_need_updating/a.js __examples__/checksums_need_updating/b.py __examples__/checksums_need_updating/c.jsx
-<end_group>
-🎉  Everything is in sync!"
-`;
-
-exports[
-    `Integration Tests should report example checksums_need_updating to match snapshot with json 1`
-] = `
-"{
-    \\"version\\": \\"2.3.0\\",
-    \\"launchString\\": \\"checksync\\",
-    \\"items\\": [
-        {
-            \\"type\\": \\"violation\\",
-            \\"sourceFile\\": \\"__examples__/checksums_need_updating/a.js\\",
-            \\"sourceLine\\": 4,
-            \\"targetFile\\": \\"__examples__/checksums_need_updating/b.py\\",
-            \\"targetLine\\": 3,
-            \\"message\\": \\"__examples__/checksums_need_updating/a.js:4 Updating checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/b.py:3' from 45678 to 249234014.\\",
-            \\"fix\\": \\"    // sync-start:update_me 249234014 __examples__/checksums_need_updating/b.py\\"
-        },
-        {
-            \\"type\\": \\"violation\\",
-            \\"sourceFile\\": \\"__examples__/checksums_need_updating/a.js\\",
-            \\"sourceLine\\": 5,
-            \\"targetFile\\": \\"__examples__/checksums_need_updating/c.jsx\\",
-            \\"targetLine\\": 3,
-            \\"message\\": \\"__examples__/checksums_need_updating/a.js:5 Updating checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/c.jsx:3' from 1234 to 1992689801.\\",
-            \\"fix\\": \\"    // sync-start:update_me 1992689801 __examples__/checksums_need_updating/c.jsx\\"
-        },
-        {
-            \\"type\\": \\"violation\\",
-            \\"sourceFile\\": \\"__examples__/checksums_need_updating/b.py\\",
-            \\"sourceLine\\": 3,
-            \\"targetFile\\": \\"__examples__/checksums_need_updating/a.js\\",
-            \\"targetLine\\": 4,
-            \\"message\\": \\"__examples__/checksums_need_updating/b.py:3 Updating checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/a.js:4' from 4567 to 2050223083.\\",
-            \\"fix\\": \\"# sync-start:update_me 2050223083 __examples__/checksums_need_updating/a.js\\"
-        },
-        {
-            \\"type\\": \\"violation\\",
-            \\"sourceFile\\": \\"__examples__/checksums_need_updating/c.jsx\\",
-            \\"sourceLine\\": 3,
-            \\"targetFile\\": \\"__examples__/checksums_need_updating/a.js\\",
-            \\"targetLine\\": 5,
-            \\"message\\": \\"__examples__/checksums_need_updating/c.jsx:3 Updating checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/a.js:5' from 123 to 2050223083.\\",
-            \\"fix\\": \\"        {/* sync-start:update_me 2050223083 __examples__/checksums_need_updating/a.js */}\\"
-        }
-    ]
-}"
-`;
-
-exports[
-    `Integration Tests should report example content_after_start to match snapshot 1`
-] = `
-" ERROR  __examples__/content_after_start/c.js:5 Sync-start for 'content_after_start' found after content started
- MISMATCH  __examples__/content_after_start/a.js:3 Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)
- MISMATCH  __examples__/content_after_start/b.py:3 Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/a.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)
- MISMATCH  __examples__/content_after_start/b.py:4 Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/c.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)
- MISMATCH  __examples__/content_after_start/c.js:3 Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/b.py:4'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)
-
-<group 🛑  Desynchronized blocks detected and parsing errors found. Fix the errors, update the blocks, then update the sync-start tags using: >
-  
-  checksync -c \\"#,//,{/*\\" -u __examples__/content_after_start/a.js __examples__/content_after_start/b.py __examples__/content_after_start/c.js
+  checksync -u __examples__/checksums_need_updating/a.js __examples__/checksums_need_updating/b.py __examples__/checksums_need_updating/c.jsx
 <end_group>"
 `;
 
-exports[
-    `Integration Tests should report example content_after_start to match snapshot with autofix dryrun 1`
-] = `
-" INFO  DRY-RUN: Files will not be modified
- ERROR  __examples__/content_after_start/c.js:5 Sync-start for 'content_after_start' found after content started
-
-🛑  Aborting tag updates due to parsing errors. Fix these errors and try again."
-`;
-
-exports[
-    `Integration Tests should report example content_after_start to match snapshot with json 1`
-] = `
-" ERROR  __examples__/content_after_start/c.js:5 Sync-start for 'content_after_start' found after content started
-{
-    \\"version\\": \\"2.3.0\\",
-    \\"launchString\\": \\"checksync\\",
-    \\"items\\": [
-        {
-            \\"type\\": \\"violation\\",
-            \\"sourceFile\\": \\"__examples__/content_after_start/a.js\\",
-            \\"sourceLine\\": 3,
-            \\"targetFile\\": \\"__examples__/content_after_start/b.py\\",
-            \\"targetLine\\": 3,
-            \\"message\\": \\"__examples__/content_after_start/a.js:3 Updating checksum for sync-tag 'content_after_start' referencing '__examples__/content_after_start/b.py:3' from No checksum to 249234014.\\",
-            \\"fix\\": \\"// sync-start:content_after_start 249234014 __examples__/content_after_start/b.py\\"
-        },
-        {
-            \\"type\\": \\"violation\\",
-            \\"sourceFile\\": \\"__examples__/content_after_start/b.py\\",
-            \\"sourceLine\\": 3,
-            \\"targetFile\\": \\"__examples__/content_after_start/a.js\\",
-            \\"targetLine\\": 3,
-            \\"message\\": \\"__examples__/content_after_start/b.py:3 Updating checksum for sync-tag 'content_after_start' referencing '__examples__/content_after_start/a.js:3' from No checksum to 770446101.\\",
-            \\"fix\\": \\"# sync-start:content_after_start 770446101 __examples__/content_after_start/a.js\\"
-        },
-        {
-            \\"type\\": \\"violation\\",
-            \\"sourceFile\\": \\"__examples__/content_after_start/b.py\\",
-            \\"sourceLine\\": 4,
-            \\"targetFile\\": \\"__examples__/content_after_start/c.js\\",
-            \\"targetLine\\": 3,
-            \\"message\\": \\"__examples__/content_after_start/b.py:4 Updating checksum for sync-tag 'content_after_start' referencing '__examples__/content_after_start/c.js:3' from No checksum to 770446101.\\",
-            \\"fix\\": \\"# sync-start:content_after_start 770446101 __examples__/content_after_start/c.js\\"
-        },
-        {
-            \\"type\\": \\"violation\\",
-            \\"sourceFile\\": \\"__examples__/content_after_start/c.js\\",
-            \\"sourceLine\\": 3,
-            \\"targetFile\\": \\"__examples__/content_after_start/b.py\\",
-            \\"targetLine\\": 4,
-            \\"message\\": \\"__examples__/content_after_start/c.js:3 Updating checksum for sync-tag 'content_after_start' referencing '__examples__/content_after_start/b.py:4' from No checksum to 249234014.\\",
-            \\"fix\\": \\"// sync-start:content_after_start 249234014 __examples__/content_after_start/b.py\\"
-        }
-    ]
-}"
-`;
-
-exports[
-    `Integration Tests should report example correct_checksums to match snapshot 1`
-] = `"🎉  Everything is in sync!"`;
-
-exports[
-    `Integration Tests should report example correct_checksums to match snapshot with autofix dryrun 1`
-] = `
-" INFO  DRY-RUN: Files will not be modified
-🎉  Everything is in sync!"
-`;
-
-exports[
-    `Integration Tests should report example correct_checksums to match snapshot with json 1`
-] = `
+exports[`Integration Tests should report example checksums_need_updating to match snapshot with json 1`] = `
 "{
     \\"version\\": \\"2.3.0\\",
-    \\"launchString\\": \\"checksync\\",
-    \\"items\\": []
+    \\"launchString\\": \\"checksync -u __examples__/checksums_need_updating/a.js __examples__/checksums_need_updating/b.py __examples__/checksums_need_updating/c.jsx\\",
+    \\"files\\": {
+        \\"__examples__/checksums_need_updating/a.js\\": [
+            {
+                \\"code\\": \\"mismatched-checksum\\",
+                \\"reason\\": \\"Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (45678 != 249234014)\\",
+                \\"location\\": {
+                    \\"line\\": 3
+                },
+                \\"fix\\": {
+                    \\"type\\": \\"replace\\",
+                    \\"line\\": 4,
+                    \\"text\\": \\"    // sync-start:update_me 249234014 __examples__/checksums_need_updating/b.py\\",
+                    \\"declaration\\": \\"    // sync-start:update_me 45678 __examples__/checksums_need_updating/b.py\\",
+                    \\"description\\": \\"Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/b.py:3' from 45678 to 249234014.\\"
+                }
+            },
+            {
+                \\"code\\": \\"mismatched-checksum\\",
+                \\"reason\\": \\"Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/c.jsx:3'. Make sure you've made the parallel changes in the source file, if necessary (1234 != 1992689801)\\",
+                \\"location\\": {
+                    \\"line\\": 3
+                },
+                \\"fix\\": {
+                    \\"type\\": \\"replace\\",
+                    \\"line\\": 5,
+                    \\"text\\": \\"    // sync-start:update_me 1992689801 __examples__/checksums_need_updating/c.jsx\\",
+                    \\"declaration\\": \\"    // sync-start:update_me 1234 __examples__/checksums_need_updating/c.jsx\\",
+                    \\"description\\": \\"Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/c.jsx:3' from 1234 to 1992689801.\\"
+                }
+            }
+        ],
+        \\"__examples__/checksums_need_updating/b.py\\": [
+            {
+                \\"code\\": \\"mismatched-checksum\\",
+                \\"reason\\": \\"Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/a.js:4'. Make sure you've made the parallel changes in the source file, if necessary (4567 != 2050223083)\\",
+                \\"location\\": {
+                    \\"line\\": 4
+                },
+                \\"fix\\": {
+                    \\"type\\": \\"replace\\",
+                    \\"line\\": 3,
+                    \\"text\\": \\"# sync-start:update_me 2050223083 __examples__/checksums_need_updating/a.js\\",
+                    \\"declaration\\": \\"# sync-start:update_me 4567 __examples__/checksums_need_updating/a.js\\",
+                    \\"description\\": \\"Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/a.js:4' from 4567 to 2050223083.\\"
+                }
+            }
+        ],
+        \\"__examples__/checksums_need_updating/c.jsx\\": [
+            {
+                \\"code\\": \\"mismatched-checksum\\",
+                \\"reason\\": \\"Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/a.js:5'. Make sure you've made the parallel changes in the source file, if necessary (123 != 2050223083)\\",
+                \\"location\\": {
+                    \\"line\\": 5
+                },
+                \\"fix\\": {
+                    \\"type\\": \\"replace\\",
+                    \\"line\\": 3,
+                    \\"text\\": \\"        {/* sync-start:update_me 2050223083 __examples__/checksums_need_updating/a.js */}\\",
+                    \\"declaration\\": \\"        {/* sync-start:update_me 123 __examples__/checksums_need_updating/a.js */}\\",
+                    \\"description\\": \\"Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/a.js:5' from 123 to 2050223083.\\"
+                }
+            }
+        ]
+    }
 }"
 `;
 
-exports[
-    `Integration Tests should report example directory_target to match snapshot 1`
-] = `
-" ERROR  __examples__/directory_target/example.js:3 Sync-start for 'directory_target' points to '__examples__/directory_target/a_directory', which does not exist or is a directory
-🛑  Errors occurred during processing"
+exports[`Integration Tests should report example content_after_start to match snapshot 1`] = `
+" MISMATCH  __examples__/content_after_start/a.js:3 Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)
+ MISMATCH  __examples__/content_after_start/b.py:3 Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/a.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)
+ MISMATCH  __examples__/content_after_start/b.py:4 Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/c.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)
+ ERROR  __examples__/content_after_start/c.js:5 Sync-start for 'content_after_start' found after content started
+ MISMATCH  __examples__/content_after_start/c.js:3 Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/b.py:4'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)
+ ERROR  __examples__/content_after_start/c.js:5 No return tag named 'content_after_start' in '/Users/jeffyates/git/checksync/__examples__/content_after_start/a.js'
+
+<group 🛑  Desynchronized blocks detected and parsing errors were found. Fix the errors, update the blocks, then update the sync-start tags using: >
+  
+  checksync -u __examples__/content_after_start/a.js __examples__/content_after_start/b.py __examples__/content_after_start/c.js
+<end_group>"
 `;
 
-exports[
-    `Integration Tests should report example directory_target to match snapshot with autofix dryrun 1`
-] = `
+exports[`Integration Tests should report example content_after_start to match snapshot with autofix dryrun 1`] = `
+" INFO  DRY-RUN: Files will not be modified
+ FIX  __examples__/content_after_start/a.js:3 Updated checksum for sync-tag 'content_after_start' referencing '__examples__/content_after_start/b.py:3' from no checksum to 249234014.
+ FIX  __examples__/content_after_start/b.py:3 Updated checksum for sync-tag 'content_after_start' referencing '__examples__/content_after_start/a.js:3' from no checksum to 770446101.
+ FIX  __examples__/content_after_start/b.py:4 Updated checksum for sync-tag 'content_after_start' referencing '__examples__/content_after_start/c.js:3' from no checksum to 770446101.
+ ERROR  __examples__/content_after_start/c.js:5 Sync-start for 'content_after_start' found after content started
+ ERROR  __examples__/content_after_start/c.js:5 No return tag named 'content_after_start' in '/Users/jeffyates/git/checksync/__examples__/content_after_start/a.js'
+<group 3 file(s) would have been fixed. To fix, run: >
+  
+  checksync -u __examples__/content_after_start/a.js __examples__/content_after_start/b.py __examples__/content_after_start/c.js
+<end_group>
+ ERROR  🛑  Could not update all tags due to non-fixable errors. Fix these errors and try again."
+`;
+
+exports[`Integration Tests should report example content_after_start to match snapshot with json 1`] = `
+"{
+    \\"version\\": \\"2.3.0\\",
+    \\"launchString\\": \\"checksync -u __examples__/content_after_start/a.js __examples__/content_after_start/b.py __examples__/content_after_start/c.js\\",
+    \\"files\\": {
+        \\"__examples__/content_after_start/a.js\\": [
+            {
+                \\"code\\": \\"mismatched-checksum\\",
+                \\"reason\\": \\"Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)\\",
+                \\"location\\": {
+                    \\"line\\": 3
+                },
+                \\"fix\\": {
+                    \\"type\\": \\"replace\\",
+                    \\"line\\": 3,
+                    \\"text\\": \\"// sync-start:content_after_start 249234014 __examples__/content_after_start/b.py\\",
+                    \\"declaration\\": \\"// sync-start:content_after_start __examples__/content_after_start/b.py\\",
+                    \\"description\\": \\"Updated checksum for sync-tag 'content_after_start' referencing '__examples__/content_after_start/b.py:3' from no checksum to 249234014.\\"
+                }
+            }
+        ],
+        \\"__examples__/content_after_start/b.py\\": [
+            {
+                \\"code\\": \\"mismatched-checksum\\",
+                \\"reason\\": \\"Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/a.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)\\",
+                \\"location\\": {
+                    \\"line\\": 3
+                },
+                \\"fix\\": {
+                    \\"type\\": \\"replace\\",
+                    \\"line\\": 3,
+                    \\"text\\": \\"# sync-start:content_after_start 770446101 __examples__/content_after_start/a.js\\",
+                    \\"declaration\\": \\"# sync-start:content_after_start __examples__/content_after_start/a.js\\",
+                    \\"description\\": \\"Updated checksum for sync-tag 'content_after_start' referencing '__examples__/content_after_start/a.js:3' from no checksum to 770446101.\\"
+                }
+            },
+            {
+                \\"code\\": \\"mismatched-checksum\\",
+                \\"reason\\": \\"Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/c.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)\\",
+                \\"location\\": {
+                    \\"line\\": 3
+                },
+                \\"fix\\": {
+                    \\"type\\": \\"replace\\",
+                    \\"line\\": 4,
+                    \\"text\\": \\"# sync-start:content_after_start 770446101 __examples__/content_after_start/c.js\\",
+                    \\"declaration\\": \\"# sync-start:content_after_start __examples__/content_after_start/c.js\\",
+                    \\"description\\": \\"Updated checksum for sync-tag 'content_after_start' referencing '__examples__/content_after_start/c.js:3' from no checksum to 770446101.\\"
+                }
+            }
+        ],
+        \\"__examples__/content_after_start/c.js\\": [
+            {
+                \\"reason\\": \\"Sync-start for 'content_after_start' found after content started\\",
+                \\"location\\": {
+                    \\"line\\": 5
+                },
+                \\"code\\": \\"start-tag-after-content\\"
+            },
+            {
+                \\"code\\": \\"mismatched-checksum\\",
+                \\"reason\\": \\"Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/b.py:4'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)\\",
+                \\"location\\": {
+                    \\"line\\": 4
+                },
+                \\"fix\\": {
+                    \\"type\\": \\"replace\\",
+                    \\"line\\": 3,
+                    \\"text\\": \\"// sync-start:content_after_start 249234014 __examples__/content_after_start/b.py\\",
+                    \\"declaration\\": \\"// sync-start:content_after_start __examples__/content_after_start/b.py\\",
+                    \\"description\\": \\"Updated checksum for sync-tag 'content_after_start' referencing '__examples__/content_after_start/b.py:4' from no checksum to 249234014.\\"
+                }
+            },
+            {
+                \\"reason\\": \\"No return tag named 'content_after_start' in '/Users/jeffyates/git/checksync/__examples__/content_after_start/a.js'\\",
+                \\"code\\": \\"no-return-tag\\",
+                \\"location\\": {
+                    \\"line\\": 5
+                }
+            }
+        ]
+    }
+}"
+`;
+
+exports[`Integration Tests should report example correct_checksums to match snapshot 1`] = `"🎉  Everything is in sync!"`;
+
+exports[`Integration Tests should report example correct_checksums to match snapshot with autofix dryrun 1`] = `
+" INFO  DRY-RUN: Files will not be modified
+🎉  Everything is in sync!"
+`;
+
+exports[`Integration Tests should report example correct_checksums to match snapshot with json 1`] = `
+"{
+    \\"version\\": \\"2.3.0\\",
+    \\"launchString\\": \\"checksync -u \\",
+    \\"files\\": {}
+}"
+`;
+
+exports[`Integration Tests should report example directory_target to match snapshot 1`] = `
+" ERROR  __examples__/directory_target/example.js:3 Sync-start for 'directory_target' points to '__examples__/directory_target/a_directory', which does not exist or is a directory
+ ERROR  __examples__/directory_target/example.js:3 No return tag named 'directory_target' in '/Users/jeffyates/git/checksync/__examples__/directory_target/a_directory'
+🛑  Errors occurred during processing. Fix the errors and try again."
+`;
+
+exports[`Integration Tests should report example directory_target to match snapshot with autofix dryrun 1`] = `
 " INFO  DRY-RUN: Files will not be modified
  ERROR  __examples__/directory_target/example.js:3 Sync-start for 'directory_target' points to '__examples__/directory_target/a_directory', which does not exist or is a directory
-
-🛑  Aborting tag updates due to parsing errors. Fix these errors and try again."
+ ERROR  __examples__/directory_target/example.js:3 No return tag named 'directory_target' in '/Users/jeffyates/git/checksync/__examples__/directory_target/a_directory'
+🛑  Errors occurred during processing. Fix the errors and try again.
+ ERROR  🛑  Could not update all tags due to non-fixable errors. Fix these errors and try again."
 `;
 
-exports[
-    `Integration Tests should report example directory_target to match snapshot with json 1`
-] = `
-" ERROR  __examples__/directory_target/example.js:3 Sync-start for 'directory_target' points to '__examples__/directory_target/a_directory', which does not exist or is a directory
-{
+exports[`Integration Tests should report example directory_target to match snapshot with json 1`] = `
+"{
     \\"version\\": \\"2.3.0\\",
-    \\"launchString\\": \\"checksync\\",
-    \\"items\\": []
+    \\"launchString\\": \\"checksync -u \\",
+    \\"files\\": {
+        \\"__examples__/directory_target/example.js\\": [
+            {
+                \\"reason\\": \\"Sync-start for 'directory_target' points to '__examples__/directory_target/a_directory', which does not exist or is a directory\\",
+                \\"location\\": {
+                    \\"line\\": 3
+                },
+                \\"code\\": \\"file-does-not-exist\\"
+            },
+            {
+                \\"reason\\": \\"No return tag named 'directory_target' in '/Users/jeffyates/git/checksync/__examples__/directory_target/a_directory'\\",
+                \\"code\\": \\"no-return-tag\\",
+                \\"location\\": {
+                    \\"line\\": 3
+                }
+            }
+        ]
+    }
 }"
 `;
 
-exports[
-    `Integration Tests should report example end_with_no_start to match snapshot 1`
-] = `
-" WARNING  __examples__/end_with_no_start/example.js:5 Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start
-🎉  Everything is in sync!"
+exports[`Integration Tests should report example duplicate-target to match snapshot 1`] = `
+" WARNING  __examples__/duplicate-target/a.js:5 Duplicate target for sync-tag 'update_me'
+ MISMATCH  __examples__/duplicate-target/a.js:4 Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (12352 != 249234014)
+ MISMATCH  __examples__/duplicate-target/a.js:5 Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (12345 != 249234014)
+ MISMATCH  __examples__/duplicate-target/b.py:3 Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/a.js:4'. Make sure you've made the parallel changes in the source file, if necessary (4567 != 2050223083)
+
+<group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
+  
+  checksync -u __examples__/duplicate-target/a.js __examples__/duplicate-target/b.py
+<end_group>"
 `;
 
-exports[
-    `Integration Tests should report example end_with_no_start to match snapshot with autofix dryrun 1`
-] = `
+exports[`Integration Tests should report example duplicate-target to match snapshot with autofix dryrun 1`] = `
+" INFO  DRY-RUN: Files will not be modified
+ FIX  __examples__/duplicate-target/a.js:4 Updated checksum for sync-tag 'update_me' referencing '__examples__/duplicate-target/b.py:3' from 12352 to 249234014.
+ FIX  __examples__/duplicate-target/a.js:5 Removed duplicate target for sync-tag 'update_me'
+ FIX  __examples__/duplicate-target/b.py:3 Updated checksum for sync-tag 'update_me' referencing '__examples__/duplicate-target/a.js:4' from 4567 to 2050223083.
+<group 2 file(s) would have been fixed. To fix, run: >
+  
+  checksync -u __examples__/duplicate-target/a.js __examples__/duplicate-target/b.py
+<end_group>"
+`;
+
+exports[`Integration Tests should report example duplicate-target to match snapshot with json 1`] = `
+"{
+    \\"version\\": \\"2.3.0\\",
+    \\"launchString\\": \\"checksync -u __examples__/duplicate-target/a.js __examples__/duplicate-target/b.py\\",
+    \\"files\\": {
+        \\"__examples__/duplicate-target/a.js\\": [
+            {
+                \\"reason\\": \\"Duplicate target for sync-tag 'update_me'\\",
+                \\"location\\": {
+                    \\"line\\": 5
+                },
+                \\"code\\": \\"duplicate-target\\",
+                \\"fix\\": {
+                    \\"type\\": \\"delete\\",
+                    \\"description\\": \\"Removed duplicate target for sync-tag 'update_me'\\",
+                    \\"declaration\\": \\"    // sync-start:update_me 12345 __examples__/duplicate-target/b.py\\",
+                    \\"line\\": 5
+                }
+            },
+            {
+                \\"code\\": \\"mismatched-checksum\\",
+                \\"reason\\": \\"Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (12352 != 249234014)\\",
+                \\"location\\": {
+                    \\"line\\": 3
+                },
+                \\"fix\\": {
+                    \\"type\\": \\"replace\\",
+                    \\"line\\": 4,
+                    \\"text\\": \\"    // sync-start:update_me 249234014 __examples__/duplicate-target/b.py\\",
+                    \\"declaration\\": \\"    // sync-start:update_me 12352 __examples__/duplicate-target/b.py\\",
+                    \\"description\\": \\"Updated checksum for sync-tag 'update_me' referencing '__examples__/duplicate-target/b.py:3' from 12352 to 249234014.\\"
+                }
+            },
+            {
+                \\"code\\": \\"mismatched-checksum\\",
+                \\"reason\\": \\"Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (12345 != 249234014)\\",
+                \\"location\\": {
+                    \\"line\\": 3
+                },
+                \\"fix\\": {
+                    \\"type\\": \\"replace\\",
+                    \\"line\\": 5,
+                    \\"text\\": \\"    // sync-start:update_me 249234014 __examples__/duplicate-target/b.py\\",
+                    \\"declaration\\": \\"    // sync-start:update_me 12345 __examples__/duplicate-target/b.py\\",
+                    \\"description\\": \\"Updated checksum for sync-tag 'update_me' referencing '__examples__/duplicate-target/b.py:3' from 12345 to 249234014.\\"
+                }
+            }
+        ],
+        \\"__examples__/duplicate-target/b.py\\": [
+            {
+                \\"code\\": \\"mismatched-checksum\\",
+                \\"reason\\": \\"Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/a.js:4'. Make sure you've made the parallel changes in the source file, if necessary (4567 != 2050223083)\\",
+                \\"location\\": {
+                    \\"line\\": 4
+                },
+                \\"fix\\": {
+                    \\"type\\": \\"replace\\",
+                    \\"line\\": 3,
+                    \\"text\\": \\"# sync-start:update_me 2050223083 __examples__/duplicate-target/a.js\\",
+                    \\"declaration\\": \\"# sync-start:update_me 4567 __examples__/duplicate-target/a.js\\",
+                    \\"description\\": \\"Updated checksum for sync-tag 'update_me' referencing '__examples__/duplicate-target/a.js:4' from 4567 to 2050223083.\\"
+                }
+            }
+        ]
+    }
+}"
+`;
+
+exports[`Integration Tests should report example end_with_no_start to match snapshot 1`] = `
+" WARNING  __examples__/end_with_no_start/example.js:5 Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start
+🛑  Errors occurred during processing. Fix the errors and try again."
+`;
+
+exports[`Integration Tests should report example end_with_no_start to match snapshot with autofix dryrun 1`] = `
 " INFO  DRY-RUN: Files will not be modified
  WARNING  __examples__/end_with_no_start/example.js:5 Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start
-🎉  Everything is in sync!"
+🛑  Errors occurred during processing. Fix the errors and try again.
+ ERROR  🛑  Could not update all tags due to non-fixable errors. Fix these errors and try again."
 `;
 
-exports[
-    `Integration Tests should report example end_with_no_start to match snapshot with json 1`
-] = `
-" WARNING  __examples__/end_with_no_start/example.js:5 Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start
-{
+exports[`Integration Tests should report example end_with_no_start to match snapshot with json 1`] = `
+"{
     \\"version\\": \\"2.3.0\\",
-    \\"launchString\\": \\"checksync\\",
-    \\"items\\": []
+    \\"launchString\\": \\"checksync -u \\",
+    \\"files\\": {
+        \\"__examples__/end_with_no_start/example.js\\": [
+            {
+                \\"reason\\": \\"Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start\\",
+                \\"location\\": {
+                    \\"line\\": 5
+                },
+                \\"code\\": \\"end-tag-without-start-tag\\"
+            }
+        ]
+    }
 }"
 `;
 
-exports[
-    `Integration Tests should report example excluded to match snapshot 1`
-] = `" ERROR  No matching files"`;
+exports[`Integration Tests should report example excluded to match snapshot 1`] = `" ERROR  No matching files"`;
 
-exports[
-    `Integration Tests should report example excluded to match snapshot with autofix dryrun 1`
-] = `
+exports[`Integration Tests should report example excluded to match snapshot with autofix dryrun 1`] = `
 " INFO  DRY-RUN: Files will not be modified
  ERROR  No matching files"
 `;
 
-exports[
-    `Integration Tests should report example excluded to match snapshot with json 1`
-] = `" ERROR  No matching files"`;
+exports[`Integration Tests should report example excluded to match snapshot with json 1`] = `" ERROR  No matching files"`;
 
-exports[
-    `Integration Tests should report example malformed_end to match snapshot 1`
-] = `
+exports[`Integration Tests should report example malformed_end to match snapshot 1`] = `
 " ERROR  __examples__/malformed_end/malformed_badid.js:7 Malformed sync-end: format should be 'sync-end:<label>'
  ERROR  __examples__/malformed_end/malformed_badid.js:4 Sync-start 'tagid' has no corresponding sync-end
  ERROR  __examples__/malformed_end/malformed_noid.js:7 Malformed sync-end: format should be 'sync-end:<label>'
  ERROR  __examples__/malformed_end/malformed_noid.js:4 Sync-start 'tagid' has no corresponding sync-end
-🛑  Errors occurred during processing"
+🛑  Errors occurred during processing. Fix the errors and try again."
 `;
 
-exports[
-    `Integration Tests should report example malformed_end to match snapshot with autofix dryrun 1`
-] = `
+exports[`Integration Tests should report example malformed_end to match snapshot with autofix dryrun 1`] = `
 " INFO  DRY-RUN: Files will not be modified
  ERROR  __examples__/malformed_end/malformed_badid.js:7 Malformed sync-end: format should be 'sync-end:<label>'
  ERROR  __examples__/malformed_end/malformed_badid.js:4 Sync-start 'tagid' has no corresponding sync-end
  ERROR  __examples__/malformed_end/malformed_noid.js:7 Malformed sync-end: format should be 'sync-end:<label>'
  ERROR  __examples__/malformed_end/malformed_noid.js:4 Sync-start 'tagid' has no corresponding sync-end
-
-🛑  Aborting tag updates due to parsing errors. Fix these errors and try again."
+🛑  Errors occurred during processing. Fix the errors and try again.
+ ERROR  🛑  Could not update all tags due to non-fixable errors. Fix these errors and try again."
 `;
 
-exports[
-    `Integration Tests should report example malformed_end to match snapshot with json 1`
-] = `
-" ERROR  __examples__/malformed_end/malformed_badid.js:7 Malformed sync-end: format should be 'sync-end:<label>'
- ERROR  __examples__/malformed_end/malformed_badid.js:4 Sync-start 'tagid' has no corresponding sync-end
- ERROR  __examples__/malformed_end/malformed_noid.js:7 Malformed sync-end: format should be 'sync-end:<label>'
- ERROR  __examples__/malformed_end/malformed_noid.js:4 Sync-start 'tagid' has no corresponding sync-end
-{
+exports[`Integration Tests should report example malformed_end to match snapshot with json 1`] = `
+"{
     \\"version\\": \\"2.3.0\\",
-    \\"launchString\\": \\"checksync\\",
-    \\"items\\": []
+    \\"launchString\\": \\"checksync -u \\",
+    \\"files\\": {
+        \\"__examples__/malformed_end/malformed_badid.js\\": [
+            {
+                \\"reason\\": \\"Malformed sync-end: format should be 'sync-end:<label>'\\",
+                \\"location\\": {
+                    \\"line\\": 7
+                },
+                \\"code\\": \\"malformed-end-tag\\"
+            },
+            {
+                \\"reason\\": \\"Sync-start 'tagid' has no corresponding sync-end\\",
+                \\"location\\": {
+                    \\"line\\": 4
+                },
+                \\"code\\": \\"start-tag-witout-end-tag\\"
+            }
+        ],
+        \\"__examples__/malformed_end/malformed_noid.js\\": [
+            {
+                \\"reason\\": \\"Malformed sync-end: format should be 'sync-end:<label>'\\",
+                \\"location\\": {
+                    \\"line\\": 7
+                },
+                \\"code\\": \\"malformed-end-tag\\"
+            },
+            {
+                \\"reason\\": \\"Sync-start 'tagid' has no corresponding sync-end\\",
+                \\"location\\": {
+                    \\"line\\": 4
+                },
+                \\"code\\": \\"start-tag-witout-end-tag\\"
+            }
+        ]
+    }
 }"
 `;
 
-exports[
-    `Integration Tests should report example malformed_start to match snapshot 1`
-] = `
+exports[`Integration Tests should report example malformed_start to match snapshot 1`] = `
 " ERROR  __examples__/malformed_start/malformed_badchecksum.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
  WARNING  __examples__/malformed_start/malformed_badchecksum.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
  ERROR  __examples__/malformed_start/malformed_badid.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
  WARNING  __examples__/malformed_start/malformed_badid.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
  ERROR  __examples__/malformed_start/malformed_onlytagid.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
  WARNING  __examples__/malformed_start/malformed_onlytagid.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
-🛑  Errors occurred during processing"
+🛑  Errors occurred during processing. Fix the errors and try again."
 `;
 
-exports[
-    `Integration Tests should report example malformed_start to match snapshot with autofix dryrun 1`
-] = `
+exports[`Integration Tests should report example malformed_start to match snapshot with autofix dryrun 1`] = `
 " INFO  DRY-RUN: Files will not be modified
  ERROR  __examples__/malformed_start/malformed_badchecksum.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
  WARNING  __examples__/malformed_start/malformed_badchecksum.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
@@ -295,224 +469,286 @@ exports[
  WARNING  __examples__/malformed_start/malformed_badid.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
  ERROR  __examples__/malformed_start/malformed_onlytagid.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
  WARNING  __examples__/malformed_start/malformed_onlytagid.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
-
-🛑  Aborting tag updates due to parsing errors. Fix these errors and try again."
+🛑  Errors occurred during processing. Fix the errors and try again.
+ ERROR  🛑  Could not update all tags due to non-fixable errors. Fix these errors and try again."
 `;
 
-exports[
-    `Integration Tests should report example malformed_start to match snapshot with json 1`
-] = `
-" ERROR  __examples__/malformed_start/malformed_badchecksum.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
- WARNING  __examples__/malformed_start/malformed_badchecksum.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
- ERROR  __examples__/malformed_start/malformed_badid.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
- WARNING  __examples__/malformed_start/malformed_badid.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
- ERROR  __examples__/malformed_start/malformed_onlytagid.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
- WARNING  __examples__/malformed_start/malformed_onlytagid.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
-{
-    \\"version\\": \\"2.3.0\\",
-    \\"launchString\\": \\"checksync\\",
-    \\"items\\": []
-}"
-`;
-
-exports[
-    `Integration Tests should report example missing_target to match snapshot 1`
-] = `
-" ERROR  __examples__/missing_target/example.js:3 Sync-start for 'missing_target' points to '__examples__/missing_target/missing_target.py', which does not exist or is a directory
-🛑  Errors occurred during processing"
-`;
-
-exports[
-    `Integration Tests should report example missing_target to match snapshot with autofix dryrun 1`
-] = `
-" INFO  DRY-RUN: Files will not be modified
- ERROR  __examples__/missing_target/example.js:3 Sync-start for 'missing_target' points to '__examples__/missing_target/missing_target.py', which does not exist or is a directory
-
-🛑  Aborting tag updates due to parsing errors. Fix these errors and try again."
-`;
-
-exports[
-    `Integration Tests should report example missing_target to match snapshot with json 1`
-] = `
-" ERROR  __examples__/missing_target/example.js:3 Sync-start for 'missing_target' points to '__examples__/missing_target/missing_target.py', which does not exist or is a directory
-{
-    \\"version\\": \\"2.3.0\\",
-    \\"launchString\\": \\"checksync\\",
-    \\"items\\": []
-}"
-`;
-
-exports[
-    `Integration Tests should report example no_back_reference to match snapshot 1`
-] = `
-" ERROR  __examples__/no_back_reference/file2.js does not contain a tag named 'markerID' that points to '__examples__/no_back_reference/file1.js'
-
-<group 🛑  Desynchronized blocks detected and parsing errors found. Fix the errors, update the blocks, then update the sync-start tags using: >
-  
-  checksync -c \\"#,//,{/*\\" -u __examples__/no_back_reference/file1.js
-<end_group>"
-`;
-
-exports[
-    `Integration Tests should report example no_back_reference to match snapshot with autofix dryrun 1`
-] = `
-" INFO  DRY-RUN: Files will not be modified
- ERROR  __examples__/no_back_reference/file2.js does not contain a tag named 'markerID' that points to '__examples__/no_back_reference/file1.js'
-<group 1 file(s) would have been fixed. To fix, run: >
-  
-  checksync -c \\"#,//,{/*\\" -u __examples__/no_back_reference/file1.js
-<end_group>
-🛑  Errors occurred during processing"
-`;
-
-exports[
-    `Integration Tests should report example no_back_reference to match snapshot with json 1`
-] = `
+exports[`Integration Tests should report example malformed_start to match snapshot with json 1`] = `
 "{
     \\"version\\": \\"2.3.0\\",
-    \\"launchString\\": \\"checksync\\",
-    \\"items\\": [
-        {
-            \\"type\\": \\"error\\",
-            \\"sourceFile\\": \\"__examples__/no_back_reference/file1.js\\",
-            \\"targetFile\\": \\"__examples__/no_back_reference/file2.js\\",
-            \\"message\\": \\"__examples__/no_back_reference/file2.js does not contain a tag named 'markerID' that points to '__examples__/no_back_reference/file1.js\\"
-        }
-    ]
+    \\"launchString\\": \\"checksync -u \\",
+    \\"files\\": {
+        \\"__examples__/malformed_start/malformed_badchecksum.js\\": [
+            {
+                \\"reason\\": \\"Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'\\",
+                \\"location\\": {
+                    \\"line\\": 4
+                },
+                \\"code\\": \\"malformed-start-tag\\"
+            },
+            {
+                \\"reason\\": \\"Sync-end for 'tagid' found, but there was no corresponding sync-start\\",
+                \\"location\\": {
+                    \\"line\\": 7
+                },
+                \\"code\\": \\"end-tag-without-start-tag\\"
+            }
+        ],
+        \\"__examples__/malformed_start/malformed_badid.js\\": [
+            {
+                \\"reason\\": \\"Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'\\",
+                \\"location\\": {
+                    \\"line\\": 4
+                },
+                \\"code\\": \\"malformed-start-tag\\"
+            },
+            {
+                \\"reason\\": \\"Sync-end for 'tagid' found, but there was no corresponding sync-start\\",
+                \\"location\\": {
+                    \\"line\\": 7
+                },
+                \\"code\\": \\"end-tag-without-start-tag\\"
+            }
+        ],
+        \\"__examples__/malformed_start/malformed_onlytagid.js\\": [
+            {
+                \\"reason\\": \\"Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'\\",
+                \\"location\\": {
+                    \\"line\\": 4
+                },
+                \\"code\\": \\"malformed-start-tag\\"
+            },
+            {
+                \\"reason\\": \\"Sync-end for 'tagid' found, but there was no corresponding sync-start\\",
+                \\"location\\": {
+                    \\"line\\": 7
+                },
+                \\"code\\": \\"end-tag-without-start-tag\\"
+            }
+        ]
+    }
 }"
 `;
 
-exports[
-    `Integration Tests should report example no_checksums to match snapshot 1`
-] = `
+exports[`Integration Tests should report example missing_target to match snapshot 1`] = `
+" ERROR  __examples__/missing_target/example.js:3 Sync-start for 'missing_target' points to '__examples__/missing_target/missing_target.py', which does not exist or is a directory
+ ERROR  __examples__/missing_target/example.js:3 No return tag named 'missing_target' in '/Users/jeffyates/git/checksync/__examples__/missing_target/missing_target.py'
+🛑  Errors occurred during processing. Fix the errors and try again."
+`;
+
+exports[`Integration Tests should report example missing_target to match snapshot with autofix dryrun 1`] = `
+" INFO  DRY-RUN: Files will not be modified
+ ERROR  __examples__/missing_target/example.js:3 Sync-start for 'missing_target' points to '__examples__/missing_target/missing_target.py', which does not exist or is a directory
+ ERROR  __examples__/missing_target/example.js:3 No return tag named 'missing_target' in '/Users/jeffyates/git/checksync/__examples__/missing_target/missing_target.py'
+🛑  Errors occurred during processing. Fix the errors and try again.
+ ERROR  🛑  Could not update all tags due to non-fixable errors. Fix these errors and try again."
+`;
+
+exports[`Integration Tests should report example missing_target to match snapshot with json 1`] = `
+"{
+    \\"version\\": \\"2.3.0\\",
+    \\"launchString\\": \\"checksync -u \\",
+    \\"files\\": {
+        \\"__examples__/missing_target/example.js\\": [
+            {
+                \\"reason\\": \\"Sync-start for 'missing_target' points to '__examples__/missing_target/missing_target.py', which does not exist or is a directory\\",
+                \\"location\\": {
+                    \\"line\\": 3
+                },
+                \\"code\\": \\"file-does-not-exist\\"
+            },
+            {
+                \\"reason\\": \\"No return tag named 'missing_target' in '/Users/jeffyates/git/checksync/__examples__/missing_target/missing_target.py'\\",
+                \\"code\\": \\"no-return-tag\\",
+                \\"location\\": {
+                    \\"line\\": 3
+                }
+            }
+        ]
+    }
+}"
+`;
+
+exports[`Integration Tests should report example no_back_reference to match snapshot 1`] = `
+" ERROR  __examples__/no_back_reference/file1.js:1 No return tag named 'markerID' in '/Users/jeffyates/git/checksync/__examples__/no_back_reference/file2.js'
+🛑  Errors occurred during processing. Fix the errors and try again."
+`;
+
+exports[`Integration Tests should report example no_back_reference to match snapshot with autofix dryrun 1`] = `
+" INFO  DRY-RUN: Files will not be modified
+ ERROR  __examples__/no_back_reference/file1.js:1 No return tag named 'markerID' in '/Users/jeffyates/git/checksync/__examples__/no_back_reference/file2.js'
+🛑  Errors occurred during processing. Fix the errors and try again.
+ ERROR  🛑  Could not update all tags due to non-fixable errors. Fix these errors and try again."
+`;
+
+exports[`Integration Tests should report example no_back_reference to match snapshot with json 1`] = `
+"{
+    \\"version\\": \\"2.3.0\\",
+    \\"launchString\\": \\"checksync -u \\",
+    \\"files\\": {
+        \\"__examples__/no_back_reference/file1.js\\": [
+            {
+                \\"reason\\": \\"No return tag named 'markerID' in '/Users/jeffyates/git/checksync/__examples__/no_back_reference/file2.js'\\",
+                \\"code\\": \\"no-return-tag\\",
+                \\"location\\": {
+                    \\"line\\": 1
+                }
+            }
+        ]
+    }
+}"
+`;
+
+exports[`Integration Tests should report example no_checksums to match snapshot 1`] = `
 " MISMATCH  __examples__/no_checksums/example_one-a.js:3 Looks like you changed the target content for sync-tag 'example_one' in '__examples__/no_checksums/example_one-b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)
  MISMATCH  __examples__/no_checksums/example_one-b.py:3 Looks like you changed the target content for sync-tag 'example_one' in '__examples__/no_checksums/example_one-a.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)
 
 <group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
   
-  checksync -c \\"#,//,{/*\\" -u __examples__/no_checksums/example_one-a.js __examples__/no_checksums/example_one-b.py
+  checksync -u __examples__/no_checksums/example_one-a.js __examples__/no_checksums/example_one-b.py
 <end_group>"
 `;
 
-exports[
-    `Integration Tests should report example no_checksums to match snapshot with autofix dryrun 1`
-] = `
+exports[`Integration Tests should report example no_checksums to match snapshot with autofix dryrun 1`] = `
 " INFO  DRY-RUN: Files will not be modified
- MISMATCH  __examples__/no_checksums/example_one-a.js:3 Updating checksum for sync-tag 'example_one' referencing '__examples__/no_checksums/example_one-b.py:3' from No checksum to 249234014.
- MISMATCH  __examples__/no_checksums/example_one-b.py:3 Updating checksum for sync-tag 'example_one' referencing '__examples__/no_checksums/example_one-a.js:3' from No checksum to 770446101.
+ FIX  __examples__/no_checksums/example_one-a.js:3 Updated checksum for sync-tag 'example_one' referencing '__examples__/no_checksums/example_one-b.py:3' from no checksum to 249234014.
+ FIX  __examples__/no_checksums/example_one-b.py:3 Updated checksum for sync-tag 'example_one' referencing '__examples__/no_checksums/example_one-a.js:3' from no checksum to 770446101.
 <group 2 file(s) would have been fixed. To fix, run: >
   
-  checksync -c \\"#,//,{/*\\" -u __examples__/no_checksums/example_one-a.js __examples__/no_checksums/example_one-b.py
-<end_group>
-🎉  Everything is in sync!"
+  checksync -u __examples__/no_checksums/example_one-a.js __examples__/no_checksums/example_one-b.py
+<end_group>"
 `;
 
-exports[
-    `Integration Tests should report example no_checksums to match snapshot with json 1`
-] = `
+exports[`Integration Tests should report example no_checksums to match snapshot with json 1`] = `
 "{
     \\"version\\": \\"2.3.0\\",
-    \\"launchString\\": \\"checksync\\",
-    \\"items\\": [
-        {
-            \\"type\\": \\"violation\\",
-            \\"sourceFile\\": \\"__examples__/no_checksums/example_one-a.js\\",
-            \\"sourceLine\\": 3,
-            \\"targetFile\\": \\"__examples__/no_checksums/example_one-b.py\\",
-            \\"targetLine\\": 3,
-            \\"message\\": \\"__examples__/no_checksums/example_one-a.js:3 Updating checksum for sync-tag 'example_one' referencing '__examples__/no_checksums/example_one-b.py:3' from No checksum to 249234014.\\",
-            \\"fix\\": \\"// sync-start:example_one 249234014 __examples__/no_checksums/example_one-b.py\\"
-        },
-        {
-            \\"type\\": \\"violation\\",
-            \\"sourceFile\\": \\"__examples__/no_checksums/example_one-b.py\\",
-            \\"sourceLine\\": 3,
-            \\"targetFile\\": \\"__examples__/no_checksums/example_one-a.js\\",
-            \\"targetLine\\": 3,
-            \\"message\\": \\"__examples__/no_checksums/example_one-b.py:3 Updating checksum for sync-tag 'example_one' referencing '__examples__/no_checksums/example_one-a.js:3' from No checksum to 770446101.\\",
-            \\"fix\\": \\"# sync-start:example_one 770446101 __examples__/no_checksums/example_one-a.js\\"
-        }
-    ]
+    \\"launchString\\": \\"checksync -u __examples__/no_checksums/example_one-a.js __examples__/no_checksums/example_one-b.py\\",
+    \\"files\\": {
+        \\"__examples__/no_checksums/example_one-a.js\\": [
+            {
+                \\"code\\": \\"mismatched-checksum\\",
+                \\"reason\\": \\"Looks like you changed the target content for sync-tag 'example_one' in '__examples__/no_checksums/example_one-b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)\\",
+                \\"location\\": {
+                    \\"line\\": 3
+                },
+                \\"fix\\": {
+                    \\"type\\": \\"replace\\",
+                    \\"line\\": 3,
+                    \\"text\\": \\"// sync-start:example_one 249234014 __examples__/no_checksums/example_one-b.py\\",
+                    \\"declaration\\": \\"// sync-start:example_one __examples__/no_checksums/example_one-b.py\\",
+                    \\"description\\": \\"Updated checksum for sync-tag 'example_one' referencing '__examples__/no_checksums/example_one-b.py:3' from no checksum to 249234014.\\"
+                }
+            }
+        ],
+        \\"__examples__/no_checksums/example_one-b.py\\": [
+            {
+                \\"code\\": \\"mismatched-checksum\\",
+                \\"reason\\": \\"Looks like you changed the target content for sync-tag 'example_one' in '__examples__/no_checksums/example_one-a.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)\\",
+                \\"location\\": {
+                    \\"line\\": 3
+                },
+                \\"fix\\": {
+                    \\"type\\": \\"replace\\",
+                    \\"line\\": 3,
+                    \\"text\\": \\"# sync-start:example_one 770446101 __examples__/no_checksums/example_one-a.js\\",
+                    \\"declaration\\": \\"# sync-start:example_one __examples__/no_checksums/example_one-a.js\\",
+                    \\"description\\": \\"Updated checksum for sync-tag 'example_one' referencing '__examples__/no_checksums/example_one-a.js:3' from no checksum to 770446101.\\"
+                }
+            }
+        ]
+    }
 }"
 `;
 
-exports[
-    `Integration Tests should report example no_self_reference to match snapshot 1`
-] = `
+exports[`Integration Tests should report example no_self_reference to match snapshot 1`] = `
 " ERROR  __examples__/no_self_reference/example.js:3 Sync-tag 'example_three' cannot target itself
  MISMATCH  __examples__/no_self_reference/example.js:3 Looks like you changed the target content for sync-tag 'example_three' in '__examples__/no_self_reference/example.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)
 
-<group 🛑  Desynchronized blocks detected and parsing errors found. Fix the errors, update the blocks, then update the sync-start tags using: >
+<group 🛑  Desynchronized blocks detected and parsing errors were found. Fix the errors, update the blocks, then update the sync-start tags using: >
   
-  checksync -c \\"#,//,{/*\\" -u __examples__/no_self_reference/example.js
+  checksync -u __examples__/no_self_reference/example.js
 <end_group>"
 `;
 
-exports[
-    `Integration Tests should report example no_self_reference to match snapshot with autofix dryrun 1`
-] = `
+exports[`Integration Tests should report example no_self_reference to match snapshot with autofix dryrun 1`] = `
 " INFO  DRY-RUN: Files will not be modified
  ERROR  __examples__/no_self_reference/example.js:3 Sync-tag 'example_three' cannot target itself
-
-🛑  Aborting tag updates due to parsing errors. Fix these errors and try again."
+<group 1 file(s) would have been fixed. To fix, run: >
+  
+  checksync -u __examples__/no_self_reference/example.js
+<end_group>
+ ERROR  🛑  Could not update all tags due to non-fixable errors. Fix these errors and try again."
 `;
 
-exports[
-    `Integration Tests should report example no_self_reference to match snapshot with json 1`
-] = `
-" ERROR  __examples__/no_self_reference/example.js:3 Sync-tag 'example_three' cannot target itself
-{
+exports[`Integration Tests should report example no_self_reference to match snapshot with json 1`] = `
+"{
     \\"version\\": \\"2.3.0\\",
-    \\"launchString\\": \\"checksync\\",
-    \\"items\\": [
-        {
-            \\"type\\": \\"violation\\",
-            \\"sourceFile\\": \\"__examples__/no_self_reference/example.js\\",
-            \\"sourceLine\\": 3,
-            \\"targetFile\\": \\"__examples__/no_self_reference/example.js\\",
-            \\"targetLine\\": 3,
-            \\"message\\": \\"__examples__/no_self_reference/example.js:3 Updating checksum for sync-tag 'example_three' referencing '__examples__/no_self_reference/example.js:3' from No checksum to 770446101.\\",
-            \\"fix\\": \\"// sync-start:example_three 770446101 __examples__/no_self_reference/example.js\\"
-        }
-    ]
+    \\"launchString\\": \\"checksync -u __examples__/no_self_reference/example.js\\",
+    \\"files\\": {
+        \\"__examples__/no_self_reference/example.js\\": [
+            {
+                \\"reason\\": \\"Sync-tag 'example_three' cannot target itself\\",
+                \\"location\\": {
+                    \\"line\\": 3
+                },
+                \\"code\\": \\"self-targeting\\"
+            },
+            {
+                \\"code\\": \\"mismatched-checksum\\",
+                \\"reason\\": \\"Looks like you changed the target content for sync-tag 'example_three' in '__examples__/no_self_reference/example.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)\\",
+                \\"location\\": {
+                    \\"line\\": 3
+                },
+                \\"fix\\": {
+                    \\"type\\": \\"replace\\",
+                    \\"line\\": 3,
+                    \\"text\\": \\"// sync-start:example_three 770446101 __examples__/no_self_reference/example.js\\",
+                    \\"declaration\\": \\"// sync-start:example_three __examples__/no_self_reference/example.js\\",
+                    \\"description\\": \\"Updated checksum for sync-tag 'example_three' referencing '__examples__/no_self_reference/example.js:3' from no checksum to 770446101.\\"
+                }
+            }
+        ]
+    }
 }"
 `;
 
-exports[
-    `Integration Tests should report example unterminated_marker to match snapshot 1`
-] = `
-" ERROR  __examples__/unterminated_marker/example_two-b.py:3 Sync-start 'example_two' has no corresponding sync-end
- ERROR  __examples__/unterminated_marker/example_two-b.py does not contain a tag named 'example_two' that points to '__examples__/unterminated_marker/example_two-a.js'
-
-<group 🛑  Desynchronized blocks detected and parsing errors found. Fix the errors, update the blocks, then update the sync-start tags using: >
-  
-  checksync -c \\"#,//,{/*\\" -u __examples__/unterminated_marker/example_two-a.js
-<end_group>"
-`;
-
-exports[
-    `Integration Tests should report example unterminated_marker to match snapshot with autofix dryrun 1`
-] = `
-" INFO  DRY-RUN: Files will not be modified
+exports[`Integration Tests should report example unterminated_marker to match snapshot 1`] = `
+" ERROR  __examples__/unterminated_marker/example_two-a.js:3 No return tag named 'example_two' in '/Users/jeffyates/git/checksync/__examples__/unterminated_marker/example_two-b.py'
  ERROR  __examples__/unterminated_marker/example_two-b.py:3 Sync-start 'example_two' has no corresponding sync-end
-
-🛑  Aborting tag updates due to parsing errors. Fix these errors and try again."
+🛑  Errors occurred during processing. Fix the errors and try again."
 `;
 
-exports[
-    `Integration Tests should report example unterminated_marker to match snapshot with json 1`
-] = `
-" ERROR  __examples__/unterminated_marker/example_two-b.py:3 Sync-start 'example_two' has no corresponding sync-end
-{
+exports[`Integration Tests should report example unterminated_marker to match snapshot with autofix dryrun 1`] = `
+" INFO  DRY-RUN: Files will not be modified
+ ERROR  __examples__/unterminated_marker/example_two-a.js:3 No return tag named 'example_two' in '/Users/jeffyates/git/checksync/__examples__/unterminated_marker/example_two-b.py'
+ ERROR  __examples__/unterminated_marker/example_two-b.py:3 Sync-start 'example_two' has no corresponding sync-end
+🛑  Errors occurred during processing. Fix the errors and try again.
+ ERROR  🛑  Could not update all tags due to non-fixable errors. Fix these errors and try again."
+`;
+
+exports[`Integration Tests should report example unterminated_marker to match snapshot with json 1`] = `
+"{
     \\"version\\": \\"2.3.0\\",
-    \\"launchString\\": \\"checksync\\",
-    \\"items\\": [
-        {
-            \\"type\\": \\"error\\",
-            \\"sourceFile\\": \\"__examples__/unterminated_marker/example_two-a.js\\",
-            \\"targetFile\\": \\"__examples__/unterminated_marker/example_two-b.py\\",
-            \\"message\\": \\"__examples__/unterminated_marker/example_two-b.py does not contain a tag named 'example_two' that points to '__examples__/unterminated_marker/example_two-a.js\\"
-        }
-    ]
+    \\"launchString\\": \\"checksync -u \\",
+    \\"files\\": {
+        \\"__examples__/unterminated_marker/example_two-a.js\\": [
+            {
+                \\"reason\\": \\"No return tag named 'example_two' in '/Users/jeffyates/git/checksync/__examples__/unterminated_marker/example_two-b.py'\\",
+                \\"code\\": \\"no-return-tag\\",
+                \\"location\\": {
+                    \\"line\\": 3
+                }
+            }
+        ],
+        \\"__examples__/unterminated_marker/example_two-b.py\\": [
+            {
+                \\"reason\\": \\"Sync-start 'example_two' has no corresponding sync-end\\",
+                \\"location\\": {
+                    \\"line\\": 3
+                },
+                \\"code\\": \\"start-tag-witout-end-tag\\"
+            }
+        ]
+    }
 }"
 `;

@@ -20,6 +20,7 @@ export default function maybeReportError(
     }
 
     switch (error.code) {
+        case ErrorCodes.endTagWithoutStartTag:
         case ErrorCodes.emptyMarker:
             log.warn(error.reason, error.location?.line);
             break;

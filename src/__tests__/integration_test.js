@@ -36,6 +36,7 @@ describe("Integration Tests", () => {
                         .replace(ancesdir(), ".")
                         .replace(new RegExp(escapeRegExp(path.sep), "g"), "/"),
                 ])
+                .sort()
         );
     };
     const exampleGlobs = getExampleGlobs();
