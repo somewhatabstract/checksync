@@ -46,11 +46,10 @@ export default function fixFile(
         const ws = options.dryRun
             ? {
                   write: (content: string) => {},
-                  end: () => resolve(),
+                  end: (cb: () => void) => resolve(),
+                  bytesWritten: 0,
               }
-            : fs.createWriteStream(file, {fd, start: 0}).once("close", () => {
-                  resolve();
-              });
+            : fs.createWriteStream(file, {fd, start: 0});
 
         // Now, we'll read line by line and process what we get against
         // our markers.
@@ -84,6 +83,7 @@ export default function fixFile(
                 )?.fix;
                 reportFix(file, fix, log);
 
+                // TODO: Determine actual file line-ending and use that.
                 // TODO: Count the lines and make sure we don't append a
                 // newline when we don't need to.
                 if (fix?.type === "delete") {
@@ -102,9 +102,9 @@ export default function fixFile(
             .on("close", () => {
                 // We have finished reading, so let's tell the write stream
                 // to finish what it is doing. This will cause it to close.
-                // Our close handler for the write stream will then resolve
-                // the promise.
-                ws.end();
+                ws.end(() => {
+                    fs.truncate(file, ws.bytesWritten, () => resolve());
+                });
             });
     });
 }
