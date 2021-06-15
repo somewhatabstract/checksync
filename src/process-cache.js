@@ -29,9 +29,8 @@ export default async function processCache(
             log.error(
                 `${cwdRelativePath(file)} update encountered error: ${e.stack}`,
             );
-        } finally {
-            await outputSink.endFile();
         }
+        await outputSink.endFile();
     }
     return outputSink.end();
 }

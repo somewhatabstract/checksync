@@ -2,438 +2,327 @@
 import processCache from "../process-cache.js";
 import Logger from "../logger.js";
 import ExitCodes from "../exit-codes.js";
+import * as OutputSink from "../output-sink.js";
+import * as GenerateErrorsForFile from "../generate-errors-for-file.js";
 
-import * as ValidateAndReport from "../validate-and-report.js";
-import * as ValidateAndFix from "../validate-and-fix.js";
-
-import type {MarkerCache, Marker, Target, Options} from "../types.js";
+import type {MarkerCache, ErrorDetails, Options} from "../types.js";
 
 jest.mock("../get-launch-string.js", () => () => "checksync");
+jest.mock("../output-sink.js");
+jest.mock("../generate-errors-for-file.js");
+
+const NullLogger = new Logger(null);
 
 describe("#processCache", () => {
-    const TestCache: MarkerCache = {
-        filea: {
-            aliases: ["filea"],
-            markers: {
-                marker1: ({
-                    commentStart: "//",
-                    commentEnd: undefined,
-                    fixable: true,
-                    checksum: "5678",
-                    targets: {
-                        "1": ({
-                            checksum: "MISMATCH!",
-                            file: "fileb",
-                            declaration:
-                                "// sync-start:marker1 MISMATCH! fileb",
-                        }: Target),
-                    },
-                }: Marker),
-                marker2: ({
-                    commentStart: "//",
-                    commentEnd: undefined,
-                    fixable: true,
-                    checksum: "5678",
-                    targets: {
-                        "1": ({
-                            checksum: "MISMATCH!",
-                            file: "fileb",
-                            declaration:
-                                "// sync-start:marker2 MISMATCH! fileb",
-                        }: Target),
-                    },
-                }: Marker),
-            },
-        },
-        fileb: {
-            aliases: ["fileb"],
-            markers: {
-                marker1: ({
-                    commentStart: "//",
-                    commentEnd: undefined,
-                    fixable: true,
-                    checksum: "TARGET_CHECKSUM",
-                    targets: {
-                        "1": ({
-                            checksum: "5678",
-                            file: "filea",
-                            declaration: "// sync-start:marker1 5678 filea",
-                        }: Target),
-                    },
-                }: Marker),
-                marker2: ({
-                    commentStart: "//",
-                    commentEnd: undefined,
-                    fixable: true,
-                    checksum: "TARGET_CHECKSUM",
-                    targets: {
-                        "1": ({
-                            checksum: "5678",
-                            file: "filea",
-                            declaration: "// sync-start:marker2 5678 filea",
-                        }: Target),
-                    },
-                }: Marker),
-            },
-        },
-    };
-
-    describe("autofix is false", () => {
-        it("should call validateAndReport for each file when not autofixing", async () => {
-            // Arrange
-            const NullLogger = new Logger();
-            const spy = jest
-                .spyOn(ValidateAndReport, "default")
-                .mockReturnValue(Promise.resolve(true));
-            const options: Options = {
-                includeGlobs: [],
-                comments: [],
-                autoFix: false,
-                rootMarker: null,
-                dryRun: false,
-                excludeGlobs: [],
-                json: false,
-            };
-
-            // Act
-            await processCache(options, TestCache, NullLogger);
-
-            // Assert
-            expect(spy).toHaveBeenCalledWith(
-                options,
-                "filea",
-                TestCache,
-                NullLogger,
-            );
-            expect(spy).toHaveBeenCalledWith(
-                options,
-                "fileb",
-                TestCache,
-                NullLogger,
-            );
-        });
-
-        it("should return ExitCodes.SUCCESS if all files are valid", async () => {
-            // Arrange
-            const NullLogger = new Logger();
-            jest.spyOn(ValidateAndReport, "default").mockReturnValue(
-                Promise.resolve(true),
-            );
-            const options: Options = {
-                includeGlobs: [],
-                comments: [],
-                autoFix: false,
-                rootMarker: null,
-                dryRun: false,
-                excludeGlobs: [],
-                json: false,
-            };
-
-            // Act
-            const result = await processCache(options, TestCache, NullLogger);
-
-            // Assert
-            expect(result).toBe(ExitCodes.SUCCESS);
-        });
-
-        it("should return ExitCodes.DESYNCHRONIZED_BLOCKS if some files are invalid", async () => {
-            // Arrange
-            const NullLogger = new Logger();
-            jest.spyOn(ValidateAndReport, "default").mockReturnValue(
-                Promise.resolve(false),
-            );
-            const options: Options = {
-                includeGlobs: [],
-                comments: [],
-                autoFix: false,
-                rootMarker: "marker",
-                dryRun: false,
-                excludeGlobs: [],
-                json: false,
-            };
-
-            // Act
-            const result = await processCache(options, TestCache, NullLogger);
-
-            // Assert
-            expect(result).toBe(ExitCodes.DESYNCHRONIZED_BLOCKS);
-        });
-
-        it("should output guidance if syntax is valid but blocks mismatch", async () => {
-            // Arrange
-            const NullLogger = new Logger();
-            const logSpy = jest.spyOn(NullLogger, "log");
-            const groupSpy = jest.spyOn(NullLogger, "group");
-            jest.spyOn(ValidateAndReport, "default").mockReturnValue(
-                Promise.resolve(false),
-            );
-            const options: Options = {
-                includeGlobs: ["filea", "fileb"],
-                comments: ["//"],
-                autoFix: false,
-                dryRun: false,
-                excludeGlobs: [],
-                json: false,
-            };
-
-            // Act
-            await processCache(options, TestCache, NullLogger);
-
-            // Assert
-            expect(groupSpy).toHaveBeenCalledWith(
-                "🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing:",
-            );
-            expect(logSpy).toHaveBeenCalledWith(
-                `checksync -c "//" -u filea fileb`,
-            );
-        });
-
-        it("should output guidance if syntax errors and blocks mismatch", async () => {
-            // Arrange
-            const NullLogger = new Logger();
-            const logSpy = jest.spyOn(NullLogger, "log");
-            const groupSpy = jest.spyOn(NullLogger, "group");
-            jest.spyOn(ValidateAndReport, "default").mockReturnValue(
-                Promise.resolve(false),
-            );
-            const options: Options = {
-                includeGlobs: ["filea", "fileb"],
-                comments: ["//"],
-                autoFix: false,
-                dryRun: false,
-                excludeGlobs: [],
-                json: false,
-            };
-
-            // Act
-            NullLogger.error("This was an error during parsing!");
-            await processCache(options, TestCache, NullLogger);
-
-            // Assert
-            expect(groupSpy).toHaveBeenCalledWith(
-                "🛑  Desynchronized blocks detected and parsing errors found. Fix the errors, update the blocks, then update the sync-start tags using:",
-            );
-            expect(logSpy).toHaveBeenCalledWith(
-                `checksync -c "//" -u filea fileb`,
-            );
-        });
-    });
-
-    describe("autofix is true", () => {
-        it("should call validateAndFix for each file", async () => {
-            // Arrange
-            const NullLogger = new Logger();
-            const spy = jest
-                .spyOn(ValidateAndFix, "default")
-                .mockReturnValue(Promise.resolve(true));
-            const options: Options = {
-                includeGlobs: ["filea", "fileb"],
-                comments: ["//"],
-                autoFix: true,
-                rootMarker: null,
-                dryRun: false,
-                excludeGlobs: [],
-                json: false,
-            };
-
-            // Act
-            await processCache(options, TestCache, NullLogger);
-
-            // Assert
-            expect(spy).toHaveBeenCalledWith(
-                options,
-                "filea",
-                TestCache,
-                NullLogger,
-            );
-            expect(spy).toHaveBeenCalledWith(
-                options,
-                "fileb",
-                TestCache,
-                NullLogger,
-            );
-        });
-
-        it("should return ExitCodes.SUCCESS if no files were fixed", async () => {
-            // Arrange
-            const NullLogger = new Logger();
-            jest.spyOn(ValidateAndFix, "default").mockReturnValue(
-                Promise.resolve(true),
-            );
-            const options: Options = {
-                includeGlobs: ["filea", "fileb"],
-                comments: ["//"],
-                autoFix: true,
-                rootMarker: null,
-                dryRun: false,
-                excludeGlobs: [],
-                json: false,
-            };
-
-            // Act
-            const result = await processCache(options, TestCache, NullLogger);
-
-            // Assert
-            expect(result).toBe(ExitCodes.SUCCESS);
-        });
-
-        it("should return ExitCodes.SUCCESS if files were fixed", async () => {
-            // Arrange
-            const NullLogger = new Logger();
-            jest.spyOn(ValidateAndFix, "default").mockReturnValue(
-                Promise.resolve(false),
-            );
-            const options: Options = {
-                includeGlobs: ["filea", "fileb"],
-                comments: ["//"],
-                autoFix: true,
-                rootMarker: "marker",
-                dryRun: false,
-                excludeGlobs: [],
-                json: false,
-            };
-
-            // Act
-            const result = await processCache(options, TestCache, NullLogger);
-
-            // Assert
-            expect(result).toBe(ExitCodes.SUCCESS);
-        });
-
-        it("should log how many files were fixed when not dry run", async () => {
-            // Arrange
-            const NullLogger = new Logger();
-            const logSpy = jest.spyOn(NullLogger, "info");
-            jest.spyOn(ValidateAndFix, "default").mockReturnValue(
-                Promise.resolve(false),
-            );
-            const options: Options = {
-                includeGlobs: ["filea", "fileb"],
-                comments: ["//"],
-                autoFix: true,
-                rootMarker: "marker",
-                dryRun: false,
-                excludeGlobs: [],
-                json: false,
-            };
-
-            // Act
-            await processCache(options, TestCache, NullLogger);
-
-            // Assert
-            expect(logSpy).toHaveBeenCalledWith("Fixed 2 file(s)");
-        });
-
-        it("should log how many files would be fixed when dry run", async () => {
-            // Arrange
-            const NullLogger = new Logger();
-            const groupSpy = jest.spyOn(NullLogger, "group");
-            const logSpy = jest.spyOn(NullLogger, "log");
-            jest.spyOn(ValidateAndFix, "default").mockReturnValue(
-                Promise.resolve(false),
-            );
-            const options: Options = {
-                includeGlobs: ["filea", "fileb"],
-                comments: ["//"],
-                autoFix: true,
-                rootMarker: "marker",
-                dryRun: true,
-                excludeGlobs: [],
-                json: false,
-            };
-
-            // Act
-            await processCache(options, TestCache, NullLogger);
-
-            // Assert
-            expect(groupSpy).toHaveBeenCalledWith(
-                "2 file(s) would have been fixed. To fix, run:",
-            );
-            expect(logSpy).toHaveBeenCalledWith(
-                `checksync -c "//" -m "marker" -u filea fileb`,
-            );
-        });
-
-        it("should exclude comment arg from fix suggestion if it matches default", async () => {
-            // Arrange
-            const NullLogger = new Logger();
-            const logSpy = jest.spyOn(NullLogger, "log");
-            jest.spyOn(ValidateAndFix, "default").mockReturnValue(
-                Promise.resolve(false),
-            );
-            const options: Options = {
-                includeGlobs: ["filea", "fileb"],
-                comments: ["//", "#"],
-                autoFix: true,
-                rootMarker: "marker",
-                dryRun: true,
-                excludeGlobs: [],
-                json: false,
-            };
-
-            // Act
-            await processCache(options, TestCache, NullLogger);
-
-            // Assert
-            expect(logSpy).toHaveBeenCalledWith(
-                `checksync -m "marker" -u filea fileb`,
-            );
-        });
-    });
-
-    it("should log error if file validator errors", async () => {
+    it("should create a new OutputSink", () => {
         // Arrange
-        const NullLogger = new Logger();
-        jest.spyOn(ValidateAndFix, "default").mockReturnValue(
-            Promise.reject(new Error("Oh no!")),
+        const options: Options = ({}: any);
+        const markerCache: MarkerCache = {};
+        const outputSinkSpy = jest.spyOn(OutputSink, "default");
+
+        // Act
+        processCache(options, markerCache, NullLogger);
+
+        // Assert
+        expect(outputSinkSpy).toHaveBeenCalledWith(options, NullLogger);
+    });
+
+    it("should call outputSink.startFile for each file", async () => {
+        // Arrange
+        const options: Options = ({}: any);
+        const errorDetails: ErrorDetails = ({
+            code: "fake-error",
+            reason: "We are testing!",
+        }: any);
+        const markerCache: MarkerCache = {
+            filenamea: {
+                readOnly: false,
+                aliases: ["filenamea"],
+                markers: {},
+                errors: [errorDetails],
+            },
+            filenameb: {
+                readOnly: false,
+                aliases: ["filenameb"],
+                markers: {},
+                errors: [errorDetails],
+            },
+        };
+        const fakeOutputSink = {
+            startFile: jest.fn(),
+            processError: jest.fn(),
+            endFile: jest.fn(),
+            end: jest.fn(),
+        };
+        jest.spyOn(OutputSink, "default").mockImplementation(
+            () => fakeOutputSink,
+        );
+        jest.spyOn(GenerateErrorsForFile, "default").mockImplementation(
+            function* (_, file, cache) {
+                yield* cache[file];
+            },
+        );
+
+        // Act
+        await processCache(options, markerCache, NullLogger);
+
+        // Assert
+        expect(fakeOutputSink.startFile).toHaveBeenCalledWith("filenamea");
+        expect(fakeOutputSink.startFile).toHaveBeenCalledWith("filenameb");
+    });
+
+    it("should call outputSink.processError for each error returned by generateErrorsForFile", async () => {
+        // Arrange
+        const options: Options = ({}: any);
+        const errorDetailsA: ErrorDetails = ({
+            code: "fake-error",
+            reason: "We are testing!",
+        }: any);
+        const errorDetailsB: ErrorDetails = ({
+            code: "fake-error",
+            reason: "We are testing!",
+        }: any);
+        const markerCache: MarkerCache = {
+            filenamea: {
+                readOnly: false,
+                aliases: ["filenamea"],
+                markers: {},
+                errors: [errorDetailsA, errorDetailsB],
+            },
+        };
+        const fakeOutputSink = {
+            startFile: jest.fn(),
+            processError: jest.fn(),
+            endFile: jest.fn(),
+            end: jest.fn(),
+        };
+        jest.spyOn(OutputSink, "default").mockImplementation(
+            () => fakeOutputSink,
+        );
+        jest.spyOn(GenerateErrorsForFile, "default").mockImplementation(
+            function* (_, file, cache) {
+                yield* cache[file].errors;
+            },
+        );
+
+        // Act
+        await processCache(options, markerCache, NullLogger);
+
+        // Assert
+        expect(fakeOutputSink.processError).toHaveBeenCalledWith(errorDetailsA);
+        expect(fakeOutputSink.processError).toHaveBeenCalledWith(errorDetailsB);
+    });
+
+    it("should log error if outputSink.processError throws", async () => {
+        // Arrange
+        const options: Options = ({}: any);
+        const errorDetailsA: ErrorDetails = ({
+            code: "fake-error",
+            reason: "We are testing!",
+        }: any);
+        const errorDetailsB: ErrorDetails = ({
+            code: "fake-error",
+            reason: "We are testing!",
+        }: any);
+        const markerCache: MarkerCache = {
+            filenamea: {
+                readOnly: false,
+                aliases: ["filenamea"],
+                markers: {},
+                errors: [errorDetailsA, errorDetailsB],
+            },
+        };
+        const fakeOutputSink = {
+            startFile: jest.fn(),
+            processError: jest.fn().mockImplementation(() => {
+                throw new Error("Boom!");
+            }),
+            endFile: jest.fn(),
+            end: jest.fn(),
+        };
+        jest.spyOn(OutputSink, "default").mockImplementation(
+            () => fakeOutputSink,
+        );
+        jest.spyOn(GenerateErrorsForFile, "default").mockImplementation(
+            function* (_, file, cache) {
+                yield* cache[file].errors;
+            },
         );
         const logSpy = jest.spyOn(NullLogger, "error");
-        const options: Options = {
-            includeGlobs: ["filea", "fileb"],
-            comments: ["//"],
-            autoFix: true,
-            rootMarker: "marker",
-            dryRun: false,
-            excludeGlobs: [],
-            json: false,
-        };
 
         // Act
-        await processCache(options, TestCache, NullLogger);
+        await processCache(options, markerCache, NullLogger);
 
         // Assert
         expect(logSpy).toHaveBeenCalledWith(
-            "filea update encountered error: Oh no!",
-        );
-        expect(logSpy).toHaveBeenCalledWith(
-            "fileb update encountered error: Oh no!",
+            expect.stringMatching(
+                "filenamea update encountered error: Error: Boom!.*",
+            ),
         );
     });
 
-    it("should log if errors occurred during processing ", async () => {
+    it("should log error if generateErrorsForFile throws", async () => {
         // Arrange
-        const NullLogger = new Logger();
-        jest.spyOn(ValidateAndFix, "default").mockReturnValue(
-            Promise.reject(new Error("Oh no!")),
-        );
-        const logSpy = jest.spyOn(NullLogger, "log");
-        const options: Options = {
-            includeGlobs: ["filea", "fileb"],
-            comments: ["//"],
-            autoFix: true,
-            rootMarker: null,
-            dryRun: false,
-            excludeGlobs: [],
-            json: false,
+        const options: Options = ({}: any);
+        const errorDetailsA: ErrorDetails = ({
+            code: "fake-error",
+            reason: "We are testing!",
+        }: any);
+        const errorDetailsB: ErrorDetails = ({
+            code: "fake-error",
+            reason: "We are testing!",
+        }: any);
+        const markerCache: MarkerCache = {
+            filenamea: {
+                readOnly: false,
+                aliases: ["filenamea"],
+                markers: {},
+                errors: [errorDetailsA, errorDetailsB],
+            },
         };
+        const fakeOutputSink = {
+            startFile: jest.fn(),
+            processError: jest.fn(),
+            endFile: jest.fn(),
+            end: jest.fn(),
+        };
+        jest.spyOn(OutputSink, "default").mockImplementation(
+            () => fakeOutputSink,
+        );
+        jest.spyOn(GenerateErrorsForFile, "default").mockImplementation(() => {
+            throw new Error("Boom!");
+        });
+        const logSpy = jest.spyOn(NullLogger, "error");
 
         // Act
-        const result = await processCache(options, TestCache, NullLogger);
+        await processCache(options, markerCache, NullLogger);
 
         // Assert
-        expect(result).toBe(ExitCodes.PARSE_ERRORS);
         expect(logSpy).toHaveBeenCalledWith(
-            "🛑  Errors occurred during processing",
+            expect.stringMatching(
+                "filenamea update encountered error: Error: Boom!.*",
+            ),
         );
+    });
+
+    it("should call outputSink.endFile on error", async () => {
+        // Arrange
+        const options: Options = ({}: any);
+        const errorDetailsA: ErrorDetails = ({
+            code: "fake-error",
+            reason: "We are testing!",
+        }: any);
+        const errorDetailsB: ErrorDetails = ({
+            code: "fake-error",
+            reason: "We are testing!",
+        }: any);
+        const markerCache: MarkerCache = {
+            filenamea: {
+                readOnly: false,
+                aliases: ["filenamea"],
+                markers: {},
+                errors: [errorDetailsA, errorDetailsB],
+            },
+        };
+        const fakeOutputSink = {
+            startFile: jest.fn(),
+            processError: jest.fn(),
+            endFile: jest.fn(),
+            end: jest.fn(),
+        };
+        jest.spyOn(OutputSink, "default").mockImplementation(
+            () => fakeOutputSink,
+        );
+        jest.spyOn(GenerateErrorsForFile, "default").mockImplementation(() => {
+            throw new Error("Boom!");
+        });
+
+        // Act
+        await processCache(options, markerCache, NullLogger);
+
+        // Assert
+        expect(fakeOutputSink.endFile).toHaveBeenCalled();
+    });
+
+    it("should call outputSink.endFile on success", async () => {
+        // Arrange
+        const options: Options = ({}: any);
+        const errorDetailsA: ErrorDetails = ({
+            code: "fake-error",
+            reason: "We are testing!",
+        }: any);
+        const errorDetailsB: ErrorDetails = ({
+            code: "fake-error",
+            reason: "We are testing!",
+        }: any);
+        const markerCache: MarkerCache = {
+            filenamea: {
+                readOnly: false,
+                aliases: ["filenamea"],
+                markers: {},
+                errors: [errorDetailsA, errorDetailsB],
+            },
+        };
+        const fakeOutputSink = {
+            startFile: jest.fn(),
+            processError: jest.fn(),
+            endFile: jest.fn(),
+            end: jest.fn(),
+        };
+        jest.spyOn(OutputSink, "default").mockImplementation(
+            () => fakeOutputSink,
+        );
+        jest.spyOn(GenerateErrorsForFile, "default").mockImplementation(
+            function* (_, file, cache) {
+                yield* cache[file].errors;
+            },
+        );
+
+        // Act
+        await processCache(options, markerCache, NullLogger);
+
+        // Assert
+        expect(fakeOutputSink.endFile).toHaveBeenCalled();
+    });
+
+    it("should return result of outputSink.end", async () => {
+        // Arrange
+        const options: Options = ({}: any);
+        const errorDetailsA: ErrorDetails = ({
+            code: "fake-error",
+            reason: "We are testing!",
+        }: any);
+        const errorDetailsB: ErrorDetails = ({
+            code: "fake-error",
+            reason: "We are testing!",
+        }: any);
+        const markerCache: MarkerCache = {
+            filenamea: {
+                readOnly: false,
+                aliases: ["filenamea"],
+                markers: {},
+                errors: [errorDetailsA, errorDetailsB],
+            },
+        };
+        const fakeOutputSink = {
+            startFile: jest.fn(),
+            processError: jest.fn(),
+            endFile: jest.fn(),
+            end: jest.fn().mockReturnValue(ExitCodes.CATASTROPHIC),
+        };
+        jest.spyOn(OutputSink, "default").mockImplementation(
+            () => fakeOutputSink,
+        );
+        jest.spyOn(GenerateErrorsForFile, "default").mockImplementation(
+            function* (_, file, cache) {
+                yield* cache[file].errors;
+            },
+        );
+
+        // Act
+        const result = await processCache(options, markerCache, NullLogger);
+
+        // Assert
+        expect(result).toBe(ExitCodes.CATASTROPHIC);
     });
 });
