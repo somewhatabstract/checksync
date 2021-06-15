@@ -73,24 +73,25 @@ export default function fixFile(
                 crlfDelay: Infinity,
                 terminal: false,
             })
-            .on("line", (line: string) => {
+            .on("line", (lineText: string) => {
                 // Let's see if this is something we need to fix.
-                // TODO: Work this out. We can't look up lines by the text
-                // being replaced anymore.
-                const errorDetails = errorsByDeclaration[line];
+                const errorDetails = errorsByDeclaration[lineText];
                 if (errorDetails != null) {
                     reportFix(file, errorDetails, log);
                 }
 
+                // TODO: Count the lines and make sure we don't append a
+                // newline when we don't need to.
+
                 if (errorDetails?.fix?.type === "delete") {
-                    ws.write("");
+                    // Don't write anything. We're deleting this line!
                 } else if (errorDetails?.fix?.type === "replace") {
                     // If we have a fix, use it.
                     ws.write(`${errorDetails?.fix?.text}\n`);
                 } else {
                     // Otherwise, just output the line as it is (we have to add
                     // the newline)
-                    ws.write(`${line}\n`);
+                    ws.write(`${lineText}\n`);
                 }
             })
             .on("close", () => {
