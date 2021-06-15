@@ -32,7 +32,7 @@ type TrackedTarget = {
 };
 
 type TrackedTargets = {
-    [target: string]: TrackedTarget,
+    [target: string]: Array<TrackedTarget>,
     ...
 };
 
@@ -88,12 +88,13 @@ const targetsFromTrackedTargets = (trackedTargets: TrackedTargets): Targets => {
     const targets: Targets = {};
 
     for (const file of Object.keys(trackedTargets)) {
-        const {line, checksum, declaration} = trackedTargets[file];
-        targets[line] = {
-            file,
-            checksum,
-            declaration,
-        };
+        for (const {line, checksum, declaration} of trackedTargets[file]) {
+            targets[line] = {
+                file,
+                checksum,
+                declaration,
+            };
+        }
     }
 
     return targets;
@@ -231,6 +232,8 @@ export default class MarkerParser {
             return;
         }
 
+        console.log(declaration);
+        console.log(line);
         const target: TrackedTarget = {
             line,
             checksum,
@@ -255,9 +258,15 @@ export default class MarkerParser {
 
         if (this._openMarkers[id].targets[normalized.file]) {
             this._recordError({
-                reason: `Duplicate target '${file}' for sync-tag '${id}'`,
+                reason: `Duplicate target for sync-tag '${id}'`,
                 location: {line},
                 code: ErrorCodes.duplicateTarget,
+                fix: {
+                    type: "delete",
+                    description: `Removed duplicate target for sync-tag '${id}'`,
+                    declaration,
+                    line,
+                },
             });
         }
 
@@ -268,8 +277,9 @@ export default class MarkerParser {
                 code: ErrorCodes.startTagAfterContent,
             });
         }
-
-        this._openMarkers[id].targets[normalized.file] = target;
+        const targets = this._openMarkers[id].targets[normalized.file] || [];
+        targets.push(target);
+        this._openMarkers[id].targets[normalized.file] = targets;
     };
 
     _recordMarkerEnd: (id: string, line: number) => void = (
@@ -305,12 +315,13 @@ export default class MarkerParser {
         const marker = this._openMarkers[id];
         delete this._openMarkers[id];
         const targetFile = Object.keys(marker.targets)[0];
-        const {line} = marker.targets[targetFile];
-        this._recordError({
-            reason: `Sync-start '${id}' has no corresponding sync-end`,
-            location: {line},
-            code: ErrorCodes.startTagWithoutEndTag,
-        });
+        for (const {line} of marker.targets[targetFile]) {
+            this._recordError({
+                reason: `Sync-start '${id}' has no corresponding sync-end`,
+                location: {line},
+                code: ErrorCodes.startTagWithoutEndTag,
+            });
+        }
     };
 
     _recordBadMarkerStart: (

@@ -24,6 +24,7 @@ export interface IPositionLog extends ILog {
     +log: (message: string, line?: string | number) => void;
     +warn: (message: string, line?: string | number) => void;
     +mismatch: (message: string, line?: string | number) => void;
+    +fix: (message: string, line?: string | number) => void;
 }
 
 export type FixAction =

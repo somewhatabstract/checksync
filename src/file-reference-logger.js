@@ -31,6 +31,10 @@ export default class FileReferenceLogger implements IPositionLog {
         message: string,
         line?: string | number,
     ): void => this._log.log(Format.mismatch(this._format(message, line)));
+    fix: (message: string, line?: string | number) => void = (
+        message: string,
+        line?: string | number,
+    ): void => this._log.log(Format.fix(this._format(message, line)));
     log: (message: string, line?: string | number) => void = (
         message: string,
         line?: string | number,

@@ -2,8 +2,7 @@
 import readline from "readline";
 import fs from "fs";
 
-import type {IPositionLog, Options, ErrorDetails} from "./types.js";
-import ErrorCodes from "./error-codes.js";
+import type {IPositionLog, Options, ErrorDetails, FixAction} from "./types.js";
 
 type ErrorDetailsByDeclaration = {
     [key: string]: Array<ErrorDetails>,
@@ -12,16 +11,15 @@ type ErrorDetailsByDeclaration = {
 
 const reportFix = (
     sourceFile: string,
-    errorDetail: ErrorDetails,
+    fix: ?FixAction,
     log: IPositionLog,
 ): void => {
-    const {fix, location} = errorDetail;
-
-    if (location == null || fix == null) {
+    if (fix == null) {
         // We can't do anything with this.
         return;
     }
-    log.mismatch(fix.description, location.line);
+
+    log.fix(fix.description, fix.line);
 };
 
 export default function fixFile(
@@ -75,27 +73,26 @@ export default function fixFile(
                 terminal: false,
             })
             .on("line", (lineText: string) => {
-                // First, we should report what we will fix.
-                // Since there could be multiple things for a single line,
-                // we will pick just the first mismatch (there should be just
-                // one anyway).
-                const errors = errorsByDeclaration[lineText];
-                const errorDetails = (errors || []).find(
-                    (e) => e.code === ErrorCodes.mismatchedChecksum,
-                );
-                if (errorDetails != null) {
-                    reportFix(file, errorDetails, log);
-                }
+                // If there are multiple lines with the exact same text,
+                // they will both receive the same fix till we track the line
+                // number.
+                // TODO: Track the line number so we can work with duplicate
+                // text.
+                // We always fix the first error in the list.
+                const fix = errorsByDeclaration[lineText]?.find(
+                    (e) => e.fix != null,
+                )?.fix;
+                reportFix(file, fix, log);
 
                 // TODO: Count the lines and make sure we don't append a
                 // newline when we don't need to.
-                if (errorDetails?.fix?.type === "delete") {
+                if (fix?.type === "delete") {
                     // Don't write anything. We're deleting this line!
                     // TODO: Make sure that this is right...maybe we need to
                     // write a blank bit of text?
-                } else if (errorDetails?.fix?.type === "replace") {
+                } else if (fix?.type === "replace") {
                     // If we have a fix, use it.
-                    ws.write(`${errorDetails?.fix?.text}\n`);
+                    ws.write(`${fix.text}\n`);
                 } else {
                     // Otherwise, just output the line as it is (we have to add
                     // the newline)

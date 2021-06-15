@@ -12,6 +12,8 @@ const Format = {
         `${chalk.bold.black.bgYellow(" WARNING ")} ${text}`,
     mismatch: (text: string): string =>
         `${chalk.bold.black.bgYellowBright(" MISMATCH ")} ${text}`,
+    fix: (text: string): string =>
+        `${chalk.bold.black.bgGreenBright(" FIX ")} ${text}`,
     cwdFilePath: (filePath: string): string =>
         chalk.gray(cwdRelativePath(filePath)),
 

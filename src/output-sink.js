@@ -84,12 +84,16 @@ export default class OutputSink {
         }
 
         // Now we determine if we need to track or report the problem.
-        const {fix, reason} = errorDetails;
+        const {fix, reason, code} = errorDetails;
         if (fix != null) {
             this._fixableFileNames.add(fileLog.file);
 
             if (!this._options.autoFix && !this._options.json) {
-                fileLog.mismatch(reason);
+                if (code === ErrorCodes.mismatchedChecksum) {
+                    fileLog.mismatch(reason, fix.line);
+                } else {
+                    fileLog.warn(reason, fix.line);
+                }
             }
         }
         this._getErrorsForFile(fileLog.file)?.push(errorDetails);
@@ -113,29 +117,22 @@ export default class OutputSink {
             // errors.
             if (this._options.autoFix && !this._unfixableErrors) {
                 const errorsForThisFile = this._getErrorsForFile(fileLog.file);
-                const mismatchFixes = errorsForThisFile?.reduce((map, e) => {
-                    if (
-                        e.code === ErrorCodes.mismatchedChecksum &&
-                        e.fix != null
-                    ) {
+                const fixes = errorsForThisFile?.reduce((map, e) => {
+                    if (e.fix != null) {
                         const {declaration} = e.fix;
-                        const errors = map[declaration];
-                        map[declaration] = (errors || []).push(e);
+                        const errors = map[declaration] || [];
+                        errors.push(e);
+                        map[declaration] = errors;
                     }
                     return map;
                 }, {});
-                if (mismatchFixes == null) {
+                if (fixes == null) {
                     return;
                 }
 
                 // We need to apply fixes, unless it's a dry-run.
                 // We can hand this over to a different
-                await fixFile(
-                    this._options,
-                    fileLog.file,
-                    fileLog,
-                    mismatchFixes,
-                );
+                await fixFile(this._options, fileLog.file, fileLog, fixes);
             }
         } finally {
             this._fileLog = null;

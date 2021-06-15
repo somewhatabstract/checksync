@@ -139,7 +139,7 @@ export default function* generateErrors(
                 location: {line: targetDetails.line},
                 fix: {
                     type: "replace",
-                    line: targetDetails.line,
+                    line: sourceLine,
                     text: fix,
                     declaration: targetRef.declaration,
                     description: `Updated checksum for sync-tag '${markerID}' referencing '${cwdRelativePath(
