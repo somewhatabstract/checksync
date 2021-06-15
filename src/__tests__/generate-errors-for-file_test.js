@@ -125,15 +125,14 @@ describe("#generateMarkerEdges", () => {
             {
                 code: "mismatched-checksum",
                 reason: "Looks like you changed the target content for sync-tag 'marker' in 'filea:1'. Make sure you've made the parallel changes in the source file, if necessary (WRONG != 1234)",
-                location: {
-                    end: {line: 1},
-                    start: {line: 1},
-                },
+                location: {line: 1},
                 fix: {
-                    end: 1,
-                    start: 1,
+                    line: 1,
                     type: "replace",
                     text: "// sync-start:marker 1234 filea",
+                    declaration: "// sync-start:marker WRONG filea",
+                    description:
+                        "Updated checksum for sync-tag 'marker' referencing 'filea:1' from WRONG to 1234.",
                 },
             },
         ]);
@@ -149,10 +148,7 @@ describe("#generateMarkerEdges", () => {
                     {
                         reason: "It's an error from a fixable file",
                         code: ("error-code": any),
-                        location: {
-                            start: {line: 1, column: 5},
-                            end: {line: 1, column: 10},
-                        },
+                        location: {line: 10, startColumn: 5, endColumn: 10},
                     },
                 ],
                 aliases: ["filea"],
@@ -177,10 +173,7 @@ describe("#generateMarkerEdges", () => {
                     {
                         reason: "It's an error from a read-only file",
                         code: ("error-code": any),
-                        location: {
-                            start: {line: 10},
-                            end: {line: 10},
-                        },
+                        location: {line: 10},
                     },
                 ],
                 aliases: ["fileb"],
@@ -257,10 +250,7 @@ describe("#generateMarkerEdges", () => {
         expect(result).toEqual([
             {
                 code: "no-return-tag",
-                location: {
-                    start: {line: 1},
-                    end: {line: 1},
-                },
+                location: {line: 1},
                 reason: "No return tag named 'marker' in 'fileb'",
             },
         ]);
