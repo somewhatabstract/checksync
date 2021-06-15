@@ -163,6 +163,7 @@ export type FileInfo = {
     +aliases: Array<string>,
     +markers: Markers,
     +errors: Array<ErrorDetails>,
+    +lineCount?: number,
 };
 
 /**

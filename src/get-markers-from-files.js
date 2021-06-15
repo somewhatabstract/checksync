@@ -56,6 +56,7 @@ export default async function getMarkersFromFiles(
                     markers: parseResult.markers || {},
                     aliases: [],
                     errors: parseResult.errors,
+                    lineCount: parseResult.lineCount,
                 });
                 referencedFiles.push(...parseResult.referencedFiles);
 
