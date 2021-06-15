@@ -8,6 +8,7 @@ const exitCodes = {
     PARSE_ERRORS: 2,
     DESYNCHRONIZED_BLOCKS: 3,
     UNKNOWN_ARGS: 4,
+    CATASTROPHIC: 5,
 };
 
 export type ExitCode = $Values<typeof exitCodes>;

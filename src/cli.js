@@ -132,8 +132,14 @@ export const run = (launchFilePath: string): void => {
             dryRun: args.dryRun === true,
         },
         log,
-    ).then((exitCode) => {
-        log.verbose(() => `Exiting with code ${exitCode}`);
-        process.exit(exitCode);
-    });
+    ).then(
+        (exitCode) => {
+            log.verbose(() => `Exiting with code ${exitCode}`);
+            process.exit(exitCode);
+        },
+        (e) => {
+            log.error(`Unexpected error: ${e}`);
+            process.exit(ExitCodes.CATASTROPHIC);
+        },
+    );
 };
