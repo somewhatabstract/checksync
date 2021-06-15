@@ -232,8 +232,6 @@ export default class MarkerParser {
             return;
         }
 
-        console.log(declaration);
-        console.log(line);
         const target: TrackedTarget = {
             line,
             checksum,
