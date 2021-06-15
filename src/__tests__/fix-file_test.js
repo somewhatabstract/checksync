@@ -55,10 +55,9 @@ describe("#fixFile", () => {
             write: jest.fn(),
             end: jest.fn(),
         };
+        jest.spyOn(fs, "truncate").mockImplementation((_, __, cb) => cb());
         fakeWriteStream.once.mockReturnValue(fakeWriteStream);
-        fakeWriteStream.end.mockImplementation(() => {
-            invokeEvent(fakeWriteStream.once, "close");
-        });
+        fakeWriteStream.end.mockImplementation((cb) => cb());
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
 
@@ -110,10 +109,9 @@ describe("#fixFile", () => {
             write: jest.fn(),
             end: jest.fn(),
         };
+        jest.spyOn(fs, "truncate").mockImplementation((_, __, cb) => cb());
         fakeWriteStream.once.mockReturnValue(fakeWriteStream);
-        fakeWriteStream.end.mockImplementation(() => {
-            invokeEvent(fakeWriteStream.once, "close");
-        });
+        fakeWriteStream.end.mockImplementation((cb) => cb());
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
 
@@ -166,10 +164,9 @@ describe("#fixFile", () => {
             write: jest.fn(),
             end: jest.fn(),
         };
+        jest.spyOn(fs, "truncate").mockImplementation((_, __, cb) => cb());
         fakeWriteStream.once.mockReturnValue(fakeWriteStream);
-        fakeWriteStream.end.mockImplementation(() => {
-            invokeEvent(fakeWriteStream.once, "close");
-        });
+        fakeWriteStream.end.mockImplementation((cb) => cb());
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
 
@@ -223,10 +220,9 @@ describe("#fixFile", () => {
             write: jest.fn(),
             end: jest.fn(),
         };
+        jest.spyOn(fs, "truncate").mockImplementation((_, __, cb) => cb());
         fakeWriteStream.once.mockReturnValue(fakeWriteStream);
-        fakeWriteStream.end.mockImplementation(() => {
-            invokeEvent(fakeWriteStream.once, "close");
-        });
+        fakeWriteStream.end.mockImplementation((cb) => cb());
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
 
@@ -276,10 +272,9 @@ describe("#fixFile", () => {
             write: jest.fn(),
             end: jest.fn(),
         };
+        jest.spyOn(fs, "truncate").mockImplementation((_, __, cb) => cb());
         fakeWriteStream.once.mockReturnValue(fakeWriteStream);
-        fakeWriteStream.end.mockImplementation(() => {
-            invokeEvent(fakeWriteStream.once, "close");
-        });
+        fakeWriteStream.end.mockImplementation((cb) => cb());
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
 
