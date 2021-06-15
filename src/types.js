@@ -178,7 +178,7 @@ export type MarkerCache = {
     ...
 };
 
-export type normalizePathFn = (relativeFile: string) => ?{
+export type normalizePathFn = (relativeFile: string) => {
     file: string,
     exists: boolean,
 };
@@ -197,20 +197,3 @@ export type NormalizedFileInfo = {
     file: string,
     exists: boolean,
 };
-
-export type JsonItem =
-    | {
-          type: "violation",
-          sourceFile: string,
-          sourceLine: number,
-          targetFile: string,
-          targetLine: number,
-          message: string,
-          fix?: string,
-      }
-    | {
-          type: "error",
-          sourceFile: string,
-          targetFile: string,
-          message: string,
-      };

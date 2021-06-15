@@ -65,7 +65,7 @@ describe("MarkerParser", () => {
             // Assert
             expect(recordError).toHaveBeenCalledWith({
                 code: "start-tag-witout-end-tag",
-                location: {end: {line: 2}, start: {line: 2}},
+                location: {line: 2},
                 reason: "Sync-start 'tag2' has no corresponding sync-end",
             });
         });
@@ -89,7 +89,7 @@ describe("MarkerParser", () => {
             // Assert
             expect(recordError).toHaveBeenCalledWith({
                 code: "malformed-start-tag",
-                location: {end: {line: 1}, start: {line: 1}},
+                location: {line: 1},
                 reason: "Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'",
             });
         });
@@ -111,7 +111,7 @@ describe("MarkerParser", () => {
             // Assert
             expect(recordError).toHaveBeenCalledWith({
                 code: "malformed-end-tag",
-                location: {end: {line: 1}, start: {line: 1}},
+                location: {line: 1},
                 reason: "Malformed sync-end: format should be 'sync-end:<label>'",
             });
         });
@@ -133,7 +133,7 @@ describe("MarkerParser", () => {
             // Assert
             expect(recordError).toHaveBeenCalledWith({
                 code: "end-tag-without-start-tag",
-                location: {end: {line: 1}, start: {line: 1}},
+                location: {line: 1},
                 reason: "Sync-end for 'notstarted' found, but there was no corresponding sync-start",
             });
         });
@@ -155,7 +155,7 @@ describe("MarkerParser", () => {
             // Assert
             expect(recordError).toHaveBeenCalledWith({
                 code: "file-does-not-exist",
-                location: {end: {line: 1}, start: {line: 1}},
+                location: {line: 1},
                 reason: "Sync-start for 'markerid' points to 'target1', which does not exist or is a directory",
             });
         });
@@ -179,7 +179,7 @@ describe("MarkerParser", () => {
             // Assert
             expect(recordError).toHaveBeenCalledWith({
                 code: "start-tag-after-content",
-                location: {end: {line: 3}, start: {line: 3}},
+                location: {line: 3},
                 reason: "Sync-start for 'markerid' found after content started",
             });
         });
@@ -202,8 +202,15 @@ describe("MarkerParser", () => {
             // Assert
             expect(recordError).toHaveBeenCalledWith({
                 code: "duplicate-target",
-                location: {end: {line: 2}, start: {line: 2}},
-                reason: "Duplicate target 'target1' for sync-tag 'markerid'",
+                location: {line: 2},
+                reason: "Duplicate target for sync-tag 'markerid'",
+                fix: {
+                    declaration: "sync-start:markerid target1",
+                    description:
+                        "Removed duplicate target for sync-tag 'markerid'",
+                    line: 2,
+                    type: "delete",
+                },
             });
         });
 
@@ -225,7 +232,7 @@ describe("MarkerParser", () => {
             // Assert
             expect(recordError).toHaveBeenCalledWith({
                 code: "empty-marker",
-                location: {end: {line: 2}, start: {line: 2}},
+                location: {line: 2},
                 reason: "Sync-tag 'markerid' has no content",
             });
         });
@@ -250,7 +257,7 @@ describe("MarkerParser", () => {
             // Assert
             expect(recordError).toHaveBeenCalledWith({
                 code: "different-comment-syntax",
-                location: {end: {line: 2}, start: {line: 2}},
+                location: {line: 2},
                 reason: "Sync-start tags for 'markerid2' given in different comment styles. Please use the same style for all sync-start tags that have identical identifiers.",
             });
         });

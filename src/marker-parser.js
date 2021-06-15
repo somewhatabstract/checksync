@@ -211,13 +211,13 @@ export default class MarkerParser {
         commentEnd: string,
         declaration: string,
     ) => void = (
-        id: string,
-        file: string,
-        line: number,
-        checksum: string,
-        commentStart: string,
-        commentEnd: string,
-        declaration: string,
+        id,
+        file,
+        line,
+        checksum,
+        commentStart,
+        commentEnd,
+        declaration,
     ) => {
         this._openMarkers[id] = this._openMarkers[id] || {
             content: [],
@@ -227,11 +227,6 @@ export default class MarkerParser {
         };
 
         const normalized = this._normalizePath(file);
-        if (normalized == null) {
-            // We're not logging targets for this marker.
-            return;
-        }
-
         const target: TrackedTarget = {
             line,
             checksum,

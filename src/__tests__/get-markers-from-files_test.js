@@ -131,6 +131,7 @@ describe("#fromFiles", () => {
         // Assert
         expect(result).toStrictEqual({
             "a.js": {
+                lineCount: undefined,
                 errors: [],
                 readOnly: false,
                 aliases: ["a.js"],
@@ -139,6 +140,7 @@ describe("#fromFiles", () => {
                 },
             },
             "b.js": {
+                lineCount: undefined,
                 errors: [],
                 readOnly: false,
                 aliases: ["b.js"],
@@ -180,18 +182,21 @@ describe("#fromFiles", () => {
         // Assert
         expect(result).toStrictEqual({
             "a.js": {
+                lineCount: undefined,
                 errors: [],
                 markers: {},
                 readOnly: false,
                 aliases: ["a.js"],
             },
             "b.js": {
+                lineCount: undefined,
                 errors: [],
                 readOnly: false,
                 aliases: ["b.js"],
                 markers: "b.js",
             },
             "c.js": {
+                lineCount: undefined,
                 errors: [],
                 markers: {},
                 readOnly: true,

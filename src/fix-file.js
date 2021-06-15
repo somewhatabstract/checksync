@@ -103,6 +103,8 @@ export default function fixFile(
                 // We have finished reading, so let's tell the write stream
                 // to finish what it is doing. This will cause it to close.
                 ws.end(() => {
+                    // We truncate the file at the end in case we deleted some
+                    // things.
                     fs.truncate(file, ws.bytesWritten, () => resolve());
                 });
             });
