@@ -3,21 +3,6 @@ import Logger from "../logger.js";
 import FileReferenceLogger from "../file-reference-logger.js";
 
 describe("FileReferenceLogger", () => {
-    it("should return errorsLogged from underlying logger", () => {
-        // Arrange
-        const NullLogger = new Logger();
-        const spy = jest.spyOn(NullLogger, "errorsLogged", "get");
-        const logger = new FileReferenceLogger("FILE", NullLogger);
-
-        // Act
-        NullLogger.error("ERROR!");
-        const result = logger.errorsLogged;
-
-        // Assert
-        expect(result).toBeTrue();
-        expect(spy).toHaveBeenCalled();
-    });
-
     it("should pass group through to underlying logger", () => {
         // Arrange
         const NullLogger = new Logger();
@@ -74,7 +59,7 @@ describe("FileReferenceLogger", () => {
         });
     });
 
-    describe.each(["error", "log", "warn", "info"])("#%s", testCase => {
+    describe.each(["error", "log", "warn", "info"])("#%s", (testCase) => {
         it("should prefix with default file reference", () => {
             // Arrange
             const NullLogger = new Logger();

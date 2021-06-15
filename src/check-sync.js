@@ -23,7 +23,7 @@ export default async function checkSync(
     if (options.autoFix && options.dryRun) {
         log.info("DRY-RUN: Files will not be modified");
     }
-    const {includeGlobs, excludeGlobs, autoFix} = options;
+    const {includeGlobs, excludeGlobs} = options;
     const files = await getFiles(includeGlobs, excludeGlobs, log);
 
     if (files.length === 0) {
@@ -32,14 +32,6 @@ export default async function checkSync(
     }
 
     const cache = await getMarkersFromFiles(options, files);
-    if (log.errorsLogged && autoFix) {
-        log.log("");
-        log.log(
-            "🛑  Aborting tag updates due to parsing errors. Fix these errors and try again.",
-        );
-        return ExitCodes.PARSE_ERRORS;
-    }
-
     const result = processCache(options, cache, log);
     return result;
 }

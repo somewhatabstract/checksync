@@ -213,8 +213,3 @@ export type JsonItem =
           targetFile: string,
           message: string,
       };
-
-export type ErrorDetailsByDeclaration = {
-    [key: string]: ErrorDetails,
-    ...
-};

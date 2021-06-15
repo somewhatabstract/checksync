@@ -1,7 +1,6 @@
 // @flow
 import path from "path";
 import escapeRegExp from "lodash/escapeRegExp";
-import Format from "./format.js";
 import ErrorCodes from "./error-codes.js";
 import rootRelativePath from "./root-relative-path.js";
 import cwdRelativePath from "./cwd-relative-path.js";
@@ -102,9 +101,7 @@ export default function* generateErrors(
 
             if (targetDetails?.line == null || targetChecksum == null) {
                 yield {
-                    reason: `No return tag named '${markerID}' in '${Format.cwdFilePath(
-                        targetRef.file,
-                    )}'`,
+                    reason: `No return tag named '${markerID}' in '${targetRef.file}'`,
                     code: "no-return-tag",
                     location: {line: sourceLine},
                 };
@@ -147,9 +144,9 @@ export default function* generateErrors(
                     declaration: targetRef.declaration,
                     description: `Updated checksum for sync-tag '${markerID}' referencing '${cwdRelativePath(
                         normalizedTargetFile,
-                    )}:${
-                        targetDetails.line
-                    }' from ${sourceChecksum} to ${targetChecksum}.`,
+                    )}:${targetDetails.line}' from ${
+                        sourceChecksum || NoChecksum.toLowerCase()
+                    } to ${targetChecksum}.`,
                 },
             };
         }

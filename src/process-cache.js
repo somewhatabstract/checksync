@@ -1,6 +1,5 @@
 // @flow
 import cwdRelativePath from "./cwd-relative-path.js";
-import Format from "./format.js";
 import generateErrorsForFile from "./generate-errors-for-file.js";
 import OutputSink from "./output-sink.js";
 
@@ -28,9 +27,7 @@ export default async function processCache(
             }
         } catch (e) {
             log.error(
-                `${Format.cwdFilePath(
-                    cwdRelativePath(file),
-                )} update encountered error: ${e.stack}`,
+                `${cwdRelativePath(file)} update encountered error: ${e.stack}`,
             );
         } finally {
             await outputSink.endFile();

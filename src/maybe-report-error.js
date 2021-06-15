@@ -18,6 +18,7 @@ export default function maybeReportError(
         // The fix handler will deal with those.
         return;
     }
+
     switch (error.code) {
         case ErrorCodes.duplicateTarget:
         case ErrorCodes.emptyMarker:

@@ -2,12 +2,13 @@
 import readline from "readline";
 import fs from "fs";
 
-import type {
-    IPositionLog,
-    Options,
-    ErrorDetails,
-    ErrorDetailsByDeclaration,
-} from "./types.js";
+import type {IPositionLog, Options, ErrorDetails} from "./types.js";
+import ErrorCodes from "./error-codes.js";
+
+type ErrorDetailsByDeclaration = {
+    [key: string]: Array<ErrorDetails>,
+    ...
+};
 
 const reportFix = (
     sourceFile: string,
@@ -74,17 +75,24 @@ export default function fixFile(
                 terminal: false,
             })
             .on("line", (lineText: string) => {
-                // Let's see if this is something we need to fix.
-                const errorDetails = errorsByDeclaration[lineText];
+                // First, we should report what we will fix.
+                // Since there could be multiple things for a single line,
+                // we will pick just the first mismatch (there should be just
+                // one anyway).
+                const errors = errorsByDeclaration[lineText];
+                const errorDetails = (errors || []).find(
+                    (e) => e.code === ErrorCodes.mismatchedChecksum,
+                );
                 if (errorDetails != null) {
                     reportFix(file, errorDetails, log);
                 }
 
                 // TODO: Count the lines and make sure we don't append a
                 // newline when we don't need to.
-
                 if (errorDetails?.fix?.type === "delete") {
                     // Don't write anything. We're deleting this line!
+                    // TODO: Make sure that this is right...maybe we need to
+                    // write a blank bit of text?
                 } else if (errorDetails?.fix?.type === "replace") {
                     // If we have a fix, use it.
                     ws.write(`${errorDetails?.fix?.text}\n`);
