@@ -101,7 +101,9 @@ export default function* generateErrors(
 
             if (targetDetails?.line == null || targetChecksum == null) {
                 yield {
-                    reason: `No return tag named '${markerID}' in '${targetRef.file}'`,
+                    reason: `No return tag named '${markerID}' in '${cwdRelativePath(
+                        targetRef.file,
+                    )}'`,
                     code: "no-return-tag",
                     location: {line: sourceLine},
                 };

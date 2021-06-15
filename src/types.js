@@ -14,7 +14,6 @@ export interface IStandardLog {
 }
 
 export interface ILog extends IStandardLog {
-    +errorsLogged: boolean;
     +verbose: (() => string) => void;
 }
 
