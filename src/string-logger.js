@@ -4,7 +4,7 @@ import escapeRegExp from "lodash/escapeRegExp";
 import Logger from "./logger.js";
 import {getPathSeparator} from "./get-path-separator.js";
 
-import type {ILog} from "./types.js";
+import type {IStandardLog} from "./types.js";
 
 /**
  * Rather than directly use this implementation, we wrap it with the main
@@ -13,9 +13,8 @@ import type {ILog} from "./types.js";
  * invoked by the Logger implementation or someone calling Format/chalk before
  * passing it to a log call.
  */
-class StringLoggerInternal implements ILog {
+class StringLoggerInternal implements IStandardLog {
     _buffer: Array<string> = [];
-    _errorsLogged: boolean = false;
     _groupIndent: number = 0;
 
     _log = (...args: Array<string>) => {
@@ -62,11 +61,6 @@ class StringLoggerInternal implements ILog {
     info = (message: string): void => this._log(message);
     error = (message: string): void => this._log(message);
     warn = (message: string): void => this._log(message);
-    verbose = (build: () => string): void => {};
-
-    get errorsLogged() {
-        return this._errorsLogged;
-    }
 }
 
 export default class StringLogger extends Logger {
