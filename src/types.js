@@ -14,9 +14,7 @@ import type {ErrorCode} from "./error-codes.js";
 //     },
 // };
 
-export interface ILog {
-    +errorsLogged: boolean;
-
+export interface IStandardLog {
     +group: (...labels: Array<string>) => void;
     +groupEnd: () => void;
 
@@ -24,6 +22,10 @@ export interface ILog {
     +info: (message: string) => void;
     +log: (message: string) => void;
     +warn: (message: string) => void;
+}
+
+export interface ILog extends IStandardLog {
+    +errorsLogged: boolean;
     +verbose: (() => string) => void;
 }
 

@@ -4,6 +4,8 @@ import escapeRegExp from "lodash/escapeRegExp";
 import Logger from "./logger.js";
 import {getPathSeparator} from "./get-path-separator.js";
 
+import type {IStandardLog} from "./types.js";
+
 /**
  * Rather than directly use this implementation, we wrap it with the main
  * Logger class so that we also capture the format calls as part of the
@@ -11,9 +13,8 @@ import {getPathSeparator} from "./get-path-separator.js";
  * invoked by the Logger implementation or someone calling Format/chalk before
  * passing it to a log call.
  */
-class StringLoggerInternal {
+class StringLoggerInternal implements IStandardLog {
     _buffer: Array<string> = [];
-    _errorsLogged: boolean = false;
     _groupIndent: number = 0;
 
     _log = (...args: Array<string>) => {
