@@ -4,21 +4,14 @@
  */
 import Format from "./format.js";
 
-import type {ILog} from "./types.js";
-
-type MissingInStandardLog = {
-    +errorsLogged: boolean,
-    +verbose: (() => string) => void,
-};
-type StandardLog = $Diff<ILog, MissingInStandardLog>;
-type StandardLogReadOnly = $ReadOnly<StandardLog>;
+import type {ILog, IStandardLog} from "./types.js";
 
 export default class Logging implements ILog {
-    _logger: ?StandardLogReadOnly;
+    _logger: ?IStandardLog;
     _verbose: boolean;
     _errorsLogged: boolean;
 
-    constructor(logger: ?StandardLogReadOnly, verbose?: boolean) {
+    constructor(logger: ?IStandardLog, verbose?: boolean) {
         this._logger = logger;
         this._errorsLogged = false;
         this._verbose = !!verbose;
