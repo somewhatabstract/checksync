@@ -126,6 +126,7 @@ describe("#run", () => {
             updateTags: true,
             comments: "COMMENT1 COMMENT2",
             ignoreFiles: "madeupfile",
+            ignore: "glob1;glob2;",
             _: ["globs", "and globs"],
         };
         const checkSyncSpy = jest
@@ -140,7 +141,7 @@ describe("#run", () => {
         expect(checkSyncSpy).toHaveBeenCalledWith(
             {
                 includeGlobs: fakeParsedArgs._,
-                excludeGlobs: [],
+                excludeGlobs: ["glob1", "glob2"],
                 ignoreFiles: ["madeupfile"],
                 dryRun: false,
                 autoFix: true,
