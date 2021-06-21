@@ -42,7 +42,6 @@ describe("Integration Tests", () => {
         );
     };
     const exampleGlobs = getExampleGlobs();
-    console.log(exampleGlobs);
 
     it.each(exampleGlobs)(
         "should report example %s to match snapshot",

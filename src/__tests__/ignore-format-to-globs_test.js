@@ -9,7 +9,7 @@ describe("#ignoreFormatToGlobs", () => {
         const result = Array.from(ignoreFormatToGlobs(["foo"]));
 
         // Assert
-        expect(result).toIncludeAllMembers(["**/foo/**", "foo"]);
+        expect(result).toStrictEqual(["**/foo/**", "foo"]);
     });
 
     it("should expand /foo format includes", () => {
@@ -19,7 +19,7 @@ describe("#ignoreFormatToGlobs", () => {
         const result = Array.from(ignoreFormatToGlobs(["/foo"]));
 
         // Assert
-        expect(result).toIncludeAllMembers(["/foo/**", "/foo"]);
+        expect(result).toStrictEqual(["/foo/**", "/foo"]);
     });
 
     it("should expand /foo/ format includes", () => {
@@ -29,7 +29,7 @@ describe("#ignoreFormatToGlobs", () => {
         const result = Array.from(ignoreFormatToGlobs(["/foo/"]));
 
         // Assert
-        expect(result).toIncludeAllMembers(["/foo/**"]);
+        expect(result).toStrictEqual(["/foo/**"]);
     });
 
     it("should expand foo/ format includes", () => {
@@ -39,6 +39,6 @@ describe("#ignoreFormatToGlobs", () => {
         const result = Array.from(ignoreFormatToGlobs(["foo/"]));
 
         // Assert
-        expect(result).toIncludeAllMembers(["**/foo/**"]);
+        expect(result).toStrictEqual(["**/foo/**"]);
     });
 });

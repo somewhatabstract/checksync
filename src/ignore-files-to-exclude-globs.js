@@ -17,16 +17,22 @@ export default (
         return [];
     }
 
-    return (
-        ignoreFiles
-            // Read the file - this currently assumes it exists, we may want
-            // to consider skipping over ignore files that don't exist.
-            .map((file) => fs.readFileSync(file))
-            // Parse it as .gitignore syntax.
-            .map((content: Buffer) => parseGitIgnore(content))
-            // Transform ignore syntax to globs.
-            .map((ignores) => Array.from(ignoreFormatToGlobs(ignores)))
-            // Flatten our array of arrays into a single array.
-            .reduce((prev, current: Array<string>) => [...prev, ...current], [])
-    );
+    // TODO: We need to glob some of these and then we need to expand their
+    // ignores based on their file location.
+
+    // TODO: Use Promise.all and async reads to see if some of this can be
+    // parallelized.
+    const allIgnores = ignoreFiles
+        // Read the file - this currently assumes it exists, we may want
+        // to consider skipping over ignore files that don't exist.
+        .map((file) => fs.readFileSync(file))
+        // Parse it as .gitignore syntax.
+        .map((content: Buffer) => parseGitIgnore(content))
+        // Flatten our array of arrays into a single array.
+        .reduce((prev, current: Array<string>) => [...prev, ...current], []);
+
+    const allIgnoresWithoutDuplicates = Array.from(new Set(allIgnores));
+
+    // Transform ignore syntax to globs.
+    return Array.from(ignoreFormatToGlobs(allIgnoresWithoutDuplicates));
 };
