@@ -3,7 +3,6 @@ import getMarkersFromFiles from "./get-markers-from-files.js";
 import getFiles from "./get-files.js";
 import ExitCodes from "./exit-codes.js";
 import processCache from "./process-cache.js";
-import ignoreFilesToExcludeGlobs from "./ignore-files-to-exclude-globs.js";
 
 import type {ILog, Options} from "./types.js";
 import type {ExitCode} from "./exit-codes.js";
@@ -24,14 +23,9 @@ export default async function checkSync(
     if (options.autoFix && options.dryRun) {
         log.info("DRY-RUN: Files will not be modified");
     }
-    const {includeGlobs, excludeGlobs, ignoreFiles} = options;
-    const ignoreFileGlobs = ignoreFilesToExcludeGlobs(ignoreFiles);
 
-    const files = await getFiles(
-        includeGlobs,
-        [...excludeGlobs, ...ignoreFileGlobs],
-        log,
-    );
+    const {includeGlobs, excludeGlobs, ignoreFiles} = options;
+    const files = await getFiles(includeGlobs, excludeGlobs, ignoreFiles, log);
 
     if (files.length === 0) {
         log.error("No matching files");
