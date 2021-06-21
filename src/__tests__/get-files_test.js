@@ -17,7 +17,7 @@ describe("#getFiles", () => {
             .mockImplementation((pattern, opts) => Promise.resolve([]));
 
         // Act
-        await getFiles(["foo"], [], NullLogger);
+        await getFiles(["foo"], [], [], NullLogger);
 
         // Assert
         expect(globSpy).toHaveBeenCalledWith(
@@ -34,7 +34,7 @@ describe("#getFiles", () => {
             .mockImplementation((pattern, opts) => Promise.resolve([]));
 
         // Act
-        await getFiles(["/foo"], [], NullLogger);
+        await getFiles(["/foo"], [], [], NullLogger);
 
         // Assert
         expect(globSpy).toHaveBeenCalledWith(
@@ -51,7 +51,7 @@ describe("#getFiles", () => {
             .mockImplementation((pattern, opts) => Promise.resolve([]));
 
         // Act
-        await getFiles(["/foo/"], [], NullLogger);
+        await getFiles(["/foo/"], [], [], NullLogger);
 
         // Assert
         expect(globSpy).toHaveBeenCalledWith(["/foo/**"], expect.any(Object));
@@ -65,7 +65,7 @@ describe("#getFiles", () => {
             .mockImplementation((pattern, opts) => Promise.resolve([]));
 
         // Act
-        await getFiles(["foo/"], [], NullLogger);
+        await getFiles(["foo/"], [], [], NullLogger);
 
         // Assert
         expect(globSpy).toHaveBeenCalledWith(["**/foo/**"], expect.any(Object));
@@ -81,7 +81,12 @@ describe("#getFiles", () => {
             );
 
         // Act
-        const result = await getFiles(["pattern1", "pattern2"], [], NullLogger);
+        const result = await getFiles(
+            ["pattern1", "pattern2"],
+            [],
+            [],
+            NullLogger,
+        );
 
         // Assert
         expect(result).toEqual(["a", "b", "c", "d"]);
@@ -98,7 +103,7 @@ describe("#getFiles", () => {
             );
 
         // Act
-        await getFiles([], ["a", "c"], NullLogger);
+        await getFiles([], ["a", "c"], [], NullLogger);
 
         // Assert
         expect(globSpy).toHaveBeenCalledWith(
@@ -116,7 +121,7 @@ describe("#getFiles", () => {
         const verboseSpy = jest.spyOn(NullLogger, "verbose");
 
         // Act
-        await getFiles([], ["a", "c"], NullLogger);
+        await getFiles([], ["a", "c"], [], NullLogger);
 
         // Assert
         expect(verboseSpy).toHaveBeenCalledTimes(3);
@@ -130,10 +135,12 @@ describe("#getFiles", () => {
         );
 
         // Act
-        await getFiles([], ["a", "c"], logger);
+        await getFiles([], ["a", "c"], [], logger);
         const log = logger.getLog();
 
         // Assert
         expect(log).toMatchSnapshot();
     });
+
+    it.todo("should expand ignore files");
 });
