@@ -36,6 +36,8 @@ describe("Integration Tests", () => {
                         .replace(ancesdir(), ".")
                         .replace(new RegExp(escapeRegExp(path.sep), "g"), "/"),
                 ])
+                // Finally, this has to be an actual glob, or it won't work.
+                .map(([name, dirPath]) => [name, `${dirPath}/**`])
                 .sort()
         );
     };
