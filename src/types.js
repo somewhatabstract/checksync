@@ -183,12 +183,54 @@ export type normalizePathFn = (relativeFile: string) => {
 };
 
 export type Options = {
+    /**
+     * The paths and globs for identifying files that are to be processed.
+     */
     includeGlobs: Array<string>,
+
+    /**
+     * The globs for files that are to be ignored.
+     */
     excludeGlobs: Array<string>,
+
+    /**
+     * .gitignore-syntax files indicating files that are to be ignored.
+     *
+     * Absolute and relative paths (i.e. "/user/.gitignore" or "./.gitignore")
+     * are treated as exact matches to a single file.
+     *
+     * File names like ".gitignore" are interpreted as being files to use in
+     * each folder processed.
+     *
+     * TODO: Support that second scenario (see #636)
+     */
+    ignoreFiles: Array<string>,
+
+    /**
+     * When true, any fixable violations should be fixed automatically.
+     */
     autoFix: boolean,
+
+    /**
+     * When true, the details of the processing are returned to stdout as a
+     * JSON format string.
+     */
     json: boolean,
+
+    /**
+     * The comment styles to be supported.
+     */
     comments: Array<string>,
+
+    /**
+     * When true, destructive actions such as auto-fixes are not actually
+     * written.
+     */
     dryRun: boolean,
+
+    /**
+     * The name of the marker file that identifies the root of sync-tag paths.
+     */
     rootMarker?: ?string,
 };
 

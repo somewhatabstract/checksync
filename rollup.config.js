@@ -26,9 +26,9 @@ const getOptionalPlugins = () => {
 };
 
 export default {
-    input: "./src/cli.js",
+    input: "./src/main.js",
     output: {
-        file: "./dist/cli.js",
+        file: "./dist/main.js",
         format: "cjs",
     },
     plugins: [

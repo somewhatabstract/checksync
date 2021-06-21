@@ -10,23 +10,7 @@ import Logger from "./logger.js";
 import ExitCodes from "./exit-codes.js";
 import logHelp from "./help.js";
 import defaultArgs from "./default-args.js";
-import parseGitIgnore from "parse-gitignore";
 import {version} from "../package.json";
-
-const ignoreFilesToExcludes = (ignoreFilesArg: string): Array<string> => {
-    const ignoreFiles = ignoreFilesArg.split(",").filter((c) => !!c);
-    if (
-        ignoreFilesArg === defaultArgs.ignoreFiles &&
-        !fs.existsSync(ignoreFilesArg)
-    ) {
-        return [];
-    }
-
-    return ignoreFiles
-        .map((file) => fs.readFileSync(file))
-        .map((content: Buffer) => parseGitIgnore(content))
-        .reduce((prev, current: Array<string>) => [...prev, ...current], []);
-};
 
 /**
  * Run the command line.
@@ -106,25 +90,26 @@ export const run = (launchFilePath: string): void => {
     );
 
     const comments = ((args.comments: any): string)
-        .split(",")
+        .split(" ")
         .filter((c) => !!c);
     const ignoreGlobs = ((args.ignore: any): string)
-        .split(",")
+        .split(";")
         .filter((c) => !!c);
 
-    const ignoreFileGlobs = args.noIgnoreFile
+    const ignoreFiles = args.noIgnoreFile
         ? []
-        : ignoreFilesToExcludes((args.ignoreFiles: any));
-    const excludeGlobs = [...ignoreGlobs, ...ignoreFileGlobs];
+        : ((args.ignoreFiles: any): string).split(",").filter((c) => !!c);
 
     // Make sure we have something to search, so default to current working
     // directory if no globs are given.
-    const includeGlobs = args._ && args._.length > 0 ? args._ : [process.cwd()];
+    const includeGlobs =
+        args._ && args._.length > 0 ? args._ : [`${process.cwd()}/**`];
 
     checkSync(
         {
             includeGlobs,
-            excludeGlobs,
+            excludeGlobs: ignoreGlobs,
+            ignoreFiles,
             autoFix: args.updateTags === true,
             json: args.json === true,
             comments,

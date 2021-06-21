@@ -49,15 +49,15 @@ Where:
 
 ## Arguments
 
-    \`--comments,-c\`      A string containing comma-separated tokens that
+    \`--comments,-c\`      A string containing space-separated tokens that
                        indicate the start of lines where tags appear.
-                       Defaults to \`"//,#"\`.
+                       Defaults to \`"// #"\`.
 
     \`--dry-run,-n\`       Ignored unless supplied with \`--update-tags\`.
 
     \`--help,-h\`          Outputs this help text.
 
-    \`--ignore,-i\`        A string containing comma-separated globs that identify
+    \`--ignore,-i\`        A string containing semi-colon-separated globs that identify
                        files that should not be checked.
 
     \`--ignore-files\`     A comma-separated list of .gitignore-like files that
