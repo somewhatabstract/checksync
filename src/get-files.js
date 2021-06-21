@@ -20,7 +20,9 @@ export default async function getFiles(
     log?: ILog,
 ): Promise<Array<string>> {
     const ignoreFileGlobs = ignoreFilesToExcludeGlobs(ignoreFiles);
-    const allExcludeGlobs = new Set([...excludeGlobs, ...ignoreFileGlobs]);
+    const allExcludeGlobs = Array.from(
+        new Set([...excludeGlobs, ...ignoreFileGlobs]),
+    );
 
     log?.verbose(
         () => `Include globs: ${JSON.stringify(includeGlobs, null, "    ")}`,
@@ -33,7 +35,7 @@ export default async function getFiles(
     const paths = await glob(includeGlobs, {
         onlyFiles: true,
         absolute: true,
-        ignore: Array.from(allExcludeGlobs),
+        ignore: allExcludeGlobs,
     });
     const sortedPaths = paths
         .map((p) => p.replace(new RegExp("/", "g"), path.sep))
