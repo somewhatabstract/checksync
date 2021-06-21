@@ -64,6 +64,7 @@ describe("#checkSync", () => {
         expect(getFilesSpy).toHaveBeenCalledWith(
             ["glob1", "glob2"],
             [],
+            [],
             NullLogger,
         );
     });

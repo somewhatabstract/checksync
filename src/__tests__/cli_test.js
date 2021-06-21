@@ -124,7 +124,7 @@ describe("#run", () => {
         const fakeParsedArgs = {
             ...defaultArgs,
             updateTags: true,
-            comments: "COMMENT1,COMMENT2",
+            comments: "COMMENT1 COMMENT2",
             ignoreFiles: "madeupfile",
             _: ["globs", "and globs"],
         };
@@ -132,7 +132,6 @@ describe("#run", () => {
             .spyOn(CheckSync, "default")
             .mockReturnValue({then: jest.fn()});
         jest.spyOn(minimist, "default").mockReturnValue(fakeParsedArgs);
-        jest.spyOn(ParseGitIgnore, "default").mockReturnValue(["madeupglob"]);
 
         // Act
         run(__filename);
@@ -141,7 +140,8 @@ describe("#run", () => {
         expect(checkSyncSpy).toHaveBeenCalledWith(
             {
                 includeGlobs: fakeParsedArgs._,
-                excludeGlobs: ["madeupglob"],
+                excludeGlobs: [],
+                ignoreFiles: ["madeupfile"],
                 dryRun: false,
                 autoFix: true,
                 comments: ["COMMENT1", "COMMENT2"],
@@ -157,7 +157,7 @@ describe("#run", () => {
         const fakeParsedArgs = {
             ...defaultArgs,
             updateTags: true,
-            comments: "COMMENT1,COMMENT2",
+            comments: "COMMENT1 COMMENT2",
             _: ["globs", "and globs"],
         };
         const checkSyncSpy = jest
@@ -174,6 +174,7 @@ describe("#run", () => {
             {
                 includeGlobs: fakeParsedArgs._,
                 excludeGlobs: [],
+                ignoreFiles: [".gitignore"],
                 dryRun: false,
                 autoFix: true,
                 comments: ["COMMENT1", "COMMENT2"],
@@ -191,7 +192,7 @@ describe("#run", () => {
             updateTags: true,
             ignoreFile: "something",
             noIgnoreFile: true,
-            comments: "COMMENT1,COMMENT2",
+            comments: "COMMENT1 COMMENT2",
             _: ["globs", "and globs"],
         };
         const checkSyncSpy = jest
@@ -208,46 +209,7 @@ describe("#run", () => {
             {
                 includeGlobs: fakeParsedArgs._,
                 excludeGlobs: [],
-                dryRun: false,
-                autoFix: true,
-                comments: ["COMMENT1", "COMMENT2"],
-                json: false,
-                rootMarker: undefined,
-            },
-            expect.any(Object),
-        );
-    });
-
-    it("should combine exclude rules from given ignore files", () => {
-        // Arrange
-        const fakeParsedArgs = {
-            ...defaultArgs,
-            updateTags: true,
-            ignoreFiles: "IGNOREFILEA,IGNOREFILEB",
-            comments: "COMMENT1,COMMENT2",
-            _: ["globs", "and globs"],
-        };
-        const checkSyncSpy = jest
-            .spyOn(CheckSync, "default")
-            .mockReturnValue({then: jest.fn()});
-        jest.spyOn(minimist, "default").mockReturnValue(fakeParsedArgs);
-        jest.spyOn(ParseGitIgnore, "default").mockReturnValueOnce([
-            "IGNORE1",
-            "IGNORE2",
-        ]);
-        jest.spyOn(ParseGitIgnore, "default").mockReturnValueOnce([
-            "IGNORE1",
-            "IGNORE3",
-        ]);
-
-        // Act
-        run(__filename);
-
-        // Assert
-        expect(checkSyncSpy).toHaveBeenCalledWith(
-            {
-                includeGlobs: fakeParsedArgs._,
-                excludeGlobs: ["IGNORE1", "IGNORE2", "IGNORE1", "IGNORE3"],
+                ignoreFiles: [],
                 dryRun: false,
                 autoFix: true,
                 comments: ["COMMENT1", "COMMENT2"],

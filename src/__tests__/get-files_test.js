@@ -143,4 +143,43 @@ describe("#getFiles", () => {
     });
 
     it.todo("should expand ignore files");
+    // it("should combine exclude rules from given ignore files", () => {
+    //     // Arrange
+    //     const fakeParsedArgs = {
+    //         ...defaultArgs,
+    //         updateTags: true,
+    //         ignoreFiles: "IGNOREFILEA,IGNOREFILEB",
+    //         comments: "COMMENT1,COMMENT2",
+    //         _: ["globs", "and globs"],
+    //     };
+    //     const checkSyncSpy = jest
+    //         .spyOn(CheckSync, "default")
+    //         .mockReturnValue({then: jest.fn()});
+    //     jest.spyOn(minimist, "default").mockReturnValue(fakeParsedArgs);
+    //     jest.spyOn(ParseGitIgnore, "default").mockReturnValueOnce([
+    //         "IGNORE1",
+    //         "IGNORE2",
+    //     ]);
+    //     jest.spyOn(ParseGitIgnore, "default").mockReturnValueOnce([
+    //         "IGNORE1",
+    //         "IGNORE3",
+    //     ]);
+
+    //     // Act
+    //     run(__filename);
+
+    //     // Assert
+    //     expect(checkSyncSpy).toHaveBeenCalledWith(
+    //         {
+    //             includeGlobs: fakeParsedArgs._,
+    //             excludeGlobs: ["IGNORE1", "IGNORE2", "IGNORE1", "IGNORE3"],
+    //             dryRun: false,
+    //             autoFix: true,
+    //             comments: ["COMMENT1", "COMMENT2"],
+    //             json: false,
+    //             rootMarker: undefined,
+    //         },
+    //         expect.any(Object),
+    //     );
+    // });
 });
