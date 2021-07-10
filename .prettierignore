@@ -10,3 +10,4 @@ __examples__
 .flowconfig
 .prettierignore
 yarn.lock
+.babelrc
