@@ -151,7 +151,7 @@ export default class OutputSink {
          */
         const updateCommandParts = [];
         updateCommandParts.push(getLaunchString());
-        const commentsArg = this._options.comments.sort().join(",");
+        const commentsArg = this._options.comments.sort().join(" ");
         if (commentsArg !== defaultArgs.comments) {
             updateCommandParts.push("-c");
             updateCommandParts.push(`"${commentsArg}"`);

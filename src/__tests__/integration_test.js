@@ -36,11 +36,12 @@ describe("Integration Tests", () => {
                         .replace(ancesdir(), ".")
                         .replace(new RegExp(escapeRegExp(path.sep), "g"), "/"),
                 ])
+                // Finally, this has to be an actual glob, or it won't work.
+                .map(([name, dirPath]) => [name, `${dirPath}/**`])
                 .sort()
         );
     };
     const exampleGlobs = getExampleGlobs();
-    console.log(exampleGlobs);
 
     it.each(exampleGlobs)(
         "should report example %s to match snapshot",
@@ -56,6 +57,7 @@ describe("Integration Tests", () => {
                     comments: ["//", "#", "{/*"],
                     dryRun: false,
                     excludeGlobs: ["**/excluded/**"],
+                    ignoreFiles: [],
                     json: false,
                 },
                 stringLogger,
@@ -81,6 +83,7 @@ describe("Integration Tests", () => {
                     comments: ["//", "#", "{/*"],
                     dryRun: true,
                     excludeGlobs: ["**/excluded/**"],
+                    ignoreFiles: [],
                     json: false,
                 },
                 stringLogger,
@@ -106,6 +109,7 @@ describe("Integration Tests", () => {
                     comments: ["//", "#", "{/*"],
                     dryRun: false,
                     excludeGlobs: ["**/excluded/**"],
+                    ignoreFiles: [],
                     json: true,
                 },
                 stringLogger,

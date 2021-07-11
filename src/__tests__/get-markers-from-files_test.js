@@ -23,6 +23,7 @@ describe("#fromFiles", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            ignoreFiles: [],
             json: false,
         };
 
@@ -58,6 +59,7 @@ describe("#fromFiles", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            ignoreFiles: [],
             json: false,
         };
 
@@ -89,6 +91,7 @@ describe("#fromFiles", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            ignoreFiles: [],
             json: false,
         };
 
@@ -123,6 +126,7 @@ describe("#fromFiles", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            ignoreFiles: [],
             json: false,
         };
 
@@ -178,6 +182,7 @@ describe("#fromFiles", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            ignoreFiles: [],
             json: false,
         };
 
@@ -232,6 +237,7 @@ describe("#fromFiles", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            ignoreFiles: [],
             json: false,
         };
 
@@ -283,6 +289,7 @@ describe("#fromFiles", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            ignoreFiles: [],
             json: false,
         };
 
@@ -328,6 +335,7 @@ describe("#fromFiles", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            ignoreFiles: [],
             json: false,
         };
 

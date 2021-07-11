@@ -52,6 +52,7 @@ describe("#parseFile", () => {
             rootMarker: "rootmarker",
             dryRun: false,
             excludeGlobs: [],
+            ignoreFiles: [],
             json: false,
         };
 
@@ -74,6 +75,7 @@ describe("#parseFile", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            ignoreFiles: [],
             json: false,
         };
 
@@ -107,6 +109,7 @@ describe("#parseFile", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            ignoreFiles: [],
             json: false,
         };
 
@@ -137,6 +140,7 @@ describe("#parseFile", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            ignoreFiles: [],
             json: false,
         };
 
@@ -177,6 +181,7 @@ describe("#parseFile", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            ignoreFiles: [],
             json: false,
         };
 
@@ -214,6 +219,7 @@ describe("#parseFile", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            ignoreFiles: [],
             json: false,
         };
 
@@ -250,6 +256,7 @@ describe("#parseFile", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            ignoreFiles: [],
             json: false,
         };
 
@@ -310,6 +317,7 @@ describe("#parseFile", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            ignoreFiles: [],
             json: false,
         };
 
@@ -350,6 +358,7 @@ describe("#parseFile", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            ignoreFiles: [],
             json: false,
         };
 
@@ -388,6 +397,7 @@ describe("#parseFile", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            ignoreFiles: [],
             json: false,
         };
 
@@ -422,6 +432,7 @@ describe("#parseFile", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            ignoreFiles: [],
             json: false,
         };
         const promise = parseFile(options, "file.js", false);
@@ -489,6 +500,7 @@ describe("#parseFile", () => {
             rootMarker: null,
             dryRun: false,
             excludeGlobs: [],
+            ignoreFiles: [],
             json: false,
         };
         const promise = parseFile(options, "file.js", false);

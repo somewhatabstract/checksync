@@ -26,6 +26,7 @@ describe("#checkSync", () => {
             {
                 includeGlobs: ["glob1", "glob2"],
                 excludeGlobs: [],
+                ignoreFiles: [],
                 dryRun: true,
                 autoFix: true,
                 comments: ["//"],
@@ -50,6 +51,7 @@ describe("#checkSync", () => {
             {
                 includeGlobs: ["glob1", "glob2"],
                 excludeGlobs: [],
+                ignoreFiles: [],
                 dryRun: false,
                 autoFix: true,
                 comments: ["//"],
@@ -61,6 +63,7 @@ describe("#checkSync", () => {
         // Assert
         expect(getFilesSpy).toHaveBeenCalledWith(
             ["glob1", "glob2"],
+            [],
             [],
             NullLogger,
         );
@@ -74,6 +77,7 @@ describe("#checkSync", () => {
         const options: Options = {
             includeGlobs: ["glob1", "glob2"],
             excludeGlobs: [],
+            ignoreFiles: [],
             dryRun: false,
             autoFix: false,
             comments: ["//"],
@@ -94,6 +98,7 @@ describe("#checkSync", () => {
         const options: Options = {
             includeGlobs: ["glob1", "glob2"],
             excludeGlobs: [],
+            ignoreFiles: [],
             dryRun: false,
             autoFix: false,
             comments: ["//"],
@@ -118,6 +123,7 @@ describe("#checkSync", () => {
         const options: Options = {
             includeGlobs: ["glob1", "glob2"],
             excludeGlobs: [],
+            ignoreFiles: [],
             dryRun: false,
             autoFix: true,
             comments: ["//"],
@@ -146,6 +152,7 @@ describe("#checkSync", () => {
         const options: Options = {
             includeGlobs: ["glob1", "glob2"],
             excludeGlobs: [],
+            ignoreFiles: [],
             dryRun: false,
             autoFix: false,
             comments: ["//"],
@@ -177,6 +184,7 @@ describe("#checkSync", () => {
             {
                 includeGlobs: [],
                 excludeGlobs: [],
+                ignoreFiles: [],
                 autoFix: false,
                 comments: ["//"],
                 dryRun: false,

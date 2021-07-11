@@ -29,6 +29,7 @@ describe("#fixFile", () => {
     const options: Options = {
         includeGlobs: [],
         excludeGlobs: [],
+        ignoreFiles: [],
         dryRun: false,
         autoFix: true,
         comments: [],

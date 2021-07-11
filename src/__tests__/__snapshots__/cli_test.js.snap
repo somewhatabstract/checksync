@@ -47,15 +47,15 @@ Where:
 
 [1m[32mArguments[39m[22m
 
-    [1m[33m--comments,-c[39m[22m      A string containing comma-separated tokens that
+    [1m[33m--comments,-c[39m[22m      A string containing space-separated tokens that
                        indicate the start of lines where tags appear.
-                       Defaults to [1m[33m\\"//,#\\"[39m[22m.
+                       Defaults to [1m[33m\\"// #\\"[39m[22m.
 
     [1m[33m--dry-run,-n[39m[22m       Ignored unless supplied with [1m[33m--update-tags[39m[22m.
 
     [1m[33m--help,-h[39m[22m          Outputs this help text.
 
-    [1m[33m--ignore,-i[39m[22m        A string containing comma-separated globs that identify
+    [1m[33m--ignore,-i[39m[22m        A string containing semi-colon-separated globs that identify
                        files that should not be checked.
 
     [1m[33m--ignore-files[39m[22m     A comma-separated list of .gitignore-like files that
