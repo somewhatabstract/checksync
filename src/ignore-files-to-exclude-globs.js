@@ -1,38 +1,20 @@
 // @flow
-import fs from "fs";
-import parseGitIgnore from "parse-gitignore";
-import ignoreFormatToGlobs from "./ignore-format-to-globs.js";
-import defaultArgs from "./default-args.js";
+import ignoreFileToExcludeGlobs from "./ignore-file-to-exclude-globs.js";
 
-export default (
+export default async (
     ignoreFiles: $ReadOnlyArray<string>,
-): $ReadOnlyArray<string> => {
-    // If we are only processing the default ignore file and it doesn't exist,
-    // we can just return an empty array.
-    if (
-        ignoreFiles.length === 1 &&
-        ignoreFiles[0] === defaultArgs.ignoreFiles &&
-        !fs.existsSync(ignoreFiles[0])
-    ) {
-        return [];
-    }
+): Promise<$ReadOnlyArray<string>> => {
+    // Load the files as the globs they describe.
+    const ignoresByFile = await Promise.all(
+        ignoreFiles.map((file) => ignoreFileToExcludeGlobs(file)),
+    );
 
-    // TODO: We need to glob some of these and then we need to expand their
-    // ignores based on their file location.
+    // Flatten our array of arrays into a single array.
+    const allIgnores = ignoresByFile.reduce(
+        (prev, current) => [...prev, ...current],
+        [],
+    );
 
-    // TODO: Use Promise.all and async reads to see if some of this can be
-    // parallelized.
-    const allIgnores = ignoreFiles
-        // Read the file - this currently assumes it exists, we may want
-        // to consider skipping over ignore files that don't exist.
-        .map((file) => fs.readFileSync(file))
-        // Parse it as .gitignore syntax.
-        .map((content: Buffer) => parseGitIgnore(content))
-        // Flatten our array of arrays into a single array.
-        .reduce((prev, current: Array<string>) => [...prev, ...current], []);
-
-    const allIgnoresWithoutDuplicates = Array.from(new Set(allIgnores));
-
-    // Transform ignore syntax to globs.
-    return Array.from(ignoreFormatToGlobs(allIgnoresWithoutDuplicates));
+    // Remove duplicates (though there shouldn't be any).
+    return Array.from(new Set(allIgnores));
 };

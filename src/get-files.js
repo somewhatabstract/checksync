@@ -19,16 +19,16 @@ export default async function getFiles(
     ignoreFiles: Array<string>,
     log?: ILog,
 ): Promise<Array<string>> {
-    const ignoreFileGlobs = ignoreFilesToExcludeGlobs(ignoreFiles);
+    const ignoreFileGlobs = await ignoreFilesToExcludeGlobs(ignoreFiles);
     const allExcludeGlobs = Array.from(
         new Set([...excludeGlobs, ...ignoreFileGlobs]),
     );
 
     log?.verbose(
-        () => `Include globs: ${JSON.stringify(includeGlobs, null, "    ")}`,
+        () => `Include globs: ${JSON.stringify(includeGlobs, null, 4)}`,
     );
     log?.verbose(
-        () => `Exclude globs: ${JSON.stringify(allExcludeGlobs, null, "    ")}`,
+        () => `Exclude globs: ${JSON.stringify(allExcludeGlobs, null, 4)}`,
     );
 
     // Now let's match the patterns and see what files we get.
@@ -41,7 +41,7 @@ export default async function getFiles(
         .map((p) => p.replace(new RegExp("/", "g"), path.sep))
         .sort();
     log?.verbose(
-        () => `Discovered paths: ${JSON.stringify(sortedPaths, null, "    ")}`,
+        () => `Discovered paths: ${JSON.stringify(sortedPaths, null, 4)}`,
     );
     return sortedPaths;
 }

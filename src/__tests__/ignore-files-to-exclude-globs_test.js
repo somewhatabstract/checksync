@@ -1,5 +1,6 @@
 // @flow
-import * as FS from "fs";
+import fs from "fs";
+import path from "path";
 import * as ParseGitIgnore from "parse-gitignore";
 import defaultArgs from "../default-args.js";
 import ignoreFilesToExcludeGlobs from "../ignore-files-to-exclude-globs.js";
@@ -8,12 +9,12 @@ jest.mock("fs");
 jest.mock("parse-gitignore");
 
 describe("#ignoreFilesToExcludeGlobs", () => {
-    it("should return an empty array if the ignore files only include the defaults", () => {
+    it("should return an empty array if the ignore files only include the defaults", async () => {
         // Arrange
-        jest.spyOn(FS, "existsSync").mockReturnValueOnce(false);
+        jest.spyOn(fs, "existsSync").mockReturnValueOnce(false);
 
         // Act
-        const result = ignoreFilesToExcludeGlobs(
+        const result = await ignoreFilesToExcludeGlobs(
             defaultArgs.ignoreFiles.split(","),
         );
 
@@ -21,23 +22,34 @@ describe("#ignoreFilesToExcludeGlobs", () => {
         expect(result).toBeEmpty();
     });
 
-    it("should create exclude globs from given ignore files", () => {
+    it("should create exclude globs from given ignore files, rooted to the ignore file path", async () => {
         // Arrange
+        jest.spyOn(fs, "readFile").mockImplementation((file, callback) => {
+            callback();
+        });
         jest.spyOn(ParseGitIgnore, "default")
             .mockReturnValueOnce(["IGNORE1", "IGNORE2"])
             .mockReturnValueOnce(["IGNORE1", "IGNORE3"]);
+        jest.spyOn(path, "dirname").mockImplementation(
+            (inputPath) => `${path.basename(inputPath)}dir`,
+        );
 
         // Act
-        const result = ignoreFilesToExcludeGlobs(["ignore12", "ignore13"]);
+        const result = await ignoreFilesToExcludeGlobs([
+            "ignore12",
+            "ignore13",
+        ]);
 
         // Assert
         expect(result).toStrictEqual([
-            "**/IGNORE1/**",
-            "IGNORE1",
-            "**/IGNORE2/**",
-            "IGNORE2",
-            "**/IGNORE3/**",
-            "IGNORE3",
+            "ignore12dir/**/IGNORE1/**",
+            "ignore12dir/IGNORE1",
+            "ignore12dir/**/IGNORE2/**",
+            "ignore12dir/IGNORE2",
+            "ignore13dir/**/IGNORE1/**",
+            "ignore13dir/IGNORE1",
+            "ignore13dir/**/IGNORE3/**",
+            "ignore13dir/IGNORE3",
         ]);
     });
 });
