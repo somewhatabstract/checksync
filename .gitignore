@@ -4,3 +4,4 @@ dist/
 obj/
 report/
 yarn-error.log
+_quokka.js
