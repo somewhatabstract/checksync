@@ -392,46 +392,14 @@ exports[`Integration Tests (see __examples__ folder) should report example exclu
 
 exports[`Integration Tests (see __examples__ folder) should report example excluded to match snapshot with json 1`] = `" ERROR  No matching files"`;
 
-exports[`Integration Tests (see __examples__ folder) should report example ignore_files_at_different_depths to match snapshot 1`] = `
-" WARNING  ignore_files_at_different_depths/ignorethese/bad-sync-tags-never-parsed.js:5 Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start
- WARNING  ignore_files_at_different_depths/some/ignorethese/bad-sync-tags-never-parsed.js:5 Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start
-🛑  Errors occurred during processing. Fix the errors and try again."
-`;
+exports[`Integration Tests (see __examples__ folder) should report example ignore_files_at_different_depths to match snapshot 1`] = `" ERROR  No matching files"`;
 
 exports[`Integration Tests (see __examples__ folder) should report example ignore_files_at_different_depths to match snapshot with autofix dryrun 1`] = `
 " INFO  DRY-RUN: Files will not be modified
- WARNING  ignore_files_at_different_depths/ignorethese/bad-sync-tags-never-parsed.js:5 Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start
- WARNING  ignore_files_at_different_depths/some/ignorethese/bad-sync-tags-never-parsed.js:5 Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start
-🛑  Errors occurred during processing. Fix the errors and try again.
- ERROR  🛑  Could not update all tags due to non-fixable errors. Fix these errors and try again."
+ ERROR  No matching files"
 `;
 
-exports[`Integration Tests (see __examples__ folder) should report example ignore_files_at_different_depths to match snapshot with json 1`] = `
-"{
-    \\"version\\": \\"2.3.0\\",
-    \\"launchString\\": \\"checksync -u \\",
-    \\"files\\": {
-        \\"__examples__/ignore_files_at_different_depths/ignorethese/bad-sync-tags-never-parsed.js\\": [
-            {
-                \\"reason\\": \\"Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start\\",
-                \\"location\\": {
-                    \\"line\\": 5
-                },
-                \\"code\\": \\"end-tag-without-start-tag\\"
-            }
-        ],
-        \\"__examples__/ignore_files_at_different_depths/some/ignorethese/bad-sync-tags-never-parsed.js\\": [
-            {
-                \\"reason\\": \\"Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start\\",
-                \\"location\\": {
-                    \\"line\\": 5
-                },
-                \\"code\\": \\"end-tag-without-start-tag\\"
-            }
-        ]
-    }
-}"
-`;
+exports[`Integration Tests (see __examples__ folder) should report example ignore_files_at_different_depths to match snapshot with json 1`] = `" ERROR  No matching files"`;
 
 exports[`Integration Tests (see __examples__ folder) should report example malformed_end to match snapshot 1`] = `
 " ERROR  malformed_end/malformed_badid.js:7 Malformed sync-end: format should be 'sync-end:<label>'
