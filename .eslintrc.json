@@ -8,14 +8,16 @@
     },
     "extends": [
         "eslint:recommended",
-        "plugin:flowtype/recommended"
+        "plugin:flowtype/recommended",
+        "prettier"
     ],
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly"
     },
     "plugins": [
-        "flowtype"
+        "flowtype",
+        "prettier"
     ],
     "parser": "babel-eslint",
     "parserOptions": {
@@ -41,6 +43,15 @@
         "semi": [
             "error",
             "always"
+        ],
+        // prettier
+        "prettier/prettier": [
+            "error",
+            {
+                "tabWidth": 4,
+                "trailingComma": "all",
+                "bracketSpacing": false
+            }
         ]
     }
 }
