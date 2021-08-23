@@ -1,7 +1,6 @@
 // @flow
 import path from "path";
-
-const normalizeSeparators = (g: string): string => g.split(path.sep).join("/");
+import normalizeSeparators from "./normalize-separators.js";
 
 /**
  * Following gitignore format https://git-scm.com/docs/gitignore#_pattern_format

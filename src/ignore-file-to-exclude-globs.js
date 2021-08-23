@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import parseGitIgnore from "parse-gitignore";
 import ignoreFormatToGlobs from "./ignore-format-to-globs.js";
+import normalizeSeparators from "./normalize-separators.js";
 
 import {promisify} from "util";
 
@@ -22,5 +23,7 @@ export default async (filePath: string): Promise<$ReadOnlyArray<string>> => {
     const rootDir = path.dirname(path.resolve(filePath));
 
     // Now, anchor them at the ignore file's path.
-    return Array.from(globs).map((i) => path.join(rootDir, i));
+    return Array.from(globs).map((i) =>
+        normalizeSeparators(path.join(rootDir, i)),
+    );
 };
