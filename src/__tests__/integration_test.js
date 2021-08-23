@@ -10,6 +10,11 @@ import checkSync from "../check-sync.js";
 jest.mock("../get-launch-string.js", () => () => "checksync");
 
 describe("Integration Tests", () => {
+    beforeEach(() => {
+        // Fast Glob will hang if we don't do this.
+        jest.useRealTimers();
+    });
+
     const getExampleGlobs = () => {
         const __examples__ = path.join(ancesdir(), "__examples__");
         return (
