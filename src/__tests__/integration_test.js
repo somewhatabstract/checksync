@@ -3,7 +3,6 @@ import fs from "fs";
 import path from "path";
 import ancesdir from "ancesdir";
 import StringLogger from "../string-logger.js";
-import fg from "fast-glob";
 
 import checkSync from "../check-sync.js";
 
@@ -31,11 +30,7 @@ describe("Integration Tests (see __examples__ folder)", () => {
         .filter((name) => fs.lstatSync(name).isDirectory())
         // Finally, this has to be an actual glob, or it won't work,
         // and we need our ignore files.
-        .map((name) => [
-            name,
-            `${name}/**`,
-            fg.sync(`${name}/**/ignore-file.txt`),
-        ])
+        .map((name) => [name, `${name}/**`])
         .sort();
 
     // TODO: 1. These tests need to specify what ignore files to ignore
@@ -47,7 +42,7 @@ describe("Integration Tests (see __examples__ folder)", () => {
 
     it.each(exampleGlobs)(
         "should report example %s to match snapshot",
-        async (name, glob, ignoreFiles) => {
+        async (name, glob) => {
             // Arrange
             const stringLogger = new StringLogger();
 
@@ -59,7 +54,7 @@ describe("Integration Tests (see __examples__ folder)", () => {
                     comments: ["//", "#", "{/*"],
                     dryRun: false,
                     excludeGlobs: ["**/excluded/**"],
-                    ignoreFiles,
+                    ignoreFiles: ["**/ignore-file.txt"],
                     json: false,
                 },
                 stringLogger,
@@ -73,7 +68,7 @@ describe("Integration Tests (see __examples__ folder)", () => {
 
     it.each(exampleGlobs)(
         "should report example %s to match snapshot with autofix dryrun",
-        async (name, glob, ignoreFiles) => {
+        async (name, glob) => {
             // Arrange
             const stringLogger = new StringLogger();
 
@@ -85,7 +80,7 @@ describe("Integration Tests (see __examples__ folder)", () => {
                     comments: ["//", "#", "{/*"],
                     dryRun: true,
                     excludeGlobs: ["**/excluded/**"],
-                    ignoreFiles,
+                    ignoreFiles: ["**/ignore-file.txt"],
                     json: false,
                 },
                 stringLogger,
@@ -99,7 +94,7 @@ describe("Integration Tests (see __examples__ folder)", () => {
 
     it.each(exampleGlobs)(
         "should report example %s to match snapshot with json",
-        async (name, glob, ignoreFiles) => {
+        async (name, glob) => {
             // Arrange
             const stringLogger = new StringLogger();
 
@@ -111,7 +106,7 @@ describe("Integration Tests (see __examples__ folder)", () => {
                     comments: ["//", "#", "{/*"],
                     dryRun: false,
                     excludeGlobs: ["**/excluded/**"],
-                    ignoreFiles,
+                    ignoreFiles: ["**/ignore-file.txt"],
                     json: true,
                 },
                 stringLogger,
