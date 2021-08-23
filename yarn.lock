@@ -1572,10 +1572,10 @@ ajv@^8.0.1:
     require-from-string "^2.0.2"
     uri-js "^4.2.2"
 
-ancesdir@^2.0.0:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/ancesdir/-/ancesdir-2.0.2.tgz#5006a43e3e212c9ba0d7cdd91cfca1f88967e9fe"
-  integrity sha512-xdE0k/jTXIXNKcIH1rKwXKriDijJUY2Y8QHsZ7GFXJyI3upmz2EWMQ2WKdBS8qO7u52+Sa9IT6/NpKl4nkYeGg==
+ancesdir@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/ancesdir/-/ancesdir-3.0.0.tgz#63b1bc7a0ca19972338d5a0296db7eea63129aaa"
+  integrity sha512-eAgsHcOkZWYbaTc+yfVjptB7OHPXLqPEwTeqi1FOeJPhOH5+fjCr3VUs/EO80MMcG6+p9AIDoMpT8hET7v2nDg==
 
 ansi-colors@^3.2.1:
   version "3.2.4"
