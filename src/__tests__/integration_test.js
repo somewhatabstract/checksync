@@ -48,7 +48,7 @@ describe("Integration Tests", () => {
     };
     const exampleGlobs = getExampleGlobs();
 
-    it.only.each(exampleGlobs)(
+    it.each(exampleGlobs)(
         "should report example %s to match snapshot",
         async (name, glob) => {
             // Arrange
