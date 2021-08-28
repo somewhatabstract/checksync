@@ -1,0 +1,58 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "CheckSync",
+    "description": "Configuration file for CheckSync",
+    "type": "object",
+    "properties": {
+        "autoFix": {
+            "description": "Configuration file for CheckSync",
+            "type": "boolean"
+        },
+        "comments": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "uniqueItems": true,
+            "minLength": 0
+        },
+        "dryRun": {
+            "type": "boolean"
+        },
+        "excludeGlobs": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "pattern": "^([^/*.]+|\\*{1,2}|\\.{1,2})(\/([^/*.]+|\\*{1,2}))*$"
+            },
+            "uniqueItems": true,
+            "minLength": 0
+        },
+        "includeGlobs": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "pattern": "^([^/*.]+|\\*{1,2}|\\.{1,2})(\/([^/*.]+|\\*{1,2}))*$"
+            },
+            "uniqueItems": true,
+            "minLength": 0
+        },
+        "ignoreFiles": {
+            "type": "array",
+            "items": {
+                "type": "string",
+                "pattern": "^([^/*.]+|\\*{1,2}|\\.{1,2})(\/([^/*.]+|\\*{1,2}))*$"
+            },
+            "uniqueItems": true,
+            "minLength": 0
+        },
+        "json": {
+            "type": "boolean"
+        },
+        "rootMarker": {
+            "type": "string",
+            "pattern": "^[^/\\\\]+$"
+        }
+    },
+    "required": []
+}
