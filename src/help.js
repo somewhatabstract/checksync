@@ -39,13 +39,16 @@ Where:
 
 ## Usage
 
-\`checksync <arguments> <include_globs>\`
+\`checksync <arguments> <include_paths>\`
 
 Where:
 
-    \`<arguments>\`       are the arguments you provide (see below)
+    \`<arguments>\`        are the arguments you provide (see below).
 
-    \`<include_globs>\`   are glob patterns for identifying files to check
+    \`<include_paths>\`    are space-separated paths and glob patterns
+                       for identifying files to check.
+                       Defaults to all files below the current working
+                       directory.
 
 ## Arguments
 
@@ -57,20 +60,21 @@ Where:
 
     \`--help,-h\`          Outputs this help text.
 
-    \`--ignore,-i\`        A string containing semi-colon-separated globs that identify
-                       files that should not be checked.
+    \`--ignore,-i\`        A string containing semi-colon-separated globs that
+                       identify files that should not be checked.
 
-    \`--ignore-files\`     A comma-separated list of .gitignore-like files that
-                       provide path patterns to be ignored. These will be
-                       combined with the \`--ignore\` globs.
+    \`--ignore-files\`     A comma-separated list of paths and globs that
+                       identify .gitignore-format files defining patterns for
+                       paths to be ignored. These will be combined with the
+                       explicit \`--ignore\` globs.
                        Ignored if \`--no-ignore-file\` is present.
                        Defaults to \`.gitignore\`.
 
     \`--json,-j\`          Output errors and violations as JSON.
 
     \`--no-ignore-file\`   When \`true\`, does not use any ignore file. This is
-                       useful when the default value for \`--ignore-file\` is not
-                       wanted.
+                       useful when the default value for \`--ignore-file\` is
+                       not wanted.
 
     \`--root-marker,-m\`   By default, the root directory (used to generate
                        interpret and generate target paths for sync-start
@@ -84,8 +88,8 @@ Where:
                        \`.gitignore\` file.
 
     \`--update-tags,-u\`   Updates tags with incorrect target checksums. This
-                       modifies files in place; run with \`--dry-run\` to see what
-                       files will change without modifying them.
+                       modifies files in place; run with \`--dry-run\` to see
+                       what files will change without modifying them.
 
     \`--verbose\`          More details will be added to the output when this
                        option is provided. This is useful when determining if

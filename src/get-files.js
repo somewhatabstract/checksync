@@ -1,7 +1,7 @@
 // @flow
 import glob from "fast-glob";
 import path from "path";
-import ignoreFilesToExcludeGlobs from "./ignore-files-to-exclude-globs.js";
+import ignoreFileGlobsToExcludeGlobs from "./ignore-file-globs-to-exclude-globs.js";
 
 import type {ILog} from "./types.js";
 
@@ -15,20 +15,22 @@ import type {ILog} from "./types.js";
  */
 export default async function getFiles(
     includeGlobs: Array<string>,
-    excludeGlobs: Array<string>,
-    ignoreFiles: Array<string>,
+    explicitExcludeGlobs: Array<string>,
+    ignoreFileGlobs: Array<string>,
     log?: ILog,
 ): Promise<Array<string>> {
-    const ignoreFileGlobs = ignoreFilesToExcludeGlobs(ignoreFiles);
+    const ignoreFileExcludeGlobs = await ignoreFileGlobsToExcludeGlobs(
+        ignoreFileGlobs,
+    );
     const allExcludeGlobs = Array.from(
-        new Set([...excludeGlobs, ...ignoreFileGlobs]),
+        new Set([...explicitExcludeGlobs, ...ignoreFileExcludeGlobs]),
     );
 
     log?.verbose(
-        () => `Include globs: ${JSON.stringify(includeGlobs, null, "    ")}`,
+        () => `Include globs: ${JSON.stringify(includeGlobs, null, 4)}`,
     );
     log?.verbose(
-        () => `Exclude globs: ${JSON.stringify(allExcludeGlobs, null, "    ")}`,
+        () => `Exclude globs: ${JSON.stringify(allExcludeGlobs, null, 4)}`,
     );
 
     // Now let's match the patterns and see what files we get.
@@ -41,7 +43,7 @@ export default async function getFiles(
         .map((p) => p.replace(new RegExp("/", "g"), path.sep))
         .sort();
     log?.verbose(
-        () => `Discovered paths: ${JSON.stringify(sortedPaths, null, "    ")}`,
+        () => `Discovered paths: ${JSON.stringify(sortedPaths, null, 4)}`,
     );
     return sortedPaths;
 }

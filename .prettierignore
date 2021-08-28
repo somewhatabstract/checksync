@@ -12,3 +12,4 @@ __examples__
 yarn.lock
 .babelrc
 __snapshots__
+.gitignore

@@ -1,15 +1,16 @@
 // @flow
 import path from "path";
-
-const normalizeSeparators = (g: string): string => g.split(path.sep).join("/");
+import normalizeSeparators from "./normalize-separators.js";
 
 /**
  * Following gitignore format https://git-scm.com/docs/gitignore#_pattern_format
+ * NOTE: Using `\` instead of `/` in the outcome examples to dodge an issue
+ *       with flow parsing and **[forward slash].
  *
- * /foo  Only root (not sub) file and dir and its paths underneath.         /foo, /foo/**
- * /foo/ Only root (not sub) foo dir and its paths underneath.              /foo/**
- * foo   Both root and sub foo files and dirs and their paths underneath.   foo, ** /foo/**
- * foo/  Both root and sub foo dirs and their paths underneath.	            ** /foo/**
+ * /foo  Only root (not sub) file and dir and its paths underneath.         `\foo`, `\foo\**`
+ * /foo/ Only root (not sub) foo dir and its paths underneath.              `\foo\**`
+ * foo   Both root and sub foo files and dirs and their paths underneath.   `foo`, `**\foo\**`
+ * foo/  Both root and sub foo dirs and their paths underneath.	            `**\foo\**`
  */
 export default function* ignoreFormatToGlobs(
     ignores: Array<string>,

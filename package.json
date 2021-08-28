@@ -47,7 +47,9 @@
         "babelrc-rollup": "^3.0.0",
         "chalk": "^4.0.0",
         "eslint": "^7.0.0",
+        "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-flowtype": "^5.1.0",
+        "eslint-plugin-prettier": "^3.4.1",
         "fast-glob": "^3.0.4",
         "flow-bin": "^0.158.0",
         "jest": "^27.0.6",
@@ -57,7 +59,6 @@
         "micromatch": "^4.0.2",
         "minimist": "^1.2.0",
         "parse-gitignore": "^1.0.1",
-        "pre-commit": "^1.2.2",
         "prettier": "2.3.2",
         "pretty-quick": "^3.0.0",
         "rollup": "^2.0.6",
@@ -82,12 +83,6 @@
         "coverage:unit": "jest --colors --config jest.config.js --coverage --testPathIgnorePatterns integration_test.js",
         "coverage:integration": "jest --colors --config jest.config.js --coverage integration_test.js",
         "coverage": "jest --colors --config jest.config.js --coverage",
-        "pretty-quick": "pretty-quick --staged",
         "lint": "flow && eslint --report-unused-disable-directives --config .eslintrc.json '{src,bin,__{tests,mocks}__}/**/*.js'"
-    },
-    "pre-commit": [
-        "pretty-quick",
-        "lint",
-        "test"
-    ]
+    }
 }

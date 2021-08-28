@@ -2,7 +2,7 @@
 import * as FastGlob from "fast-glob";
 import Logger from "../logger.js";
 import StringLogger from "../string-logger.js";
-import * as IgnoreFilesToExcludeGlobs from "../ignore-files-to-exclude-globs.js";
+import * as IgnoreFileGlobsToExcludeGlobs from "../ignore-file-globs-to-exclude-globs.js";
 
 import getFiles from "../get-files.js";
 import {jest} from "@jest/globals";
@@ -41,7 +41,7 @@ describe("#getFiles", () => {
             .mockImplementation((pattern, opts) =>
                 Promise.resolve(["c", "a", "d", "b"]),
             );
-        jest.spyOn(IgnoreFilesToExcludeGlobs, "default").mockReturnValue([
+        jest.spyOn(IgnoreFileGlobsToExcludeGlobs, "default").mockReturnValue([
             "**/ignore-file/**",
         ]);
 

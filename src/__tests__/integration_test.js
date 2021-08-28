@@ -2,51 +2,43 @@
 import fs from "fs";
 import path from "path";
 import ancesdir from "ancesdir";
-import escapeRegExp from "lodash/escapeRegExp";
 import StringLogger from "../string-logger.js";
 
 import checkSync from "../check-sync.js";
 
 jest.mock("../get-launch-string.js", () => () => "checksync");
 
-describe("Integration Tests", () => {
+describe("Integration Tests (see __examples__ folder)", () => {
     beforeEach(() => {
         // Fast Glob will hang if we don't do this.
         jest.useRealTimers();
     });
 
-    const getExampleGlobs = () => {
-        const __examples__ = path.join(ancesdir(), "__examples__");
-        return (
-            fs
-                .readdirSync(__examples__)
-                /**
-                 * The whole symlink test is not going to work right on windows
-                 * so let's just skip it.
-                 */
-                .filter(
-                    (p) =>
-                        !(
-                            process.platform === "win32" &&
-                            p.includes("symlink")
-                        ),
-                )
-                .map((name) => [name, path.join(__examples__, name)])
-                .filter(([_, dirPath]) => fs.lstatSync(dirPath).isDirectory())
-                // Globs use forward slashes and we need to strip off the root
-                // to make sure this works for Windows.
-                .map(([name, dirPath]) => [
-                    name,
-                    dirPath
-                        .replace(ancesdir(), ".")
-                        .replace(new RegExp(escapeRegExp(path.sep), "g"), "/"),
-                ])
-                // Finally, this has to be an actual glob, or it won't work.
-                .map(([name, dirPath]) => [name, `${dirPath}/**`])
-                .sort()
-        );
-    };
-    const exampleGlobs = getExampleGlobs();
+    // Determine the examples folder path and set that as the working directory
+    const __examples__ = path.join(ancesdir(), "__examples__");
+    process.chdir(__examples__);
+
+    // Iterate over the __examples__ folders and determine eaches glob pattern.
+    const exampleGlobs = fs
+        .readdirSync(__examples__)
+        /**
+         * The whole symlink test is not going to work right on windows
+         * so let's just skip it.
+         */
+        .filter((p) => !(process.platform === "win32" && p.includes("symlink")))
+        // We only want directories.
+        .filter((name) => fs.lstatSync(name).isDirectory())
+        // Finally, this has to be an actual glob, or it won't work,
+        // and we need our ignore files.
+        .map((name) => [name, `${name}/**`])
+        .sort();
+
+    // TODO: 1. These tests need to specify what ignore files to ignore
+    //       2. We need to do that by discovery so that tests are easy to just
+    //          run (until we have support for a checksyncrc file)
+    //       3. We need to implement a CLI arg that provides for discovering
+    //          ignore files beyond the default .gitignore at the root level
+    //          or those specified by the current --ignorefiles CLI option.
 
     it.each(exampleGlobs)(
         "should report example %s to match snapshot",
@@ -62,7 +54,7 @@ describe("Integration Tests", () => {
                     comments: ["//", "#", "{/*"],
                     dryRun: false,
                     excludeGlobs: ["**/excluded/**"],
-                    ignoreFiles: [],
+                    ignoreFiles: ["**/ignore-file.txt"],
                     json: false,
                 },
                 stringLogger,
@@ -88,7 +80,7 @@ describe("Integration Tests", () => {
                     comments: ["//", "#", "{/*"],
                     dryRun: true,
                     excludeGlobs: ["**/excluded/**"],
-                    ignoreFiles: [],
+                    ignoreFiles: ["**/ignore-file.txt"],
                     json: false,
                 },
                 stringLogger,
@@ -114,7 +106,7 @@ describe("Integration Tests", () => {
                     comments: ["//", "#", "{/*"],
                     dryRun: false,
                     excludeGlobs: ["**/excluded/**"],
-                    ignoreFiles: [],
+                    ignoreFiles: ["**/ignore-file.txt"],
                     json: true,
                 },
                 stringLogger,
