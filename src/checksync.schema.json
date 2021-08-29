@@ -5,10 +5,11 @@
     "type": "object",
     "properties": {
         "autoFix": {
-            "description": "Configuration file for CheckSync",
+            "description": "When true, checksync will attempt to apply fixes to an errors",
             "type": "boolean"
         },
         "comments": {
+            "description": "An array of the strings that identify the starts of comments in the files being parsed",
             "type": "array",
             "items": {
                 "type": "string"
@@ -17,9 +18,11 @@
             "minLength": 0
         },
         "dryRun": {
+            "description": "When true, checksync will not write any files",
             "type": "boolean"
         },
         "excludeGlobs": {
+            "description": "An array of globs that identify files to exclude from the checks",
             "type": "array",
             "items": {
                 "type": "string",
@@ -29,6 +32,7 @@
             "minLength": 0
         },
         "includeGlobs": {
+            "description": "An array of globs that identify files to include in the checks",
             "type": "array",
             "items": {
                 "type": "string",
@@ -38,6 +42,7 @@
             "minLength": 0
         },
         "ignoreFiles": {
+            "description": "An array of globs that identify .gitignore-style files that specify files to be ignored",
             "type": "array",
             "items": {
                 "type": "string",
@@ -47,9 +52,11 @@
             "minLength": 0
         },
         "json": {
+            "description": "When true, checksync output will be as JSON",
             "type": "boolean"
         },
         "rootMarker": {
+            "description": "The string that identifies the root of the project from which all sync-tags are relative",
             "type": "string",
             "pattern": "^[^/\\\\]+$"
         }
