@@ -85,7 +85,7 @@ Where:
     [1m[33m--no-config[39m[22m        Prevents searching for a configuration file.
                        Ignored if [1m[33m--config[39m[22m is supplied.
 
-    [1m[33m--no-ignore-file[39m[22m   When [1m[33mtrue[39m[22m, does not use any ignore file. This is
+    [1m[33m--no-ignore-files[39m[22m  When [1m[33mtrue[39m[22m, does not use any ignore file. This is
                        useful when the default value for [1m[33m--ignore-file[39m[22m is
                        not wanted.
 
@@ -126,7 +126,7 @@ configuration file.
 
     [1m[33mignoreFiles[39m[22m         Equivalent to using the [1m[33m--ignore-files[39m[22m option,
                         except an array instead of semi-colon-separated string.
-                        An empty array is equivalent to [1m[33m--no-ignore-file[39m[22m.
+                        An empty array is equivalent to [1m[33m--no-ignore-files[39m[22m.
 
     [1m[33mexcludeGlobs[39m[22m        Equivalent to using the [1m[33m--ignore[39m[22m option, except
                         an array instead of semi-colon-separated string.

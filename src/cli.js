@@ -22,17 +22,12 @@ export const run = (launchFilePath: string): Promise<void> => {
     chalk.level = 3;
 
     const log = new Logger(console);
+
+    // TODO: It seems that minimist treats `no` on the front of a known flag
+    // as a flag inversion of the none-`no` version. That's annoying.
+    // So we wneed to rename our `no` props or just treat them differently.
     const args = minimist(process.argv, {
-        boolean: [
-            "updateTags",
-            "dryRun",
-            "help",
-            "noIgnoreFile",
-            "verbose",
-            "version",
-            "json",
-            "noConfig",
-        ],
+        boolean: ["updateTags", "dryRun", "help", "verbose", "version", "json"],
         string: ["comments", "rootMarker", "ignore", "ignoreFiles", "config"],
         alias: {
             comments: ["c"],
@@ -41,7 +36,6 @@ export const run = (launchFilePath: string): Promise<void> => {
             ignore: ["i"],
             ignoreFiles: ["ignore-files"],
             json: ["j"],
-            noIgnoreFile: ["no-ignore-file"],
             rootMarker: ["m", "root-marker"],
             updateTags: ["u", "update-tags"],
         },

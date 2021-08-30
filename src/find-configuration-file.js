@@ -18,6 +18,8 @@ export default function findConfigurationFile(
         return configFile;
     }
 
+    log.verbose(() => `Looking for configuration file...`);
+
     // Let's look for the root marker relative to our current working directory
     // and see if there's one adjacent to it.
     try {
@@ -56,7 +58,7 @@ export default function findConfigurationFile(
                 return cur;
             }
             return acc;
-        });
+        }, null);
     if (closestRCPath != null) {
         log.verbose(() => `Found configuration file: ${closestRCPath.rcPath}`);
         return closestRCPath.rcPath;

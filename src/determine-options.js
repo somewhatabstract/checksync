@@ -14,17 +14,18 @@ export default async function determineOptions(
      * The configuration we return here is a combination of the an RC file,
      * if found or wanted, and the supplied arguments.
      */
-    if (args.noConfig) {
+    if (args.config === false) {
         log.verbose(() => "Skipping configuration file search");
     }
 
-    const configFilePath = args.noConfig
-        ? null
-        : findConfigurationFile(
-              (args.config: any),
-              (args.rootMarker: any),
-              log,
-          );
+    const configFilePath =
+        args.config === false
+            ? null
+            : findConfigurationFile(
+                  (args.config: any),
+                  (args.rootMarker: any),
+                  log,
+              );
 
     const configFromFile =
         configFilePath == null
@@ -41,11 +42,12 @@ export default async function determineOptions(
             (args.ignore: any)?.split(";").filter((c) => !!c) ??
             configFromFile?.excludeGlobs ??
             defaultOptions.excludeGlobs,
-        ignoreFiles: args.noIgnoreFile
-            ? []
-            : (args.ignoreFiles: any)?.split(";").filter((c) => !!c) ??
-              configFromFile?.ignoreFiles ??
-              defaultOptions.ignoreFiles,
+        ignoreFiles:
+            (args.ignoreFiles: any) === false
+                ? []
+                : (args.ignoreFiles: any)?.split(";").filter((c) => !!c) ??
+                  configFromFile?.ignoreFiles ??
+                  defaultOptions.ignoreFiles,
         autoFix:
             (args.updateTags: any) ??
             configFromFile?.autoFix ??

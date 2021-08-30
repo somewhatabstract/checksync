@@ -89,7 +89,7 @@ Where:
     \`--no-config\`        Prevents searching for a configuration file.
                        Ignored if \`--config\` is supplied.
 
-    \`--no-ignore-file\`   When \`true\`, does not use any ignore file. This is
+    \`--no-ignore-files\`  When \`true\`, does not use any ignore file. This is
                        useful when the default value for \`--ignore-file\` is
                        not wanted.
 
@@ -130,7 +130,7 @@ configuration file.
 
     \`ignoreFiles\`         Equivalent to using the \`--ignore-files\` option,
                         except an array instead of semi-colon-separated string.
-                        An empty array is equivalent to \`--no-ignore-file\`.
+                        An empty array is equivalent to \`--no-ignore-files\`.
 
     \`excludeGlobs\`        Equivalent to using the \`--ignore\` option, except
                         an array instead of semi-colon-separated string.
