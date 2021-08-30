@@ -1,7 +1,7 @@
-// flow-typed signature: 8af4d93597d645140f12c00de2a323bc
-// flow-typed version: c6154227d1/chalk_v2.x.x/flow_>=v0.104.x
+// flow-typed signature: 5096c316b7092ffc5ddc487d26c0d6a4
+// flow-typed version: f2e3dcf9e8/chalk_v4.x.x/flow_>=v0.104.x
 
-// From: https://github.com/chalk/chalk/blob/master/index.js.flow
+// From: https://github.com/chalk/chalk/blob/master/index.d.ts
 
 declare module "chalk" {
   declare type TemplateStringsArray = $ReadOnlyArray<string>;
@@ -15,7 +15,6 @@ declare module "chalk" {
   }>;
 
   declare type ChalkOptions = {|
-    enabled?: boolean,
     level?: Level
   |};
 
@@ -29,8 +28,7 @@ declare module "chalk" {
   declare interface Chalk {
     (...text: string[]): string,
     (text: TemplateStringsArray, ...placeholders: string[]): string,
-    constructor(options?: ChalkOptions): Chalk,
-    enabled: boolean,
+    Instance(options?: ChalkOptions): Chalk,
     level: Level,
     rgb(r: number, g: number, b: number): Chalk,
     hsl(h: number, s: number, l: number): Chalk,

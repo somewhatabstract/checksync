@@ -2,7 +2,7 @@
 import FileReferenceLogger from "./file-reference-logger.js";
 import maybeReportError from "./maybe-report-error.js";
 import ExitCodes from "./exit-codes.js";
-import defaultArgs from "./default-args.js";
+import defaultOptions from "./default-options.js";
 import getLaunchString from "./get-launch-string.js";
 import cwdRelativePath from "./cwd-relative-path.js";
 import {version} from "../package.json";
@@ -151,8 +151,8 @@ export default class OutputSink {
          */
         const updateCommandParts = [];
         updateCommandParts.push(getLaunchString());
-        const commentsArg = this._options.comments.sort().join(" ");
-        if (commentsArg !== defaultArgs.comments) {
+        const commentsArg = [...this._options.comments].sort().join(" ");
+        if (commentsArg !== [...defaultOptions.comments].sort().join(" ")) {
             updateCommandParts.push("-c");
             updateCommandParts.push(`"${commentsArg}"`);
         }

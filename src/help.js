@@ -2,6 +2,7 @@
 import Format from "./format.js";
 import type {ILog} from "./types.js";
 import {version} from "../package.json";
+import {checkSyncRcNames} from "./find-configuration-file.js";
 
 const helpMarkDown = `# checksync ${version} ✅ 🔗
 
@@ -56,6 +57,19 @@ Where:
                        indicate the start of lines where tags appear.
                        Defaults to \`"// #"\`.
 
+    \`--config\`           Path to a JSON file containing configuration options.
+                       When not specified, checksync will look for a config
+                       file; use \`--no-config\` to disable this search.
+
+                       The search starts relative to the current working
+                       directory, first by looking adjacent to a marker file
+                       match, otherwise, by looking for a configuration file in
+                       or above the current working directory. Filenames that
+                       are considered:
+                           ${checkSyncRcNames
+                               .map((n) => `\`${n}\``)
+                               .join("\n                           ")}
+
     \`--dry-run,-n\`       Ignored unless supplied with \`--update-tags\`.
 
     \`--help,-h\`          Outputs this help text.
@@ -63,7 +77,7 @@ Where:
     \`--ignore,-i\`        A string containing semi-colon-separated globs that
                        identify files that should not be checked.
 
-    \`--ignore-files\`     A comma-separated list of paths and globs that
+    \`--ignore-files\`     A semi-colon-separated list of paths and globs that
                        identify .gitignore-format files defining patterns for
                        paths to be ignored. These will be combined with the
                        explicit \`--ignore\` globs.
@@ -71,6 +85,9 @@ Where:
                        Defaults to \`.gitignore\`.
 
     \`--json,-j\`          Output errors and violations as JSON.
+
+    \`--no-config\`        Prevents searching for a configuration file.
+                       Ignored if \`--config\` is supplied.
 
     \`--no-ignore-file\`   When \`true\`, does not use any ignore file. This is
                        useful when the default value for \`--ignore-file\` is
@@ -97,6 +114,43 @@ Where:
                        example.
 
     \`--version\`          Outputs the version and exits.
+
+## Configuration Format
+A configuration file is a JSON file containing configuration options. All
+of the values are optional (defaults apply per the corresponding CLI arguments).
+Arguments supplied along with a configuration file will override the
+configuration file.
+
+    \`autoFix\`             Equivalent to using the \`--update-tags\` option.
+
+    \`dryRun\`              Equivalent to using the \`--dry-run\` option.
+
+    \`comments\`            Equivalent to using the \`--comments\` option,
+                        except an array instead of space-separated string.
+
+    \`ignoreFiles\`         Equivalent to using the \`--ignore-files\` option,
+                        except an array instead of semi-colon-separated string.
+                        An empty array is equivalent to \`--no-ignore-file\`.
+
+    \`excludeGlobs\`        Equivalent to using the \`--ignore\` option, except
+                        an array instead of semi-colon-separated string.
+
+    \`includeGlobs\`        Equivalent to the \`include_paths\` passed at the
+                        end of the command line.
+
+    \`rootMarker\`          Equivalent to using the \`--root-marker\` option.
+
+Example:
+    \`{
+        "autoFix": true,
+        "dryRun": false,
+        "comments": ["//", "#"],
+        "ignoreFiles": [".gitignore"],
+        "includeGlobs": ["**/*.js"],
+        "excludeGlobs": ["**/node_modules/**"],
+        "rootMarker": ".gitignore",
+        "json": false
+    }\`
 `;
 
 export default function logHelp(log: ILog) {

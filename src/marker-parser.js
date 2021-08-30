@@ -135,13 +135,13 @@ export default class MarkerParser {
      * @param {normalizePathFn} normalizePath - Callback that will normalize a given path.
      * @param {addMarkerFn} addMarker - Callback invoked when a complete marker has been parsed.
      * @param {recordErrorFn} recordError - Callback invoked to record an error.
-     * @param {Array<string>} comments - An array of strings that are used to detect the start of single-line comments.
+     * @param {$ReadOnlyArray<string>} comments - An array of strings that are used to detect the start of single-line comments.
      */
     constructor(
         normalizePath: normalizePathFn,
         addMarker: addMarkerFn,
         recordError: recordErrorFn,
-        comments: Array<string>,
+        comments: $ReadOnlyArray<string>,
     ) {
         this._addMarker = addMarker;
         this._recordError = recordError;

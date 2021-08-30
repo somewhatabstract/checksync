@@ -4,7 +4,7 @@ import type {ErrorCode} from "./error-codes.js";
 export const NoChecksum = "No checksum";
 
 export interface IStandardLog {
-    +group: (...labels: Array<string>) => void;
+    +group: (...labels: $ReadOnlyArray<string>) => void;
     +groupEnd: () => void;
 
     +error: (message: string) => void;
@@ -104,12 +104,12 @@ export type FileParseResult = {
     /**
      * The files referenced by this file.
      */
-    +referencedFiles: Array<string>,
+    +referencedFiles: $ReadOnlyArray<string>,
 
     /**
      * Error details for the file parse result, or null if there was no error.
      */
-    +errors: Array<ErrorDetails>,
+    +errors: $ReadOnlyArray<ErrorDetails>,
 
     /**
      * How many lines we found in this file.
@@ -162,7 +162,7 @@ export type FileInfo = {
     +readOnly: boolean,
     +aliases: Array<string>,
     +markers: Markers,
-    +errors: Array<ErrorDetails>,
+    +errors: $ReadOnlyArray<ErrorDetails>,
     +lineCount?: number,
 };
 
@@ -178,20 +178,20 @@ export type MarkerCache = {
 };
 
 export type normalizePathFn = (relativeFile: string) => {
-    file: string,
-    exists: boolean,
+    +file: string,
+    +exists: boolean,
 };
 
 export type Options = {
     /**
      * The paths and globs for identifying files that are to be processed.
      */
-    includeGlobs: Array<string>,
+    includeGlobs: $ReadOnlyArray<string>,
 
     /**
      * The globs for files that are to be ignored.
      */
-    excludeGlobs: Array<string>,
+    excludeGlobs: $ReadOnlyArray<string>,
 
     /**
      * .gitignore-syntax files indicating files that are to be ignored.
@@ -199,12 +199,9 @@ export type Options = {
      * Absolute and relative paths (i.e. "/user/.gitignore" or "./.gitignore")
      * are treated as exact matches to a single file.
      *
-     * File names like ".gitignore" are interpreted as being files to use in
-     * each folder processed.
-     *
-     * TODO: Support that second scenario (see #636)
+     * Glob patterns are also supported.
      */
-    ignoreFiles: Array<string>,
+    ignoreFiles: $ReadOnlyArray<string>,
 
     /**
      * When true, any fixable violations should be fixed automatically.
@@ -220,7 +217,7 @@ export type Options = {
     /**
      * The comment styles to be supported.
      */
-    comments: Array<string>,
+    comments: $ReadOnlyArray<string>,
 
     /**
      * When true, destructive actions such as auto-fixes are not actually

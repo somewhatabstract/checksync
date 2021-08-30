@@ -9,21 +9,19 @@ import checkSync from "./check-sync.js";
 import Logger from "./logger.js";
 import ExitCodes from "./exit-codes.js";
 import logHelp from "./help.js";
-import defaultArgs from "./default-args.js";
 import {version} from "../package.json";
+import determineOptions from "./determine-options.js";
 
 /**
  * Run the command line.
  *
  * @param {string} launchFilePath
  */
-export const run = (launchFilePath: string): void => {
+export const run = (launchFilePath: string): Promise<void> => {
+    // Configure our logging output and argument parsing.
     chalk.level = 3;
 
     const log = new Logger(console);
-
-    // TODO(somewhatabstract): Verbose logging (make sure any caught errors
-    // verbose their error messages)
     const args = minimist(process.argv, {
         boolean: [
             "updateTags",
@@ -33,11 +31,9 @@ export const run = (launchFilePath: string): void => {
             "verbose",
             "version",
             "json",
+            "noConfig",
         ],
-        string: ["comments", "rootMarker", "ignore", "ignoreFiles"],
-        default: {
-            ...defaultArgs,
-        },
+        string: ["comments", "rootMarker", "ignore", "ignoreFiles", "config"],
         alias: {
             comments: ["c"],
             dryRun: ["n", "dry-run"],
@@ -71,7 +67,11 @@ export const run = (launchFilePath: string): void => {
             return true;
         },
     });
+    if (args.verbose) {
+        log.setVerbose();
+    }
 
+    // Process arguments that fail early.
     if (args.version) {
         log.log(version);
         process.exit(ExitCodes.SUCCESS);
@@ -82,50 +82,27 @@ export const run = (launchFilePath: string): void => {
         process.exit(ExitCodes.SUCCESS);
     }
 
-    if (args.verbose) {
-        log.setVerbose();
-    }
     log.verbose(
         () => `Launched with args: ${JSON.stringify(args, null, "    ")}`,
     );
 
-    const comments = ((args.comments: any): string)
-        .split(" ")
-        .filter((c) => !!c);
-    const ignoreGlobs = ((args.ignore: any): string)
-        .split(";")
-        .filter((c) => !!c);
-
-    const ignoreFiles = args.noIgnoreFile
-        ? []
-        : ((args.ignoreFiles: any): string).split(",").filter((c) => !!c);
-
-    // Make sure we have something to search, so default to current working
-    // directory if no globs are given.
-    const includeGlobs =
-        args._ && args._.length > 0 ? args._ : [`${process.cwd()}/**`];
-
-    checkSync(
-        {
-            includeGlobs,
-            excludeGlobs: ignoreGlobs,
-            ignoreFiles,
-            autoFix: args.updateTags === true,
-            json: args.json === true,
-            comments,
-            rootMarker: (args.rootMarker: any),
-            dryRun: args.dryRun === true,
-        },
-        log,
-    ).then(
-        (exitCode) => {
-            log.verbose(() => `Exiting with code ${exitCode}`);
-            process.exit(exitCode);
-        },
-        (e) => {
-            log.error(`Unexpected error: ${e}`);
-            log.verbose(() => `Exiting with code ${ExitCodes.CATASTROPHIC}`);
-            process.exit(ExitCodes.CATASTROPHIC);
-        },
-    );
+    // Parse arguments and configurations to get our options.
+    return determineOptions(args, log)
+        .then(
+            (options) => checkSync(options, log),
+            (e) => ExitCodes.BAD_CONFIG,
+        )
+        .then(
+            (exitCode) => {
+                log.verbose(() => `Exiting with code ${exitCode}`);
+                process.exit(exitCode);
+            },
+            (e) => {
+                log.error(`Unexpected error: ${e}`);
+                log.verbose(
+                    () => `Exiting with code ${ExitCodes.CATASTROPHIC}`,
+                );
+                process.exit(ExitCodes.CATASTROPHIC);
+            },
+        );
 };

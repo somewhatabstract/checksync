@@ -14,9 +14,9 @@ import type {ILog} from "./types.js";
  * @param {ILog} log A log to record things
  */
 export default async function getFiles(
-    includeGlobs: Array<string>,
-    explicitExcludeGlobs: Array<string>,
-    ignoreFileGlobs: Array<string>,
+    includeGlobs: $ReadOnlyArray<string>,
+    explicitExcludeGlobs: $ReadOnlyArray<string>,
+    ignoreFileGlobs: $ReadOnlyArray<string>,
     log?: ILog,
 ): Promise<Array<string>> {
     const ignoreFileExcludeGlobs = await ignoreFileGlobsToExcludeGlobs(

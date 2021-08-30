@@ -31,7 +31,10 @@ export default function* generateErrors(
     file: string,
     cache: $ReadOnly<MarkerCache>,
 ): Iterator<ErrorDetails> {
-    const getTargetDetail = (targetMarker: ?Marker, aliases: Array<string>) => {
+    const getTargetDetail = (
+        targetMarker: ?Marker,
+        aliases: $ReadOnlyArray<string>,
+    ) => {
         if (targetMarker == null) {
             return null;
         }

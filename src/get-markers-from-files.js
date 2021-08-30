@@ -17,7 +17,7 @@ import type {FileInfo, MarkerCache, Options} from "./types.js";
  */
 export default async function getMarkersFromFiles(
     options: Options,
-    files: Array<string>,
+    files: $ReadOnlyArray<string>,
 ): Promise<MarkerCache> {
     const cacheData: MarkerCache = {};
     const referencedFiles: Array<string> = [];
@@ -27,7 +27,10 @@ export default async function getMarkersFromFiles(
         info.aliases.push(file);
     };
 
-    const cacheFiles = async (files: Array<string>, readOnly: boolean) => {
+    const cacheFiles = async (
+        files: $ReadOnlyArray<string>,
+        readOnly: boolean,
+    ) => {
         for (const file of files) {
             if (cacheData[file] !== undefined) {
                 continue;
