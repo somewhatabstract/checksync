@@ -59,7 +59,7 @@
         "micromatch": "^4.0.2",
         "minimist": "^1.2.0",
         "parse-gitignore": "^1.0.1",
-        "prettier": "2.4.0",
+        "prettier": "2.4.1",
         "pretty-quick": "^3.0.0",
         "rollup": "^2.0.6",
         "rollup-plugin-analyzer": "^4.0.0",
