@@ -1,17 +1,18 @@
 // @flow
 import path from "path";
-import * as Ancesdir from "ancesdir";
+
+import * as AncesdirOrCurrentDir from "../ancesdir-or-currentdir.js";
 
 import rootRelativePath from "../root-relative-path.js";
 
-jest.mock("ancesdir");
+jest.mock("../ancesdir-or-currentdir.js");
 jest.mock("path");
 
 describe("rootRelativePath", () => {
     it("should get root path from ancesdir", () => {
         // Arrange
         const ancesdirSpy = jest
-            .spyOn(Ancesdir, "default")
+            .spyOn(AncesdirOrCurrentDir, "ancesdirOrCurrentDir")
             .mockReturnValue("ROOT");
         jest.spyOn(path, "isAbsolute").mockReturnValue(true);
 
@@ -24,7 +25,10 @@ describe("rootRelativePath", () => {
 
     it("should get relative path from root to given file", () => {
         // Arrange
-        jest.spyOn(Ancesdir, "default").mockReturnValue("ROOT");
+        jest.spyOn(
+            AncesdirOrCurrentDir,
+            "ancesdirOrCurrentDir",
+        ).mockReturnValue("ROOT");
         const pathSpy = jest
             .spyOn(path, "relative")
             .mockReturnValue("RELATIVE_PATH");

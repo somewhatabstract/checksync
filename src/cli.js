@@ -76,9 +76,7 @@ export const run = (launchFilePath: string): Promise<void> => {
         process.exit(ExitCodes.SUCCESS);
     }
 
-    log.verbose(
-        () => `Launched with args: ${JSON.stringify(args, null, "    ")}`,
-    );
+    log.verbose(() => `Launched with args: ${JSON.stringify(args, null, 4)}`);
 
     // Parse arguments and configurations to get our options.
     return determineOptions(args, log)

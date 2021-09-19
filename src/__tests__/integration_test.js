@@ -5,6 +5,7 @@ import ancesdir from "ancesdir";
 import StringLogger from "../string-logger.js";
 
 import checkSync from "../check-sync.js";
+import determineOptions from "../determine-options.js";
 
 jest.mock("../get-launch-string.js", () => () => "checksync");
 
@@ -33,32 +34,22 @@ describe("Integration Tests (see __examples__ folder)", () => {
         .map((name) => [name, `${name}/**`])
         .sort();
 
-    // TODO: 1. These tests need to specify what ignore files to ignore
-    //       2. We need to do that by discovery so that tests are easy to just
-    //          run (until we have support for a checksyncrc file)
-    //       3. We need to implement a CLI arg that provides for discovering
-    //          ignore files beyond the default .gitignore at the root level
-    //          or those specified by the current --ignorefiles CLI option.
-
     it.each(exampleGlobs)(
         "should report example %s to match snapshot",
         async (name, glob) => {
             // Arrange
             const stringLogger = new StringLogger();
-
-            // Act
-            await checkSync(
+            // This takes an args object, looks for and loads the config file,
+            // and then combines them with defaults to get the options to run.
+            const options = await determineOptions(
                 {
-                    includeGlobs: [glob],
-                    autoFix: false,
-                    comments: ["//", "#", "{/*"],
-                    dryRun: false,
-                    excludeGlobs: ["**/excluded/**"],
-                    ignoreFiles: ["**/ignore-file.txt"],
-                    json: false,
+                    _: [glob],
                 },
                 stringLogger,
             );
+
+            // Act
+            await checkSync(options, stringLogger);
             const result = stringLogger.getLog();
 
             // Assert
@@ -71,20 +62,19 @@ describe("Integration Tests (see __examples__ folder)", () => {
         async (name, glob) => {
             // Arrange
             const stringLogger = new StringLogger();
-
-            // Act
-            await checkSync(
+            // This takes an args object, looks for and loads the config file,
+            // and then combines them with defaults to get the options to run.
+            const options = await determineOptions(
                 {
-                    includeGlobs: [glob],
-                    autoFix: true,
-                    comments: ["//", "#", "{/*"],
+                    _: [glob],
+                    updateTags: true,
                     dryRun: true,
-                    excludeGlobs: ["**/excluded/**"],
-                    ignoreFiles: ["**/ignore-file.txt"],
-                    json: false,
                 },
                 stringLogger,
             );
+
+            // Act
+            await checkSync(options, stringLogger);
             const result = stringLogger.getLog();
 
             // Assert
@@ -97,20 +87,18 @@ describe("Integration Tests (see __examples__ folder)", () => {
         async (name, glob) => {
             // Arrange
             const stringLogger = new StringLogger();
-
-            // Act
-            await checkSync(
+            // This takes an args object, looks for and loads the config file,
+            // and then combines them with defaults to get the options to run.
+            const options = await determineOptions(
                 {
-                    includeGlobs: [glob],
-                    autoFix: false,
-                    comments: ["//", "#", "{/*"],
-                    dryRun: false,
-                    excludeGlobs: ["**/excluded/**"],
-                    ignoreFiles: ["**/ignore-file.txt"],
+                    _: [glob],
                     json: true,
                 },
                 stringLogger,
             );
+
+            // Act
+            await checkSync(options, stringLogger);
             const result = stringLogger.getLog();
 
             // Assert

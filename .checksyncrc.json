@@ -1,0 +1,18 @@
+{
+    "$schema": "./src/checksync.schema.json",
+    "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+    "autoFix": false,
+    "comments": [
+        "//",
+        "#",
+        "{/*"
+    ],
+    "dryRun": false,
+    "excludeGlobs": [
+        "**/excluded/**"
+    ],
+    "ignoreFiles": [
+        "**/ignore-file.txt"
+    ],
+    "json": false
+}
