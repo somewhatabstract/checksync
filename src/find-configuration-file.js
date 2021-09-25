@@ -9,16 +9,9 @@ import type {ILog} from "./types.js";
 export const checkSyncRcNames = [".checksyncrc", ".checksyncrc.json"];
 
 export default function findConfigurationFile(
-    configFile: ?string,
     rootMarker: ?string,
     log: ILog,
 ): ?string {
-    // If we have a configFile, we can try that.
-    if (configFile != null) {
-        log.verbose(() => `Using --config file: ${configFile}`);
-        return configFile;
-    }
-
     log.verbose(() => `Looking for configuration file based on root marker...`);
 
     // Let's look for the root marker relative to our current working directory

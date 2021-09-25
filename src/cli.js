@@ -23,9 +23,8 @@ export const run = (launchFilePath: string): Promise<void> => {
 
     const log = new Logger(console);
 
-    // TODO: It seems that minimist treats `no` on the front of a known flag
-    // as a flag inversion of the none-`no` version. That's annoying.
-    // So we wneed to rename our `no` props or just treat them differently.
+    // NOTE: minimist treats `no` on the front of a known flag
+    // as a flag inversion of the none-`no` version.
     const args = minimist(process.argv, {
         boolean: ["updateTags", "dryRun", "help", "verbose", "version", "json"],
         string: ["comments", "rootMarker", "ignore", "ignoreFiles", "config"],

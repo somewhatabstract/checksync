@@ -4,6 +4,19 @@
     "description": "Configuration file for CheckSync",
     "type": "object",
     "properties": {
+        "$comment": {
+            "description": "A comment about the configuration",
+            "type": "string"
+        },
+        "$schema": {
+            "description": "The JSON schema for this file",
+            "type": "string"
+        },
+        "$schemaVersion": {
+            "description": "The version of the JSON schema for this file",
+            "type": "string",
+            "pattern": "^[0-9]+(\\.[0-9]+)+$"
+        },
         "autoFix": {
             "description": "When true, checksync will attempt to apply fixes to an errors",
             "type": "boolean"
@@ -61,5 +74,6 @@
             "pattern": "^[^/\\\\]+$"
         }
     },
-    "required": []
+    "required": [],
+    "additionalProperties": false
 }

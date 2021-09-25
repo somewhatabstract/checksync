@@ -2,6 +2,7 @@
 import findConfigurationFile from "./find-configuration-file.js";
 import loadConfigurationFile from "./load-configuration-file.js";
 import defaultOptions from "./default-options.js";
+import {optionsFromArgs} from "./options-from-args.js";
 
 import type {ILog, Options} from "./types.js";
 import type {minimistOutput} from "minimist";
@@ -18,52 +19,45 @@ export default async function determineOptions(
         log.verbose(() => "Skipping configuration file search");
     }
 
-    const configFilePath =
+    const argsOptions = optionsFromArgs(args);
+    log.verbose(() => `Options from arguments: ${JSON.stringify(argsOptions)}`);
+
+    const configFilePath: ?string =
         args.config === false
             ? null
-            : findConfigurationFile(
-                  (args.config: any),
-                  (args.rootMarker: any),
-                  log,
-              );
+            : args.config != null
+            ? (args.config: any)
+            : findConfigurationFile((args.rootMarker: any), log);
+
+    log.verbose(() => {
+        if (!!configFilePath && args.config === configFilePath) {
+            return `Using --config file: ${configFilePath}`;
+        }
+    });
 
     const configFromFile =
         configFilePath == null
             ? null
             : await loadConfigurationFile(configFilePath, log);
+    log.verbose(() =>
+        configFromFile == null
+            ? null
+            : `Options from config: ${JSON.stringify(configFromFile)}`,
+    );
 
     // We have to now build the options, with args taking precedence over
     // config. Then after that, put in any defaults we need.
-    return {
-        includeGlobs:
-            (args._ && args._.length ? args._ : configFromFile?.includeGlobs) ??
-            defaultOptions.includeGlobs,
-        excludeGlobs:
-            (args.ignore: any)?.split(";").filter((c) => !!c) ??
-            configFromFile?.excludeGlobs ??
-            defaultOptions.excludeGlobs,
-        ignoreFiles:
-            (args.ignoreFiles: any) === false
-                ? []
-                : (args.ignoreFiles: any)?.split(";").filter((c) => !!c) ??
-                  configFromFile?.ignoreFiles ??
-                  defaultOptions.ignoreFiles,
-        autoFix:
-            (args.updateTags: any) ??
-            configFromFile?.autoFix ??
-            defaultOptions.autoFix,
-        json: (args.json: any) ?? configFromFile?.json ?? defaultOptions.json,
-        comments:
-            (args.comments: any)?.split(" ").filter((c) => !!c) ??
-            configFromFile?.comments ??
-            defaultOptions.comments,
-        dryRun:
-            (args.dryRun: any) ??
-            configFromFile?.dryRun ??
-            defaultOptions.dryRun,
-        rootMarker:
-            (args.rootMarker: any) ??
-            configFromFile?.rootMarker ??
-            defaultOptions.rootMarker,
+    const combinedOptions = {
+        ...defaultOptions,
+        ...configFromFile,
+        ...argsOptions,
     };
+    log.verbose(
+        () =>
+            `Combined options with defaults: ${JSON.stringify(
+                combinedOptions,
+            )}`,
+    );
+
+    return combinedOptions;
 }

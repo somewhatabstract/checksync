@@ -2,7 +2,6 @@
 import path from "path";
 import escapeRegExp from "lodash/escapeRegExp";
 import Logger from "./logger.js";
-import {getPathSeparator} from "./get-path-separator.js";
 
 import type {IStandardLog} from "./types.js";
 
@@ -18,7 +17,7 @@ class StringLoggerInternal implements IStandardLog {
     _groupIndent: number = 0;
 
     _log = (...args: Array<string>) => {
-        const sep = getPathSeparator();
+        const {sep} = path;
         /**
          * We want to normalize the string in case it contains filepaths.
          * This ensures that snapshots are standardized across platforms.

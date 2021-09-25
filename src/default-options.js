@@ -9,7 +9,7 @@ const defaultOptions: Options = {
     ignoreFiles: [".gitignore"],
     // Make sure we have something to search, so default to current working
     // directory if no globs are given.
-    includeGlobs: [`${process.cwd()}/**`],
+    includeGlobs: [`${process.cwd()}**`],
 };
 
 export default defaultOptions;

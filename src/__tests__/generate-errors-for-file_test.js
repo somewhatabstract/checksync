@@ -138,6 +138,73 @@ describe("#generateMarkerEdges", () => {
         ]);
     });
 
+    it("should yield checksum mismatch errors from files that are not read-only, even if source target ref has no checksum", () => {
+        // Arrange
+        const options: Options = ({}: any);
+        const markerCache: MarkerCache = {
+            filea: {
+                errors: [],
+                readOnly: true,
+                aliases: ["filea"],
+                markers: {
+                    marker: ({
+                        commentStart: "//",
+                        commentEnd: undefined,
+                        checksum: "1234",
+                        targets: {
+                            [1]: ({
+                                checksum: "5678",
+                                file: "fileb",
+                                declaration: "// sync-start:marker 5678 fileb",
+                            }: Target),
+                        },
+                    }: Marker),
+                },
+            },
+            fileb: {
+                errors: [],
+                readOnly: false,
+                aliases: ["fileb"],
+                markers: {
+                    marker: ({
+                        commentStart: "//",
+                        commentEnd: undefined,
+                        checksum: "5678",
+                        targets: ({
+                            [1]: ({
+                                checksum: "",
+                                file: "filea",
+                                declaration: "// sync-start:marker WRONG filea",
+                            }: Target),
+                        }: any),
+                    }: Marker),
+                },
+            },
+        };
+
+        // Act
+        const result = Array.from(
+            generateErrorsForFile(options, "fileb", markerCache),
+        );
+
+        // Assert
+        expect(result).toEqual([
+            {
+                code: "mismatched-checksum",
+                reason: "Looks like you changed the target content for sync-tag 'marker' in 'filea:1'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 1234)",
+                location: {line: 1},
+                fix: {
+                    line: 1,
+                    type: "replace",
+                    text: "// sync-start:marker 1234 filea",
+                    declaration: "// sync-start:marker WRONG filea",
+                    description:
+                        "Updated checksum for sync-tag 'marker' referencing 'filea:1' from no checksum to 1234.",
+                },
+            },
+        ]);
+    });
+
     it("should yield errors reported during file parsing", () => {
         // Arrange
         const options: Options = ({}: any);

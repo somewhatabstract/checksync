@@ -38,7 +38,7 @@ describe("Integration Tests (see __examples__ folder)", () => {
         "should report example %s to match snapshot",
         async (name, glob) => {
             // Arrange
-            const stringLogger = new StringLogger();
+            const stringLogger = new StringLogger(true);
             // This takes an args object, looks for and loads the config file,
             // and then combines them with defaults to get the options to run.
             const options = await determineOptions(
@@ -61,7 +61,7 @@ describe("Integration Tests (see __examples__ folder)", () => {
         "should report example %s to match snapshot with autofix dryrun",
         async (name, glob) => {
             // Arrange
-            const stringLogger = new StringLogger();
+            const stringLogger = new StringLogger(true);
             // This takes an args object, looks for and loads the config file,
             // and then combines them with defaults to get the options to run.
             const options = await determineOptions(
@@ -86,7 +86,7 @@ describe("Integration Tests (see __examples__ folder)", () => {
         "should report example %s to match snapshot with json",
         async (name, glob) => {
             // Arrange
-            const stringLogger = new StringLogger();
+            const stringLogger = new StringLogger(true);
             // This takes an args object, looks for and loads the config file,
             // and then combines them with defaults to get the options to run.
             const options = await determineOptions(

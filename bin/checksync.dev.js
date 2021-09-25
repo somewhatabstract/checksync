@@ -1,3 +1,3 @@
 #!/usr/bin/env node
 require("@babel/register");
-require("../src/main.js").run(__filename);
+require("../src/main.js").runCli(__filename);

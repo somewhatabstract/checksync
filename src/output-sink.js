@@ -15,7 +15,6 @@ import type {ErrorDetails, Options, ILog} from "./types.js";
 
 type ErrorsByFile = {
     [key: string]: Array<ErrorDetails>,
-    ...
 };
 
 export default class OutputSink {
