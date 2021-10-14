@@ -15,5 +15,5 @@ module.exports = {
     // Setting this value to "fake" allows the use of fake timers for functions such as "setTimeout"
     timers: "fake",
 
-    setupFilesAfterEnv: ["jest-extended", "./jest.setup.js"],
+    setupFilesAfterEnv: ["jest-extended/all", "./jest.setup.js"],
 };
