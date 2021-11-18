@@ -51,7 +51,7 @@
         "eslint-plugin-flowtype": "^7.0.0",
         "eslint-plugin-prettier": "^4.0.0",
         "fast-glob": "^3.0.4",
-        "flow-bin": "^0.164.0",
+        "flow-bin": "^0.165.0",
         "jest": "^27.0.6",
         "jest-extended": "^1.0.0",
         "jest-worker": "^27.0.1",
