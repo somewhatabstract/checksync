@@ -2,8 +2,11 @@
 import path from "path";
 import escapeRegExp from "lodash/escapeRegExp";
 import Logger from "./logger.js";
+import ancesdir from "ancesdir";
 
 import type {IStandardLog} from "./types.js";
+
+const ROOT_DIR = ancesdir();
 
 /**
  * Rather than directly use this implementation, we wrap it with the main
@@ -21,8 +24,13 @@ class StringLoggerInternal implements IStandardLog {
         /**
          * We want to normalize the string in case it contains filepaths.
          * This ensures that snapshots are standardized across platforms.
+         *
+         * We do two things:
+         * - Replace the root path so that it's platform-independent
+         * - Replace the path separator so that it's platform-independent
          */
-        const regex =
+        const rootDirRegex = new RegExp(escapeRegExp(ROOT_DIR), "g");
+        const sepRegex =
             /**
              * If the path separator is a backslash we create a regex that
              * recognizes a double backslash or a single backslash.  This is
@@ -34,8 +42,9 @@ class StringLoggerInternal implements IStandardLog {
                       "g",
                   )
                 : new RegExp(escapeRegExp(path.sep), "g");
+
         const normalize = (snippet: string): string =>
-            snippet.replace(regex, "/");
+            snippet.replace(rootDirRegex, "ROOT_DIR").replace(sepRegex, "/");
 
         const line = `${"  ".repeat(this._groupIndent)}${args
             .map(normalize)

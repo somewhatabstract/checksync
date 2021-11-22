@@ -8,7 +8,6 @@ import getFiles from "../get-files.js";
 import {jest} from "@jest/globals";
 
 jest.mock("fast-glob");
-jest.mock("fs");
 
 describe("#getFiles", () => {
     it("should return a sorted list without duplicates", async () => {

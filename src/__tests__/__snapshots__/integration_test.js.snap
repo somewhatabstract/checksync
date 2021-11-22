@@ -3,10 +3,10 @@
 exports[`Integration Tests (see __examples__ folder) should report example checksums_need_updating to match snapshot 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"checksums_need_updating/**\\"]}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -16,21 +16,21 @@ exports[`Integration Tests (see __examples__ folder) should report example check
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/checksums_need_updating/a.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/checksums_need_updating/b.py\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/checksums_need_updating/c.jsx\\"
+    \\"ROOT_DIR/__examples__/checksums_need_updating/a.js\\",
+    \\"ROOT_DIR/__examples__/checksums_need_updating/b.py\\",
+    \\"ROOT_DIR/__examples__/checksums_need_updating/c.jsx\\"
 ]
  MISMATCH  checksums_need_updating/a.js:4 Looks like you changed the target content for sync-tag 'update_me' in 'checksums_need_updating/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (45678 != 249234014)
  MISMATCH  checksums_need_updating/a.js:5 Looks like you changed the target content for sync-tag 'update_me' in 'checksums_need_updating/c.jsx:3'. Make sure you've made the parallel changes in the source file, if necessary (1234 != 1992689801)
@@ -46,10 +46,10 @@ exports[`Integration Tests (see __examples__ folder) should report example check
 exports[`Integration Tests (see __examples__ folder) should report example checksums_need_updating to match snapshot with autofix dryrun 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"checksums_need_updating/**\\"],\\"autoFix\\":true,\\"dryRun\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -60,21 +60,21 @@ exports[`Integration Tests (see __examples__ folder) should report example check
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/checksums_need_updating/a.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/checksums_need_updating/b.py\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/checksums_need_updating/c.jsx\\"
+    \\"ROOT_DIR/__examples__/checksums_need_updating/a.js\\",
+    \\"ROOT_DIR/__examples__/checksums_need_updating/b.py\\",
+    \\"ROOT_DIR/__examples__/checksums_need_updating/c.jsx\\"
 ]
  FIX  checksums_need_updating/a.js:4 Updated checksum for sync-tag 'update_me' referencing 'checksums_need_updating/b.py:3' from 45678 to 249234014.
  FIX  checksums_need_updating/a.js:5 Updated checksum for sync-tag 'update_me' referencing 'checksums_need_updating/c.jsx:3' from 1234 to 1992689801.
@@ -89,10 +89,10 @@ exports[`Integration Tests (see __examples__ folder) should report example check
 exports[`Integration Tests (see __examples__ folder) should report example checksums_need_updating to match snapshot with json 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"checksums_need_updating/**\\"],\\"json\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -102,21 +102,21 @@ exports[`Integration Tests (see __examples__ folder) should report example check
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/checksums_need_updating/a.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/checksums_need_updating/b.py\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/checksums_need_updating/c.jsx\\"
+    \\"ROOT_DIR/__examples__/checksums_need_updating/a.js\\",
+    \\"ROOT_DIR/__examples__/checksums_need_updating/b.py\\",
+    \\"ROOT_DIR/__examples__/checksums_need_updating/c.jsx\\"
 ]
 {
     \\"version\\": \\"2.3.0\\",
@@ -191,10 +191,10 @@ exports[`Integration Tests (see __examples__ folder) should report example check
 exports[`Integration Tests (see __examples__ folder) should report example content_after_start to match snapshot 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"content_after_start/**\\"]}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -204,21 +204,21 @@ exports[`Integration Tests (see __examples__ folder) should report example conte
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/content_after_start/a.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/content_after_start/b.py\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/content_after_start/c.js\\"
+    \\"ROOT_DIR/__examples__/content_after_start/a.js\\",
+    \\"ROOT_DIR/__examples__/content_after_start/b.py\\",
+    \\"ROOT_DIR/__examples__/content_after_start/c.js\\"
 ]
  MISMATCH  content_after_start/a.js:3 Looks like you changed the target content for sync-tag 'content_after_start' in 'content_after_start/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)
  MISMATCH  content_after_start/b.py:3 Looks like you changed the target content for sync-tag 'content_after_start' in 'content_after_start/a.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)
@@ -236,10 +236,10 @@ exports[`Integration Tests (see __examples__ folder) should report example conte
 exports[`Integration Tests (see __examples__ folder) should report example content_after_start to match snapshot with autofix dryrun 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"content_after_start/**\\"],\\"autoFix\\":true,\\"dryRun\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -250,21 +250,21 @@ exports[`Integration Tests (see __examples__ folder) should report example conte
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/content_after_start/a.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/content_after_start/b.py\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/content_after_start/c.js\\"
+    \\"ROOT_DIR/__examples__/content_after_start/a.js\\",
+    \\"ROOT_DIR/__examples__/content_after_start/b.py\\",
+    \\"ROOT_DIR/__examples__/content_after_start/c.js\\"
 ]
  FIX  content_after_start/a.js:3 Updated checksum for sync-tag 'content_after_start' referencing 'content_after_start/b.py:3' from no checksum to 249234014.
  FIX  content_after_start/b.py:3 Updated checksum for sync-tag 'content_after_start' referencing 'content_after_start/a.js:3' from no checksum to 770446101.
@@ -281,10 +281,10 @@ exports[`Integration Tests (see __examples__ folder) should report example conte
 exports[`Integration Tests (see __examples__ folder) should report example content_after_start to match snapshot with json 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"content_after_start/**\\"],\\"json\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -294,21 +294,21 @@ exports[`Integration Tests (see __examples__ folder) should report example conte
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/content_after_start/a.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/content_after_start/b.py\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/content_after_start/c.js\\"
+    \\"ROOT_DIR/__examples__/content_after_start/a.js\\",
+    \\"ROOT_DIR/__examples__/content_after_start/b.py\\",
+    \\"ROOT_DIR/__examples__/content_after_start/c.js\\"
 ]
 {
     \\"version\\": \\"2.3.0\\",
@@ -397,10 +397,10 @@ exports[`Integration Tests (see __examples__ folder) should report example conte
 exports[`Integration Tests (see __examples__ folder) should report example correct_checksums to match snapshot 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"correct_checksums/**\\"]}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -410,21 +410,21 @@ exports[`Integration Tests (see __examples__ folder) should report example corre
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/correct_checksums/a.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/correct_checksums/b.py\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/correct_checksums/c.jsx\\"
+    \\"ROOT_DIR/__examples__/correct_checksums/a.js\\",
+    \\"ROOT_DIR/__examples__/correct_checksums/b.py\\",
+    \\"ROOT_DIR/__examples__/correct_checksums/c.jsx\\"
 ]
 🎉  Everything is in sync!"
 `;
@@ -432,10 +432,10 @@ exports[`Integration Tests (see __examples__ folder) should report example corre
 exports[`Integration Tests (see __examples__ folder) should report example correct_checksums to match snapshot with autofix dryrun 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"correct_checksums/**\\"],\\"autoFix\\":true,\\"dryRun\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -446,21 +446,21 @@ exports[`Integration Tests (see __examples__ folder) should report example corre
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/correct_checksums/a.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/correct_checksums/b.py\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/correct_checksums/c.jsx\\"
+    \\"ROOT_DIR/__examples__/correct_checksums/a.js\\",
+    \\"ROOT_DIR/__examples__/correct_checksums/b.py\\",
+    \\"ROOT_DIR/__examples__/correct_checksums/c.jsx\\"
 ]
 🎉  Everything is in sync!"
 `;
@@ -468,10 +468,10 @@ exports[`Integration Tests (see __examples__ folder) should report example corre
 exports[`Integration Tests (see __examples__ folder) should report example correct_checksums to match snapshot with json 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"correct_checksums/**\\"],\\"json\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -481,21 +481,21 @@ exports[`Integration Tests (see __examples__ folder) should report example corre
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/correct_checksums/a.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/correct_checksums/b.py\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/correct_checksums/c.jsx\\"
+    \\"ROOT_DIR/__examples__/correct_checksums/a.js\\",
+    \\"ROOT_DIR/__examples__/correct_checksums/b.py\\",
+    \\"ROOT_DIR/__examples__/correct_checksums/c.jsx\\"
 ]
 {
     \\"version\\": \\"2.3.0\\",
@@ -507,10 +507,10 @@ exports[`Integration Tests (see __examples__ folder) should report example corre
 exports[`Integration Tests (see __examples__ folder) should report example directory_target to match snapshot 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"directory_target/**\\"]}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -520,20 +520,20 @@ exports[`Integration Tests (see __examples__ folder) should report example direc
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/directory_target/a_directory/somefile.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/directory_target/example.js\\"
+    \\"ROOT_DIR/__examples__/directory_target/a_directory/somefile.js\\",
+    \\"ROOT_DIR/__examples__/directory_target/example.js\\"
 ]
  ERROR  directory_target/example.js:3 Sync-start for 'directory_target' points to '__examples__/directory_target/a_directory', which does not exist or is a directory
  ERROR  directory_target/example.js:3 No return tag named 'directory_target' in 'directory_target/a_directory'
@@ -543,10 +543,10 @@ exports[`Integration Tests (see __examples__ folder) should report example direc
 exports[`Integration Tests (see __examples__ folder) should report example directory_target to match snapshot with autofix dryrun 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"directory_target/**\\"],\\"autoFix\\":true,\\"dryRun\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -557,20 +557,20 @@ exports[`Integration Tests (see __examples__ folder) should report example direc
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/directory_target/a_directory/somefile.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/directory_target/example.js\\"
+    \\"ROOT_DIR/__examples__/directory_target/a_directory/somefile.js\\",
+    \\"ROOT_DIR/__examples__/directory_target/example.js\\"
 ]
  ERROR  directory_target/example.js:3 Sync-start for 'directory_target' points to '__examples__/directory_target/a_directory', which does not exist or is a directory
  ERROR  directory_target/example.js:3 No return tag named 'directory_target' in 'directory_target/a_directory'
@@ -581,10 +581,10 @@ exports[`Integration Tests (see __examples__ folder) should report example direc
 exports[`Integration Tests (see __examples__ folder) should report example directory_target to match snapshot with json 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"directory_target/**\\"],\\"json\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -594,20 +594,20 @@ exports[`Integration Tests (see __examples__ folder) should report example direc
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/directory_target/a_directory/somefile.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/directory_target/example.js\\"
+    \\"ROOT_DIR/__examples__/directory_target/a_directory/somefile.js\\",
+    \\"ROOT_DIR/__examples__/directory_target/example.js\\"
 ]
 {
     \\"version\\": \\"2.3.0\\",
@@ -636,10 +636,10 @@ exports[`Integration Tests (see __examples__ folder) should report example direc
 exports[`Integration Tests (see __examples__ folder) should report example duplicate-target to match snapshot 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"duplicate-target/**\\"]}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -649,20 +649,20 @@ exports[`Integration Tests (see __examples__ folder) should report example dupli
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/duplicate-target/a.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/duplicate-target/b.py\\"
+    \\"ROOT_DIR/__examples__/duplicate-target/a.js\\",
+    \\"ROOT_DIR/__examples__/duplicate-target/b.py\\"
 ]
  WARNING  duplicate-target/a.js:5 Duplicate target for sync-tag 'update_me'
  MISMATCH  duplicate-target/a.js:4 Looks like you changed the target content for sync-tag 'update_me' in 'duplicate-target/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (12352 != 249234014)
@@ -678,10 +678,10 @@ exports[`Integration Tests (see __examples__ folder) should report example dupli
 exports[`Integration Tests (see __examples__ folder) should report example duplicate-target to match snapshot with autofix dryrun 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"duplicate-target/**\\"],\\"autoFix\\":true,\\"dryRun\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -692,20 +692,20 @@ exports[`Integration Tests (see __examples__ folder) should report example dupli
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/duplicate-target/a.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/duplicate-target/b.py\\"
+    \\"ROOT_DIR/__examples__/duplicate-target/a.js\\",
+    \\"ROOT_DIR/__examples__/duplicate-target/b.py\\"
 ]
  FIX  duplicate-target/a.js:4 Updated checksum for sync-tag 'update_me' referencing 'duplicate-target/b.py:3' from 12352 to 249234014.
  FIX  duplicate-target/a.js:5 Removed duplicate target for sync-tag 'update_me'
@@ -719,10 +719,10 @@ exports[`Integration Tests (see __examples__ folder) should report example dupli
 exports[`Integration Tests (see __examples__ folder) should report example duplicate-target to match snapshot with json 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"duplicate-target/**\\"],\\"json\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -732,20 +732,20 @@ exports[`Integration Tests (see __examples__ folder) should report example dupli
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/duplicate-target/a.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/duplicate-target/b.py\\"
+    \\"ROOT_DIR/__examples__/duplicate-target/a.js\\",
+    \\"ROOT_DIR/__examples__/duplicate-target/b.py\\"
 ]
 {
     \\"version\\": \\"2.3.0\\",
@@ -817,10 +817,10 @@ exports[`Integration Tests (see __examples__ folder) should report example dupli
 exports[`Integration Tests (see __examples__ folder) should report example end_with_no_start to match snapshot 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"end_with_no_start/**\\"]}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -830,19 +830,19 @@ exports[`Integration Tests (see __examples__ folder) should report example end_w
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/end_with_no_start/example.js\\"
+    \\"ROOT_DIR/__examples__/end_with_no_start/example.js\\"
 ]
  WARNING  end_with_no_start/example.js:5 Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start
 🛑  Errors occurred during processing. Fix the errors and try again."
@@ -851,10 +851,10 @@ exports[`Integration Tests (see __examples__ folder) should report example end_w
 exports[`Integration Tests (see __examples__ folder) should report example end_with_no_start to match snapshot with autofix dryrun 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"end_with_no_start/**\\"],\\"autoFix\\":true,\\"dryRun\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -865,19 +865,19 @@ exports[`Integration Tests (see __examples__ folder) should report example end_w
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/end_with_no_start/example.js\\"
+    \\"ROOT_DIR/__examples__/end_with_no_start/example.js\\"
 ]
  WARNING  end_with_no_start/example.js:5 Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start
 🛑  Errors occurred during processing. Fix the errors and try again.
@@ -887,10 +887,10 @@ exports[`Integration Tests (see __examples__ folder) should report example end_w
 exports[`Integration Tests (see __examples__ folder) should report example end_with_no_start to match snapshot with json 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"end_with_no_start/**\\"],\\"json\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -900,19 +900,19 @@ exports[`Integration Tests (see __examples__ folder) should report example end_w
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/end_with_no_start/example.js\\"
+    \\"ROOT_DIR/__examples__/end_with_no_start/example.js\\"
 ]
 {
     \\"version\\": \\"2.3.0\\",
@@ -934,10 +934,10 @@ exports[`Integration Tests (see __examples__ folder) should report example end_w
 exports[`Integration Tests (see __examples__ folder) should report example excluded to match snapshot 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"excluded/**\\"]}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -947,16 +947,16 @@ exports[`Integration Tests (see __examples__ folder) should report example exclu
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: []
  ERROR  No matching files"
@@ -965,10 +965,10 @@ exports[`Integration Tests (see __examples__ folder) should report example exclu
 exports[`Integration Tests (see __examples__ folder) should report example excluded to match snapshot with autofix dryrun 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"excluded/**\\"],\\"autoFix\\":true,\\"dryRun\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -979,16 +979,16 @@ exports[`Integration Tests (see __examples__ folder) should report example exclu
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: []
  ERROR  No matching files"
@@ -997,10 +997,10 @@ exports[`Integration Tests (see __examples__ folder) should report example exclu
 exports[`Integration Tests (see __examples__ folder) should report example excluded to match snapshot with json 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"excluded/**\\"],\\"json\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -1010,16 +1010,16 @@ exports[`Integration Tests (see __examples__ folder) should report example exclu
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: []
  ERROR  No matching files"
@@ -1028,10 +1028,10 @@ exports[`Integration Tests (see __examples__ folder) should report example exclu
 exports[`Integration Tests (see __examples__ folder) should report example ignore_files_at_different_depths to match snapshot 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"ignore_files_at_different_depths/**\\"]}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -1041,16 +1041,16 @@ exports[`Integration Tests (see __examples__ folder) should report example ignor
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: []
  ERROR  No matching files"
@@ -1059,10 +1059,10 @@ exports[`Integration Tests (see __examples__ folder) should report example ignor
 exports[`Integration Tests (see __examples__ folder) should report example ignore_files_at_different_depths to match snapshot with autofix dryrun 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"ignore_files_at_different_depths/**\\"],\\"autoFix\\":true,\\"dryRun\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -1073,16 +1073,16 @@ exports[`Integration Tests (see __examples__ folder) should report example ignor
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: []
  ERROR  No matching files"
@@ -1091,10 +1091,10 @@ exports[`Integration Tests (see __examples__ folder) should report example ignor
 exports[`Integration Tests (see __examples__ folder) should report example ignore_files_at_different_depths to match snapshot with json 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"ignore_files_at_different_depths/**\\"],\\"json\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -1104,16 +1104,16 @@ exports[`Integration Tests (see __examples__ folder) should report example ignor
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: []
  ERROR  No matching files"
@@ -1122,10 +1122,10 @@ exports[`Integration Tests (see __examples__ folder) should report example ignor
 exports[`Integration Tests (see __examples__ folder) should report example malformed_end to match snapshot 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"malformed_end/**\\"]}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -1135,20 +1135,20 @@ exports[`Integration Tests (see __examples__ folder) should report example malfo
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/malformed_end/malformed_badid.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/malformed_end/malformed_noid.js\\"
+    \\"ROOT_DIR/__examples__/malformed_end/malformed_badid.js\\",
+    \\"ROOT_DIR/__examples__/malformed_end/malformed_noid.js\\"
 ]
  ERROR  malformed_end/malformed_badid.js:7 Malformed sync-end: format should be 'sync-end:<label>'
  ERROR  malformed_end/malformed_badid.js:4 Sync-start 'tagid' has no corresponding sync-end
@@ -1160,10 +1160,10 @@ exports[`Integration Tests (see __examples__ folder) should report example malfo
 exports[`Integration Tests (see __examples__ folder) should report example malformed_end to match snapshot with autofix dryrun 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"malformed_end/**\\"],\\"autoFix\\":true,\\"dryRun\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -1174,20 +1174,20 @@ exports[`Integration Tests (see __examples__ folder) should report example malfo
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/malformed_end/malformed_badid.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/malformed_end/malformed_noid.js\\"
+    \\"ROOT_DIR/__examples__/malformed_end/malformed_badid.js\\",
+    \\"ROOT_DIR/__examples__/malformed_end/malformed_noid.js\\"
 ]
  ERROR  malformed_end/malformed_badid.js:7 Malformed sync-end: format should be 'sync-end:<label>'
  ERROR  malformed_end/malformed_badid.js:4 Sync-start 'tagid' has no corresponding sync-end
@@ -1200,10 +1200,10 @@ exports[`Integration Tests (see __examples__ folder) should report example malfo
 exports[`Integration Tests (see __examples__ folder) should report example malformed_end to match snapshot with json 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"malformed_end/**\\"],\\"json\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -1213,20 +1213,20 @@ exports[`Integration Tests (see __examples__ folder) should report example malfo
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/malformed_end/malformed_badid.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/malformed_end/malformed_noid.js\\"
+    \\"ROOT_DIR/__examples__/malformed_end/malformed_badid.js\\",
+    \\"ROOT_DIR/__examples__/malformed_end/malformed_noid.js\\"
 ]
 {
     \\"version\\": \\"2.3.0\\",
@@ -1271,10 +1271,10 @@ exports[`Integration Tests (see __examples__ folder) should report example malfo
 exports[`Integration Tests (see __examples__ folder) should report example malformed_start to match snapshot 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"malformed_start/**\\"]}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -1284,21 +1284,21 @@ exports[`Integration Tests (see __examples__ folder) should report example malfo
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/malformed_start/malformed_badchecksum.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/malformed_start/malformed_badid.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/malformed_start/malformed_onlytagid.js\\"
+    \\"ROOT_DIR/__examples__/malformed_start/malformed_badchecksum.js\\",
+    \\"ROOT_DIR/__examples__/malformed_start/malformed_badid.js\\",
+    \\"ROOT_DIR/__examples__/malformed_start/malformed_onlytagid.js\\"
 ]
  ERROR  malformed_start/malformed_badchecksum.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
  WARNING  malformed_start/malformed_badchecksum.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
@@ -1312,10 +1312,10 @@ exports[`Integration Tests (see __examples__ folder) should report example malfo
 exports[`Integration Tests (see __examples__ folder) should report example malformed_start to match snapshot with autofix dryrun 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"malformed_start/**\\"],\\"autoFix\\":true,\\"dryRun\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -1326,21 +1326,21 @@ exports[`Integration Tests (see __examples__ folder) should report example malfo
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/malformed_start/malformed_badchecksum.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/malformed_start/malformed_badid.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/malformed_start/malformed_onlytagid.js\\"
+    \\"ROOT_DIR/__examples__/malformed_start/malformed_badchecksum.js\\",
+    \\"ROOT_DIR/__examples__/malformed_start/malformed_badid.js\\",
+    \\"ROOT_DIR/__examples__/malformed_start/malformed_onlytagid.js\\"
 ]
  ERROR  malformed_start/malformed_badchecksum.js:4 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
  WARNING  malformed_start/malformed_badchecksum.js:7 Sync-end for 'tagid' found, but there was no corresponding sync-start
@@ -1355,10 +1355,10 @@ exports[`Integration Tests (see __examples__ folder) should report example malfo
 exports[`Integration Tests (see __examples__ folder) should report example malformed_start to match snapshot with json 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"malformed_start/**\\"],\\"json\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -1368,21 +1368,21 @@ exports[`Integration Tests (see __examples__ folder) should report example malfo
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/malformed_start/malformed_badchecksum.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/malformed_start/malformed_badid.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/malformed_start/malformed_onlytagid.js\\"
+    \\"ROOT_DIR/__examples__/malformed_start/malformed_badchecksum.js\\",
+    \\"ROOT_DIR/__examples__/malformed_start/malformed_badid.js\\",
+    \\"ROOT_DIR/__examples__/malformed_start/malformed_onlytagid.js\\"
 ]
 {
     \\"version\\": \\"2.3.0\\",
@@ -1443,10 +1443,10 @@ exports[`Integration Tests (see __examples__ folder) should report example malfo
 exports[`Integration Tests (see __examples__ folder) should report example missing_target to match snapshot 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"missing_target/**\\"]}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -1456,19 +1456,19 @@ exports[`Integration Tests (see __examples__ folder) should report example missi
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/missing_target/example.js\\"
+    \\"ROOT_DIR/__examples__/missing_target/example.js\\"
 ]
  ERROR  missing_target/example.js:3 Sync-start for 'missing_target' points to '__examples__/missing_target/missing_target.py', which does not exist or is a directory
  ERROR  missing_target/example.js:3 No return tag named 'missing_target' in 'missing_target/missing_target.py'
@@ -1478,10 +1478,10 @@ exports[`Integration Tests (see __examples__ folder) should report example missi
 exports[`Integration Tests (see __examples__ folder) should report example missing_target to match snapshot with autofix dryrun 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"missing_target/**\\"],\\"autoFix\\":true,\\"dryRun\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -1492,19 +1492,19 @@ exports[`Integration Tests (see __examples__ folder) should report example missi
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/missing_target/example.js\\"
+    \\"ROOT_DIR/__examples__/missing_target/example.js\\"
 ]
  ERROR  missing_target/example.js:3 Sync-start for 'missing_target' points to '__examples__/missing_target/missing_target.py', which does not exist or is a directory
  ERROR  missing_target/example.js:3 No return tag named 'missing_target' in 'missing_target/missing_target.py'
@@ -1515,10 +1515,10 @@ exports[`Integration Tests (see __examples__ folder) should report example missi
 exports[`Integration Tests (see __examples__ folder) should report example missing_target to match snapshot with json 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"missing_target/**\\"],\\"json\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -1528,19 +1528,19 @@ exports[`Integration Tests (see __examples__ folder) should report example missi
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/missing_target/example.js\\"
+    \\"ROOT_DIR/__examples__/missing_target/example.js\\"
 ]
 {
     \\"version\\": \\"2.3.0\\",
@@ -1569,10 +1569,10 @@ exports[`Integration Tests (see __examples__ folder) should report example missi
 exports[`Integration Tests (see __examples__ folder) should report example no_back_reference to match snapshot 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"no_back_reference/**\\"]}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -1582,20 +1582,20 @@ exports[`Integration Tests (see __examples__ folder) should report example no_ba
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/no_back_reference/file1.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/no_back_reference/file2.js\\"
+    \\"ROOT_DIR/__examples__/no_back_reference/file1.js\\",
+    \\"ROOT_DIR/__examples__/no_back_reference/file2.js\\"
 ]
  ERROR  no_back_reference/file1.js:1 No return tag named 'markerID' in 'no_back_reference/file2.js'
 🛑  Errors occurred during processing. Fix the errors and try again."
@@ -1604,10 +1604,10 @@ exports[`Integration Tests (see __examples__ folder) should report example no_ba
 exports[`Integration Tests (see __examples__ folder) should report example no_back_reference to match snapshot with autofix dryrun 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"no_back_reference/**\\"],\\"autoFix\\":true,\\"dryRun\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -1618,20 +1618,20 @@ exports[`Integration Tests (see __examples__ folder) should report example no_ba
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/no_back_reference/file1.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/no_back_reference/file2.js\\"
+    \\"ROOT_DIR/__examples__/no_back_reference/file1.js\\",
+    \\"ROOT_DIR/__examples__/no_back_reference/file2.js\\"
 ]
  ERROR  no_back_reference/file1.js:1 No return tag named 'markerID' in 'no_back_reference/file2.js'
 🛑  Errors occurred during processing. Fix the errors and try again.
@@ -1641,10 +1641,10 @@ exports[`Integration Tests (see __examples__ folder) should report example no_ba
 exports[`Integration Tests (see __examples__ folder) should report example no_back_reference to match snapshot with json 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"no_back_reference/**\\"],\\"json\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -1654,20 +1654,20 @@ exports[`Integration Tests (see __examples__ folder) should report example no_ba
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/no_back_reference/file1.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/no_back_reference/file2.js\\"
+    \\"ROOT_DIR/__examples__/no_back_reference/file1.js\\",
+    \\"ROOT_DIR/__examples__/no_back_reference/file2.js\\"
 ]
 {
     \\"version\\": \\"2.3.0\\",
@@ -1689,10 +1689,10 @@ exports[`Integration Tests (see __examples__ folder) should report example no_ba
 exports[`Integration Tests (see __examples__ folder) should report example no_checksums to match snapshot 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"no_checksums/**\\"]}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -1702,20 +1702,20 @@ exports[`Integration Tests (see __examples__ folder) should report example no_ch
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/no_checksums/example_one-a.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/no_checksums/example_one-b.py\\"
+    \\"ROOT_DIR/__examples__/no_checksums/example_one-a.js\\",
+    \\"ROOT_DIR/__examples__/no_checksums/example_one-b.py\\"
 ]
  MISMATCH  no_checksums/example_one-a.js:3 Looks like you changed the target content for sync-tag 'example_one' in 'no_checksums/example_one-b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)
  MISMATCH  no_checksums/example_one-b.py:3 Looks like you changed the target content for sync-tag 'example_one' in 'no_checksums/example_one-a.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)
@@ -1729,10 +1729,10 @@ exports[`Integration Tests (see __examples__ folder) should report example no_ch
 exports[`Integration Tests (see __examples__ folder) should report example no_checksums to match snapshot with autofix dryrun 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"no_checksums/**\\"],\\"autoFix\\":true,\\"dryRun\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -1743,20 +1743,20 @@ exports[`Integration Tests (see __examples__ folder) should report example no_ch
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/no_checksums/example_one-a.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/no_checksums/example_one-b.py\\"
+    \\"ROOT_DIR/__examples__/no_checksums/example_one-a.js\\",
+    \\"ROOT_DIR/__examples__/no_checksums/example_one-b.py\\"
 ]
  FIX  no_checksums/example_one-a.js:3 Updated checksum for sync-tag 'example_one' referencing 'no_checksums/example_one-b.py:3' from no checksum to 249234014.
  FIX  no_checksums/example_one-b.py:3 Updated checksum for sync-tag 'example_one' referencing 'no_checksums/example_one-a.js:3' from no checksum to 770446101.
@@ -1769,10 +1769,10 @@ exports[`Integration Tests (see __examples__ folder) should report example no_ch
 exports[`Integration Tests (see __examples__ folder) should report example no_checksums to match snapshot with json 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"no_checksums/**\\"],\\"json\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -1782,20 +1782,20 @@ exports[`Integration Tests (see __examples__ folder) should report example no_ch
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/no_checksums/example_one-a.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/no_checksums/example_one-b.py\\"
+    \\"ROOT_DIR/__examples__/no_checksums/example_one-a.js\\",
+    \\"ROOT_DIR/__examples__/no_checksums/example_one-b.py\\"
 ]
 {
     \\"version\\": \\"2.3.0\\",
@@ -1840,10 +1840,10 @@ exports[`Integration Tests (see __examples__ folder) should report example no_ch
 exports[`Integration Tests (see __examples__ folder) should report example no_self_reference to match snapshot 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"no_self_reference/**\\"]}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -1853,19 +1853,19 @@ exports[`Integration Tests (see __examples__ folder) should report example no_se
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/no_self_reference/example.js\\"
+    \\"ROOT_DIR/__examples__/no_self_reference/example.js\\"
 ]
  ERROR  no_self_reference/example.js:3 Sync-tag 'example_three' cannot target itself
  MISMATCH  no_self_reference/example.js:3 Looks like you changed the target content for sync-tag 'example_three' in 'no_self_reference/example.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)
@@ -1879,10 +1879,10 @@ exports[`Integration Tests (see __examples__ folder) should report example no_se
 exports[`Integration Tests (see __examples__ folder) should report example no_self_reference to match snapshot with autofix dryrun 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"no_self_reference/**\\"],\\"autoFix\\":true,\\"dryRun\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -1893,19 +1893,19 @@ exports[`Integration Tests (see __examples__ folder) should report example no_se
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/no_self_reference/example.js\\"
+    \\"ROOT_DIR/__examples__/no_self_reference/example.js\\"
 ]
  ERROR  no_self_reference/example.js:3 Sync-tag 'example_three' cannot target itself
 <group 1 file(s) would have been fixed. To fix, run: >
@@ -1918,10 +1918,10 @@ exports[`Integration Tests (see __examples__ folder) should report example no_se
 exports[`Integration Tests (see __examples__ folder) should report example no_self_reference to match snapshot with json 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"no_self_reference/**\\"],\\"json\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -1931,19 +1931,19 @@ exports[`Integration Tests (see __examples__ folder) should report example no_se
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/no_self_reference/example.js\\"
+    \\"ROOT_DIR/__examples__/no_self_reference/example.js\\"
 ]
 {
     \\"version\\": \\"2.3.0\\",
@@ -1979,10 +1979,10 @@ exports[`Integration Tests (see __examples__ folder) should report example no_se
 exports[`Integration Tests (see __examples__ folder) should report example unterminated_marker to match snapshot 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"unterminated_marker/**\\"]}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -1992,20 +1992,20 @@ exports[`Integration Tests (see __examples__ folder) should report example unter
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/unterminated_marker/example_two-a.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/unterminated_marker/example_two-b.py\\"
+    \\"ROOT_DIR/__examples__/unterminated_marker/example_two-a.js\\",
+    \\"ROOT_DIR/__examples__/unterminated_marker/example_two-b.py\\"
 ]
  ERROR  unterminated_marker/example_two-a.js:3 No return tag named 'example_two' in 'unterminated_marker/example_two-b.py'
  ERROR  unterminated_marker/example_two-b.py:3 Sync-start 'example_two' has no corresponding sync-end
@@ -2015,10 +2015,10 @@ exports[`Integration Tests (see __examples__ folder) should report example unter
 exports[`Integration Tests (see __examples__ folder) should report example unterminated_marker to match snapshot with autofix dryrun 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"unterminated_marker/**\\"],\\"autoFix\\":true,\\"dryRun\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -2029,20 +2029,20 @@ exports[`Integration Tests (see __examples__ folder) should report example unter
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/unterminated_marker/example_two-a.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/unterminated_marker/example_two-b.py\\"
+    \\"ROOT_DIR/__examples__/unterminated_marker/example_two-a.js\\",
+    \\"ROOT_DIR/__examples__/unterminated_marker/example_two-b.py\\"
 ]
  ERROR  unterminated_marker/example_two-a.js:3 No return tag named 'example_two' in 'unterminated_marker/example_two-b.py'
  ERROR  unterminated_marker/example_two-b.py:3 Sync-start 'example_two' has no corresponding sync-end
@@ -2053,10 +2053,10 @@ exports[`Integration Tests (see __examples__ folder) should report example unter
 exports[`Integration Tests (see __examples__ folder) should report example unterminated_marker to match snapshot with json 1`] = `
 " VERBOSE  Options from arguments: {\\"includeGlobs\\":[\\"unterminated_marker/**\\"],\\"json\\":true}
  VERBOSE  Looking for configuration file based on root marker...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc...
- VERBOSE  Checking /Users/jeffyates/git/checksync/.checksyncrc.json...
- VERBOSE  Found configuration file: /Users/jeffyates/git/checksync/.checksyncrc.json
- VERBOSE  Loading configuration from /Users/jeffyates/git/checksync/.checksyncrc.json
+ VERBOSE  Checking ROOT_DIR/.checksyncrc...
+ VERBOSE  Checking ROOT_DIR/.checksyncrc.json...
+ VERBOSE  Found configuration file: ROOT_DIR/.checksyncrc.json
+ VERBOSE  Loading configuration from ROOT_DIR/.checksyncrc.json
  VERBOSE  Validating configuration
  VERBOSE  Configuration is valid
  VERBOSE  Options from config: {\\"$schema\\":\\"./src/checksync.schema.json\\",\\"$comment\\":\\"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.\\",\\"autoFix\\":false,\\"comments\\":[\\"//\\",\\"#\\",\\"{/*\\"],\\"dryRun\\":false,\\"excludeGlobs\\":[\\"**/excluded/**\\"],\\"ignoreFiles\\":[\\"**/ignore-file.txt\\"],\\"json\\":false}
@@ -2066,20 +2066,20 @@ exports[`Integration Tests (see __examples__ folder) should report example unter
 ]
  VERBOSE  Exclude globs: [
     \\"**/excluded/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**\\",
+    \\"ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt\\"
 ]
  VERBOSE  Discovered paths: [
-    \\"/Users/jeffyates/git/checksync/__examples__/unterminated_marker/example_two-a.js\\",
-    \\"/Users/jeffyates/git/checksync/__examples__/unterminated_marker/example_two-b.py\\"
+    \\"ROOT_DIR/__examples__/unterminated_marker/example_two-a.js\\",
+    \\"ROOT_DIR/__examples__/unterminated_marker/example_two-b.py\\"
 ]
 {
     \\"version\\": \\"2.3.0\\",

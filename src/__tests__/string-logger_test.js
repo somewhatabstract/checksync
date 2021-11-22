@@ -2,11 +2,20 @@
 import path from "path";
 import StringLogger from "../string-logger.js";
 
-jest.mock("path", () => ({
-    sep: "/",
-}));
-
 describe("StringLogger", () => {
+    const PATH_SEP = path.sep;
+    beforeEach(() => {
+        // Seems to be writable so just tell flow to be quiet.
+        // $FlowIgnore[cannot-write]
+        path.sep = "/";
+    });
+
+    afterEach(() => {
+        // Seems to be writable so just tell flow to be quiet.
+        // $FlowIgnore[cannot-write]
+        path.sep = PATH_SEP;
+    });
+
     it.each(["log", "info", "warn", "error"])(
         "should add %s call to log",
         (testCase) => {
@@ -25,7 +34,7 @@ describe("StringLogger", () => {
     describe("normalizing path separators", () => {
         describe("windows", () => {
             beforeEach(() => {
-                // We know this is writable because we mocked it.
+                // Seems to be writable so just tell flow to be quiet.
                 // $FlowIgnore[cannot-write]
                 path.sep = "\\";
             });
