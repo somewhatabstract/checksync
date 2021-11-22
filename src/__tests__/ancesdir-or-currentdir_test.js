@@ -1,5 +1,6 @@
 // @flow
 import * as Ancesdir from "ancesdir";
+import path from "path";
 
 import {ancesdirOrCurrentDir} from "../ancesdir-or-currentdir.js";
 
@@ -16,6 +17,9 @@ describe("ancesdirOrCurrentDir", () => {
         ancesdirOrCurrentDir("FILE", "MARKER");
 
         // Assert - a fake dir is added so that ancesdir looks at its "parent"
-        expect(ancesdirSpy).toHaveBeenCalledWith("FILE/__fake__", "MARKER");
+        expect(ancesdirSpy).toHaveBeenCalledWith(
+            `FILE${path.sep}__fake__`,
+            "MARKER",
+        );
     });
 });

@@ -1,6 +1,8 @@
 // @flow
 import * as AncesdirOrCurrentDir from "../ancesdir-or-currentdir.js";
 import * as FS from "fs";
+import path from "path";
+import normalizeSeparators from "../normalize-separators.js";
 
 import Logger from "../logger.js";
 import findConfigurationFile, {
@@ -42,7 +44,7 @@ describe("#findConfigurationFile", () => {
             await findConfigurationFile("root", NullLogger);
 
             // Assert
-            expect(existsSpy).toHaveBeenCalledWith(`/${configFile}`);
+            expect(existsSpy).toHaveBeenCalledWith(`${path.sep}${configFile}`);
         },
     );
 
@@ -57,7 +59,9 @@ describe("#findConfigurationFile", () => {
         ).mockReturnValue("/");
 
         // Act
-        const result = await findConfigurationFile("root", NullLogger);
+        const result = normalizeSeparators(
+            (await findConfigurationFile("root", NullLogger)) || "",
+        );
 
         // Assert
         expect(result).toBe("/.checksyncrc");
@@ -78,7 +82,9 @@ describe("#findConfigurationFile", () => {
                 .mockReturnValueOnce("/gramps/parent/cwd"); //.checksyncrc.json
 
             // Act
-            const result = await findConfigurationFile("root", NullLogger);
+            const result = normalizeSeparators(
+                (await findConfigurationFile("root", NullLogger)) || "",
+            );
 
             // Assert
             expect(result).toBe("/gramps/parent/cwd/.checksyncrc.json");
