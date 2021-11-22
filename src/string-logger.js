@@ -20,6 +20,7 @@ class StringLoggerInternal implements IStandardLog {
     _groupIndent: number = 0;
 
     _log = (...args: Array<string>) => {
+        console.log(ROOT_DIR);
         const {sep} = path;
         /**
          * We want to normalize the string in case it contains filepaths.
