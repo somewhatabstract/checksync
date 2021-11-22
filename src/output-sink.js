@@ -31,7 +31,7 @@ export default class OutputSink {
         this._options = options;
     }
 
-    _getErrorsForFile(file: string): ?Array<ErrorDetails> {
+    _getErrorsForFile(file: string): Array<ErrorDetails> {
         return this._errorsByFile[
             rootRelativePath(file, this._options.rootMarker)
         ];
@@ -95,7 +95,7 @@ export default class OutputSink {
                 }
             }
         }
-        this._getErrorsForFile(fileLog.file)?.push(errorDetails);
+        this._getErrorsForFile(fileLog.file).push(errorDetails);
     }
 
     async endFile(): Promise<void> {
@@ -116,18 +116,16 @@ export default class OutputSink {
             // errors.
             if (this._options.autoFix && !this._unfixableErrors) {
                 const errorsForThisFile = this._getErrorsForFile(fileLog.file);
-                const fixes = errorsForThisFile?.reduce((map, e) => {
-                    if (e.fix != null) {
-                        const {declaration} = e.fix;
-                        const errors = map[declaration] || [];
-                        errors.push(e);
-                        map[declaration] = errors;
-                    }
+                const fixes = errorsForThisFile.reduce((map, e) => {
+                    // Flow doesn't know that because _unfixableErrors is false,
+                    // there must be a fix on each error.
+                    // $FlowIgnore[incompatible-use]
+                    const {declaration} = e.fix;
+                    const errors = map[declaration] || [];
+                    errors.push(e);
+                    map[declaration] = errors;
                     return map;
                 }, {});
-                if (fixes == null) {
-                    return;
-                }
 
                 // We need to apply fixes, unless it's a dry-run.
                 // We can hand this over to a different

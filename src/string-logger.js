@@ -36,9 +36,19 @@ class StringLoggerInternal implements IStandardLog {
                 : new RegExp(escapeRegExp(path.sep), "g");
         const normalize = (snippet: string): string =>
             snippet.replace(regex, "/");
-        this._buffer.push(
-            `${"  ".repeat(this._groupIndent)}${args.map(normalize).join("")}`,
-        );
+
+        const line = `${"  ".repeat(this._groupIndent)}${args
+            .map(normalize)
+            .join("")}`.trimRight();
+        // If the line ends up beig empty, just add a blank line.
+        // This just means our snapshots are eslint/prettier-fix safe as
+        // otherwise, saving a test file could erase just whitespace lines in
+        // snapshots.
+        if (line.length === 0) {
+            this._buffer.push("");
+        } else {
+            this._buffer.push(line);
+        }
     };
 
     getLog = () => this._buffer.join("\n");

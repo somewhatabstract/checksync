@@ -38,7 +38,7 @@ exports[`Integration Tests (see __examples__ folder) should report example check
  MISMATCH  checksums_need_updating/c.jsx:3 Looks like you changed the target content for sync-tag 'update_me' in 'checksums_need_updating/a.js:5'. Make sure you've made the parallel changes in the source file, if necessary (123 != 2050223083)
 
 <group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
-  
+
   checksync -u checksums_need_updating/a.js checksums_need_updating/b.py checksums_need_updating/c.jsx
 <end_group>"
 `;
@@ -81,7 +81,7 @@ exports[`Integration Tests (see __examples__ folder) should report example check
  FIX  checksums_need_updating/b.py:3 Updated checksum for sync-tag 'update_me' referencing 'checksums_need_updating/a.js:4' from 4567 to 2050223083.
  FIX  checksums_need_updating/c.jsx:3 Updated checksum for sync-tag 'update_me' referencing 'checksums_need_updating/a.js:5' from 123 to 2050223083.
 <group 3 file(s) would have been fixed. To fix, run: >
-  
+
   checksync -u checksums_need_updating/a.js checksums_need_updating/b.py checksums_need_updating/c.jsx
 <end_group>"
 `;
@@ -228,7 +228,7 @@ exports[`Integration Tests (see __examples__ folder) should report example conte
  ERROR  content_after_start/c.js:5 No return tag named 'content_after_start' in 'content_after_start/a.js'
 
 <group 🛑  Desynchronized blocks detected and parsing errors were found. Fix the errors, update the blocks, then update the sync-start tags using: >
-  
+
   checksync -u content_after_start/a.js content_after_start/b.py content_after_start/c.js
 <end_group>"
 `;
@@ -272,7 +272,7 @@ exports[`Integration Tests (see __examples__ folder) should report example conte
  ERROR  content_after_start/c.js:5 Sync-start for 'content_after_start' found after content started
  ERROR  content_after_start/c.js:5 No return tag named 'content_after_start' in 'content_after_start/a.js'
 <group 3 file(s) would have been fixed. To fix, run: >
-  
+
   checksync -u content_after_start/a.js content_after_start/b.py content_after_start/c.js
 <end_group>
  ERROR  🛑  Could not update all tags due to non-fixable errors. Fix these errors and try again."
@@ -670,7 +670,7 @@ exports[`Integration Tests (see __examples__ folder) should report example dupli
  MISMATCH  duplicate-target/b.py:3 Looks like you changed the target content for sync-tag 'update_me' in 'duplicate-target/a.js:4'. Make sure you've made the parallel changes in the source file, if necessary (4567 != 2050223083)
 
 <group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
-  
+
   checksync -u duplicate-target/a.js duplicate-target/b.py
 <end_group>"
 `;
@@ -711,7 +711,7 @@ exports[`Integration Tests (see __examples__ folder) should report example dupli
  FIX  duplicate-target/a.js:5 Removed duplicate target for sync-tag 'update_me'
  FIX  duplicate-target/b.py:3 Updated checksum for sync-tag 'update_me' referencing 'duplicate-target/a.js:4' from 4567 to 2050223083.
 <group 2 file(s) would have been fixed. To fix, run: >
-  
+
   checksync -u duplicate-target/a.js duplicate-target/b.py
 <end_group>"
 `;
@@ -1721,7 +1721,7 @@ exports[`Integration Tests (see __examples__ folder) should report example no_ch
  MISMATCH  no_checksums/example_one-b.py:3 Looks like you changed the target content for sync-tag 'example_one' in 'no_checksums/example_one-a.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)
 
 <group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
-  
+
   checksync -u no_checksums/example_one-a.js no_checksums/example_one-b.py
 <end_group>"
 `;
@@ -1761,7 +1761,7 @@ exports[`Integration Tests (see __examples__ folder) should report example no_ch
  FIX  no_checksums/example_one-a.js:3 Updated checksum for sync-tag 'example_one' referencing 'no_checksums/example_one-b.py:3' from no checksum to 249234014.
  FIX  no_checksums/example_one-b.py:3 Updated checksum for sync-tag 'example_one' referencing 'no_checksums/example_one-a.js:3' from no checksum to 770446101.
 <group 2 file(s) would have been fixed. To fix, run: >
-  
+
   checksync -u no_checksums/example_one-a.js no_checksums/example_one-b.py
 <end_group>"
 `;
@@ -1871,7 +1871,7 @@ exports[`Integration Tests (see __examples__ folder) should report example no_se
  MISMATCH  no_self_reference/example.js:3 Looks like you changed the target content for sync-tag 'example_three' in 'no_self_reference/example.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)
 
 <group 🛑  Desynchronized blocks detected and parsing errors were found. Fix the errors, update the blocks, then update the sync-start tags using: >
-  
+
   checksync -u no_self_reference/example.js
 <end_group>"
 `;
@@ -1909,7 +1909,7 @@ exports[`Integration Tests (see __examples__ folder) should report example no_se
 ]
  ERROR  no_self_reference/example.js:3 Sync-tag 'example_three' cannot target itself
 <group 1 file(s) would have been fixed. To fix, run: >
-  
+
   checksync -u no_self_reference/example.js
 <end_group>
  ERROR  🛑  Could not update all tags due to non-fixable errors. Fix these errors and try again."

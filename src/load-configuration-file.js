@@ -52,8 +52,6 @@ export default async function loadConfigurationFile(
 
             return rcJson;
         }
-
-        // TODO:  outputValidationErrors(validation.errors);
     } catch (error) {
         rcLog.error(error.stack);
     }

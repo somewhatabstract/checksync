@@ -29,7 +29,10 @@ export default function fixFile(
     errorsByDeclaration: ErrorDetailsByDeclaration,
 ): Promise<void> {
     return new Promise((resolve, reject) => {
-        if (Object.keys(errorsByDeclaration).length === 0) {
+        if (
+            errorsByDeclaration == null ||
+            Object.keys(errorsByDeclaration).length === 0
+        ) {
             resolve();
             return;
         }
