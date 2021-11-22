@@ -20,17 +20,15 @@ class StringLoggerInternal implements IStandardLog {
     _groupIndent: number = 0;
 
     _log = (...args: Array<string>) => {
-        console.log(ROOT_DIR);
         const {sep} = path;
         /**
          * We want to normalize the string in case it contains filepaths.
          * This ensures that snapshots are standardized across platforms.
          *
          * We do two things:
-         * - Replace the root path so that it's platform-independent
          * - Replace the path separator so that it's platform-independent
+         * - Replace the root path so that it's platform-independent
          */
-        const rootDirRegex = new RegExp(escapeRegExp(ROOT_DIR), "g");
         const sepRegex =
             /**
              * If the path separator is a backslash we create a regex that
@@ -43,9 +41,13 @@ class StringLoggerInternal implements IStandardLog {
                       "g",
                   )
                 : new RegExp(escapeRegExp(path.sep), "g");
+        const rootDirRegex = new RegExp(
+            escapeRegExp(ROOT_DIR).replace(sepRegex, "/"),
+            "g",
+        );
 
         const normalize = (snippet: string): string =>
-            snippet.replace(rootDirRegex, "ROOT_DIR").replace(sepRegex, "/");
+            snippet.replace(sepRegex, "/").replace(rootDirRegex, "ROOT_DIR");
 
         // Trim the trailing whitespace.
         // This means our snapshots are eslint/prettier-fix safe as
