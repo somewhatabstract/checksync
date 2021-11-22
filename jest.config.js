@@ -10,7 +10,7 @@ module.exports = {
     coverageDirectory: "coverage",
 
     // Where our coverage data does and does not come from.
-    collectCoverageFrom: ["src/**/*.js", "!src/main.js"],
+    collectCoverageFrom: ["src/**/*.js"],
 
     // The test environment that will be used for testing
     testEnvironment: "node",
