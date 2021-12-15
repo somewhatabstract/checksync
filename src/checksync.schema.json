@@ -15,11 +15,12 @@
         "$schemaVersion": {
             "description": "The version of the JSON schema for this file",
             "type": "string",
-            "pattern": "^[0-9]+(\\.[0-9]+)+$"
+            "pattern": "^[0-9]+(\\.[0-9]+){1,3}$"
         },
         "autoFix": {
             "description": "When true, checksync will attempt to apply fixes to an errors",
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
         },
         "comments": {
             "description": "An array of the strings that identify the starts of comments in the files being parsed",
@@ -28,11 +29,17 @@
                 "type": "string"
             },
             "uniqueItems": true,
-            "minLength": 0
+            "minLength": 0,
+            "default": [
+                "#",
+                "//",
+                "{/*"
+            ]
         },
         "dryRun": {
             "description": "When true, checksync will not write any files",
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
         },
         "excludeGlobs": {
             "description": "An array of globs that identify files to exclude from the checks",
@@ -66,7 +73,8 @@
         },
         "json": {
             "description": "When true, checksync output will be as JSON",
-            "type": "boolean"
+            "type": "boolean",
+            "default": false
         },
         "rootMarker": {
             "description": "The string that identifies the root of the project from which all sync-tags are relative",
