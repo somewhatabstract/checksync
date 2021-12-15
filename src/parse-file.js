@@ -5,12 +5,13 @@
  */
 import readline from "readline";
 import fs from "fs";
-import ancesdir from "ancesdir";
+import path from "path";
 
 import Format from "./format.js";
 import MarkerParser from "./marker-parser.js";
 import getNormalizedTargetFileInfo from "./get-normalized-target-file-info.js";
 import ErrorCodes from "./error-codes.js";
+import {ancesdirOrCurrentDir} from "./ancesdir-or-currentdir.js";
 
 import type {
     ILog,
@@ -39,7 +40,9 @@ export default function parseFile(
     file: string,
     readOnly: boolean,
 ): Promise<FileParseResult> {
-    const rootPath = ancesdir(file, options.rootMarker);
+    // We want ancesdir to start the search inside the same folder as the file
+    // we're parsing, so we add a fake child onto it that ancesdir will strip.
+    const rootPath = ancesdirOrCurrentDir(file, options.rootMarker);
     const markers: Markers = {};
     const errors: Array<ErrorDetails> = [];
 

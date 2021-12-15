@@ -1,9 +1,21 @@
 // @flow
-import * as GetPathSeparator from "../get-path-separator.js";
-
+import path from "path";
 import StringLogger from "../string-logger.js";
 
 describe("StringLogger", () => {
+    const PATH_SEP = path.sep;
+    beforeEach(() => {
+        // Seems to be writable so just tell flow to be quiet.
+        // $FlowIgnore[cannot-write]
+        path.sep = "/";
+    });
+
+    afterEach(() => {
+        // Seems to be writable so just tell flow to be quiet.
+        // $FlowIgnore[cannot-write]
+        path.sep = PATH_SEP;
+    });
+
     it.each(["log", "info", "warn", "error"])(
         "should add %s call to log",
         (testCase) => {
@@ -21,13 +33,15 @@ describe("StringLogger", () => {
 
     describe("normalizing path separators", () => {
         describe("windows", () => {
+            beforeEach(() => {
+                // Seems to be writable so just tell flow to be quiet.
+                // $FlowIgnore[cannot-write]
+                path.sep = "\\";
+            });
+
             it("should convert backslashes to forward slashes", () => {
                 // Arrange
                 const logger = new StringLogger();
-                jest.spyOn(
-                    GetPathSeparator,
-                    "getPathSeparator",
-                ).mockReturnValue("\\");
 
                 // Act
                 logger.log("C:\\SYSTEM");
@@ -40,10 +54,6 @@ describe("StringLogger", () => {
             it("should convert double backslashes to a single forward slashes", () => {
                 // Arrange
                 const logger = new StringLogger();
-                jest.spyOn(
-                    GetPathSeparator,
-                    "getPathSeparator",
-                ).mockReturnValue("\\");
 
                 // Act
                 const obj = {

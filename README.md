@@ -85,18 +85,6 @@ To get more information about the various arguments that `checksync` supports as
 
 All target paths are relative to your project root directory. By default, this is determined, using `ancesdir` to be the ancestor directory of the files being processed that contains `package.json`. If you want to specify a different root (for example, if you're syncing across multiple packages in a monorepo) you can specify a custom marker name using the `--root-marker` argument.
 
-### Comment styles
-
-By default, `checksync` supports comment lines that begin with `//` and `#` as commonly found in JavaScript, Python, and other languages. You can override this default using the `--comments` or `-c` argument.
-
-```shell
-yarn checksync -c="//,#,'" <globs|files|dirs>
-```
-
-### Ignoring files
-
-`checksync` supports both a comma-separated list of globs (via `--ignore`) and a comma-separated list of `.gitignore` style files (via `--ignore-files`) to control what files are ignored. By default, the `.gitignore` file is used unless the `--no-ignore-file` argument is used.
-
 ## Contributing
 
 For details on contributing to `checksync`, checkout our [contribution guidelines](CONTRIBUTING.md).

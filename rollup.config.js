@@ -5,11 +5,12 @@ import resolve from "@rollup/plugin-node-resolve";
 
 import filesize from "rollup-plugin-filesize";
 import {terser} from "rollup-plugin-terser";
+import copy from "rollup-plugin-copy";
 
 export default {
     input: "./src/main.js",
     output: {
-        file: "./dist/main.js",
+        dir: "./dist",
         format: "cjs",
         sourcemap: true,
         exports: "auto",
@@ -26,5 +27,13 @@ export default {
         }),
         terser(),
         filesize(),
+        copy({
+            targets: [
+                {
+                    src: "./src/checksync.schema.json",
+                    dest: "./dist",
+                },
+            ],
+        }),
     ],
 };

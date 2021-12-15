@@ -54,6 +54,18 @@ Where:
                        indicate the start of lines where tags appear.
                        Defaults to [1m[33m\\"// #\\"[39m[22m.
 
+    [1m[33m--config[39m[22m           Path to a JSON file containing configuration options.
+                       When not specified, checksync will look for a config
+                       file; use [1m[33m--no-config[39m[22m to disable this search.
+
+                       The search starts relative to the current working
+                       directory, first by looking adjacent to a marker file
+                       match, otherwise, by looking for a configuration file in
+                       or above the current working directory. Filenames that
+                       are considered:
+                           [1m[33m.checksyncrc[39m[22m
+                           [1m[33m.checksyncrc.json[39m[22m
+
     [1m[33m--dry-run,-n[39m[22m       Ignored unless supplied with [1m[33m--update-tags[39m[22m.
 
     [1m[33m--help,-h[39m[22m          Outputs this help text.
@@ -61,7 +73,7 @@ Where:
     [1m[33m--ignore,-i[39m[22m        A string containing semi-colon-separated globs that
                        identify files that should not be checked.
 
-    [1m[33m--ignore-files[39m[22m     A comma-separated list of paths and globs that
+    [1m[33m--ignore-files[39m[22m     A semi-colon-separated list of paths and globs that
                        identify .gitignore-format files defining patterns for
                        paths to be ignored. These will be combined with the
                        explicit [1m[33m--ignore[39m[22m globs.
@@ -70,7 +82,10 @@ Where:
 
     [1m[33m--json,-j[39m[22m          Output errors and violations as JSON.
 
-    [1m[33m--no-ignore-file[39m[22m   When [1m[33mtrue[39m[22m, does not use any ignore file. This is
+    [1m[33m--no-config[39m[22m        Prevents searching for a configuration file.
+                       Ignored if [1m[33m--config[39m[22m is supplied.
+
+    [1m[33m--no-ignore-files[39m[22m  When [1m[33mtrue[39m[22m, does not use any ignore file. This is
                        useful when the default value for [1m[33m--ignore-file[39m[22m is
                        not wanted.
 
@@ -95,5 +110,42 @@ Where:
                        example.
 
     [1m[33m--version[39m[22m          Outputs the version and exits.
+
+[1m[32mConfiguration Format[39m[22m
+A configuration file is a JSON file containing configuration options. All
+of the values are optional (defaults apply per the corresponding CLI arguments).
+Arguments supplied along with a configuration file will override the
+configuration file.
+
+    [1m[33mautoFix[39m[22m             Equivalent to using the [1m[33m--update-tags[39m[22m option.
+
+    [1m[33mdryRun[39m[22m              Equivalent to using the [1m[33m--dry-run[39m[22m option.
+
+    [1m[33mcomments[39m[22m            Equivalent to using the [1m[33m--comments[39m[22m option,
+                        except an array instead of space-separated string.
+
+    [1m[33mignoreFiles[39m[22m         Equivalent to using the [1m[33m--ignore-files[39m[22m option,
+                        except an array instead of semi-colon-separated string.
+                        An empty array is equivalent to [1m[33m--no-ignore-files[39m[22m.
+
+    [1m[33mexcludeGlobs[39m[22m        Equivalent to using the [1m[33m--ignore[39m[22m option, except
+                        an array instead of semi-colon-separated string.
+
+    [1m[33mincludeGlobs[39m[22m        Equivalent to the [1m[33minclude_paths[39m[22m passed at the
+                        end of the command line.
+
+    [1m[33mrootMarker[39m[22m          Equivalent to using the [1m[33m--root-marker[39m[22m option.
+
+Example:
+    [1m[33m{[39m[22m
+[1m[33m        \\"autoFix\\": true,[39m[22m
+[1m[33m        \\"dryRun\\": false,[39m[22m
+[1m[33m        \\"comments\\": [\\"//\\", \\"#\\"],[39m[22m
+[1m[33m        \\"ignoreFiles\\": [\\".gitignore\\"],[39m[22m
+[1m[33m        \\"includeGlobs\\": [\\"**/*.js\\"],[39m[22m
+[1m[33m        \\"excludeGlobs\\": [\\"**/node_modules/**\\"],[39m[22m
+[1m[33m        \\"rootMarker\\": \\".gitignore\\",[39m[22m
+[1m[33m        \\"json\\": false[39m[22m
+[1m[33m    }[39m[22m
 "
 `;

@@ -2,7 +2,7 @@
 import FileReferenceLogger from "./file-reference-logger.js";
 import maybeReportError from "./maybe-report-error.js";
 import ExitCodes from "./exit-codes.js";
-import defaultArgs from "./default-args.js";
+import defaultOptions from "./default-options.js";
 import getLaunchString from "./get-launch-string.js";
 import cwdRelativePath from "./cwd-relative-path.js";
 import {version} from "../package.json";
@@ -15,7 +15,6 @@ import type {ErrorDetails, Options, ILog} from "./types.js";
 
 type ErrorsByFile = {
     [key: string]: Array<ErrorDetails>,
-    ...
 };
 
 export default class OutputSink {
@@ -32,7 +31,7 @@ export default class OutputSink {
         this._options = options;
     }
 
-    _getErrorsForFile(file: string): ?Array<ErrorDetails> {
+    _getErrorsForFile(file: string): Array<ErrorDetails> {
         return this._errorsByFile[
             rootRelativePath(file, this._options.rootMarker)
         ];
@@ -96,7 +95,7 @@ export default class OutputSink {
                 }
             }
         }
-        this._getErrorsForFile(fileLog.file)?.push(errorDetails);
+        this._getErrorsForFile(fileLog.file).push(errorDetails);
     }
 
     async endFile(): Promise<void> {
@@ -117,18 +116,16 @@ export default class OutputSink {
             // errors.
             if (this._options.autoFix && !this._unfixableErrors) {
                 const errorsForThisFile = this._getErrorsForFile(fileLog.file);
-                const fixes = errorsForThisFile?.reduce((map, e) => {
-                    if (e.fix != null) {
-                        const {declaration} = e.fix;
-                        const errors = map[declaration] || [];
-                        errors.push(e);
-                        map[declaration] = errors;
-                    }
+                const fixes = errorsForThisFile.reduce((map, e) => {
+                    // Flow doesn't know that because _unfixableErrors is false,
+                    // there must be a fix on each error.
+                    // $FlowIgnore[incompatible-use]
+                    const {declaration} = e.fix;
+                    const errors = map[declaration] || [];
+                    errors.push(e);
+                    map[declaration] = errors;
                     return map;
                 }, {});
-                if (fixes == null) {
-                    return;
-                }
 
                 // We need to apply fixes, unless it's a dry-run.
                 // We can hand this over to a different
@@ -151,8 +148,8 @@ export default class OutputSink {
          */
         const updateCommandParts = [];
         updateCommandParts.push(getLaunchString());
-        const commentsArg = this._options.comments.sort().join(" ");
-        if (commentsArg !== defaultArgs.comments) {
+        const commentsArg = [...this._options.comments].sort().join(" ");
+        if (commentsArg !== [...defaultOptions.comments].sort().join(" ")) {
             updateCommandParts.push("-c");
             updateCommandParts.push(`"${commentsArg}"`);
         }

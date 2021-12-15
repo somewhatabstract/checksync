@@ -9,6 +9,9 @@ module.exports = {
     // The directory where Jest should output its coverage files
     coverageDirectory: "coverage",
 
+    // Where our coverage data does and does not come from.
+    collectCoverageFrom: ["src/**/*.js", "!src/__tests__/*.js"],
+
     // The test environment that will be used for testing
     testEnvironment: "node",
 

@@ -2,16 +2,16 @@
 import fs from "fs";
 import glob from "fast-glob";
 import ignoreFileToExcludeGlobs from "./ignore-file-to-exclude-globs.js";
-import defaultArgs from "./default-args.js";
+import defaultOptions from "./default-options.js";
 
 export default async (
     ignoreFileGlobs: $ReadOnlyArray<string>,
 ): Promise<$ReadOnlyArray<string>> => {
     // If we are only processing the default ignore file and it doesn't exist,
-    // we can just return an empty array.
+    // in the working directory we can just return an empty array.
     if (
-        ignoreFileGlobs.length === 1 &&
-        ignoreFileGlobs[0] === defaultArgs.ignoreFiles &&
+        ignoreFileGlobs.length === defaultOptions.ignoreFiles.length &&
+        ignoreFileGlobs[0] === defaultOptions.ignoreFiles[0] &&
         !fs.existsSync(ignoreFileGlobs[0])
     ) {
         return [];

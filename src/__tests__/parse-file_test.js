@@ -1,8 +1,8 @@
 // @flow
 import fs from "fs";
 import readline from "readline";
-import * as Ancesdir from "ancesdir";
 
+import * as AncesdirOrCurrentDir from "../ancesdir-or-currentdir.js";
 import * as MarkerParser from "../marker-parser.js";
 import * as GetNormalizedTargetFileInfo from "../get-normalized-target-file-info.js";
 
@@ -11,8 +11,8 @@ import parseFile from "../parse-file.js";
 import type {Options} from "../types.js";
 
 jest.mock("fs");
-jest.mock("ancesdir");
 jest.mock("../get-normalized-target-file-info.js");
+jest.mock("../ancesdir-or-currentdir.js");
 
 const invokeEvent = (mocked: $Call<typeof jest.fn>, event: string, ...args) => {
     const eventHandlerCall = mocked.mock.calls.find(
@@ -43,7 +43,7 @@ describe("#parseFile", () => {
         setupMarkerParser();
 
         const ancesdirSpy = jest
-            .spyOn(Ancesdir, "default")
+            .spyOn(AncesdirOrCurrentDir, "ancesdirOrCurrentDir")
             .mockReturnValue("file.dirname");
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
@@ -298,7 +298,10 @@ describe("#parseFile", () => {
         // Arrange
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
-        jest.spyOn(Ancesdir, "default").mockReturnValue("root.path");
+        jest.spyOn(
+            AncesdirOrCurrentDir,
+            "ancesdirOrCurrentDir",
+        ).mockReturnValue("root.path");
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
         jest.spyOn(readline, "createInterface").mockReturnValueOnce(
@@ -339,7 +342,10 @@ describe("#parseFile", () => {
         // Arrange
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
-        jest.spyOn(Ancesdir, "default").mockReturnValue("root.path");
+        jest.spyOn(
+            AncesdirOrCurrentDir,
+            "ancesdirOrCurrentDir",
+        ).mockReturnValue("root.path");
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
         jest.spyOn(readline, "createInterface").mockReturnValueOnce(
@@ -378,7 +384,10 @@ describe("#parseFile", () => {
         // Arrange
         const fakeInterface = {on: jest.fn()};
         fakeInterface.on.mockReturnValue(fakeInterface);
-        jest.spyOn(Ancesdir, "default").mockReturnValue("root.path");
+        jest.spyOn(
+            AncesdirOrCurrentDir,
+            "ancesdirOrCurrentDir",
+        ).mockReturnValue("root.path");
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
         jest.spyOn(readline, "createInterface").mockReturnValueOnce(

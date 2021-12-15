@@ -31,7 +31,10 @@ export default function* generateErrors(
     file: string,
     cache: $ReadOnly<MarkerCache>,
 ): Iterator<ErrorDetails> {
-    const getTargetDetail = (targetMarker: ?Marker, aliases: Array<string>) => {
+    const getTargetDetail = (
+        targetMarker: ?Marker,
+        aliases: $ReadOnlyArray<string>,
+    ) => {
         if (targetMarker == null) {
             return null;
         }
@@ -118,9 +121,9 @@ export default function* generateErrors(
             const {commentStart, commentEnd} = sourceMarker;
             const startOfComment = targetRef.declaration.indexOf(commentStart);
             const indent = targetRef.declaration.substring(0, startOfComment);
-            const checksums = `${sourceChecksum || NoChecksum} != ${
-                targetChecksum || NoChecksum
-            }`;
+            const checksums = `${
+                sourceChecksum || NoChecksum
+            } != ${targetChecksum}`;
             const fix = `${indent}${commentStart} sync-start:${markerID} ${targetChecksum} ${rootRelativePath(
                 normalizedTargetFile,
                 options.rootMarker,

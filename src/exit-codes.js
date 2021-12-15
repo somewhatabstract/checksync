@@ -9,6 +9,7 @@ const exitCodes = {
     DESYNCHRONIZED_BLOCKS: 3,
     UNKNOWN_ARGS: 4,
     CATASTROPHIC: 5,
+    BAD_CONFIG: 6,
 };
 
 export type ExitCode = $Values<typeof exitCodes>;

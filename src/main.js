@@ -1,4 +1,4 @@
 // @flow
-export {run} from "./cli.js";
-
-// TODO: Export API
+export {run as runCli} from "./cli.js";
+export {default as checkSync} from "./check-sync.js";
+export {default as loadConfigurationFile} from "./load-configuration-file.js";

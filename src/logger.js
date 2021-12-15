@@ -41,9 +41,14 @@ export default class Logging implements ILog {
         this._logger && this._logger.warn(Format.warn(message));
     };
 
-    verbose: (messageBuilder: () => string) => void = (
-        messageBuilder: () => string,
+    verbose: (messageBuilder: () => ?string) => void = (
+        messageBuilder: () => ?string,
     ): void => {
-        this._verbose && this.log(Format.verbose(messageBuilder()));
+        if (this._verbose) {
+            const maybeMessage = messageBuilder();
+            if (maybeMessage) {
+                this.log(Format.verbose(maybeMessage));
+            }
+        }
     };
 }

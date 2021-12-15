@@ -14,9 +14,9 @@ const Format = {
         `${chalk.bold.black.bgYellowBright(" MISMATCH ")} ${text}`,
     fix: (text: string): string =>
         `${chalk.bold.black.bgGreenBright(" FIX ")} ${text}`,
-    cwdFilePath: (filePath: string): string =>
-        chalk.gray(cwdRelativePath(filePath)),
 
+    cwdFilePath: (filePath: string): string =>
+        `${chalk.gray(cwdRelativePath(filePath))}`,
     code: (text: string): string => `${chalk.bold.yellow(text)}`,
     heading: (text: string): string => `${chalk.bold.green(text)}`,
 };

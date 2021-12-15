@@ -71,6 +71,20 @@ describe("FileReferenceLogger", () => {
             expect(spy).toHaveBeenCalledWith(expect.any(Function));
             expect(spy.mock.calls[0][0]()).toBe("FILE:42 MESSAGE");
         });
+
+        it("should pass nullish if the message resolves to nullish", () => {
+            // Arrange
+            const NullLogger = new Logger();
+            const spy = jest.spyOn(NullLogger, "verbose");
+            const logger = new FileReferenceLogger("FILE", NullLogger);
+
+            // Act
+            logger.verbose(() => null, 42);
+
+            // Assert
+            expect(spy).toHaveBeenCalledWith(expect.any(Function));
+            expect(spy.mock.calls[0][0]()).toBeNull();
+        });
     });
 
     describe.each(["mismatch", "fix"])("#%s", (testCase) => {

@@ -2,9 +2,11 @@
 import path from "path";
 import escapeRegExp from "lodash/escapeRegExp";
 import Logger from "./logger.js";
-import {getPathSeparator} from "./get-path-separator.js";
+import ancesdir from "ancesdir";
 
 import type {IStandardLog} from "./types.js";
+
+const ROOT_DIR = ancesdir();
 
 /**
  * Rather than directly use this implementation, we wrap it with the main
@@ -18,12 +20,16 @@ class StringLoggerInternal implements IStandardLog {
     _groupIndent: number = 0;
 
     _log = (...args: Array<string>) => {
-        const sep = getPathSeparator();
+        const {sep} = path;
         /**
          * We want to normalize the string in case it contains filepaths.
          * This ensures that snapshots are standardized across platforms.
+         *
+         * We do two things:
+         * - Replace the path separator so that it's platform-independent
+         * - Replace the root path so that it's platform-independent
          */
-        const regex =
+        const sepRegex =
             /**
              * If the path separator is a backslash we create a regex that
              * recognizes a double backslash or a single backslash.  This is
@@ -35,11 +41,22 @@ class StringLoggerInternal implements IStandardLog {
                       "g",
                   )
                 : new RegExp(escapeRegExp(path.sep), "g");
-        const normalize = (snippet: string): string =>
-            snippet.replace(regex, "/");
-        this._buffer.push(
-            `${"  ".repeat(this._groupIndent)}${args.map(normalize).join("")}`,
+        const rootDirRegex = new RegExp(
+            escapeRegExp(ROOT_DIR).replace(sepRegex, "/"),
+            "g",
         );
+
+        const normalize = (snippet: string): string =>
+            snippet.replace(sepRegex, "/").replace(rootDirRegex, "ROOT_DIR");
+
+        // Trim the trailing whitespace.
+        // This means our snapshots are eslint/prettier-fix safe as
+        // otherwise, saving a test file could erase just whitespace lines in
+        // snapshots.
+        const line = `${"  ".repeat(this._groupIndent)}${args
+            .map(normalize)
+            .join("")}`.trimRight();
+        this._buffer.push(line);
     };
 
     getLog = () => this._buffer.join("\n");

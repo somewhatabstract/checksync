@@ -2,7 +2,7 @@
 import fs from "fs";
 import * as FastGlob from "fast-glob";
 import * as IgnoreFileToExcludeGlobs from "../ignore-file-to-exclude-globs.js";
-import defaultArgs from "../default-args.js";
+import defaultOptions from "../default-options.js";
 import ignoreFileGlobsToExcludeGlobs from "../ignore-file-globs-to-exclude-globs.js";
 
 jest.mock("fs");
@@ -15,7 +15,7 @@ describe("#ignoreFileGlobsToExcludeGlobs", () => {
 
         // Act
         const result = await ignoreFileGlobsToExcludeGlobs(
-            defaultArgs.ignoreFiles.split(","),
+            defaultOptions.ignoreFiles,
         );
 
         // Assert

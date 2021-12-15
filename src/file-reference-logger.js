@@ -55,10 +55,14 @@ export default class FileReferenceLogger implements IPositionLog {
         ...labels: Array<string>
     ): void => this._log.group(...labels);
     groupEnd: () => void = (): void => this._log.groupEnd();
-    verbose: (messageBuilder: () => string, line?: string | number) => void = (
-        messageBuilder: () => string,
+    verbose: (messageBuilder: () => ?string, line?: string | number) => void = (
+        messageBuilder: () => ?string,
         line?: string | number,
-    ): void => this._log.verbose(() => this._format(messageBuilder(), line));
+    ): void =>
+        this._log.verbose(() => {
+            const maybeMessage = messageBuilder();
+            return maybeMessage ? this._format(maybeMessage, line) : null;
+        });
 
     _format: (message: string, line?: string | number) => string = (
         message: string,
