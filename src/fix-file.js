@@ -93,9 +93,8 @@ export default function fixFile(
                 // Report the fix.
                 reportFix(file, fix, log);
 
-                // TODO: Determine actual file line-ending and use that.
-                // TODO: Count the lines and make sure we don't append a
-                // newline when we don't need to.
+                // TODO: Determine actual file line-ending and use that rather
+                // than assuming \n like we do here.
                 if (fix?.type === "delete") {
                     // Don't write anything. We're deleting this line!
                 } else if (fix?.type === "replace") {
