@@ -118,6 +118,7 @@ export default class OutputSink {
                 this._options.autoFix &&
                 !this._filesWithUnfixableErrors.has(fileLog.file)
             ) {
+                fileLog.verbose(() => "File has errors; skipping auto-fix");
                 const errorsForThisFile = this._getErrorsForFile(fileLog.file);
                 const fixes = errorsForThisFile.reduce((map, e) => {
                     // Flow doesn't know that because _unfixableErrors is false,

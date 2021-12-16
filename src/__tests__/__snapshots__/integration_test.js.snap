@@ -76,9 +76,12 @@ exports[`Integration Tests (see __examples__ folder) should report example check
     \\"ROOT_DIR/__examples__/checksums_need_updating/b.py\\",
     \\"ROOT_DIR/__examples__/checksums_need_updating/c.jsx\\"
 ]
+  Verbose  checksums_need_updating/a.js File has errors; skipping auto-fix
       Fix  checksums_need_updating/a.js:4 Updated checksum for sync-tag 'update_me' referencing 'checksums_need_updating/b.py:3' from 45678 to 249234014.
       Fix  checksums_need_updating/a.js:5 Updated checksum for sync-tag 'update_me' referencing 'checksums_need_updating/c.jsx:3' from 1234 to 1992689801.
+  Verbose  checksums_need_updating/b.py File has errors; skipping auto-fix
       Fix  checksums_need_updating/b.py:3 Updated checksum for sync-tag 'update_me' referencing 'checksums_need_updating/a.js:4' from 4567 to 2050223083.
+  Verbose  checksums_need_updating/c.jsx File has errors; skipping auto-fix
       Fix  checksums_need_updating/c.jsx:3 Updated checksum for sync-tag 'update_me' referencing 'checksums_need_updating/a.js:5' from 123 to 2050223083.
 
 <group 3 file(s) would have been fixed.
@@ -272,7 +275,9 @@ exports[`Integration Tests (see __examples__ folder) should report example conte
     \\"ROOT_DIR/__examples__/content_after_start/b.py\\",
     \\"ROOT_DIR/__examples__/content_after_start/c.js\\"
 ]
+  Verbose  content_after_start/a.js File has errors; skipping auto-fix
       Fix  content_after_start/a.js:3 Updated checksum for sync-tag 'content_after_start' referencing 'content_after_start/b.py:3' from no checksum to 249234014.
+  Verbose  content_after_start/b.py File has errors; skipping auto-fix
       Fix  content_after_start/b.py:3 Updated checksum for sync-tag 'content_after_start' referencing 'content_after_start/a.js:3' from no checksum to 770446101.
       Fix  content_after_start/b.py:4 Updated checksum for sync-tag 'content_after_start' referencing 'content_after_start/c.js:3' from no checksum to 770446101.
     Error  content_after_start/c.js:5 Sync-start for 'content_after_start' found after content started
@@ -724,8 +729,10 @@ exports[`Integration Tests (see __examples__ folder) should report example dupli
     \\"ROOT_DIR/__examples__/duplicate-target/a.js\\",
     \\"ROOT_DIR/__examples__/duplicate-target/b.py\\"
 ]
+  Verbose  duplicate-target/a.js File has errors; skipping auto-fix
       Fix  duplicate-target/a.js:4 Updated checksum for sync-tag 'update_me' referencing 'duplicate-target/b.py:3' from 12352 to 249234014.
       Fix  duplicate-target/a.js:5 Removed duplicate target for sync-tag 'update_me'
+  Verbose  duplicate-target/b.py File has errors; skipping auto-fix
       Fix  duplicate-target/b.py:3 Updated checksum for sync-tag 'update_me' referencing 'duplicate-target/a.js:4' from 4567 to 2050223083.
 
 <group 2 file(s) would have been fixed.
@@ -1813,7 +1820,9 @@ exports[`Integration Tests (see __examples__ folder) should report example no_ch
     \\"ROOT_DIR/__examples__/no_checksums/example_one-a.js\\",
     \\"ROOT_DIR/__examples__/no_checksums/example_one-b.py\\"
 ]
+  Verbose  no_checksums/example_one-a.js File has errors; skipping auto-fix
       Fix  no_checksums/example_one-a.js:3 Updated checksum for sync-tag 'example_one' referencing 'no_checksums/example_one-b.py:3' from no checksum to 249234014.
+  Verbose  no_checksums/example_one-b.py File has errors; skipping auto-fix
       Fix  no_checksums/example_one-b.py:3 Updated checksum for sync-tag 'example_one' referencing 'no_checksums/example_one-a.js:3' from no checksum to 770446101.
 
 <group 2 file(s) would have been fixed.

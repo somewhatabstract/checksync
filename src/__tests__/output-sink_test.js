@@ -461,6 +461,7 @@ describe("OutputSink", () => {
             };
             const dummyFileLogger = {
                 file: "foo.js",
+                verbose: jest.fn(),
             };
             jest.spyOn(FileReferenceLogger, "default").mockImplementation(
                 () => dummyFileLogger,
@@ -916,6 +917,7 @@ describe("OutputSink", () => {
                 jest.spyOn(FileReferenceLogger, "default").mockImplementation(
                     (file) => ({
                         file,
+                        verbose: jest.fn(),
                     }),
                 );
                 const outputSink = new OutputSink(
@@ -1036,6 +1038,7 @@ describe("OutputSink", () => {
                     (file) => ({
                         file,
                         warn: jest.fn(),
+                        verbose: jest.fn(),
                     }),
                 );
                 jest.spyOn(GetLaunchString, "default").mockReturnValue(
@@ -1160,6 +1163,7 @@ describe("OutputSink", () => {
                     (file) => ({
                         file,
                         warn: jest.fn(),
+                        verbose: jest.fn(),
                     }),
                 );
                 const errorA = {
@@ -1315,6 +1319,7 @@ describe("OutputSink", () => {
                 jest.spyOn(FileReferenceLogger, "default").mockImplementation(
                     (file) => ({
                         file,
+                        verbose: jest.fn(),
                     }),
                 );
                 const outputSink = new OutputSink(
