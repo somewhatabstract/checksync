@@ -1,9 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`StringLogger should add error call to log: error 1`] = `" ERROR  MESSAGE"`;
+exports[`StringLogger should add error call to log: error 1`] = `"    Error  MESSAGE"`;
 
-exports[`StringLogger should add info call to log: info 1`] = `" INFO  MESSAGE"`;
+exports[`StringLogger should add info call to log: info 1`] = `"     Info  MESSAGE"`;
 
 exports[`StringLogger should add log call to log: log 1`] = `"MESSAGE"`;
 
-exports[`StringLogger should add warn call to log: warn 1`] = `" WARNING  MESSAGE"`;
+exports[`StringLogger should add warn call to log: warn 1`] = `"  Warning  MESSAGE"`;

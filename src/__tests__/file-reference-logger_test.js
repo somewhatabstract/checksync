@@ -87,7 +87,7 @@ describe("FileReferenceLogger", () => {
         });
     });
 
-    describe.each(["mismatch", "fix"])("#%s", (testCase) => {
+    describe.each(["Mismatch", "Fix"])("#%s", (testCase) => {
         it("should prefix with default file reference and message type", () => {
             // Arrange
             const NullLogger = new Logger();
@@ -95,11 +95,12 @@ describe("FileReferenceLogger", () => {
             const logger = new FileReferenceLogger("FILE", NullLogger);
 
             // Act
-            (logger: any)[testCase]("MESSAGE");
+            (logger: any)[testCase.toLowerCase()]("MESSAGE");
 
             // Assert
+            expect(spy).toHaveBeenCalledWith(expect.stringContaining(testCase));
             expect(spy).toHaveBeenCalledWith(
-                ` ${testCase.toUpperCase()}  FILE MESSAGE`,
+                expect.stringContaining("FILE MESSAGE"),
             );
         });
 
@@ -110,11 +111,11 @@ describe("FileReferenceLogger", () => {
             const logger = new FileReferenceLogger("FILE", NullLogger);
 
             // Act
-            (logger: any)[testCase]("MESSAGE", 42);
+            (logger: any)[testCase.toLowerCase()]("MESSAGE", 42);
 
             // Assert
             expect(spy).toHaveBeenCalledWith(
-                ` ${testCase.toUpperCase()}  FILE:42 MESSAGE`,
+                expect.stringContaining("FILE:42 MESSAGE"),
             );
         });
     });

@@ -839,7 +839,7 @@ describe("OutputSink", () => {
 
                 // Assert
                 expect(errorSpy).toHaveBeenCalledWith(
-                    "🛑  Could not update all tags due to non-fixable errors. Fix these errors and try again.",
+                    "🛑  Could not update all tags due to unfixable errors. Fix the errors and try again.",
                 );
             });
 
@@ -1021,6 +1021,10 @@ describe("OutputSink", () => {
                     <group 🛑  Desynchronized blocks detected and parsing errors were found. Fix the errors, update the blocks, then update the sync-start tags using: >
 
                       LAUNCHSTRING -u bar.js
+                    <end_group>
+
+                    <group 🛑  Unfixable errors found. Fix the errors in these files and try again. >
+                      foo.js
                     <end_group>"
                 `);
             });
@@ -1067,10 +1071,12 @@ describe("OutputSink", () => {
 
                 // Assert
                 expect(result).toMatchInlineSnapshot(`
-                    "<group 1 file(s) would have been fixed. To fix, run: >
-
+                    "
+                    <group 1 file(s) would have been fixed.
+                    To fix, run: >
                       LAUNCHSTRING -u foo.js
-                    <end_group>"
+                    <end_group>
+                    🎉  Everything is in sync!"
                 `);
             });
 
@@ -1200,8 +1206,7 @@ describe("OutputSink", () => {
 
             it("should log error that there are unfixable errors and autofix is true", async () => {
                 // Arrange
-                const NullLogger = new Logger();
-                const errorSpy = jest.spyOn(NullLogger, "error");
+                const logger = new StringLogger();
                 jest.spyOn(FileReferenceLogger, "default").mockImplementation(
                     (file) => ({
                         file,
@@ -1213,7 +1218,7 @@ describe("OutputSink", () => {
                         json: false,
                         autoFix: true,
                     },
-                    NullLogger,
+                    logger,
                 );
                 const errorA = {
                     reason: "REASON_A",
@@ -1225,11 +1230,15 @@ describe("OutputSink", () => {
 
                 // Act
                 outputSink.end();
+                const result = logger.getLog();
 
                 // Assert
-                expect(errorSpy).toHaveBeenCalledWith(
-                    "🛑  Could not update all tags due to non-fixable errors. Fix these errors and try again.",
-                );
+                expect(result).toMatchInlineSnapshot(`
+                    "
+                    <group 🛑  Could not update all tags due to unfixable errors. Fix the errors in these files and try again. >
+                      foo.js
+                    <end_group>"
+                `);
             });
 
             it("should return ExitCodes.PARSE_ERRORS when there are unfixable errors", async () => {
