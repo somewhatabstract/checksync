@@ -41,16 +41,16 @@ We love code reviews. If there are open pull requests, please feel free to revie
 
 #### Automated
 
-To ensure code quality, we use prettier, flow, eslint, and jest. These are all executed on commit, so don't worry if you forget to run them before you commit your changes. They are also executed when you submit a pull request to ensure contributions meet our code quality standards.
+To ensure code quality, we use prettier, flow, eslint, and jest. These are all executed when you submit a pull request to ensure contributions meet our code quality standards.
 
-To execute these operations outside of a pull request or commit operation, you can use `yarn`.
+To execute these operations outside of a pull request, you can use `yarn`.
 
 - `yarn flow`
 - `yarn lint`
 - `yarn test`
 - `yarn test:integration`
 
-If you make changes that change snapshots, you may need to run tests with the `-u` options and commit the updated snapshot files along with the rest of your contribution.
+If you make changes that change snapshots, you may need to run tests with the `-u` jest option and commit the updated snapshot files along with the rest of your contribution.
 
 💭**REMEMBER** If you would like to contribute code changes to the project, first make sure there's a corresponding issue for the change you wish to make.
 
