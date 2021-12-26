@@ -5,6 +5,8 @@ import * as FS from "fs";
 import Logger from "../logger.js";
 import loadConfigurationFile from "../load-configuration-file.js";
 
+import PackageJson from "../../package.json";
+
 jest.mock("fs");
 
 describe("#loadConfigurationFile", () => {
@@ -173,7 +175,7 @@ describe("#loadConfigurationFile", () => {
             expect.anything(),
             {
                 $schema: "file://./checksync.schema.json",
-                $schemaVersion: "2.3.0",
+                $schemaVersion: PackageJson.version,
             },
             JsonSchema.DETAILED,
         );

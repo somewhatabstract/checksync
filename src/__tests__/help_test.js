@@ -12,7 +12,7 @@ describe("#logHelp", () => {
 
         // Assert
         expect(logger.getLog()).toMatchInlineSnapshot(`
-            "checksync 2.3.0 ✅ 🔗
+            "checksync 3.0.0 ✅ 🔗
 
             Checksync uses tags in your files to identify blocks that need to remain
             synchronised. It works on any text file as long as it can find the tags.
