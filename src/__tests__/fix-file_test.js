@@ -87,7 +87,7 @@ describe("#fixFile", () => {
                     fix: {
                         type: "replace",
                         declaration: "BROKEN_DECLARATION",
-                        line: 42,
+                        line: 1,
                         text: "MISMATCH FIX",
                         description: "FIXES THE MISMATCH",
                     },
@@ -99,7 +99,7 @@ describe("#fixFile", () => {
         await promise;
 
         // Assert
-        expect(logSpy).toHaveBeenCalledWith("FIXES THE MISMATCH", 42);
+        expect(logSpy).toHaveBeenCalledWith("FIXES THE MISMATCH", 1);
     });
 
     it("should write out lines as they are if no fix required, with newline appended", async () => {
@@ -141,7 +141,7 @@ describe("#fixFile", () => {
                     fix: {
                         type: "replace",
                         declaration: "BROKEN_DECLARATION",
-                        line: 42,
+                        line: 1,
                         text: "MISMATCH FIX",
                         description: "FIXES THE MISMATCH",
                     },
@@ -195,7 +195,7 @@ describe("#fixFile", () => {
                     fix: {
                         type: "replace",
                         declaration: "BROKEN_DECLARATION",
-                        line: 42,
+                        line: 1,
                         text: "MISMATCH FIX",
                         description: "FIXES THE MISMATCH",
                     },
@@ -251,7 +251,7 @@ describe("#fixFile", () => {
                     fix: {
                         type: "delete",
                         declaration: "BROKEN_DECLARATION",
-                        line: 42,
+                        line: 1,
                         description: "DELETES THE LINE",
                     },
                 },
@@ -263,6 +263,79 @@ describe("#fixFile", () => {
 
         // Assert
         expect(fakeWriteStream.write).not.toHaveBeenCalled();
+    });
+
+    it("should cope with duplicate text on autofix lines and lines not to be fixed", async () => {
+        // Arrange
+        const NullFileLogger = new FileReferenceLogger("filea", _NullLogger);
+        const fakeWriteStream = {
+            once: jest.fn(),
+            write: jest.fn(),
+            end: jest.fn(),
+        };
+        jest.spyOn(fs, "truncate").mockImplementation((_, __, cb) => cb());
+        fakeWriteStream.once.mockReturnValue(fakeWriteStream);
+        fakeWriteStream.end.mockImplementation((cb) => cb());
+        const fakeInterface = {on: jest.fn()};
+        fakeInterface.on.mockReturnValue(fakeInterface);
+
+        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
+        jest.spyOn(fs, "createWriteStream").mockReturnValueOnce(
+            fakeWriteStream,
+        );
+        jest.spyOn(fs, "createReadStream").mockReturnValueOnce({});
+        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
+            fakeInterface,
+        );
+        jest.spyOn(RootRelativePath, "default").mockImplementation(
+            (t) => `ROOT_REL:${t}`,
+        );
+        const readLineFromFile = (line: string) =>
+            invokeEvent(fakeInterface.on, "line", line);
+        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
+
+        // Act
+        const promise = fixFile(options, "filea", NullFileLogger, {
+            BROKEN_DECLARATION: [
+                {
+                    code: ErrorCodes.mismatchedChecksum,
+                    reason: "MISMATCHED CHECKSUMS REASON",
+                    fix: {
+                        type: "replace",
+                        text: "REPLACEMENT_LINE1",
+                        declaration: "BROKEN_DECLARATION",
+                        line: 1,
+                        description: "DELETES THE LINE",
+                    },
+                },
+                {
+                    code: ErrorCodes.mismatchedChecksum,
+                    reason: "MISMATCHED CHECKSUMS REASON",
+                    fix: {
+                        type: "replace",
+                        text: "REPLACEMENT_LINE3",
+                        declaration: "BROKEN_DECLARATION",
+                        line: 3,
+                        description: "DELETES THE LINE",
+                    },
+                },
+            ],
+        });
+        readLineFromFile("BROKEN_DECLARATION"); // line 1
+        readLineFromFile("BROKEN_DECLARATION"); // line 2
+        readLineFromFile("BROKEN_DECLARATION"); // line 3
+        finishReadingFile();
+        await promise;
+
+        // Assert
+        expect(fakeWriteStream.write).toHaveBeenNthCalledWith(
+            1,
+            "REPLACEMENT_LINE1\n",
+        );
+        expect(fakeWriteStream.write).toHaveBeenNthCalledWith(
+            3,
+            "REPLACEMENT_LINE3\n",
+        );
     });
 
     it("should not write to file during dry run", async () => {
@@ -307,7 +380,7 @@ describe("#fixFile", () => {
                     fix: {
                         type: "replace",
                         declaration: "BROKEN_DECLARATION",
-                        line: 42,
+                        line: 1,
                         text: "MISMATCH FIX",
                         description: "FIXES THE MISMATCH",
                     },
