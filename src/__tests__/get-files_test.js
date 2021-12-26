@@ -1,4 +1,5 @@
 // @flow
+import fs from "fs";
 import * as FastGlob from "fast-glob";
 import Logger from "../logger.js";
 import StringLogger from "../string-logger.js";
@@ -10,6 +11,41 @@ import {jest} from "@jest/globals";
 jest.mock("fast-glob");
 
 describe("#getFiles", () => {
+    it("should expand directories to globs", async () => {
+        // Arrange
+        const NullLogger = new Logger(null);
+        jest.spyOn(fs, "existsSync").mockReturnValue(true);
+        jest.spyOn(fs, "lstatSync").mockImplementation(() => ({
+            isDirectory: () => true,
+        }));
+        const globSpy = jest
+            .spyOn(FastGlob, "default")
+            .mockImplementation((p) => p);
+
+        // Act
+        await getFiles(["pattern1", "pattern2"], [], [], NullLogger);
+
+        // Assert
+        expect(globSpy).toHaveBeenCalledWith(
+            ["pattern1/**", "pattern2/**"],
+            expect.any(Object),
+        );
+    });
+
+    it("should not check if globs are directories", async () => {
+        // Arrange
+        const NullLogger = new Logger(null);
+        jest.spyOn(fs, "existsSync").mockReturnValue(true);
+        const lstatSyncSpy = jest.spyOn(fs, "lstatSync");
+        jest.spyOn(FastGlob, "default").mockImplementation((p) => p);
+
+        // Act
+        await getFiles(["pattern1/*", "pattern2/*"], [], [], NullLogger);
+
+        // Assert
+        expect(lstatSyncSpy).not.toHaveBeenCalled();
+    });
+
     it("should return a sorted list without duplicates", async () => {
         // Arrange
         const NullLogger = new Logger(null);

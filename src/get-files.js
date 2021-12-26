@@ -1,6 +1,7 @@
 // @flow
 import glob from "fast-glob";
 import path from "path";
+import fs from "fs";
 import ignoreFileGlobsToExcludeGlobs from "./ignore-file-globs-to-exclude-globs.js";
 
 import type {ILog} from "./types.js";
@@ -24,6 +25,24 @@ export default async function getFiles(
     );
     const allExcludeGlobs = Array.from(
         new Set([...explicitExcludeGlobs, ...ignoreFileExcludeGlobs]),
+    );
+
+    // If any of our input globs don't contain a * and they are a directory
+    // then let's make that be a glob of everything under that dir.
+    // If we don't do this then checksync feels counterintuitive as
+    // just a directory like __examples__ won't work, and __examples__/**
+    // may get expanded by the shell, so folks would have to do
+    // __examples__/**/* which is just annoying.
+    // With this change, any input directories are expanded to mean all
+    // files below that directory and that directory's children.
+    includeGlobs = includeGlobs.map((pattern: string) =>
+        !pattern.includes("*") &&
+        // TODO: Use throwIfNoEntry in lstatSync/lstat to replace need to do
+        // the existence check, once we are on versions of Node that support it.
+        fs.existsSync(pattern) &&
+        fs.lstatSync(pattern).isDirectory()
+            ? `${pattern}/**`
+            : pattern,
     );
 
     log?.verbose(
