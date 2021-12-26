@@ -22,7 +22,7 @@ export default class OutputSink {
     _mainLog: ILog;
     _options: Options;
     _errorsByFile: ErrorsByFile = {};
-    _unfixableErrors: boolean = false;
+    _filesWithUnfixableErrors: Set<string> = new Set();
 
     _fileLog: ?FileReferenceLogger = null;
 
@@ -73,7 +73,7 @@ export default class OutputSink {
         }
 
         if (errorDetails.fix == null) {
-            this._unfixableErrors = true;
+            this._filesWithUnfixableErrors.add(fileLog.file);
         }
 
         // We don't report errors if we're in JSON output mode.
@@ -112,9 +112,13 @@ export default class OutputSink {
                 return;
             }
 
-            // If we are autofixing and we have not encounted any unfixable
-            // errors.
-            if (this._options.autoFix && !this._unfixableErrors) {
+            // If we are autofixing and we have not encountered any unfixable
+            // errors in this file.
+            if (
+                this._options.autoFix &&
+                !this._filesWithUnfixableErrors.has(fileLog.file)
+            ) {
+                fileLog.verbose(() => "File has errors; skipping auto-fix");
                 const errorsForThisFile = this._getErrorsForFile(fileLog.file);
                 const fixes = errorsForThisFile.reduce((map, e) => {
                     // Flow doesn't know that because _unfixableErrors is false,
@@ -167,6 +171,13 @@ export default class OutputSink {
     }
 
     _outputJson(): void {
+        if (this._filesWithUnfixableErrors.size > 0) {
+            this._mainLog.error(
+                this._options.autoFix
+                    ? "🛑  Could not update all tags due to unfixable errors. Fix the errors and try again."
+                    : "🛑  Unfixable errors found. Fix the errors and try again.",
+            );
+        }
         this._mainLog.log(
             JSON.stringify(
                 {
@@ -183,44 +194,53 @@ export default class OutputSink {
     _outputText(): void {
         if (this._fixableFileNames.size > 0) {
             if (!this._options.autoFix) {
-                // Output how to fix any violations we found if we're not running
-                // autofix.
+                // Output how to fix any violations we found if we're not
+                // running autofix.
                 this._mainLog.log("");
-                const errorMsg = this._unfixableErrors
-                    ? "🛑  Desynchronized blocks detected and parsing errors were found. Fix the errors, update the blocks, then update the sync-start tags using:"
-                    : "🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing:";
+                const errorMsg =
+                    this._filesWithUnfixableErrors.size > 0
+                        ? "🛑  Desynchronized blocks detected and parsing errors were found. Fix the errors, update the blocks, then update the sync-start tags using:"
+                        : "🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing:";
                 this._mainLog.group(`${errorMsg}`);
                 this._mainLog.log("");
                 this._mainLog.log(this._getFullLaunchString());
                 this._mainLog.groupEnd();
-                return;
-            }
-
-            if (this._options.dryRun) {
-                // It's a dry run, let's output something helpful.
-                this._mainLog.group(
-                    `${this._fixableFileNames.size} file(s) would have been fixed. To fix, run:`,
-                );
+            } else if (this._options.dryRun) {
+                // It's a dry run, and autoFix must be true so let's output
+                // something helpful.
                 this._mainLog.log("");
+                this._mainLog.group(
+                    `${this._fixableFileNames.size} file(s) would have been fixed.\nTo fix, run:`,
+                );
                 this._mainLog.log(this._getFullLaunchString());
                 this._mainLog.groupEnd();
-                return;
+            } else {
+                // If we got here, auto-fixing must be turned on, we must've
+                // fixed something and it's not a dry run.
+                // Output a summary of what we fixed.
+                this._mainLog.info(
+                    `Fixed issues in ${this._fixableFileNames.size} file(s)`,
+                );
             }
-
-            // Output a summary of what we fixed.
-            this._mainLog.info(`Fixed ${this._fixableFileNames.size} file(s)`);
         }
 
-        if (this._unfixableErrors) {
-            // Sometimes we still have errors to report.
-            this._mainLog.log(
-                "🛑  Errors occurred during processing. Fix the errors and try again.",
+        // Now let's report on files we didn't fix because they contain
+        // parse errors (parse errors mean we have to assume our potential
+        // fixes are unreliable).
+        if (this._filesWithUnfixableErrors.size > 0) {
+            this._mainLog.log("");
+            this._mainLog.group(
+                this._options.autoFix
+                    ? "🛑  Could not update all tags due to unfixable errors. Fix the errors in these files and try again."
+                    : "🛑  Unfixable errors found. Fix the errors in these files and try again.",
             );
-            return;
+            this._mainLog.log(
+                Array.from(this._filesWithUnfixableErrors)
+                    .map(cwdRelativePath)
+                    .join("\n"),
+            );
+            this._mainLog.groupEnd();
         }
-
-        // If we get here, everything worked.
-        this._mainLog.log("🎉  Everything is in sync!");
     }
 
     end(): ExitCode {
@@ -231,19 +251,17 @@ export default class OutputSink {
         }
 
         // Determine the exit code.
-        if (this._unfixableErrors) {
-            if (this._options.autoFix) {
-                // We can't fix these, there were non-fixable errors in
-                // this file.
-                this._mainLog.error(
-                    "🛑  Could not update all tags due to non-fixable errors. Fix these errors and try again.",
-                );
-            }
+        if (this._filesWithUnfixableErrors.size > 0) {
             return ExitCodes.PARSE_ERRORS;
         } else if (this._fixableFileNames.size > 0 && !this._options.autoFix) {
             // We have files that can be fixed and we aren't autofixing them
             // so report desynchronized blocks.
             return ExitCodes.DESYNCHRONIZED_BLOCKS;
+        }
+
+        if (!this._options.json) {
+            // If we get here, everything worked.
+            this._mainLog.log("🎉  Everything is in sync!");
         }
         return ExitCodes.SUCCESS;
     }

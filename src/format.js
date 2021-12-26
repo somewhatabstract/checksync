@@ -2,18 +2,22 @@
 import chalk from "chalk";
 import cwdRelativePath from "./cwd-relative-path.js";
 
+// MISMATCH is our longest message label.
+const labelWidth = "Mismatch ".length;
+const asLabel = (label: string): string =>
+    `${" ".repeat(labelWidth - label.length)}${label} `;
+
 const Format = {
     verbose: (text: string): string =>
-        `${chalk.bold.bgBlack.grey(" VERBOSE ")} ${chalk.dim(text)}`,
-    error: (text: string): string =>
-        `${chalk.bold.white.bgRed(" ERROR ")} ${text}`,
-    info: (text: string): string => `${chalk.black.bgBlue(" INFO ")} ${text}`,
+        `${chalk.grey(asLabel("Verbose"))} ${chalk.dim(text)}`,
+    error: (text: string): string => `${chalk.red(asLabel("Error"))} ${text}`,
+    info: (text: string): string => `${chalk.blue(asLabel("Info"))} ${text}`,
     warn: (text: string): string =>
-        `${chalk.bold.black.bgYellow(" WARNING ")} ${text}`,
+        `${chalk.yellow(asLabel("Warning"))} ${text}`,
     mismatch: (text: string): string =>
-        `${chalk.bold.black.bgYellowBright(" MISMATCH ")} ${text}`,
+        `${chalk.bold.yellowBright(asLabel("Mismatch"))} ${text}`,
     fix: (text: string): string =>
-        `${chalk.bold.black.bgGreenBright(" FIX ")} ${text}`,
+        `${chalk.bold.greenBright(asLabel("Fix"))} ${text}`,
 
     cwdFilePath: (filePath: string): string =>
         `${chalk.gray(cwdRelativePath(filePath))}`,

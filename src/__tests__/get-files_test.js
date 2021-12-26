@@ -118,15 +118,15 @@ describe("#getFiles", () => {
 
         // Assert
         expect(log).toMatchInlineSnapshot(`
-            " VERBOSE  Include globs: [
+            "  Verbose  Include globs: [
                 \\"b\\",
                 \\"d\\"
             ]
-             VERBOSE  Exclude globs: [
+              Verbose  Exclude globs: [
                 \\"a\\",
                 \\"c\\"
             ]
-             VERBOSE  Discovered paths: [
+              Verbose  Discovered paths: [
                 \\"a\\",
                 \\"b\\",
                 \\"c\\",
