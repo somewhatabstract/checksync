@@ -55,7 +55,10 @@ export default function fixFile(
             : fs.createWriteStream(file, {fd, start: 0});
 
         // Now, we'll read line by line and process what we get against
-        // our markers.
+        // our markers. We keep a line counter going so that we apply fixes to
+        // the correct lines. Line numbers on 1-based.
+        let lineNumber = 1;
+
         /**
          * TODO(somewhatabstract): This is likely inefficient. We should look
          * at using a pipe from read stream to transform stream to write
@@ -75,30 +78,31 @@ export default function fixFile(
                 terminal: false,
             })
             .on("line", (lineText: string) => {
-                // If there are multiple lines with the exact same text,
-                // they will both receive the same fix till we track the line
-                // number.
-                // TODO: Track the line number so we can work with duplicate
-                // text.
-                // We always fix the first error in the list.
+                // There could be lines with the same text, so we make sure
+                // we're targetting the correct line number.
+                // Organizing fixes by line number has its own issues and would
+                // be a riskier change at this point. This works for our
+                // purposes.
                 const fix = errorsByDeclaration[lineText]?.find(
-                    (e) => e.fix != null,
+                    (e) => e.fix?.line === lineNumber,
                 )?.fix;
+
+                // Make sure we update the line number for the next go around.
+                lineNumber++;
+
+                // Report the fix.
                 reportFix(file, fix, log);
 
-                // TODO: Determine actual file line-ending and use that.
-                // TODO: Count the lines and make sure we don't append a
-                // newline when we don't need to.
+                // TODO: Determine actual file line-ending and use that rather
+                // than assuming \n like we do here.
                 if (fix?.type === "delete") {
                     // Don't write anything. We're deleting this line!
-                    // TODO: Make sure that this is right...maybe we need to
-                    // write a blank bit of text?
                 } else if (fix?.type === "replace") {
                     // If we have a fix, use it.
                     ws.write(`${fix.text}\n`);
                 } else {
                     // Otherwise, just output the line as it is (we have to add
-                    // the newline)
+                    // the newline as readLine strips the line ending).
                     ws.write(`${lineText}\n`);
                 }
             })
