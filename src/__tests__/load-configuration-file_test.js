@@ -201,13 +201,32 @@ describe("#loadConfigurationFile", () => {
         // Arrange
         const NullLogger = new Logger(null, true);
         jest.spyOn(FS, "readFile").mockImplementationOnce((path, cb) => {
-            cb(null, JSON.stringify({autoFix: true}));
+            cb(
+                null,
+                JSON.stringify({
+                    autoFix: true,
+                    ignoreFiles: [
+                        ".gitignore",
+                        "**/.gitignore",
+                        "./.gitignore",
+                        "../.gitignore",
+                    ],
+                }),
+            );
         });
 
         // Act
         const result = await loadConfigurationFile("FILE", NullLogger);
 
         // Assert
-        expect(result).toEqual({autoFix: true});
+        expect(result).toEqual({
+            autoFix: true,
+            ignoreFiles: [
+                ".gitignore",
+                "**/.gitignore",
+                "./.gitignore",
+                "../.gitignore",
+            ],
+        });
     });
 });
