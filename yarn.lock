@@ -954,17 +954,10 @@
     pirates "^4.0.0"
     source-map-support "^0.5.16"
 
-"@babel/runtime@^7.13.8":
+"@babel/runtime@^7.13.8", "@babel/runtime@^7.8.4":
   version "7.16.3"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.16.3.tgz#b86f0db02a04187a3c17caa77de69840165d42d5"
   integrity sha512-WBwekcqacdY2e9AF/Q7WLFUWmdJGJTkbjqTjoMDgXkVZ3ZRUvOPsLb5KdwISoQVsbP+DQzVZW4Zhci0DvpbNTQ==
-  dependencies:
-    regenerator-runtime "^0.13.4"
-
-"@babel/runtime@^7.8.4":
-  version "7.8.7"
-  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.8.7.tgz#8fefce9802db54881ba59f90bb28719b4996324d"
-  integrity sha512-+AATMUFppJDw6aiR5NVPHqIQBlV/Pj8wY/EZH+lmvRdUo9xBaz/rF3alAwFJQavvKfeOlPE7oaaDHVbcySbCsg==
   dependencies:
     regenerator-runtime "^0.13.4"
 
@@ -2155,7 +2148,7 @@ colorette@^1.1.0:
   resolved "https://registry.yarnpkg.com/colorette/-/colorette-1.3.0.tgz#ff45d2f0edb244069d3b772adeb04fed38d0a0af"
   integrity sha512-ecORCqbSFP7Wm8Y6lyqMJjexBQqXSF7SSeaTyGGphogUjBlFP9m9o08wy86HL2uB7fMTxtOUzLMk7ogKcxMg1w==
 
-colors@^1.4.0:
+colors@1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/colors/-/colors-1.4.0.tgz#c50491479d4c1bdaed2c9ced32cf7c7dc2360f78"
   integrity sha512-a+UqTh4kgZg/SlGvfbzDHpgRu7AAQOmmqRHJnxhRZICKFUT91brVhNNt58CMWU9PsBbv3PDCZUHbVxuDiH2mtA==
@@ -4823,14 +4816,14 @@ rollup-plugin-copy@^3.4.0:
     is-plain-object "^3.0.0"
 
 rollup-plugin-filesize@^9.1.1:
-  version "9.1.1"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-filesize/-/rollup-plugin-filesize-9.1.1.tgz#31a6b02b27ce08082ef0970cfe4c451714ff91c4"
-  integrity sha512-x0r2A85TCEdRwF3rm+bcN4eAmbER8tt+YVf88gBQ6sLyH4oGcnNLPQqAUX+v7mIvHC/y59QwZvo6vxaC2ias6Q==
+  version "9.1.2"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-filesize/-/rollup-plugin-filesize-9.1.2.tgz#958eea26880698d0bc008fa9d214657ee180b934"
+  integrity sha512-m2fE9hFaKgWKisJzyWXctOFKlgMRelo/58HgeC0lXUK/qykxiqkr6bsrotlvo2bvrwPsjgT7scNdQSr6qtl37A==
   dependencies:
     "@babel/runtime" "^7.13.8"
     boxen "^5.0.0"
     brotli-size "4.0.0"
-    colors "^1.4.0"
+    colors "1.4.0"
     filesize "^6.1.0"
     gzip-size "^6.0.0"
     pacote "^11.2.7"
@@ -4985,7 +4978,7 @@ socks@^2.6.1:
     ip "^1.1.5"
     smart-buffer "^4.1.0"
 
-source-map-support@^0.5.16, source-map-support@^0.5.6, source-map-support@~0.5.12, source-map-support@~0.5.20:
+source-map-support@^0.5.16, source-map-support@^0.5.6, source-map-support@~0.5.20:
   version "0.5.21"
   resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.21.tgz#04fe7c7f9e1ed2d662233c28cb2b35b9f63f6e4f"
   integrity sha512-uBHU3L3czsIyYXKX88fdrGovxdSCoTGDRZ6SYXtSRxLZUzHg5P/66Ht6uoUlHu9EZod+inXhKo3qQgwXUT/y1w==
@@ -5200,16 +5193,7 @@ terminal-link@^2.0.0:
     ansi-escapes "^4.2.1"
     supports-hyperlinks "^2.0.0"
 
-terser@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/terser/-/terser-5.0.0.tgz#269640e4e92f15d628de1e5f01c4c61e1ba3d765"
-  integrity sha512-olH2DwGINoSuEpSGd+BsPuAQaA3OrHnHnFL/rDB2TVNc3srUbz/rq/j2BlF4zDXI+JqAvGr86bIm1R2cJgZ3FA==
-  dependencies:
-    commander "^2.20.0"
-    source-map "~0.6.1"
-    source-map-support "~0.5.12"
-
-terser@^5.6.0:
+terser@^5.0.0, terser@^5.6.0:
   version "5.10.0"
   resolved "https://registry.yarnpkg.com/terser/-/terser-5.10.0.tgz#b86390809c0389105eb0a0b62397563096ddafcc"
   integrity sha512-AMmF99DMfEDiRJfxfY5jj5wNH/bYO09cniSqhfoyxc8sFoYIgkJy86G04UoZU5VjlpnplVu0K6Tx6E9b5+DlHA==
