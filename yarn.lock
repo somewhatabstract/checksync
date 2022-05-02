@@ -1094,9 +1094,9 @@
     url-resolve-browser "^1.2.0"
 
 "@hyperjump/json-schema@^0.18.3":
-  version "0.18.4"
-  resolved "https://registry.yarnpkg.com/@hyperjump/json-schema/-/json-schema-0.18.4.tgz#f726114b0d2b40c54e9603facef270b18009436e"
-  integrity sha512-FVdSlOrOio/sWCbVbAP3yH/gKKddvrIvKzLS/id6/CidWH0r0x5ZTPM1zBS0Su7gU6OOjFRxDYhrIhnNBI5ODg==
+  version "0.18.5"
+  resolved "https://registry.yarnpkg.com/@hyperjump/json-schema/-/json-schema-0.18.5.tgz#05399cf1391316b393463b26411434d9293ed8db"
+  integrity sha512-O4+E8BqwzkhPm6BEkswaExIqtrtznpVQjyllA3Q3rB0VQZ4YWW7L5AtaqIiL0XtxpnuCiPKqb73BBGdyycLL6g==
   dependencies:
     "@hyperjump/json-schema-core" "^0.23.4"
     fastest-stable-stringify "^2.0.2"
