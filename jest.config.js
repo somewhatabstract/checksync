@@ -16,7 +16,9 @@ module.exports = {
     testEnvironment: "node",
 
     // Setting this value to "fake" allows the use of fake timers for functions such as "setTimeout"
-    timers: "fake",
+    fakeTimers: {
+        enableGlobally: true,
+    },
 
     setupFilesAfterEnv: ["jest-extended/all", "./jest.setup.js"],
 };
