@@ -1042,37 +1042,37 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@hyperjump/json-pointer@^0.9.1":
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/@hyperjump/json-pointer/-/json-pointer-0.9.1.tgz#53748e070033404fcc23d065754d75394ff490fd"
-  integrity sha512-tiDl/9MOkkiUQ5t+wq4PhtPghgWmFyBwU9Q6xRkXksg2s/6GNxNPcO/MzOjJoDAeCY1XXajNUIkco7wvhNmlOA==
+"@hyperjump/json-pointer@^0.9.4":
+  version "0.9.4"
+  resolved "https://registry.yarnpkg.com/@hyperjump/json-pointer/-/json-pointer-0.9.4.tgz#b273c2e8f109793bc09a500fc71227bbb53dcfd5"
+  integrity sha512-yBOjG878hW/+fO0lyU/Q3pNoKVgyhxfirdw30GQSPBJEzWiGhIrCGFbxCS0/f0F0UZrmy+bbraUuID1PCN6u3A==
   dependencies:
     just-curry-it "^3.2.1"
 
-"@hyperjump/json-schema-core@^0.23.4":
-  version "0.23.4"
-  resolved "https://registry.yarnpkg.com/@hyperjump/json-schema-core/-/json-schema-core-0.23.4.tgz#baf863f0888eebbdc32edd6cac3f44cc21531dbc"
-  integrity sha512-rHORA3qPk2JKOJOgwgXzGkMnad0neoPiHK8tPrITNxCcVM+AwPkTK+ABogNhbFG4lipWVF4gB3XHJ2qxfQuSAw==
+"@hyperjump/json-schema-core@^0.24.0":
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/@hyperjump/json-schema-core/-/json-schema-core-0.24.0.tgz#1f90989cc677fe036fca3dccd5b96801631d9abe"
+  integrity sha512-hix6ae6UEBDxXXVG6RzLjpDo+HqyP0H1R67z7+zsthEZnh94+VzWuIl0bBGGWHjHdUDx6fX3T68XzlCRA/jDkw==
   dependencies:
-    "@hyperjump/json-pointer" "^0.9.1"
-    "@hyperjump/pact" "^0.2.0"
+    "@hyperjump/json-pointer" "^0.9.4"
+    "@hyperjump/pact" "^0.2.3"
     content-type "^1.0.4"
     node-fetch "^2.6.5"
     pubsub-js "^1.9.1"
-    url-resolve-browser "^1.2.0"
+    uri-js "^4.4.1"
 
-"@hyperjump/json-schema@^0.18.3":
-  version "0.18.5"
-  resolved "https://registry.yarnpkg.com/@hyperjump/json-schema/-/json-schema-0.18.5.tgz#05399cf1391316b393463b26411434d9293ed8db"
-  integrity sha512-O4+E8BqwzkhPm6BEkswaExIqtrtznpVQjyllA3Q3rB0VQZ4YWW7L5AtaqIiL0XtxpnuCiPKqb73BBGdyycLL6g==
+"@hyperjump/json-schema@^0.19.0":
+  version "0.19.0"
+  resolved "https://registry.yarnpkg.com/@hyperjump/json-schema/-/json-schema-0.19.0.tgz#ff68595f27a2d0cb6f80b580497bc53c75d64da9"
+  integrity sha512-CsHm5ZxvxxQsCj4ab7lw+49PcFBD8WrugpjKGfKC8M3ijlxF8JTz5LmSVGQj3+OGfi+53Vs3MGU2CxFLgRS5JA==
   dependencies:
-    "@hyperjump/json-schema-core" "^0.23.4"
+    "@hyperjump/json-schema-core" "^0.24.0"
     fastest-stable-stringify "^2.0.2"
 
-"@hyperjump/pact@^0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@hyperjump/pact/-/pact-0.2.0.tgz#13c63d72bd27b20bf1724ff88ffd8e5337a76cb2"
-  integrity sha512-RHt0XRFsADXbqopurGZfCUNL7mPc0695TD2HNDqs4RCK5Db/1lDU2Bhk9EsyFmCBE9N1/boyvdKWjT1UYHIebg==
+"@hyperjump/pact@^0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@hyperjump/pact/-/pact-0.2.3.tgz#6c2a79be039282f3316960170890e16d18f21c71"
+  integrity sha512-UxSqMKQ+ls4ICx4Nax1g4ssVBJg8a1kXLixVyoTX5buhmWPhFXHNo7sjyWgxHVz8pk9N6agImMYbGJ6Duk8v+g==
   dependencies:
     just-curry-it "^3.1.0"
 
@@ -5046,10 +5046,12 @@ uri-js@^4.2.2:
   dependencies:
     punycode "^2.1.0"
 
-url-resolve-browser@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/url-resolve-browser/-/url-resolve-browser-1.2.0.tgz#8a64b030a3ba52c5eb5b71e732e560dd4b2ebcd2"
-  integrity sha512-L9PBPnlKNDFzt9ElK4br8I8Tufdm1xgv1GhMeiP7ZC87x0b7mr+4vSh13kmPq5km80JKX+UD2BeEFTCrFZ6xDA==
+uri-js@^4.4.1:
+  version "4.4.1"
+  resolved "https://registry.yarnpkg.com/uri-js/-/uri-js-4.4.1.tgz#9b1a52595225859e55f669d928f88c6c57f2a77e"
+  integrity sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==
+  dependencies:
+    punycode "^2.1.0"
 
 util-deprecate@~1.0.1:
   version "1.0.2"
