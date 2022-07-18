@@ -1688,10 +1688,10 @@ ajv@^6.10.0, ajv@^6.12.3, ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-ancesdir@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/ancesdir/-/ancesdir-3.1.0.tgz#d563f73135d94e6ffe939b5232fea00092b01e45"
-  integrity sha512-geMhDUb1xQrOWqw0mUVUJqXhDs3pqqZ8cgKC9UaBhTd76eqgfm8kLnIL9PDvYQByKEgIYpKxUItiP4XH4gLFQA==
+ancesdir@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/ancesdir/-/ancesdir-4.0.0.tgz#97ad1dc912ace45638f8021846b95aa3ff6d7126"
+  integrity sha512-y4Dx7uxjzFjdD7el51+EIER4Bmjz4JGxhO73jv0UnTfVnqVGUrECc55lns2hgU2XZgZqzaBuuSbhGTS2uJu7bw==
 
 ansi-align@^3.0.0:
   version "3.0.1"
