@@ -1080,10 +1080,10 @@
   dependencies:
     just-curry-it "^3.2.1"
 
-"@hyperjump/json-schema-core@^0.25.0":
-  version "0.25.0"
-  resolved "https://registry.yarnpkg.com/@hyperjump/json-schema-core/-/json-schema-core-0.25.0.tgz#823052f169b0ba0b0d3dd2280afe1c18cf0cbcfc"
-  integrity sha512-4nLxPEuhk9BhXiDHzrXjOyNlDg71cgH3ofljJzZpdzsvaUXz/zhV8TaJEh6yI4KjPRp5MuLX88SKIVCiuONXgQ==
+"@hyperjump/json-schema-core@^0.26.0":
+  version "0.26.0"
+  resolved "https://registry.yarnpkg.com/@hyperjump/json-schema-core/-/json-schema-core-0.26.0.tgz#84b0198ac744a595a24d1ccd99bbca5d562524cc"
+  integrity sha512-vsd89p5Rdjxy/OBa8VR2ycQ/uZ7dJ7PbOYHb+RjSmN2TVWEi++LCCIw3skSbyha5FZIMNaWdqC5AQW0QZj4MtQ==
   dependencies:
     "@hyperjump/json-pointer" "^0.9.4"
     "@hyperjump/pact" "^0.2.3"
@@ -1092,12 +1092,12 @@
     pubsub-js "^1.9.1"
     uri-js "^4.4.1"
 
-"@hyperjump/json-schema@^0.20.0":
-  version "0.20.0"
-  resolved "https://registry.yarnpkg.com/@hyperjump/json-schema/-/json-schema-0.20.0.tgz#9a02557bcf6420cd835e0eccb80f30007623aa7a"
-  integrity sha512-E/fYfJI4H0AA1yXPkpHBROsehzt2b3zpaEyZwENmRM7J5CM2XI97qKoc8azkmu/KLQyx9tNf6B7O9RF0HcXnPw==
+"@hyperjump/json-schema@^0.21.0":
+  version "0.21.0"
+  resolved "https://registry.yarnpkg.com/@hyperjump/json-schema/-/json-schema-0.21.0.tgz#e36d1a7c2dbb2fc7de9d2ee1d3c1c10ec7d63fd3"
+  integrity sha512-+yB84ZjU+CsDAjuBbcO1fjURWO6CF6i61sg5lZEFvQMadFpvHdStq2mwTp6xcWWIsbs52ApTNIHIjubMGCLlwg==
   dependencies:
-    "@hyperjump/json-schema-core" "^0.25.0"
+    "@hyperjump/json-schema-core" "^0.26.0"
     fastest-stable-stringify "^2.0.2"
 
 "@hyperjump/pact@^0.2.3":
