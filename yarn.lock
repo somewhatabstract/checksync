@@ -1109,24 +1109,24 @@
   dependencies:
     just-curry-it "^3.2.1"
 
-"@hyperjump/json-schema-core@^0.27.0":
-  version "0.27.0"
-  resolved "https://registry.yarnpkg.com/@hyperjump/json-schema-core/-/json-schema-core-0.27.0.tgz#ba5223b64450ef6264720adbab8831a2515eb81e"
-  integrity sha512-0Frobi5mKpcoOfvhvldAeCpI6IhggFaCqKErIwPAfQ3jAi/lS/Yw5q+UJ070J+TaBm4knmxZqEUecpruk+HJYA==
+"@hyperjump/json-schema-core@^0.28.0":
+  version "0.28.1"
+  resolved "https://registry.yarnpkg.com/@hyperjump/json-schema-core/-/json-schema-core-0.28.1.tgz#e9f9110d9583f41a2394db3bc81cced50c462a33"
+  integrity sha512-Dq5MLP4njNUmdL+JY761lFEqcRdARx5TbEEaNujV/wkkcDxxBucDl8JMh3HPF9RzrTZVnCk/0cKbSvoItbfq/A==
   dependencies:
     "@hyperjump/json-pointer" "^0.9.4"
     "@hyperjump/pact" "^0.2.3"
     content-type "^1.0.4"
     node-fetch "^2.6.5"
-    pubsub-js "^1.9.1"
+    pubsub-js "^1.9.4"
     uri-js "^4.4.1"
 
-"@hyperjump/json-schema@^0.22.0":
-  version "0.22.0"
-  resolved "https://registry.yarnpkg.com/@hyperjump/json-schema/-/json-schema-0.22.0.tgz#b2c8c767fe40b96943daeb397aae684faf1f7693"
-  integrity sha512-A80YEVJmlxuPHcPxBIRX7d1mVi+JFLy9QoSvK7/jKGzGCNG2iD08HhOn/8z1zfVWtaefbrkbwUvrF1KKn71cBQ==
+"@hyperjump/json-schema@^0.23.0":
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/@hyperjump/json-schema/-/json-schema-0.23.0.tgz#afcd55d502e4f415c278a03e7abbb1a631d49d99"
+  integrity sha512-5jdq6XUUd/WnlcIO7En9Tr0T7KncWVAmkmcTJDKSd1AOevMIPvrsiPo5pcXRO1xMATWmO1ktpR8ebw9v3fpJXg==
   dependencies:
-    "@hyperjump/json-schema-core" "^0.27.0"
+    "@hyperjump/json-schema-core" "^0.28.0"
     fastest-stable-stringify "^2.0.2"
 
 "@hyperjump/pact@^0.2.3":
@@ -4366,10 +4366,10 @@ psl@^1.1.28:
   resolved "https://registry.yarnpkg.com/psl/-/psl-1.8.0.tgz#9326f8bcfb013adcc005fdff056acce020e51c24"
   integrity sha512-RIdOzyoavK+hA18OGGWDqUTsCLhtA7IcZ/6NCs4fFJaHBDab+pDDmDIByWFRQJq2Cd7r1OoQxBGKOaztq+hjIQ==
 
-pubsub-js@^1.9.1:
-  version "1.9.3"
-  resolved "https://registry.yarnpkg.com/pubsub-js/-/pubsub-js-1.9.3.tgz#674eea4d568d0402e0527cdb10e2aab7b55621d2"
-  integrity sha512-FhYYlPNOywTh7zN38u5AlG67emA47w6JZd7YgdQU1w8gQbZhhIGxVM0AQosdaINHb2ALb+fhfnVyBJAt4D4IzA==
+pubsub-js@^1.9.4:
+  version "1.9.4"
+  resolved "https://registry.yarnpkg.com/pubsub-js/-/pubsub-js-1.9.4.tgz#5c8678600e34e95b1269e96c17e1b51dab3ecb5a"
+  integrity sha512-hJYpaDvPH4w8ZX/0Fdf9ma1AwRgU353GfbaVfPjfJQf1KxZ2iHaHl3fAUw1qlJIR5dr4F3RzjGaWohYUEyoh7A==
 
 punycode@^2.1.0, punycode@^2.1.1:
   version "2.1.1"
