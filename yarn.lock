@@ -1122,9 +1122,9 @@
     uri-js "^4.4.1"
 
 "@hyperjump/json-schema@^0.23.0":
-  version "0.23.0"
-  resolved "https://registry.yarnpkg.com/@hyperjump/json-schema/-/json-schema-0.23.0.tgz#afcd55d502e4f415c278a03e7abbb1a631d49d99"
-  integrity sha512-5jdq6XUUd/WnlcIO7En9Tr0T7KncWVAmkmcTJDKSd1AOevMIPvrsiPo5pcXRO1xMATWmO1ktpR8ebw9v3fpJXg==
+  version "0.23.2"
+  resolved "https://registry.yarnpkg.com/@hyperjump/json-schema/-/json-schema-0.23.2.tgz#32e9faa19bd62fe215f0521703345a4e8e35fb3b"
+  integrity sha512-/m5emi8ruTGXxrsy6Pik4ipsjdUZVGePzqwm36oWtEB1DcExHnGheW/BDDBGrGZHdIqFV2PMTIfXjmbg7h8xQQ==
   dependencies:
     "@hyperjump/json-schema-core" "^0.28.0"
     fastest-stable-stringify "^2.0.2"
