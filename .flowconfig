@@ -3,6 +3,7 @@
 <PROJECT_ROOT>/dist
 <PROJECT_ROOT>/.vscode
 <PROJECT_ROOT>/bin
+<PROJECT_ROOT>/node_modules/resolve/.*
 
 [include]
 ./src
