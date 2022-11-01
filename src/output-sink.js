@@ -11,7 +11,12 @@ import ErrorCodes from "./error-codes.js";
 import rootRelativePath from "./root-relative-path.js";
 
 import type {ExitCode} from "./exit-codes.js";
-import type {ErrorDetails, Options, ILog} from "./types.js";
+import type {
+    ErrorDetails,
+    Options,
+    ILog,
+    ErrorDetailsByDeclaration,
+} from "./types.js";
 
 type ErrorsByFile = {
     [key: string]: Array<ErrorDetails>,
@@ -120,16 +125,20 @@ export default class OutputSink {
             ) {
                 fileLog.verbose(() => "File has errors; skipping auto-fix");
                 const errorsForThisFile = this._getErrorsForFile(fileLog.file);
-                const fixes = errorsForThisFile.reduce((map, e) => {
-                    // Flow doesn't know that because _unfixableErrors is false,
-                    // there must be a fix on each error.
-                    // $FlowIgnore[incompatible-use]
-                    const {declaration} = e.fix;
-                    const errors = map[declaration] || [];
-                    errors.push(e);
-                    map[declaration] = errors;
-                    return map;
-                }, {});
+                const fixes =
+                    errorsForThisFile.reduce<ErrorDetailsByDeclaration>(
+                        (map, e) => {
+                            // Flow doesn't know that because _unfixableErrors is false,
+                            // there must be a fix on each error.
+                            // $FlowIgnore[incompatible-use]
+                            const {declaration} = e.fix;
+                            const errors = map[declaration] || [];
+                            errors.push(e);
+                            map[declaration] = errors;
+                            return map;
+                        },
+                        {},
+                    );
 
                 // We need to apply fixes, unless it's a dry-run.
                 // We can hand this over to a different

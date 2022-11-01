@@ -59,7 +59,7 @@ class StringLoggerInternal implements IStandardLog {
         this._buffer.push(line);
     };
 
-    getLog = () => this._buffer.join("\n");
+    getLog = (): string => this._buffer.join("\n");
 
     group = (...labels: Array<string>) => {
         this._log("<group ", ...labels, " >");

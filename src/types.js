@@ -235,3 +235,8 @@ export type NormalizedFileInfo = {
     file: string,
     exists: boolean,
 };
+
+export type ErrorDetailsByDeclaration = {
+    [key: string]: Array<ErrorDetails>,
+    ...
+};

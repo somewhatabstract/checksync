@@ -11,7 +11,11 @@ import * as RootRelativePath from "../root-relative-path.js";
 
 import type {Options} from "../types.js";
 
-const invokeEvent = (mocked: $Call<typeof jest.fn>, event: string, ...args) => {
+const invokeEvent = (
+    mocked: $Call<typeof jest.fn>,
+    event: string,
+    ...args: Array<any>
+) => {
     const eventHandlerCall = mocked.mock.calls.find(
         (call) => call[0] === event,
     );
