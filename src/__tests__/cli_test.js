@@ -15,10 +15,9 @@ jest.mock("../logger.js", () => {
     const realLogger = jest.requireActual("../logger.js").default;
     const log = new realLogger(null);
     for (const key of Object.keys(log)) {
-        if (typeof log[key] !== "function") {
-            continue;
+        if (typeof log[key] === "function") {
+            jest.spyOn(log, key);
         }
-        jest.spyOn(log, key);
     }
     return function () {
         return log;

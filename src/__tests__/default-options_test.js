@@ -22,23 +22,23 @@ describe("defaultOptions", () => {
 
         // Assert
         expect(result).toMatchInlineSnapshot(`
-Object {
-  "autoFix": false,
-  "comments": Array [
-    "#",
-    "//",
-    "{/*",
-  ],
-  "dryRun": false,
-  "excludeGlobs": Array [],
-  "ignoreFiles": Array [
-    ".gitignore",
-  ],
-  "includeGlobs": Array [
-    "/**",
-  ],
-  "json": false,
-}
-`);
+            {
+              "autoFix": false,
+              "comments": [
+                "#",
+                "//",
+                "{/*",
+              ],
+              "dryRun": false,
+              "excludeGlobs": [],
+              "ignoreFiles": [
+                ".gitignore",
+              ],
+              "includeGlobs": [
+                "/**",
+              ],
+              "json": false,
+            }
+        `);
     });
 });

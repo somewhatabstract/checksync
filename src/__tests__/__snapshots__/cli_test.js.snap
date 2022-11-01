@@ -52,7 +52,7 @@ Where:
 
     [1m[33m--comments,-c[39m[22m      A string containing space-separated tokens that
                        indicate the start of lines where tags appear.
-                       Defaults to [1m[33m\\"// #\\"[39m[22m.
+                       Defaults to [1m[33m"// #"[39m[22m.
 
     [1m[33m--config[39m[22m           Path to a JSON file containing configuration options.
                        When not specified, checksync will look for a config
@@ -138,14 +138,14 @@ configuration file.
 
 Example:
     [1m[33m{[39m[22m
-[1m[33m        \\"autoFix\\": true,[39m[22m
-[1m[33m        \\"dryRun\\": false,[39m[22m
-[1m[33m        \\"comments\\": [\\"//\\", \\"#\\"],[39m[22m
-[1m[33m        \\"ignoreFiles\\": [\\".gitignore\\"],[39m[22m
-[1m[33m        \\"includeGlobs\\": [\\"**/*.js\\"],[39m[22m
-[1m[33m        \\"excludeGlobs\\": [\\"**/node_modules/**\\"],[39m[22m
-[1m[33m        \\"rootMarker\\": \\".gitignore\\",[39m[22m
-[1m[33m        \\"json\\": false[39m[22m
+[1m[33m        "autoFix": true,[39m[22m
+[1m[33m        "dryRun": false,[39m[22m
+[1m[33m        "comments": ["//", "#"],[39m[22m
+[1m[33m        "ignoreFiles": [".gitignore"],[39m[22m
+[1m[33m        "includeGlobs": ["**/*.js"],[39m[22m
+[1m[33m        "excludeGlobs": ["**/node_modules/**"],[39m[22m
+[1m[33m        "rootMarker": ".gitignore",[39m[22m
+[1m[33m        "json": false[39m[22m
 [1m[33m    }[39m[22m
 "
 `;

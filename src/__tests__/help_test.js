@@ -63,7 +63,7 @@ describe("#logHelp", () => {
 
                 --comments,-c      A string containing space-separated tokens that
                                    indicate the start of lines where tags appear.
-                                   Defaults to \\"// #\\".
+                                   Defaults to "// #".
 
                 --config           Path to a JSON file containing configuration options.
                                    When not specified, checksync will look for a config
@@ -149,14 +149,14 @@ describe("#logHelp", () => {
 
             Example:
                 {
-                    \\"autoFix\\": true,
-                    \\"dryRun\\": false,
-                    \\"comments\\": [\\"//\\", \\"#\\"],
-                    \\"ignoreFiles\\": [\\".gitignore\\"],
-                    \\"includeGlobs\\": [\\"**/*.js\\"],
-                    \\"excludeGlobs\\": [\\"**/node_modules/**\\"],
-                    \\"rootMarker\\": \\".gitignore\\",
-                    \\"json\\": false
+                    "autoFix": true,
+                    "dryRun": false,
+                    "comments": ["//", "#"],
+                    "ignoreFiles": [".gitignore"],
+                    "includeGlobs": ["**/*.js"],
+                    "excludeGlobs": ["**/node_modules/**"],
+                    "rootMarker": ".gitignore",
+                    "json": false
                 }"
         `);
     });
