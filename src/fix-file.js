@@ -2,12 +2,12 @@
 import readline from "readline";
 import fs from "fs";
 
-import type {IPositionLog, Options, ErrorDetails, FixAction} from "./types.js";
-
-type ErrorDetailsByDeclaration = {
-    [key: string]: Array<ErrorDetails>,
-    ...
-};
+import type {
+    IPositionLog,
+    Options,
+    FixAction,
+    ErrorDetailsByDeclaration,
+} from "./types.js";
 
 const reportFix = (
     sourceFile: string,

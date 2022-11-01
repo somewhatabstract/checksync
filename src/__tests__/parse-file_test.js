@@ -14,7 +14,11 @@ jest.mock("fs");
 jest.mock("../get-normalized-target-file-info.js");
 jest.mock("../ancesdir-or-currentdir.js");
 
-const invokeEvent = (mocked: $Call<typeof jest.fn>, event: string, ...args) => {
+const invokeEvent = (
+    mocked: $Call<typeof jest.fn>,
+    event: string,
+    ...args: Array<any>
+) => {
     const eventHandlerCall = mocked.mock.calls.find(
         (call) => call[0] === event,
     );
