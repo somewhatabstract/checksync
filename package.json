@@ -41,7 +41,7 @@
         "@hyperjump/json-schema": "^0.23.0",
         "@rollup/plugin-babel": "^6.0.0",
         "@rollup/plugin-commonjs": "^24.0.0",
-        "@rollup/plugin-json": "^5.0.0",
+        "@rollup/plugin-json": "^6.0.0",
         "@rollup/plugin-node-resolve": "^15.0.1",
         "adler-32": "^1.2.0",
         "ancesdir": "^4.0.0",
