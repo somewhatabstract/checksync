@@ -159,7 +159,7 @@ describe("Logger", () => {
 
             it("should not invoke the message callback", () => {
                 // Arrange
-                const callback = jest.fn();
+                const callback = jest.fn<any, any>();
                 const logger = new Logger(NullLogger, false);
 
                 // Act
@@ -173,7 +173,7 @@ describe("Logger", () => {
         describe("when verbose is true", () => {
             it("should invoke the message callback", () => {
                 // Arrange
-                const callback = jest.fn();
+                const callback = jest.fn<any, any>();
                 const logger = new Logger(NullLogger, true);
 
                 // Act

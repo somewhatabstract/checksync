@@ -12,7 +12,7 @@ import * as RootRelativePath from "../root-relative-path.js";
 import type {Options} from "../types.js";
 
 const invokeEvent = (
-    mocked: $Call<typeof jest.fn>,
+    mocked: $Call<JestMockFn<any, any>>,
     event: string,
     ...args: Array<any>
 ) => {
@@ -56,14 +56,14 @@ describe("#fixFile", () => {
         // Arrange
         const NullFileLogger = new FileReferenceLogger("filea", _NullLogger);
         const fakeWriteStream = {
-            once: jest.fn(),
-            write: jest.fn(),
-            end: jest.fn(),
+            once: jest.fn<any, any>(),
+            write: jest.fn<any, any>(),
+            end: jest.fn<any, any>(),
         };
         jest.spyOn(fs, "truncate").mockImplementation((_, __, cb) => cb());
         fakeWriteStream.once.mockReturnValue(fakeWriteStream);
         fakeWriteStream.end.mockImplementation((cb) => cb());
-        const fakeInterface = {on: jest.fn()};
+        const fakeInterface = {on: jest.fn<any, any>()};
         fakeInterface.on.mockReturnValue(fakeInterface);
 
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
@@ -110,14 +110,14 @@ describe("#fixFile", () => {
         // Arrange
         const NullFileLogger = new FileReferenceLogger("filea", _NullLogger);
         const fakeWriteStream = {
-            once: jest.fn(),
-            write: jest.fn(),
-            end: jest.fn(),
+            once: jest.fn<any, any>(),
+            write: jest.fn<any, any>(),
+            end: jest.fn<any, any>(),
         };
         jest.spyOn(fs, "truncate").mockImplementation((_, __, cb) => cb());
         fakeWriteStream.once.mockReturnValue(fakeWriteStream);
         fakeWriteStream.end.mockImplementation((cb) => cb());
-        const fakeInterface = {on: jest.fn()};
+        const fakeInterface = {on: jest.fn<any, any>()};
         fakeInterface.on.mockReturnValue(fakeInterface);
 
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
@@ -165,14 +165,14 @@ describe("#fixFile", () => {
         // Arrange
         const NullFileLogger = new FileReferenceLogger("filea", _NullLogger);
         const fakeWriteStream = {
-            once: jest.fn(),
-            write: jest.fn(),
-            end: jest.fn(),
+            once: jest.fn<any, any>(),
+            write: jest.fn<any, any>(),
+            end: jest.fn<any, any>(),
         };
         jest.spyOn(fs, "truncate").mockImplementation((_, __, cb) => cb());
         fakeWriteStream.once.mockReturnValue(fakeWriteStream);
         fakeWriteStream.end.mockImplementation((cb) => cb());
-        const fakeInterface = {on: jest.fn()};
+        const fakeInterface = {on: jest.fn<any, any>()};
         fakeInterface.on.mockReturnValue(fakeInterface);
 
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
@@ -221,14 +221,14 @@ describe("#fixFile", () => {
         // Arrange
         const NullFileLogger = new FileReferenceLogger("filea", _NullLogger);
         const fakeWriteStream = {
-            once: jest.fn(),
-            write: jest.fn(),
-            end: jest.fn(),
+            once: jest.fn<any, any>(),
+            write: jest.fn<any, any>(),
+            end: jest.fn<any, any>(),
         };
         jest.spyOn(fs, "truncate").mockImplementation((_, __, cb) => cb());
         fakeWriteStream.once.mockReturnValue(fakeWriteStream);
         fakeWriteStream.end.mockImplementation((cb) => cb());
-        const fakeInterface = {on: jest.fn()};
+        const fakeInterface = {on: jest.fn<any, any>()};
         fakeInterface.on.mockReturnValue(fakeInterface);
 
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
@@ -273,14 +273,14 @@ describe("#fixFile", () => {
         // Arrange
         const NullFileLogger = new FileReferenceLogger("filea", _NullLogger);
         const fakeWriteStream = {
-            once: jest.fn(),
-            write: jest.fn(),
-            end: jest.fn(),
+            once: jest.fn<any, any>(),
+            write: jest.fn<any, any>(),
+            end: jest.fn<any, any>(),
         };
         jest.spyOn(fs, "truncate").mockImplementation((_, __, cb) => cb());
         fakeWriteStream.once.mockReturnValue(fakeWriteStream);
         fakeWriteStream.end.mockImplementation((cb) => cb());
-        const fakeInterface = {on: jest.fn()};
+        const fakeInterface = {on: jest.fn<any, any>()};
         fakeInterface.on.mockReturnValue(fakeInterface);
 
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
@@ -346,14 +346,14 @@ describe("#fixFile", () => {
         // Arrange
         const NullFileLogger = new FileReferenceLogger("filea", _NullLogger);
         const fakeWriteStream = {
-            once: jest.fn(),
-            write: jest.fn(),
-            end: jest.fn(),
+            once: jest.fn<any, any>(),
+            write: jest.fn<any, any>(),
+            end: jest.fn<any, any>(),
         };
         jest.spyOn(fs, "truncate").mockImplementation((_, __, cb) => cb());
         fakeWriteStream.once.mockReturnValue(fakeWriteStream);
         fakeWriteStream.end.mockImplementation((cb) => cb());
-        const fakeInterface = {on: jest.fn()};
+        const fakeInterface = {on: jest.fn<any, any>()};
         fakeInterface.on.mockReturnValue(fakeInterface);
 
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);

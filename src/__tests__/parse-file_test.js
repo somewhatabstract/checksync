@@ -15,7 +15,7 @@ jest.mock("../get-normalized-target-file-info.js");
 jest.mock("../ancesdir-or-currentdir.js");
 
 const invokeEvent = (
-    mocked: $Call<typeof jest.fn>,
+    mocked: $Call<JestMockFn<any, any>>,
     event: string,
     ...args: Array<any>
 ) => {
@@ -33,8 +33,8 @@ const invokeEvent = (
 describe("#parseFile", () => {
     const setupMarkerParser = function () {
         const mockParser = {
-            recordUnterminatedMarkers: jest.fn(),
-            parseLine: jest.fn(),
+            recordUnterminatedMarkers: jest.fn<any, any>(),
+            parseLine: jest.fn<any, any>(),
         };
         jest.spyOn(MarkerParser, "default").mockImplementationOnce(
             () => mockParser,
@@ -98,7 +98,7 @@ describe("#parseFile", () => {
     it("should resolve with null if zero markers are found", async () => {
         // Arrange
         setupMarkerParser();
-        const fakeInterface = {on: jest.fn()};
+        const fakeInterface = {on: jest.fn<any, any>()};
         fakeInterface.on.mockReturnValue(fakeInterface);
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
@@ -168,7 +168,7 @@ describe("#parseFile", () => {
     it("should invoke MarkerParser.parseLine for each line", async () => {
         // Arrange
         const mockMarkerParser = setupMarkerParser();
-        const fakeInterface = {on: jest.fn()};
+        const fakeInterface = {on: jest.fn<any, any>()};
         fakeInterface.on.mockReturnValue(fakeInterface);
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
@@ -205,7 +205,7 @@ describe("#parseFile", () => {
     it("should initialize MarkerParser with callbacks, comments, and log", async () => {
         // Arrange
 
-        const fakeInterface = {on: jest.fn()};
+        const fakeInterface = {on: jest.fn<any, any>()};
         fakeInterface.on.mockReturnValue(fakeInterface);
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
@@ -243,7 +243,7 @@ describe("#parseFile", () => {
 
     it("should record error if a marker targets its containing file", async () => {
         // Arrange
-        const fakeInterface = {on: jest.fn()};
+        const fakeInterface = {on: jest.fn<any, any>()};
         fakeInterface.on.mockReturnValue(fakeInterface);
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
@@ -300,7 +300,7 @@ describe("#parseFile", () => {
 
     it("should normalize referenced files for marker parser", async () => {
         // Arrange
-        const fakeInterface = {on: jest.fn()};
+        const fakeInterface = {on: jest.fn<any, any>()};
         fakeInterface.on.mockReturnValue(fakeInterface);
         jest.spyOn(
             AncesdirOrCurrentDir,
@@ -344,7 +344,7 @@ describe("#parseFile", () => {
 
     it("when not read-only, should return referenced files that exist", async () => {
         // Arrange
-        const fakeInterface = {on: jest.fn()};
+        const fakeInterface = {on: jest.fn<any, any>()};
         fakeInterface.on.mockReturnValue(fakeInterface);
         jest.spyOn(
             AncesdirOrCurrentDir,
@@ -386,7 +386,7 @@ describe("#parseFile", () => {
 
     it("when read-only, should not return any referenced files", async () => {
         // Arrange
-        const fakeInterface = {on: jest.fn()};
+        const fakeInterface = {on: jest.fn<any, any>()};
         fakeInterface.on.mockReturnValue(fakeInterface);
         jest.spyOn(
             AncesdirOrCurrentDir,
@@ -430,7 +430,7 @@ describe("#parseFile", () => {
         // Arrange
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
-        const fakeInterface = {on: jest.fn()};
+        const fakeInterface = {on: jest.fn<any, any>()};
         fakeInterface.on.mockReturnValue(fakeInterface);
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);
@@ -498,7 +498,7 @@ describe("#parseFile", () => {
         // Arrange
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
-        const fakeInterface = {on: jest.fn()};
+        const fakeInterface = {on: jest.fn<any, any>()};
         fakeInterface.on.mockReturnValue(fakeInterface);
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null);

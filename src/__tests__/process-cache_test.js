@@ -49,10 +49,10 @@ describe("#processCache", () => {
             },
         };
         const fakeOutputSink = {
-            startFile: jest.fn(),
-            processError: jest.fn(),
-            endFile: jest.fn(),
-            end: jest.fn(),
+            startFile: jest.fn<any, any>(),
+            processError: jest.fn<any, any>(),
+            endFile: jest.fn<any, any>(),
+            end: jest.fn<any, any>(),
         };
         jest.spyOn(OutputSink, "default").mockImplementation(
             () => fakeOutputSink,
@@ -91,10 +91,10 @@ describe("#processCache", () => {
             },
         };
         const fakeOutputSink = {
-            startFile: jest.fn(),
-            processError: jest.fn(),
-            endFile: jest.fn(),
-            end: jest.fn(),
+            startFile: jest.fn<any, any>(),
+            processError: jest.fn<any, any>(),
+            endFile: jest.fn<any, any>(),
+            end: jest.fn<any, any>(),
         };
         jest.spyOn(OutputSink, "default").mockImplementation(
             () => fakeOutputSink,
@@ -133,12 +133,12 @@ describe("#processCache", () => {
             },
         };
         const fakeOutputSink = {
-            startFile: jest.fn(),
-            processError: jest.fn().mockImplementation(() => {
+            startFile: jest.fn<any, any>(),
+            processError: jest.fn<any, any>().mockImplementation(() => {
                 throw new Error("Boom!");
             }),
-            endFile: jest.fn(),
-            end: jest.fn(),
+            endFile: jest.fn<any, any>(),
+            end: jest.fn<any, any>(),
         };
         jest.spyOn(OutputSink, "default").mockImplementation(
             () => fakeOutputSink,
@@ -181,10 +181,10 @@ describe("#processCache", () => {
             },
         };
         const fakeOutputSink = {
-            startFile: jest.fn(),
-            processError: jest.fn(),
-            endFile: jest.fn(),
-            end: jest.fn(),
+            startFile: jest.fn<any, any>(),
+            processError: jest.fn<any, any>(),
+            endFile: jest.fn<any, any>(),
+            end: jest.fn<any, any>(),
         };
         jest.spyOn(OutputSink, "default").mockImplementation(
             () => fakeOutputSink,
@@ -225,10 +225,10 @@ describe("#processCache", () => {
             },
         };
         const fakeOutputSink = {
-            startFile: jest.fn(),
-            processError: jest.fn(),
-            endFile: jest.fn(),
-            end: jest.fn(),
+            startFile: jest.fn<any, any>(),
+            processError: jest.fn<any, any>(),
+            endFile: jest.fn<any, any>(),
+            end: jest.fn<any, any>(),
         };
         jest.spyOn(OutputSink, "default").mockImplementation(
             () => fakeOutputSink,
@@ -264,10 +264,10 @@ describe("#processCache", () => {
             },
         };
         const fakeOutputSink = {
-            startFile: jest.fn(),
-            processError: jest.fn(),
-            endFile: jest.fn(),
-            end: jest.fn(),
+            startFile: jest.fn<any, any>(),
+            processError: jest.fn<any, any>(),
+            endFile: jest.fn<any, any>(),
+            end: jest.fn<any, any>(),
         };
         jest.spyOn(OutputSink, "default").mockImplementation(
             () => fakeOutputSink,
@@ -305,10 +305,10 @@ describe("#processCache", () => {
             },
         };
         const fakeOutputSink = {
-            startFile: jest.fn(),
-            processError: jest.fn(),
-            endFile: jest.fn(),
-            end: jest.fn().mockReturnValue(ExitCodes.CATASTROPHIC),
+            startFile: jest.fn<any, any>(),
+            processError: jest.fn<any, any>(),
+            endFile: jest.fn<any, any>(),
+            end: jest.fn<any, any>().mockReturnValue(ExitCodes.CATASTROPHIC),
         };
         jest.spyOn(OutputSink, "default").mockImplementation(
             () => fakeOutputSink,

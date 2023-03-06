@@ -101,7 +101,7 @@ export default function parseFile(
         return normalizedFileInfo;
     };
 
-    return new Promise((resolve, reject) => {
+    return new Promise<FileParseResult>((resolve, reject) => {
         try {
             const markerParser = new MarkerParser(
                 normalizeFileRef,

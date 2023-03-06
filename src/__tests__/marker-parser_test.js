@@ -5,8 +5,8 @@ describe("MarkerParser", () => {
     describe("#recordUnterminatedMarkers", () => {
         it("should record nothing when no markers parsed", () => {
             // Arrange
-            const addMarker = jest.fn();
-            const recordError = jest.fn();
+            const addMarker = jest.fn<any, any>();
+            const recordError = jest.fn<any, any>();
             const parser = new MarkerParser(
                 (target) => ({file: target, exists: true}),
                 addMarker,
@@ -24,8 +24,8 @@ describe("MarkerParser", () => {
 
         it("should record nothing when all markers are terminated", () => {
             // Arrange
-            const addMarker = jest.fn();
-            const recordError = jest.fn();
+            const addMarker = jest.fn<any, any>();
+            const recordError = jest.fn<any, any>();
             const parser = new MarkerParser(
                 (target) => ({file: target, exists: true}),
                 addMarker,
@@ -47,8 +47,8 @@ describe("MarkerParser", () => {
 
         it("should record unterminated markers", () => {
             // Arrange
-            const addMarker = jest.fn();
-            const recordError = jest.fn();
+            const addMarker = jest.fn<any, any>();
+            const recordError = jest.fn<any, any>();
             const parser = new MarkerParser(
                 (target) => ({file: target, exists: true}),
                 addMarker,
@@ -74,8 +74,8 @@ describe("MarkerParser", () => {
     describe("#parseLine", () => {
         it("should record error if sync-start is malformed", () => {
             // Arrange
-            const addMarker = jest.fn();
-            const recordError = jest.fn();
+            const addMarker = jest.fn<any, any>();
+            const recordError = jest.fn<any, any>();
             const parser = new MarkerParser(
                 (target) => ({file: target, exists: true}),
                 addMarker,
@@ -96,8 +96,8 @@ describe("MarkerParser", () => {
 
         it("should record error if sync-end is malformed", () => {
             // Arrange
-            const addMarker = jest.fn();
-            const recordError = jest.fn();
+            const addMarker = jest.fn<any, any>();
+            const recordError = jest.fn<any, any>();
             const parser = new MarkerParser(
                 (target) => ({file: target, exists: true}),
                 addMarker,
@@ -118,8 +118,8 @@ describe("MarkerParser", () => {
 
         it("should record error if marker never started but is ended", () => {
             // Arrange
-            const addMarker = jest.fn();
-            const recordError = jest.fn();
+            const addMarker = jest.fn<any, any>();
+            const recordError = jest.fn<any, any>();
             const parser = new MarkerParser(
                 (target) => ({file: target, exists: true}),
                 addMarker,
@@ -140,8 +140,8 @@ describe("MarkerParser", () => {
 
         it("should record error if target does not exist", () => {
             // Arrange
-            const addMarker = jest.fn();
-            const recordError = jest.fn();
+            const addMarker = jest.fn<any, any>();
+            const recordError = jest.fn<any, any>();
             const parser = new MarkerParser(
                 (target) => ({file: target, exists: false}),
                 addMarker,
@@ -162,8 +162,8 @@ describe("MarkerParser", () => {
 
         it("should record error if marker started after marker content", () => {
             // Arrange
-            const addMarker = jest.fn();
-            const recordError = jest.fn();
+            const addMarker = jest.fn<any, any>();
+            const recordError = jest.fn<any, any>();
             const parser = new MarkerParser(
                 (target) => ({file: target, exists: true}),
                 addMarker,
@@ -186,8 +186,8 @@ describe("MarkerParser", () => {
 
         it("should record error if target repeated for same marker", () => {
             // Arrange
-            const addMarker = jest.fn();
-            const recordError = jest.fn();
+            const addMarker = jest.fn<any, any>();
+            const recordError = jest.fn<any, any>();
             const parser = new MarkerParser(
                 (target) => ({file: target, exists: true}),
                 addMarker,
@@ -216,8 +216,8 @@ describe("MarkerParser", () => {
 
         it("should record error if marker is empty", () => {
             // Arrange
-            const addMarker = jest.fn();
-            const recordError = jest.fn();
+            const addMarker = jest.fn<any, any>();
+            const recordError = jest.fn<any, any>();
             const parser = new MarkerParser(
                 (target) => ({file: target, exists: true}),
                 addMarker,
@@ -239,8 +239,8 @@ describe("MarkerParser", () => {
 
         it("should record error if tag id used in two different comment styles", () => {
             // Arrange
-            const addMarker = jest.fn();
-            const recordError = jest.fn();
+            const addMarker = jest.fn<any, any>();
+            const recordError = jest.fn<any, any>();
             const parser = new MarkerParser(
                 (target) => ({file: target, exists: true}),
                 addMarker,
@@ -264,8 +264,8 @@ describe("MarkerParser", () => {
 
         it("should call addMarker for parsed markers", () => {
             // Arrange
-            const addMarker = jest.fn();
-            const recordError = jest.fn();
+            const addMarker = jest.fn<any, any>();
+            const recordError = jest.fn<any, any>();
             const parser = new MarkerParser(
                 (target) => ({file: target, exists: true}),
                 addMarker,
