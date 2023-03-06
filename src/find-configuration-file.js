@@ -8,6 +8,11 @@ import type {ILog} from "./types.js";
 
 export const checkSyncRcNames = [".checksyncrc", ".checksyncrc.json"];
 
+type RCPathWithDistance = {
+    rcPath: string,
+    distance: number,
+};
+
 export default function findConfigurationFile(
     rootMarker: ?string,
     log: ILog,
@@ -57,7 +62,7 @@ export default function findConfigurationFile(
             distance: path.relative(process.cwd(), rcPath).split(path.sep)
                 .length,
         }))
-        .reduce((acc, cur) => {
+        .reduce((acc: ?RCPathWithDistance, cur: RCPathWithDistance) => {
             if (acc == null || cur.distance < acc.distance) {
                 return cur;
             }

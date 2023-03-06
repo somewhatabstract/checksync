@@ -10,11 +10,15 @@ import {version} from "../../package.json";
 import * as DetermineOptions from "../determine-options.js";
 import defaultOptions from "../default-options.js";
 
+import typeof * as LoggerTypes from "../logger.js";
+
 jest.mock("minimist");
 jest.mock("../logger.js", () => {
-    const realLogger = jest.requireActual("../logger.js").default;
+    const realLogger = (jest.requireActual("../logger.js"): LoggerTypes)
+        .default;
     const log = new realLogger(null);
     for (const key of Object.keys(log)) {
+        // $FlowIgnore[prop-missing]
         if (typeof log[key] === "function") {
             jest.spyOn(log, key);
         }

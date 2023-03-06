@@ -135,7 +135,7 @@ describe("OutputSink", () => {
                         };
                         const dummyFileLogger = {
                             file: "foo.js",
-                            mismatch: jest.fn(),
+                            mismatch: jest.fn<any, any>(),
                         };
                         jest.spyOn(
                             FileReferenceLogger,
@@ -179,7 +179,7 @@ describe("OutputSink", () => {
                         };
                         const dummyFileLogger = {
                             file: "foo.js",
-                            warn: jest.fn(),
+                            warn: jest.fn<any, any>(),
                         };
                         jest.spyOn(
                             FileReferenceLogger,
@@ -223,7 +223,7 @@ describe("OutputSink", () => {
                             };
                             const dummyFileLogger = {
                                 file: "foo.js",
-                                mismatch: jest.fn(),
+                                mismatch: jest.fn<any, any>(),
                             };
                             jest.spyOn(
                                 FileReferenceLogger,
@@ -268,7 +268,7 @@ describe("OutputSink", () => {
                             };
                             const dummyFileLogger = {
                                 file: "foo.js",
-                                warn: jest.fn(),
+                                warn: jest.fn<any, any>(),
                             };
                             jest.spyOn(
                                 FileReferenceLogger,
@@ -342,7 +342,7 @@ describe("OutputSink", () => {
                     };
                     const dummyFileLogger = {
                         file: "foo.js",
-                        mismatch: jest.fn(),
+                        mismatch: jest.fn<any, any>(),
                     };
                     jest.spyOn(
                         FileReferenceLogger,
@@ -381,7 +381,7 @@ describe("OutputSink", () => {
                     };
                     const dummyFileLogger = {
                         file: "foo.js",
-                        warn: jest.fn(),
+                        warn: jest.fn<any, any>(),
                     };
                     jest.spyOn(
                         FileReferenceLogger,
@@ -461,7 +461,7 @@ describe("OutputSink", () => {
             };
             const dummyFileLogger = {
                 file: "foo.js",
-                verbose: jest.fn(),
+                verbose: jest.fn<any, any>(),
             };
             jest.spyOn(FileReferenceLogger, "default").mockImplementation(
                 () => dummyFileLogger,
@@ -546,7 +546,7 @@ describe("OutputSink", () => {
             };
             const dummyFileLogger = {
                 file: "foo.js",
-                warn: jest.fn(),
+                warn: jest.fn<any, any>(),
             };
             jest.spyOn(FileReferenceLogger, "default").mockImplementation(
                 () => dummyFileLogger,
@@ -917,7 +917,7 @@ describe("OutputSink", () => {
                 jest.spyOn(FileReferenceLogger, "default").mockImplementation(
                     (file) => ({
                         file,
-                        verbose: jest.fn(),
+                        verbose: jest.fn<any, any>(),
                     }),
                 );
                 const outputSink = new OutputSink(
@@ -977,7 +977,7 @@ describe("OutputSink", () => {
                 jest.spyOn(FileReferenceLogger, "default").mockImplementation(
                     (file) => ({
                         file,
-                        warn: jest.fn(),
+                        warn: jest.fn<any, any>(),
                     }),
                 );
                 jest.spyOn(GetLaunchString, "default").mockReturnValue(
@@ -1037,8 +1037,8 @@ describe("OutputSink", () => {
                 jest.spyOn(FileReferenceLogger, "default").mockImplementation(
                     (file) => ({
                         file,
-                        warn: jest.fn(),
-                        verbose: jest.fn(),
+                        warn: jest.fn<any, any>(),
+                        verbose: jest.fn<any, any>(),
                     }),
                 );
                 jest.spyOn(GetLaunchString, "default").mockReturnValue(
@@ -1089,8 +1089,8 @@ describe("OutputSink", () => {
                 jest.spyOn(FileReferenceLogger, "default").mockImplementation(
                     (file) => ({
                         file,
-                        warn: jest.fn(),
-                        mismatch: jest.fn(),
+                        warn: jest.fn<any, any>(),
+                        mismatch: jest.fn<any, any>(),
                     }),
                 );
                 jest.spyOn(GetLaunchString, "default").mockReturnValue(
@@ -1162,8 +1162,8 @@ describe("OutputSink", () => {
                 jest.spyOn(FileReferenceLogger, "default").mockImplementation(
                     (file) => ({
                         file,
-                        warn: jest.fn(),
-                        verbose: jest.fn(),
+                        warn: jest.fn<any, any>(),
+                        verbose: jest.fn<any, any>(),
                     }),
                 );
                 const errorA = {
@@ -1281,7 +1281,7 @@ describe("OutputSink", () => {
                 jest.spyOn(FileReferenceLogger, "default").mockImplementation(
                     (file) => ({
                         file,
-                        warn: jest.fn(),
+                        warn: jest.fn<any, any>(),
                     }),
                 );
                 const outputSink = new OutputSink(
@@ -1319,7 +1319,7 @@ describe("OutputSink", () => {
                 jest.spyOn(FileReferenceLogger, "default").mockImplementation(
                     (file) => ({
                         file,
-                        verbose: jest.fn(),
+                        verbose: jest.fn<any, any>(),
                     }),
                 );
                 const outputSink = new OutputSink(

@@ -40,7 +40,7 @@ export default async (
 
     // Flatten our array of arrays into a single array.
     const allIgnores = ignoresByFile.reduce(
-        (prev, current) => [...prev, ...current],
+        (prev: $ReadOnlyArray<string>, current) => [...prev, ...current],
         [],
     );
 
