@@ -2681,9 +2681,9 @@ flatted@^3.1.0:
   integrity sha512-tW+UkmtNg/jv9CSofAKvgVcO7c2URjhTdW1ZTkcAritblu8tajiYy7YisnIflEwtKssCtOxpnBRoCB7iap0/TA==
 
 flow-bin@^0.203.0:
-  version "0.203.0"
-  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.203.0.tgz#4ab97ee696441ad83039663ba055ea5766a20d98"
-  integrity sha512-gyCkvvpL+bEzl/lTvRYkFeRTu9fSRbm0AR5UBkQe3EfiAKY3jNEDcwLxxmuBzqxr8X0jrqEAhVNGX9n/pYh+7g==
+  version "0.203.1"
+  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.203.1.tgz#227b5c4c9acef2d0efe4a4a8ee84322c8de05891"
+  integrity sha512-W/SX7QnRmBYS0TjfgtGb9ltPZzlsNeTZ7wA1yqwChxbLaQtrxGtO4K5GKtjRwAtucMQSebB7Ao++u21fRmC4TQ==
 
 fs-extra@^8.1.0:
   version "8.1.0"
