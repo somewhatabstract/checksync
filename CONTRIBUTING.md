@@ -67,18 +67,6 @@ To run a `checksync` build, use `./bin/checksync.js` instead.
 
 ### Publishing
 
-Publishing an updated package is reserved for those with appropriate credentials. Coordinate with the repository owners to get your changes into a published release. The steps for publishing are:
+Publishing is automated through our use of [changesets][1]. When a PR is merged, a release PR is created that bundles all the changes since the last release. This PR is then merged and the changeset is published to npm.
 
-1. Ensure all PRs are reviewed and merged to `main`
-1. Wait for all testing to pass (if it does not, we have a problem)
-1. Locally:
-    1. `git checkout main && git pull`
-    1. Edit the `package.json` to update the package version
-    1. `yarn test` and fix any tests as appropriate
-    1. Commit the changes and push
-    1. `git tag vX.Y.Z` where X is the major version from the `package.json`, Y is the minor version, and Z is the patch version
-    1. `git push --tags`
-    1. `yarn install`
-    1. `yarn build` (if tests fail, stop!)
-    1. `npm publish`
-1. Create a release on github with some notes on what the release contains and a link to the NPM package
+[1]:https://github.com/changesets/changesets/blob/main/README.md#documentation
