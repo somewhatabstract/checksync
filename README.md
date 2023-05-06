@@ -2,31 +2,15 @@
 
 [![Node CI](https://github.com/somewhatabstract/checksync/workflows/Node%20CI/badge.svg)](https://github.com/somewhatabstract/checksync/actions) [![codecov](https://codecov.io/gh/somewhatabstract/checksync/branch/main/graph/badge.svg)](https://codecov.io/gh/somewhatabstract/checksync) [![npm (tag)](https://img.shields.io/npm/v/checksync/latest)](https://www.npmjs.com/package/checksync) [![Required Node Version](https://img.shields.io/node/v/checksync/latest)](https://www.npmjs.com/package/checksync)
 
-## Installation
+## Usage
 
-Install using your preferred package manager.
-
-```shell
-yarn add --dev checksync
-```
-
-```shell
-npm install --save-dev checksync
-```
-
-After installation, try running `checksync` with the `--help` argument to see more information:
-
-```shell
-yarn checksync --help
-```
+You can install `checksync` if you want, but the easiest way to use it is via `npx`.
 
 ```shell
 npx checksync --help
 ```
 
-## Usage
-
-For detailed usage information, run `yarn checksync --help`.
+For detailed usage information, run `npx checksync --help`.
 
 ### Example workflow
 

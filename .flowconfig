@@ -4,6 +4,7 @@
 <PROJECT_ROOT>/.vscode
 <PROJECT_ROOT>/bin
 <PROJECT_ROOT>/node_modules/resolve/.*
+<PROJECT_ROOT>/node_modules/normalize-package-data/.*
 
 [include]
 ./src

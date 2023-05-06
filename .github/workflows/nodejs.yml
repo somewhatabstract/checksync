@@ -21,16 +21,22 @@ jobs:
         node-version: [16.x]
     steps:
     - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+    - name: Install & cache node_modules
+      uses: Khan/actions@shared-node-cache-v0
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Install dependencies
-      run: yarn install
     - name: Lint
       run: yarn lint
     - name: Flow
       run: yarn flow:ci
+    - name: Changesets check
+      uses: Khan/actions@check-for-changeset-v0
+      if: |
+        github.actor != 'dependabot[bot]' &&
+        github.actor != 'dependabot-preview[bot]' &&
+        github.event_name == 'pull_request'
+      with:
+        exclude: .github/,.storybook/
 
 
   coverage:
@@ -44,12 +50,10 @@ jobs:
         node-version: [16.x]
     steps:
     - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+    - name: Install & cache node_modules
+      uses: Khan/actions@shared-node-cache-v0
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Install dependencies
-      run: yarn install
     - name: Run tests with coverage
       run: yarn coverage:unit
     - name: Upload coverage
@@ -70,12 +74,10 @@ jobs:
         node-version: [16.x, 18.x]
     steps:
     - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+    - name: Install & cache node_modules
+      uses: Khan/actions@shared-node-cache-v0
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Install dependencies
-      run: yarn install
     - name: Run integration tests
       run: yarn test:integration
 
@@ -92,11 +94,9 @@ jobs:
         node-version: [16.x, 18.x]
     steps:
     - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+    - name: Install & cache node_modules
+      uses: Khan/actions@shared-node-cache-v0
       with:
         node-version: ${{ matrix.node-version }}
-    - name: Install dependencies
-      run: yarn install
     - name: Run tests and build
       run: yarn build
