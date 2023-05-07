@@ -4,28 +4,28 @@ exports[`Format #code should render with chalk colors 1`] = `"[1m[33mTest[39m
 
 exports[`Format #cwdFilePath should render with chalk colors 1`] = `"[90mTest[39m"`;
 
-exports[`Format #error should prefix with _ERROR__ 1`] = `"    Error  Test"`;
+exports[`Format #error should prefix with _ERROR__ 1`] = `"Error    Test"`;
 
-exports[`Format #error should render with chalk colors 1`] = `"[31m    Error [39m Test"`;
+exports[`Format #error should render with chalk colors 1`] = `"[31mError   [39m Test"`;
 
-exports[`Format #fix should prefix with _FIX_ 1`] = `"      Fix  Test"`;
+exports[`Format #fix should prefix with _FIX_ 1`] = `"Fix      Test"`;
 
-exports[`Format #fix should render with chalk colors 1`] = `"[1m[92m      Fix [39m[22m Test"`;
+exports[`Format #fix should render with chalk colors 1`] = `"[1m[92mFix     [39m[22m Test"`;
 
 exports[`Format #heading should render with chalk colors 1`] = `"[1m[32mTest[39m[22m"`;
 
-exports[`Format #info should prefix with _INFO__ 1`] = `"     Info  Test"`;
+exports[`Format #info should prefix with _INFO__ 1`] = `"Info     Test"`;
 
-exports[`Format #info should render with chalk colors 1`] = `"[34m     Info [39m Test"`;
+exports[`Format #info should render with chalk colors 1`] = `"[34mInfo    [39m Test"`;
 
-exports[`Format #mismatch should prefix with _MISMATCH__ 1`] = `" Mismatch  Test"`;
+exports[`Format #mismatch should prefix with _MISMATCH__ 1`] = `"Mismatch Test"`;
 
-exports[`Format #mismatch should render with chalk colors 1`] = `"[1m[93m Mismatch [39m[22m Test"`;
+exports[`Format #mismatch should render with chalk colors 1`] = `"[1m[93mMismatch[39m[22m Test"`;
 
-exports[`Format #verbose should prefix with Verbose 1`] = `"  Verbose  Test"`;
+exports[`Format #verbose should prefix with Verbose 1`] = `"Verbose  Test"`;
 
-exports[`Format #verbose should render with chalk colors 1`] = `"[90m  Verbose [39m [2mTest[22m"`;
+exports[`Format #verbose should render with chalk colors 1`] = `"[90mVerbose [39m [2mTest[22m"`;
 
-exports[`Format #warn should prefix with _WARNING__ 1`] = `"  Warning  Test"`;
+exports[`Format #warn should prefix with _WARNING__ 1`] = `"Warning  Test"`;
 
-exports[`Format #warn should render with chalk colors 1`] = `"[33m  Warning [39m Test"`;
+exports[`Format #warn should render with chalk colors 1`] = `"[33mWarning [39m Test"`;

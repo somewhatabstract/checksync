@@ -69,7 +69,7 @@ export default class FileReferenceLogger implements IPositionLog {
     _format: (message: string, line?: string | number) => string = (
         message: string,
         line?: string | number,
-    ) => `${this._formatRef(line)} ${message}`;
+    ) => `${this._formatRef(line)}\n${message.split(". ").join(`\n`)}\n`;
 
     _formatRef: (line?: string | number) => string = (line?: string | number) =>
         Format.cwdFilePath(`${this._file}${(line && `:${line}`) || ""}`);

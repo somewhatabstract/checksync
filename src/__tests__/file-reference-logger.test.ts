@@ -55,7 +55,7 @@ describe("FileReferenceLogger", () => {
 
             // Assert
             expect(spy).toHaveBeenCalledWith(expect.any(Function));
-            expect(spy.mock.calls[0][0]()).toBe("FILE MESSAGE");
+            expect(spy.mock.calls[0][0]()).toMatch(/FILE[\s\n]*MESSAGE/);
         });
 
         it("should prefix with file:line reference", () => {
@@ -69,7 +69,7 @@ describe("FileReferenceLogger", () => {
 
             // Assert
             expect(spy).toHaveBeenCalledWith(expect.any(Function));
-            expect(spy.mock.calls[0][0]()).toBe("FILE:42 MESSAGE");
+            expect(spy.mock.calls[0][0]()).toMatch(/FILE:42[\s\n]*MESSAGE/);
         });
 
         it("should pass nullish if the message resolves to nullish", () => {
@@ -100,7 +100,7 @@ describe("FileReferenceLogger", () => {
             // Assert
             expect(spy).toHaveBeenCalledWith(expect.stringContaining(testCase));
             expect(spy).toHaveBeenCalledWith(
-                expect.stringContaining("FILE MESSAGE"),
+                expect.stringMatching("FILE[s\n]*MESSAGE"),
             );
         });
 
@@ -115,7 +115,7 @@ describe("FileReferenceLogger", () => {
 
             // Assert
             expect(spy).toHaveBeenCalledWith(
-                expect.stringContaining("FILE:42 MESSAGE"),
+                expect.stringMatching("FILE:42[s\n]*MESSAGE"),
             );
         });
     });
@@ -133,7 +133,9 @@ describe("FileReferenceLogger", () => {
                 (logger as any)[testCase]("MESSAGE");
 
                 // Assert
-                expect(spy).toHaveBeenCalledWith("FILE MESSAGE");
+                expect(spy).toHaveBeenCalledWith(
+                    expect.stringMatching("FILE[s\n]*MESSAGE"),
+                );
             });
 
             it("should prefix with file:line reference", () => {
@@ -146,7 +148,9 @@ describe("FileReferenceLogger", () => {
                 (logger as any)[testCase]("MESSAGE", 42);
 
                 // Assert
-                expect(spy).toHaveBeenCalledWith("FILE:42 MESSAGE");
+                expect(spy).toHaveBeenCalledWith(
+                    expect.stringMatching("FILE:42[s\n]*MESSAGE"),
+                );
             });
         },
     );
