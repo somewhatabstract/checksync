@@ -1,6 +1,10 @@
 import logHelp from "../help";
 import StringLogger from "../string-logger";
 
+jest.mock("../../package.json", () => ({
+    version: "0.0.0",
+}));
+
 describe("#logHelp", () => {
     it("should log the help as expected", () => {
         // Arrange
@@ -11,7 +15,7 @@ describe("#logHelp", () => {
 
         // Assert
         expect(logger.getLog()).toMatchInlineSnapshot(`
-            "checksync 4.0.0 ✅ 🔗
+            "checksync 0.0.0 ✅ 🔗
 
             Checksync uses tags in your files to identify blocks that need to remain
             synchronised. It works on any text file as long as it can find the tags.
