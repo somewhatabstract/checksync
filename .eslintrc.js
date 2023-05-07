@@ -39,7 +39,6 @@ module.exports = {
         "no-unexpected-multiline": "error",
         "no-unreachable": "error",
         "no-unused-expressions": "error",
-        "no-unused-vars": ["error", {args: "none", varsIgnorePattern: "^_*$"}],
         "no-var": "error",
         "one-var": ["error", "never"],
         "prefer-const": "error",
