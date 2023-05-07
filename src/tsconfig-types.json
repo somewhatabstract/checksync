@@ -1,0 +1,16 @@
+/* Visit https://aka.ms/tsconfig to read more about this file */
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+        "incremental": false,
+    },
+    "references": [
+        { // this is how we declare a dependency from
+            // this project to the one at the root dir`
+            "path": "../"
+        }
+    ],
+    "exclude": [
+        "**/*.test.ts",
+    ],
+}

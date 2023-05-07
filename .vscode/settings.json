@@ -1,7 +1,5 @@
 {
     "editor.formatOnSave": true,
-    "javascript.validate.enable": false,
-    "typescript.validate.enable": false,
     "json.schemas": [
         {
             "fileMatch": [

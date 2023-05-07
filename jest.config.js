@@ -2,6 +2,9 @@
 // https://jestjs.io/docs/en/configuration.html
 
 module.exports = {
+    // The files that contain tests.
+    testMatch: ["**/src/**/__tests__/**/*.test.ts"],
+
     // Automatically restore mocks between every test
     resetMocks: true,
     restoreMocks: true,
@@ -10,7 +13,7 @@ module.exports = {
     coverageDirectory: "coverage",
 
     // Where our coverage data does and does not come from.
-    collectCoverageFrom: ["src/**/*.js", "!src/__tests__/*.js"],
+    collectCoverageFrom: ["src/**/*.ts", "!src/__tests__/*.ts"],
 
     // The test environment that will be used for testing
     testEnvironment: "node",
