@@ -1,3 +1,3 @@
 #!/usr/bin/env node
-require("@babel/register");
-require("../src/main.js").runCli(__filename);
+require("@babel/register")({extensions: [".ts"]});
+require("../src/main.ts").runCli(__filename);
