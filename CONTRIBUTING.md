@@ -41,11 +41,11 @@ We love code reviews. If there are open pull requests, please feel free to revie
 
 #### Automated
 
-To ensure code quality, we use prettier, flow, eslint, and jest. These are all executed when you submit a pull request to ensure contributions meet our code quality standards.
+To ensure code quality, we use prettier, TypeScript, eslint, and jest. These are all executed when you submit a pull request to ensure contributions meet our code quality standards.
 
 To execute these operations outside of a pull request, you can use `yarn`.
 
-- `yarn flow`
+- `yarn typecheck`
 - `yarn lint`
 - `yarn test` (or `yarn test:integration` and `yarn test:unit` to run test categories separately)
 

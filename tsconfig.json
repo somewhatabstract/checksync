@@ -1,0 +1,15 @@
+/* Visit https://aka.ms/tsconfig to read more about this file */
+{
+    "extends": "./tsconfig-shared.json",
+    "exclude": [
+        "**/dist"
+    ],
+    "compilerOptions": {
+        "rootDir": ".",
+        "outDir": ".",
+        "composite": true
+    },
+    "files": [
+        "package.json",
+    ]
+}

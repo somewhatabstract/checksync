@@ -11,7 +11,7 @@ on:
 
 jobs:
   lint:
-    name: Lint and flow check
+    name: Lint and static types check
     env:
       CI: true
     runs-on: ${{ matrix.os }}
@@ -27,8 +27,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: Lint
       run: yarn lint
-    - name: Flow
-      run: yarn flow:ci
+    - name: Static Types
+      run: yarn typecheck
     - name: Changesets check
       uses: Khan/actions@check-for-changeset-v0
       if: |

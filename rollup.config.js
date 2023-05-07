@@ -8,7 +8,7 @@ import {terser} from "rollup-plugin-terser";
 import copy from "rollup-plugin-copy";
 
 export default {
-    input: "./src/main.js",
+    input: "./src/main.ts",
     output: {
         dir: "./dist",
         format: "cjs",
@@ -17,8 +17,10 @@ export default {
     },
     plugins: [
         json(),
-        resolve({preferBuiltins: true}),
+        resolve({preferBuiltins: true, extensions: [".ts"]}),
         babel({
+            configFile: "./babel.config.js",
+            extensions: [".ts"],
             babelHelpers: "bundled",
             exclude: "node_modules/**", // only transpile our source code
         }),
