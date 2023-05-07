@@ -1,22 +1,36 @@
 import chalk from "chalk";
 import cwdRelativePath from "./cwd-relative-path";
 
+enum Label {
+    Verbose = "Verbose",
+    Error = "Error",
+    Info = "Info",
+    Warning = "Warning",
+    Mismatch = "Mismatch",
+    Fix = "Fix",
+}
+
+const labelWidth = Math.max(
+    ...Object.values(Label).map((label) => label.length),
+);
+
 // MISMATCH is our longest message label.
-const labelWidth = "Mismatch ".length;
-const asLabel = (label: string): string =>
-    `${" ".repeat(labelWidth - label.length)}${label} `;
+const asLabel = (label: Label): string =>
+    `${label}${" ".repeat(labelWidth - label.length)}`;
 
 const Format = {
     verbose: (text: string): string =>
-        `${chalk.grey(asLabel("Verbose"))} ${chalk.dim(text)}`,
-    error: (text: string): string => `${chalk.red(asLabel("Error"))} ${text}`,
-    info: (text: string): string => `${chalk.blue(asLabel("Info"))} ${text}`,
+        `${chalk.grey(asLabel(Label.Verbose))} ${chalk.dim(text)}`,
+    error: (text: string): string =>
+        `${chalk.red(asLabel(Label.Error))} ${text}`,
+    info: (text: string): string =>
+        `${chalk.blue(asLabel(Label.Info))} ${text}`,
     warn: (text: string): string =>
-        `${chalk.yellow(asLabel("Warning"))} ${text}`,
+        `${chalk.yellow(asLabel(Label.Warning))} ${text}`,
     mismatch: (text: string): string =>
-        `${chalk.bold.yellowBright(asLabel("Mismatch"))} ${text}`,
+        `${chalk.bold.yellowBright(asLabel(Label.Mismatch))} ${text}`,
     fix: (text: string): string =>
-        `${chalk.bold.greenBright(asLabel("Fix"))} ${text}`,
+        `${chalk.bold.greenBright(asLabel(Label.Fix))} ${text}`,
 
     cwdFilePath: (filePath: string): string =>
         `${chalk.gray(cwdRelativePath(filePath))}`,
