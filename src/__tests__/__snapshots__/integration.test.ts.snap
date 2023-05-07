@@ -124,7 +124,7 @@ exports[`Integration Tests (see __examples__ folder) should report example check
     "ROOT_DIR/__examples__/checksums_need_updating/c.jsx"
 ]
 {
-    "version": "4.0.0",
+    "version": "0.0.0",
     "launchString": "checksync -u checksums_need_updating/a.js checksums_need_updating/b.py checksums_need_updating/c.jsx",
     "files": {
         "__examples__/checksums_need_updating/a.js": [
@@ -327,7 +327,7 @@ exports[`Integration Tests (see __examples__ folder) should report example conte
 ]
     Error  🛑  Unfixable errors found. Fix the errors and try again.
 {
-    "version": "4.0.0",
+    "version": "0.0.0",
     "launchString": "checksync -u content_after_start/a.js content_after_start/b.py content_after_start/c.js",
     "files": {
         "__examples__/content_after_start/a.js": [
@@ -514,7 +514,7 @@ exports[`Integration Tests (see __examples__ folder) should report example corre
     "ROOT_DIR/__examples__/correct_checksums/c.jsx"
 ]
 {
-    "version": "4.0.0",
+    "version": "0.0.0",
     "launchString": "checksync -u ",
     "files": {}
 }"
@@ -632,7 +632,7 @@ exports[`Integration Tests (see __examples__ folder) should report example direc
 ]
     Error  🛑  Unfixable errors found. Fix the errors and try again.
 {
-    "version": "4.0.0",
+    "version": "0.0.0",
     "launchString": "checksync -u ",
     "files": {
         "__examples__/directory_target/example.js": [
@@ -774,7 +774,7 @@ exports[`Integration Tests (see __examples__ folder) should report example dupli
     "ROOT_DIR/__examples__/duplicate-target/b.py"
 ]
 {
-    "version": "4.0.0",
+    "version": "0.0.0",
     "launchString": "checksync -u duplicate-target/a.js duplicate-target/b.py",
     "files": {
         "__examples__/duplicate-target/a.js": [
@@ -947,7 +947,7 @@ exports[`Integration Tests (see __examples__ folder) should report example end_w
 ]
     Error  🛑  Unfixable errors found. Fix the errors and try again.
 {
-    "version": "4.0.0",
+    "version": "0.0.0",
     "launchString": "checksync -u ",
     "files": {
         "__examples__/end_with_no_start/example.js": [
@@ -1269,7 +1269,7 @@ exports[`Integration Tests (see __examples__ folder) should report example malfo
 ]
     Error  🛑  Unfixable errors found. Fix the errors and try again.
 {
-    "version": "4.0.0",
+    "version": "0.0.0",
     "launchString": "checksync -u ",
     "files": {
         "__examples__/malformed_end/malformed_badid.js": [
@@ -1435,7 +1435,7 @@ exports[`Integration Tests (see __examples__ folder) should report example malfo
 ]
     Error  🛑  Unfixable errors found. Fix the errors and try again.
 {
-    "version": "4.0.0",
+    "version": "0.0.0",
     "launchString": "checksync -u ",
     "files": {
         "__examples__/malformed_start/malformed_badchecksum.js": [
@@ -1599,7 +1599,7 @@ exports[`Integration Tests (see __examples__ folder) should report example missi
 ]
     Error  🛑  Unfixable errors found. Fix the errors and try again.
 {
-    "version": "4.0.0",
+    "version": "0.0.0",
     "launchString": "checksync -u ",
     "files": {
         "__examples__/missing_target/example.js": [
@@ -1732,7 +1732,7 @@ exports[`Integration Tests (see __examples__ folder) should report example no_ba
 ]
     Error  🛑  Unfixable errors found. Fix the errors and try again.
 {
-    "version": "4.0.0",
+    "version": "0.0.0",
     "launchString": "checksync -u ",
     "files": {
         "__examples__/no_back_reference/file1.js": [
@@ -1864,7 +1864,7 @@ exports[`Integration Tests (see __examples__ folder) should report example no_ch
     "ROOT_DIR/__examples__/no_checksums/example_one-b.py"
 ]
 {
-    "version": "4.0.0",
+    "version": "0.0.0",
     "launchString": "checksync -u no_checksums/example_one-a.js no_checksums/example_one-b.py",
     "files": {
         "__examples__/no_checksums/example_one-a.js": [
@@ -2021,7 +2021,7 @@ exports[`Integration Tests (see __examples__ folder) should report example no_se
 ]
     Error  🛑  Unfixable errors found. Fix the errors and try again.
 {
-    "version": "4.0.0",
+    "version": "0.0.0",
     "launchString": "checksync -u no_self_reference/example.js",
     "files": {
         "__examples__/no_self_reference/example.js": [
@@ -2165,7 +2165,7 @@ exports[`Integration Tests (see __examples__ folder) should report example unter
 ]
     Error  🛑  Unfixable errors found. Fix the errors and try again.
 {
-    "version": "4.0.0",
+    "version": "0.0.0",
     "launchString": "checksync -u ",
     "files": {
         "__examples__/unterminated_marker/example_two-a.js": [

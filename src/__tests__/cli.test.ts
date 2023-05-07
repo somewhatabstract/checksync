@@ -25,6 +25,10 @@ jest.mock("../logger", () => {
 });
 jest.mock("parse-gitignore");
 jest.mock("fs");
+jest.mock("../../package.json", () => ({
+    // We don't use the real version so that snapshots are consistent.
+    version: "0.0.0",
+}));
 
 describe("#run", () => {
     it("should parse args", async () => {

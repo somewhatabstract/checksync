@@ -7,6 +7,10 @@ import checkSync from "../check-sync";
 import determineOptions from "../determine-options";
 
 jest.mock("../get-launch-string", () => () => "checksync");
+jest.mock("../../package.json", () => ({
+    // We don't use the real version so that snapshots are consistent.
+    version: "0.0.0",
+}));
 
 describe("Integration Tests (see __examples__ folder)", () => {
     beforeEach(() => {
