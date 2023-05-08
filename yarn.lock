@@ -1284,12 +1284,13 @@
     uri-js "^4.4.1"
 
 "@hyperjump/json-schema@^0.23.0":
-  version "0.23.4"
-  resolved "https://registry.yarnpkg.com/@hyperjump/json-schema/-/json-schema-0.23.4.tgz#c939d8e4e0303d0610797d4f17ba04b7a4c4ee67"
-  integrity sha512-4j3QDrLGTuaNYorXl2rXqdgQbjBbjDjlDHkQjONiZfMADkUU+Z2v8j5Mx1yIt/FZKL/8xnm/CG3D/Uz1L1+g8Q==
+  version "0.23.5"
+  resolved "https://registry.yarnpkg.com/@hyperjump/json-schema/-/json-schema-0.23.5.tgz#bbd7e9ee42e29d40ede0d1966c29aa01f1c749c0"
+  integrity sha512-gb1jOT6+BlZBR9Nc/tMGDt757YM7rjS71Dml3+TBYebdGOZlSrTzTfVAUfGzOlsceB3gP4K9b7HzAwEGMWmexQ==
   dependencies:
     "@hyperjump/json-schema-core" "^0.28.0"
     fastest-stable-stringify "^2.0.2"
+    just-curry-it "^5.3.0"
 
 "@hyperjump/pact@^0.2.3":
   version "0.2.3"
@@ -4791,6 +4792,11 @@ just-curry-it@^3.1.0, just-curry-it@^3.2.1:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/just-curry-it/-/just-curry-it-3.2.1.tgz#7bb18284c8678ed816bfc5c19e44400605fbe461"
   integrity sha512-Q8206k8pTY7krW32cdmPsP+DqqLgWx/hYPSj9/+7SYqSqz7UuwPbfSe07lQtvuuaVyiSJveXk0E5RydOuWwsEg==
+
+just-curry-it@^5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/just-curry-it/-/just-curry-it-5.3.0.tgz#1463602e932c5beb431a2a384dddcd48bb3c9c42"
+  integrity sha512-silMIRiFjUWlfaDhkgSzpuAyQ6EX/o09Eu8ZBfmFwQMbax7+LQzeIU2CBrICT6Ne4l86ITCGvUCBpCubWYy0Yw==
 
 kind-of@^6.0.2, kind-of@^6.0.3:
   version "6.0.3"
