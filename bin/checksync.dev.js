@@ -1,3 +1,4 @@
 #!/usr/bin/env node
-require("@babel/register")({extensions: [".ts"]});
+const path = require("path");
+require("@babel/register")({extensions: [".ts"], cwd: path.dirname(__dirname)});
 require("../src/main.ts").runCli(__filename);
