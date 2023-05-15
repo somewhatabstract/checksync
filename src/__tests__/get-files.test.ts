@@ -2,17 +2,22 @@ import fs from "fs";
 import * as FastGlob from "fast-glob";
 import Logger from "../logger";
 import StringLogger from "../string-logger";
-import * as IgnoreFileGlobsToExcludeGlobs from "../ignore-file-globs-to-exclude-globs";
+import * as IgnoreFileGlobsToAllowPredicate from "../ignore-file-globs-to-allow-predicate";
 
 import getFiles from "../get-files";
 import {jest} from "@jest/globals";
 
+jest.mock("../ignore-file-globs-to-allow-predicate");
 jest.mock("fast-glob");
 
 describe("#getFiles", () => {
     it("should expand directories to globs", async () => {
         // Arrange
         const NullLogger = new Logger(null);
+        jest.spyOn(
+            IgnoreFileGlobsToAllowPredicate,
+            "default",
+        ).mockResolvedValue(() => true);
         jest.spyOn(fs, "existsSync").mockReturnValue(true);
         jest.spyOn(fs, "lstatSync").mockImplementation(
             () =>
@@ -37,6 +42,10 @@ describe("#getFiles", () => {
     it("should not check if globs are directories", async () => {
         // Arrange
         const NullLogger = new Logger(null);
+        jest.spyOn(
+            IgnoreFileGlobsToAllowPredicate,
+            "default",
+        ).mockResolvedValue(() => true);
         jest.spyOn(fs, "existsSync").mockReturnValue(true);
         const lstatSyncSpy = jest.spyOn(fs, "lstatSync");
         jest.spyOn(FastGlob, "default").mockImplementation((p) =>
@@ -53,6 +62,10 @@ describe("#getFiles", () => {
     it("should return a sorted list without duplicates", async () => {
         // Arrange
         const NullLogger = new Logger(null);
+        jest.spyOn(
+            IgnoreFileGlobsToAllowPredicate,
+            "default",
+        ).mockResolvedValue(() => true);
         const globSpy = jest
             .spyOn(FastGlob, "default")
             .mockImplementation((pattern, opts) =>
@@ -72,17 +85,18 @@ describe("#getFiles", () => {
         expect(globSpy).toHaveBeenCalledTimes(1);
     });
 
-    it("should exclude files matched by exclude globs and ignore files", async () => {
+    it("should exclude files matched by exclude globs", async () => {
         // Arrange
         const NullLogger = new Logger(null);
+        jest.spyOn(
+            IgnoreFileGlobsToAllowPredicate,
+            "default",
+        ).mockResolvedValue(() => true);
         const globSpy = jest
             .spyOn(FastGlob, "default")
             .mockImplementation((pattern, opts) =>
                 Promise.resolve(["c", "a", "d", "b"]),
             );
-        jest.spyOn(IgnoreFileGlobsToExcludeGlobs, "default").mockResolvedValue([
-            "**/ignore-file/**",
-        ]);
 
         // Act
         await getFiles([], ["a", "c"], ["ignore-file"], NullLogger);
@@ -90,13 +104,40 @@ describe("#getFiles", () => {
         // Assert
         expect(globSpy).toHaveBeenCalledWith(
             [],
-            expect.objectContaining({ignore: ["a", "c", "**/ignore-file/**"]}),
+            expect.objectContaining({ignore: ["a", "c"]}),
         );
+    });
+
+    it("should exclude files matched by ignore files", async () => {
+        // Arrange
+        const NullLogger = new Logger(null);
+        jest.spyOn(
+            IgnoreFileGlobsToAllowPredicate,
+            "default",
+        ).mockResolvedValue((f) => !f.includes("ignore/"));
+        jest.spyOn(FastGlob, "default").mockImplementation((pattern, opts) =>
+            Promise.resolve(["d", "ignore/b"]),
+        );
+
+        // Act
+        const files = await getFiles(
+            [],
+            ["a", "c"],
+            ["ignore-file"],
+            NullLogger,
+        );
+
+        // Assert
+        expect(files).toEqual(["d"]);
     });
 
     it("should log verbosely", async () => {
         // Arrange
         const NullLogger = new Logger(null);
+        jest.spyOn(
+            IgnoreFileGlobsToAllowPredicate,
+            "default",
+        ).mockResolvedValue(() => true);
         jest.spyOn(FastGlob, "default").mockImplementation((pattern, opts) =>
             Promise.resolve(["c", "a", "d", "b"]),
         );
@@ -112,6 +153,10 @@ describe("#getFiles", () => {
     it("should log matching snapshot", async () => {
         // Arrange
         const logger = new StringLogger(true);
+        jest.spyOn(
+            IgnoreFileGlobsToAllowPredicate,
+            "default",
+        ).mockResolvedValue(() => true);
         jest.spyOn(FastGlob, "default").mockImplementation((pattern, opts) =>
             Promise.resolve(["c", "a", "d", "b"]),
         );

@@ -23,7 +23,6 @@ jest.mock("../logger", () => {
         return log;
     };
 });
-jest.mock("parse-gitignore");
 jest.mock("fs");
 jest.mock("../../package.json", () => ({
     // We don't use the real version so that snapshots are consistent.
