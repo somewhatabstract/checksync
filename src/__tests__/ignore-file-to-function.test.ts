@@ -3,9 +3,9 @@ import "jest-extended";
 import * as fsasync from "fs/promises";
 import * as ignore from "ignore";
 import Logger from "../logger";
-//import StringLogger from "../string-logger";
+import StringLogger from "../string-logger";
 
-import ignoreFileToAllowPredicate from "../ignore-file-to-function";
+import ignoreFileToFunction from "../ignore-file-to-function";
 
 jest.mock("fs/promises");
 jest.mock("ignore");
@@ -20,7 +20,7 @@ describe("ignoreFileToAllowPredicate", () => {
         jest.spyOn(fsasync, "readFile").mockResolvedValue("");
 
         // Act
-        const result = await ignoreFileToAllowPredicate(
+        const result = await ignoreFileToFunction(
             "/foo/.gitignore",
             NullLogger,
         );
@@ -39,7 +39,7 @@ describe("ignoreFileToAllowPredicate", () => {
         } as any);
 
         // Act
-        await ignoreFileToAllowPredicate("/foo/.gitignore", NullLogger);
+        await ignoreFileToFunction("/foo/.gitignore", NullLogger);
 
         // Assert
         expect(addSpy).toHaveBeenCalledWith("foo\n!bar\n");
@@ -53,7 +53,7 @@ describe("ignoreFileToAllowPredicate", () => {
                 add: jest.fn(),
             } as any);
             jest.spyOn(fsasync, "readFile").mockResolvedValue("*.txt\n");
-            const predicate = await ignoreFileToAllowPredicate(
+            const predicate = await ignoreFileToFunction(
                 "/foo/bar/baz.gitignore",
                 NullLogger,
             );
@@ -76,7 +76,7 @@ describe("ignoreFileToAllowPredicate", () => {
                 })),
             } as any);
             jest.spyOn(fsasync, "readFile").mockResolvedValue("*.txt\n");
-            const predicate = await ignoreFileToAllowPredicate(
+            const predicate = await ignoreFileToFunction(
                 "/foo/bar/baz.gitignore",
                 NullLogger,
             );
@@ -99,7 +99,7 @@ describe("ignoreFileToAllowPredicate", () => {
                 })),
             } as any);
             jest.spyOn(fsasync, "readFile").mockResolvedValue("*.txt\n");
-            const predicate = await ignoreFileToAllowPredicate(
+            const predicate = await ignoreFileToFunction(
                 "/foo/bar/baz.gitignore",
                 NullLogger,
             );
@@ -122,7 +122,7 @@ describe("ignoreFileToAllowPredicate", () => {
                 })),
             } as any);
             jest.spyOn(fsasync, "readFile").mockResolvedValue("*.txt\n");
-            const predicate = await ignoreFileToAllowPredicate(
+            const predicate = await ignoreFileToFunction(
                 "/foo/bar/baz.gitignore",
                 NullLogger,
             );
@@ -132,6 +132,82 @@ describe("ignoreFileToAllowPredicate", () => {
 
             // Assert
             expect(result).toBeTrue();
+        });
+
+        it("should log if a file is ignored", async () => {
+            // Arrange
+            const logger = new StringLogger(true);
+            jest.spyOn(ignore, "default").mockReturnValue({
+                add: jest.fn().mockReturnThis(),
+                test: jest.fn(() => ({
+                    ignored: true,
+                    unignored: false,
+                })),
+            } as any);
+            jest.spyOn(fsasync, "readFile").mockResolvedValue("*.txt\n");
+            const predicate = await ignoreFileToFunction(
+                "/foo/bar/baz.gitignore",
+                logger,
+            );
+
+            // Act
+            predicate("/foo/bar/myfile.txt");
+            const log = logger.getLog();
+
+            // Assert
+            expect(log).toMatchInlineSnapshot(
+                `"Verbose  IGNORED  : ../../../../foo/bar/myfile.txt by ../../../../foo/bar/baz.gitignore"`,
+            );
+        });
+
+        it("should log if a file is unignored", async () => {
+            // Arrange
+            const logger = new StringLogger(true);
+            jest.spyOn(ignore, "default").mockReturnValue({
+                add: jest.fn().mockReturnThis(),
+                test: jest.fn(() => ({
+                    ignored: false,
+                    unignored: true,
+                })),
+            } as any);
+            jest.spyOn(fsasync, "readFile").mockResolvedValue("*.txt\n");
+            const predicate = await ignoreFileToFunction(
+                "/foo/bar/baz.gitignore",
+                logger,
+            );
+
+            // Act
+            predicate("/foo/bar/myfile.txt");
+            const log = logger.getLog();
+
+            // Assert
+            expect(log).toMatchInlineSnapshot(
+                `"Verbose  UNIGNORED: ../../../../foo/bar/myfile.txt by ../../../../foo/bar/baz.gitignore"`,
+            );
+        });
+
+        it("should not log if a file is not covered by the ignore file", async () => {
+            // Arrange
+            const logger = new StringLogger(true);
+            jest.spyOn(ignore, "default").mockReturnValue({
+                add: jest.fn().mockReturnThis(),
+                test: jest.fn(() => ({
+                    ignored: false,
+                    unignored: false,
+                })),
+            } as any);
+            jest.spyOn(fsasync, "readFile").mockResolvedValue("*.txt\n");
+            const predicate = await ignoreFileToFunction(
+                "/foo/bar/baz.gitignore",
+                logger,
+            );
+
+            // Act
+            predicate("/foo/bar/myfile.txt");
+            const log = logger.getLog();
+
+            // Assert
+            expect(log).toMatchInlineSnapshot(`""`);
         });
     });
 });
