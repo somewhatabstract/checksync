@@ -30,7 +30,7 @@ jobs:
     - name: Static Types
       run: yarn typecheck
     - name: Changesets check
-      uses: Khan/actions@check-for-changeset-v0
+      uses: Khan/actions@check-for-changeset-v0.1.0
       if: |
         github.actor != 'dependabot[bot]' &&
         github.actor != 'dependabot-preview[bot]' &&
