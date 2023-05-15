@@ -7,10 +7,12 @@ import StringLogger from "../string-logger";
 
 import ignoreFileToFunction from "../ignore-file-to-function";
 
+import Format from "../format";
+
 jest.mock("fs/promises");
 jest.mock("ignore");
 
-describe("ignoreFileToAllowPredicate", () => {
+describe("ignoreFileToFunction", () => {
     it("should resolve to a function", async () => {
         // Arrange
         const NullLogger = new Logger(null);
@@ -136,6 +138,7 @@ describe("ignoreFileToAllowPredicate", () => {
 
         it("should log if a file is ignored", async () => {
             // Arrange
+            jest.spyOn(Format, "cwdFilePath").mockImplementation((f) => f);
             const logger = new StringLogger(true);
             jest.spyOn(ignore, "default").mockReturnValue({
                 add: jest.fn().mockReturnThis(),
@@ -156,12 +159,13 @@ describe("ignoreFileToAllowPredicate", () => {
 
             // Assert
             expect(log).toMatchInlineSnapshot(
-                `"Verbose  IGNORED  : ../../../../foo/bar/myfile.txt by ../../../../foo/bar/baz.gitignore"`,
+                `"Verbose  IGNORED  : /foo/bar/myfile.txt by /foo/bar/baz.gitignore"`,
             );
         });
 
         it("should log if a file is unignored", async () => {
             // Arrange
+            jest.spyOn(Format, "cwdFilePath").mockImplementation((f) => f);
             const logger = new StringLogger(true);
             jest.spyOn(ignore, "default").mockReturnValue({
                 add: jest.fn().mockReturnThis(),
@@ -182,7 +186,7 @@ describe("ignoreFileToAllowPredicate", () => {
 
             // Assert
             expect(log).toMatchInlineSnapshot(
-                `"Verbose  UNIGNORED: ../../../../foo/bar/myfile.txt by ../../../../foo/bar/baz.gitignore"`,
+                `"Verbose  UNIGNORED: /foo/bar/myfile.txt by /foo/bar/baz.gitignore"`,
             );
         });
 
