@@ -52,8 +52,10 @@ export default async (
 
     log.verbose(() => `Ignore files: ${JSON.stringify(ignoreFiles, null, 4)}`);
 
-    // Now, we load the ignore files and create a predicate for each of them.
-    const predicates = await ignoreFilesToFunctions(ignoreFiles, log);
+    // Now, we load the ignore files and create a function for each of them
+    // that will tell us what it wants to do with any specific file; ignore,
+    // unignore, or no-op.
+    const ignoreStateFunctions = await ignoreFilesToFunctions(ignoreFiles, log);
 
     // Finally, we return a predicate that checks a given file path against
     // each of the predicates we've loaded.
@@ -62,10 +64,18 @@ export default async (
             throw new Error("Expected absolute file path.");
         }
         return (
-            predicates.reduce((acc, predicate) => {
-                const result = predicate(filePath);
-                return result == null ? acc : result;
-            }, undefined as boolean | undefined) ?? true
+            ignoreStateFunctions.reduce(
+                (acc, ignoreStateFn) => {
+                    const result = ignoreStateFn(filePath);
+
+                    // If the ignore file has an opinion, we change to that
+                    // opinion. Otherwise, we keep the previous opinion.
+                    return result == null ? acc : result;
+                },
+                // We start without an opinion - if we don't reach an opinion
+                // by the end, then we allow the file.
+                undefined as boolean | undefined,
+            ) ?? true
         );
     };
 };
