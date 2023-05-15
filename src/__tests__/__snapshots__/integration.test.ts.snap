@@ -34,10 +34,10 @@ Looks like you changed the target content for sync-tag 'update_me' in 'checksums
 Make sure you've made the parallel changes in the source file, if necessary (1234 != 1992689801)
 Mismatch checksums_need_updating/b.py:3
 Looks like you changed the target content for sync-tag 'update_me' in 'checksums_need_updating/a.js:4'
-Make sure you've made the parallel changes in the source file, if necessary (4567 != 69935514)
+Make sure you've made the parallel changes in the source file, if necessary (4567 != 2050223083)
 Mismatch checksums_need_updating/c.jsx:3
 Looks like you changed the target content for sync-tag 'update_me' in 'checksums_need_updating/a.js:5'
-Make sure you've made the parallel changes in the source file, if necessary (123 != 69935514)
+Make sure you've made the parallel changes in the source file, if necessary (123 != 2050223083)
 
 <group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
 
@@ -81,11 +81,11 @@ Updated checksum for sync-tag 'update_me' referencing 'checksums_need_updating/c
 Verbose  checksums_need_updating/b.py
 File has errors; skipping auto-fix
 Fix      checksums_need_updating/b.py:3
-Updated checksum for sync-tag 'update_me' referencing 'checksums_need_updating/a.js:4' from 4567 to 69935514.
+Updated checksum for sync-tag 'update_me' referencing 'checksums_need_updating/a.js:4' from 4567 to 2050223083.
 Verbose  checksums_need_updating/c.jsx
 File has errors; skipping auto-fix
 Fix      checksums_need_updating/c.jsx:3
-Updated checksum for sync-tag 'update_me' referencing 'checksums_need_updating/a.js:5' from 123 to 69935514.
+Updated checksum for sync-tag 'update_me' referencing 'checksums_need_updating/a.js:5' from 123 to 2050223083.
 
 <group 3 file(s) would have been fixed.
 To fix, run: >
@@ -157,32 +157,32 @@ Verbose  Discovered paths: [
         "__examples__/checksums_need_updating/b.py": [
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'update_me' in 'checksums_need_updating/a.js:4'. Make sure you've made the parallel changes in the source file, if necessary (4567 != 69935514)",
+                "reason": "Looks like you changed the target content for sync-tag 'update_me' in 'checksums_need_updating/a.js:4'. Make sure you've made the parallel changes in the source file, if necessary (4567 != 2050223083)",
                 "location": {
                     "line": 4
                 },
                 "fix": {
                     "type": "replace",
                     "line": 3,
-                    "text": "# sync-start:update_me 69935514 __examples__/checksums_need_updating/a.js",
+                    "text": "# sync-start:update_me 2050223083 __examples__/checksums_need_updating/a.js",
                     "declaration": "# sync-start:update_me 4567 __examples__/checksums_need_updating/a.js",
-                    "description": "Updated checksum for sync-tag 'update_me' referencing 'checksums_need_updating/a.js:4' from 4567 to 69935514."
+                    "description": "Updated checksum for sync-tag 'update_me' referencing 'checksums_need_updating/a.js:4' from 4567 to 2050223083."
                 }
             }
         ],
         "__examples__/checksums_need_updating/c.jsx": [
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'update_me' in 'checksums_need_updating/a.js:5'. Make sure you've made the parallel changes in the source file, if necessary (123 != 69935514)",
+                "reason": "Looks like you changed the target content for sync-tag 'update_me' in 'checksums_need_updating/a.js:5'. Make sure you've made the parallel changes in the source file, if necessary (123 != 2050223083)",
                 "location": {
                     "line": 5
                 },
                 "fix": {
                     "type": "replace",
                     "line": 3,
-                    "text": "        {/* sync-start:update_me 69935514 __examples__/checksums_need_updating/a.js */}",
+                    "text": "        {/* sync-start:update_me 2050223083 __examples__/checksums_need_updating/a.js */}",
                     "declaration": "        {/* sync-start:update_me 123 __examples__/checksums_need_updating/a.js */}",
-                    "description": "Updated checksum for sync-tag 'update_me' referencing 'checksums_need_updating/a.js:5' from 123 to 69935514."
+                    "description": "Updated checksum for sync-tag 'update_me' referencing 'checksums_need_updating/a.js:5' from 123 to 2050223083."
                 }
             }
         ]
@@ -221,10 +221,10 @@ Looks like you changed the target content for sync-tag 'content_after_start' in 
 Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)
 Mismatch content_after_start/b.py:3
 Looks like you changed the target content for sync-tag 'content_after_start' in 'content_after_start/a.js:3'
-Make sure you've made the parallel changes in the source file, if necessary (No checksum != 1955864582)
+Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)
 Mismatch content_after_start/b.py:4
 Looks like you changed the target content for sync-tag 'content_after_start' in 'content_after_start/c.js:3'
-Make sure you've made the parallel changes in the source file, if necessary (No checksum != 2118049638)
+Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)
 Error    content_after_start/c.js:5
 Sync-start for 'content_after_start' found after content started
 Mismatch content_after_start/c.js:3
@@ -277,9 +277,9 @@ Updated checksum for sync-tag 'content_after_start' referencing 'content_after_s
 Verbose  content_after_start/b.py
 File has errors; skipping auto-fix
 Fix      content_after_start/b.py:3
-Updated checksum for sync-tag 'content_after_start' referencing 'content_after_start/a.js:3' from no checksum to 1955864582.
+Updated checksum for sync-tag 'content_after_start' referencing 'content_after_start/a.js:3' from no checksum to 770446101.
 Fix      content_after_start/b.py:4
-Updated checksum for sync-tag 'content_after_start' referencing 'content_after_start/c.js:3' from no checksum to 2118049638.
+Updated checksum for sync-tag 'content_after_start' referencing 'content_after_start/c.js:3' from no checksum to 770446101.
 Error    content_after_start/c.js:5
 Sync-start for 'content_after_start' found after content started
 Error    content_after_start/c.js:5
@@ -345,30 +345,30 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
         "__examples__/content_after_start/b.py": [
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in 'content_after_start/a.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 1955864582)",
+                "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in 'content_after_start/a.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)",
                 "location": {
                     "line": 3
                 },
                 "fix": {
                     "type": "replace",
                     "line": 3,
-                    "text": "# sync-start:content_after_start 1955864582 __examples__/content_after_start/a.js",
+                    "text": "# sync-start:content_after_start 770446101 __examples__/content_after_start/a.js",
                     "declaration": "# sync-start:content_after_start __examples__/content_after_start/a.js",
-                    "description": "Updated checksum for sync-tag 'content_after_start' referencing 'content_after_start/a.js:3' from no checksum to 1955864582."
+                    "description": "Updated checksum for sync-tag 'content_after_start' referencing 'content_after_start/a.js:3' from no checksum to 770446101."
                 }
             },
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in 'content_after_start/c.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 2118049638)",
+                "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in 'content_after_start/c.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)",
                 "location": {
                     "line": 3
                 },
                 "fix": {
                     "type": "replace",
                     "line": 4,
-                    "text": "# sync-start:content_after_start 2118049638 __examples__/content_after_start/c.js",
+                    "text": "# sync-start:content_after_start 770446101 __examples__/content_after_start/c.js",
                     "declaration": "# sync-start:content_after_start __examples__/content_after_start/c.js",
-                    "description": "Updated checksum for sync-tag 'content_after_start' referencing 'content_after_start/c.js:3' from no checksum to 2118049638."
+                    "description": "Updated checksum for sync-tag 'content_after_start' referencing 'content_after_start/c.js:3' from no checksum to 770446101."
                 }
             }
         ],
@@ -654,7 +654,7 @@ Looks like you changed the target content for sync-tag 'update_me' in 'duplicate
 Make sure you've made the parallel changes in the source file, if necessary (12345 != 249234014)
 Mismatch duplicate-target/b.py:3
 Looks like you changed the target content for sync-tag 'update_me' in 'duplicate-target/a.js:4'
-Make sure you've made the parallel changes in the source file, if necessary (4567 != 43835076)
+Make sure you've made the parallel changes in the source file, if necessary (4567 != 2050223083)
 
 <group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
 
@@ -697,7 +697,7 @@ Removed duplicate target for sync-tag 'update_me'
 Verbose  duplicate-target/b.py
 File has errors; skipping auto-fix
 Fix      duplicate-target/b.py:3
-Updated checksum for sync-tag 'update_me' referencing 'duplicate-target/a.js:4' from 4567 to 43835076.
+Updated checksum for sync-tag 'update_me' referencing 'duplicate-target/a.js:4' from 4567 to 2050223083.
 
 <group 2 file(s) would have been fixed.
 To fix, run: >
@@ -781,16 +781,16 @@ Verbose  Discovered paths: [
         "__examples__/duplicate-target/b.py": [
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'update_me' in 'duplicate-target/a.js:4'. Make sure you've made the parallel changes in the source file, if necessary (4567 != 43835076)",
+                "reason": "Looks like you changed the target content for sync-tag 'update_me' in 'duplicate-target/a.js:4'. Make sure you've made the parallel changes in the source file, if necessary (4567 != 2050223083)",
                 "location": {
                     "line": 4
                 },
                 "fix": {
                     "type": "replace",
                     "line": 3,
-                    "text": "# sync-start:update_me 43835076 __examples__/duplicate-target/a.js",
+                    "text": "# sync-start:update_me 2050223083 __examples__/duplicate-target/a.js",
                     "declaration": "# sync-start:update_me 4567 __examples__/duplicate-target/a.js",
-                    "description": "Updated checksum for sync-tag 'update_me' referencing 'duplicate-target/a.js:4' from 4567 to 43835076."
+                    "description": "Updated checksum for sync-tag 'update_me' referencing 'duplicate-target/a.js:4' from 4567 to 2050223083."
                 }
             }
         ]
@@ -1690,7 +1690,7 @@ Looks like you changed the target content for sync-tag 'example_one' in 'no_chec
 Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)
 Mismatch no_checksums/example_one-b.py:3
 Looks like you changed the target content for sync-tag 'example_one' in 'no_checksums/example_one-a.js:3'
-Make sure you've made the parallel changes in the source file, if necessary (No checksum != 2040209454)
+Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)
 
 <group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
 
@@ -1731,7 +1731,7 @@ Updated checksum for sync-tag 'example_one' referencing 'no_checksums/example_on
 Verbose  no_checksums/example_one-b.py
 File has errors; skipping auto-fix
 Fix      no_checksums/example_one-b.py:3
-Updated checksum for sync-tag 'example_one' referencing 'no_checksums/example_one-a.js:3' from no checksum to 2040209454.
+Updated checksum for sync-tag 'example_one' referencing 'no_checksums/example_one-a.js:3' from no checksum to 770446101.
 
 <group 2 file(s) would have been fixed.
 To fix, run: >
@@ -1788,16 +1788,16 @@ Verbose  Discovered paths: [
         "__examples__/no_checksums/example_one-b.py": [
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'example_one' in 'no_checksums/example_one-a.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 2040209454)",
+                "reason": "Looks like you changed the target content for sync-tag 'example_one' in 'no_checksums/example_one-a.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)",
                 "location": {
                     "line": 3
                 },
                 "fix": {
                     "type": "replace",
                     "line": 3,
-                    "text": "# sync-start:example_one 2040209454 __examples__/no_checksums/example_one-a.js",
+                    "text": "# sync-start:example_one 770446101 __examples__/no_checksums/example_one-a.js",
                     "declaration": "# sync-start:example_one __examples__/no_checksums/example_one-a.js",
-                    "description": "Updated checksum for sync-tag 'example_one' referencing 'no_checksums/example_one-a.js:3' from no checksum to 2040209454."
+                    "description": "Updated checksum for sync-tag 'example_one' referencing 'no_checksums/example_one-a.js:3' from no checksum to 770446101."
                 }
             }
         ]
@@ -1833,7 +1833,7 @@ Error    no_self_reference/example.js:3
 Sync-tag 'example_three' cannot target itself
 Mismatch no_self_reference/example.js:3
 Looks like you changed the target content for sync-tag 'example_three' in 'no_self_reference/example.js:3'
-Make sure you've made the parallel changes in the source file, if necessary (No checksum != 2140856177)
+Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)
 
 <group 🛑  Desynchronized blocks detected and parsing errors were found. Fix the errors, update the blocks, then update the sync-start tags using: >
 
@@ -1922,16 +1922,16 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
             },
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'example_three' in 'no_self_reference/example.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 2140856177)",
+                "reason": "Looks like you changed the target content for sync-tag 'example_three' in 'no_self_reference/example.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)",
                 "location": {
                     "line": 3
                 },
                 "fix": {
                     "type": "replace",
                     "line": 3,
-                    "text": "// sync-start:example_three 2140856177 __examples__/no_self_reference/example.js",
+                    "text": "// sync-start:example_three 770446101 __examples__/no_self_reference/example.js",
                     "declaration": "// sync-start:example_three __examples__/no_self_reference/example.js",
-                    "description": "Updated checksum for sync-tag 'example_three' referencing 'no_self_reference/example.js:3' from no checksum to 2140856177."
+                    "description": "Updated checksum for sync-tag 'example_three' referencing 'no_self_reference/example.js:3' from no checksum to 770446101."
                 }
             }
         ]
