@@ -1106,10 +1106,10 @@ Verbose  Exclude globs: [
     "**/excluded/**"
 ]
 Verbose  IGNORED  : __examples__/ignore_files_at_different_depths/ignore-file.txt by __examples__/ignore_files_at_different_depths/ignore-file.txt
-Verbose  IGNORED  : __examples__/ignore_files_at_different_depths/ignorethesewhennotinsome/bad-sync-tags-never-parsed.js by __examples__/ignore_files_at_different_depths/ignore-file.txt
 Verbose  IGNORED  : __examples__/ignore_files_at_different_depths/some/alsoignorethis.txt by __examples__/ignore_files_at_different_depths/some/ignore-file.txt
 Verbose  IGNORED  : __examples__/ignore_files_at_different_depths/some/ignore-file.txt by __examples__/ignore_files_at_different_depths/ignore-file.txt
 Verbose  IGNORED  : __examples__/ignore_files_at_different_depths/some/ignore-file.txt by __examples__/ignore_files_at_different_depths/some/ignore-file.txt
+Verbose  IGNORED  : __examples__/ignore_files_at_different_depths/ignorethesewhennotinsome/bad-sync-tags-never-parsed.js by __examples__/ignore_files_at_different_depths/ignore-file.txt
 Verbose  IGNORED  : __examples__/ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js by __examples__/ignore_files_at_different_depths/ignore-file.txt
 Verbose  UNIGNORED: __examples__/ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js by __examples__/ignore_files_at_different_depths/some/ignore-file.txt
 Verbose  Discovered paths: [
