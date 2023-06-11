@@ -2,6 +2,7 @@ import Logger from "../logger";
 import * as FindConfigurationFile from "../find-configuration-file";
 import * as LoadConfigurationFile from "../load-configuration-file";
 import * as OptionsFromArgs from "../options-from-args";
+import * as SetCwd from "../set-cwd";
 
 import determineOptions from "../determine-options";
 import defaultOptions from "../default-options";
@@ -9,6 +10,7 @@ import defaultOptions from "../default-options";
 jest.mock("../find-configuration-file");
 jest.mock("../load-configuration-file");
 jest.mock("../options-from-args");
+jest.mock("../set-cwd");
 
 describe("#determineOptions", () => {
     it("should convert args to options", async () => {
@@ -28,7 +30,7 @@ describe("#determineOptions", () => {
         expect(optionsSpy).toHaveBeenCalledWith(args);
     });
 
-    describe("when config argument is false", () => {
+    describe("when config argument is false (i.e. --no-config)", () => {
         it("should not search for a configuration file", async () => {
             // Arrange;
             const findConfigSpy = jest.spyOn(FindConfigurationFile, "default");
@@ -59,6 +61,22 @@ describe("#determineOptions", () => {
 
             // Assert
             expect(loadConfigSpy).not.toHaveBeenCalled();
+        });
+
+        it("should not change the working directory", () => {
+            // Arrange
+            const setCwdSpy = jest.spyOn(SetCwd, "default");
+            const args = {
+                _: ["foo"],
+                config: false,
+            };
+            const NullLogger = new Logger(null, true);
+
+            // Act
+            determineOptions(args, NullLogger);
+
+            // Assert
+            expect(setCwdSpy).not.toHaveBeenCalled();
         });
 
         it("should return the given arguments, combined with the default options", async () => {
@@ -102,6 +120,45 @@ describe("#determineOptions", () => {
 
             // Assert
             expect(findConfigSpy).toHaveBeenCalledWith("root", NullLogger);
+        });
+
+        it("should set the working directory to the location of the config file if a config file is found", async () => {
+            // Arrange
+            jest.spyOn(FindConfigurationFile, "default").mockReturnValue(
+                "/path/to/config/file",
+            );
+            const setCwdSpy = jest.spyOn(SetCwd, "default");
+            const args = {
+                _: ["foo"],
+                rootMarker: "root",
+            };
+            const NullLogger = new Logger(null, true);
+
+            // Act
+            await determineOptions(args, NullLogger);
+
+            // Assert
+            expect(setCwdSpy).toHaveBeenCalledWith(
+                NullLogger,
+                "/path/to/config",
+            );
+        });
+
+        it("should not set the working directory if no config file is found", async () => {
+            // Arrange
+            jest.spyOn(FindConfigurationFile, "default").mockReturnValue(null);
+            const setCwdSpy = jest.spyOn(SetCwd, "default");
+            const args = {
+                _: ["foo"],
+                rootMarker: "root",
+            };
+            const NullLogger = new Logger(null, true);
+
+            // Act
+            await determineOptions(args, NullLogger);
+
+            // Assert
+            expect(setCwdSpy).not.toHaveBeenCalled();
         });
 
         it("should attempt to load the found config file", async () => {
@@ -177,6 +234,25 @@ describe("#determineOptions", () => {
 
             // Assert
             expect(findConfigSpy).not.toHaveBeenCalled();
+        });
+
+        it("should set the working directory to the location of the configuration file", async () => {
+            // Arrange
+            const setCwdSpy = jest.spyOn(SetCwd, "default");
+            const args = {
+                _: ["foo"],
+                config: "/path/to/config/file",
+            };
+            const NullLogger = new Logger(null, true);
+
+            // Act
+            await determineOptions(args, NullLogger);
+
+            // Assert
+            expect(setCwdSpy).toHaveBeenCalledWith(
+                NullLogger,
+                "/path/to/config",
+            );
         });
 
         it("should attempt to load the given configuration file", async () => {

@@ -5,6 +5,8 @@ import {optionsFromArgs} from "./options-from-args";
 
 import {ILog, Options} from "./types";
 import {ParsedArgs} from "minimist";
+import path from "path";
+import setCwd from "./set-cwd";
 
 export default async function determineOptions(
     args: ParsedArgs,
@@ -33,6 +35,17 @@ export default async function determineOptions(
             return `Using --config file: ${configFilePath}`;
         }
     });
+
+    if (configFilePath != null) {
+        // We found a config file.
+        // In order for paths defined in the config file to work
+        // deterministically, we need to make sure the current working
+        // directory is that of the config file.
+        // This is intended to override the --cwd argument, so it
+        // is expected that the cwd may change twice if there is a --cwd
+        // argument that then discovers a config file.
+        setCwd(log, path.dirname(configFilePath));
+    }
 
     const configFromFile =
         configFilePath == null

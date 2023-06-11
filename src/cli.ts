@@ -11,6 +11,7 @@ import logHelp from "./help";
 import {version} from "../package.json";
 import determineOptions from "./determine-options";
 import exit from "./exit";
+import setCwd from "./set-cwd";
 
 /**
  * Run the command line.
@@ -96,13 +97,7 @@ export const run = (launchFilePath: string): Promise<void> => {
     // configuration file discovery and other tasks will be working off a
     // different working directory.
     if (args.cwd != null) {
-        log.verbose(() => `Changing working directory to ${args.cwd}`);
-        try {
-            process.chdir(args.cwd);
-        } catch (e) {
-            log.error(`Unable to set working directory: ${e}`);
-            exit(log, ExitCode.CATASTROPHIC);
-        }
+        setCwd(log, args.cwd);
     }
 
     // Parse arguments and configurations to get our options.

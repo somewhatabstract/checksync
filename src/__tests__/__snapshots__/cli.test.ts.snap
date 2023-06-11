@@ -66,6 +66,21 @@ Where:
                            [1m[33m.checksyncrc[39m[22m
                            [1m[33m.checksyncrc.json[39m[22m
 
+                       Paths within the config file are resolved relative to
+                       the location of the config file.
+
+    [1m[33m--cwd[39m[22m              The current working directory to use when searching
+                       for a configuration file, and resolving relative paths
+                       and globs.
+
+                       The [1m[33m--config[39m[22m path takes precedence over this
+                       argument. If there is no [1m[33m--config[39m[22m argument, this
+                       location is used to find a config file. If a config file
+                       is found, the working directory will then change to
+                       the location of that file, otherwise this argument's
+                       value is used when resolve the remainder of the given
+                       arguments.
+
     [1m[33m--dry-run,-n[39m[22m       Ignored unless supplied with [1m[33m--update-tags[39m[22m.
 
     [1m[33m--help,-h[39m[22m          Outputs this help text.

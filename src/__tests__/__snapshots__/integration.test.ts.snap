@@ -1,22 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Integration Tests (see __examples__ folder) should report example checksums_need_updating to match snapshot 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["checksums_need_updating/**"]}
+"Verbose  Options from arguments: {"includeGlobs":["**/checksums_need_updating/**"]}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["checksums_need_updating/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/checksums_need_updating/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "checksums_need_updating/**"
+    "**/checksums_need_updating/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -26,43 +27,44 @@ Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/checksums_need_updating/b.py",
     "ROOT_DIR/__examples__/checksums_need_updating/c.jsx"
 ]
-Mismatch checksums_need_updating/a.js:4
-Looks like you changed the target content for sync-tag 'update_me' in 'checksums_need_updating/b.py:3'
+Mismatch __examples__/checksums_need_updating/a.js:4
+Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/b.py:3'
 Make sure you've made the parallel changes in the source file, if necessary (45678 != 249234014)
-Mismatch checksums_need_updating/a.js:5
-Looks like you changed the target content for sync-tag 'update_me' in 'checksums_need_updating/c.jsx:3'
+Mismatch __examples__/checksums_need_updating/a.js:5
+Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/c.jsx:3'
 Make sure you've made the parallel changes in the source file, if necessary (1234 != 1992689801)
-Mismatch checksums_need_updating/b.py:3
-Looks like you changed the target content for sync-tag 'update_me' in 'checksums_need_updating/a.js:4'
+Mismatch __examples__/checksums_need_updating/b.py:3
+Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/a.js:4'
 Make sure you've made the parallel changes in the source file, if necessary (4567 != 2050223083)
-Mismatch checksums_need_updating/c.jsx:3
-Looks like you changed the target content for sync-tag 'update_me' in 'checksums_need_updating/a.js:5'
+Mismatch __examples__/checksums_need_updating/c.jsx:3
+Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/a.js:5'
 Make sure you've made the parallel changes in the source file, if necessary (123 != 2050223083)
 
 <group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
 
-  checksync -u checksums_need_updating/a.js checksums_need_updating/b.py checksums_need_updating/c.jsx
+  checksync -u __examples__/checksums_need_updating/a.js __examples__/checksums_need_updating/b.py __examples__/checksums_need_updating/c.jsx
 <end_group>"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example checksums_need_updating to match snapshot with autofix dryrun 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["checksums_need_updating/**"],"autoFix":true,"dryRun":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/checksums_need_updating/**"],"autoFix":true,"dryRun":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["checksums_need_updating/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/checksums_need_updating/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "checksums_need_updating/**"
+    "**/checksums_need_updating/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -72,45 +74,46 @@ Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/checksums_need_updating/b.py",
     "ROOT_DIR/__examples__/checksums_need_updating/c.jsx"
 ]
-Verbose  checksums_need_updating/a.js
+Verbose  __examples__/checksums_need_updating/a.js
 File has errors; skipping auto-fix
-Fix      checksums_need_updating/a.js:4
-Updated checksum for sync-tag 'update_me' referencing 'checksums_need_updating/b.py:3' from 45678 to 249234014.
-Fix      checksums_need_updating/a.js:5
-Updated checksum for sync-tag 'update_me' referencing 'checksums_need_updating/c.jsx:3' from 1234 to 1992689801.
-Verbose  checksums_need_updating/b.py
+Fix      __examples__/checksums_need_updating/a.js:4
+Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/b.py:3' from 45678 to 249234014.
+Fix      __examples__/checksums_need_updating/a.js:5
+Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/c.jsx:3' from 1234 to 1992689801.
+Verbose  __examples__/checksums_need_updating/b.py
 File has errors; skipping auto-fix
-Fix      checksums_need_updating/b.py:3
-Updated checksum for sync-tag 'update_me' referencing 'checksums_need_updating/a.js:4' from 4567 to 2050223083.
-Verbose  checksums_need_updating/c.jsx
+Fix      __examples__/checksums_need_updating/b.py:3
+Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/a.js:4' from 4567 to 2050223083.
+Verbose  __examples__/checksums_need_updating/c.jsx
 File has errors; skipping auto-fix
-Fix      checksums_need_updating/c.jsx:3
-Updated checksum for sync-tag 'update_me' referencing 'checksums_need_updating/a.js:5' from 123 to 2050223083.
+Fix      __examples__/checksums_need_updating/c.jsx:3
+Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/a.js:5' from 123 to 2050223083.
 
 <group 3 file(s) would have been fixed.
 To fix, run: >
-  checksync -u checksums_need_updating/a.js checksums_need_updating/b.py checksums_need_updating/c.jsx
+  checksync -u __examples__/checksums_need_updating/a.js __examples__/checksums_need_updating/b.py __examples__/checksums_need_updating/c.jsx
 <end_group>
 🎉  Everything is in sync!"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example checksums_need_updating to match snapshot with json 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["checksums_need_updating/**"],"json":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/checksums_need_updating/**"],"json":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["checksums_need_updating/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/checksums_need_updating/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "checksums_need_updating/**"
+    "**/checksums_need_updating/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -122,12 +125,12 @@ Verbose  Discovered paths: [
 ]
 {
     "version": "0.0.0",
-    "launchString": "checksync -u checksums_need_updating/a.js checksums_need_updating/b.py checksums_need_updating/c.jsx",
+    "launchString": "checksync -u __examples__/checksums_need_updating/a.js __examples__/checksums_need_updating/b.py __examples__/checksums_need_updating/c.jsx",
     "files": {
         "__examples__/checksums_need_updating/a.js": [
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'update_me' in 'checksums_need_updating/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (45678 != 249234014)",
+                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (45678 != 249234014)",
                 "location": {
                     "line": 3
                 },
@@ -136,12 +139,12 @@ Verbose  Discovered paths: [
                     "line": 4,
                     "text": "    // sync-start:update_me 249234014 __examples__/checksums_need_updating/b.py",
                     "declaration": "    // sync-start:update_me 45678 __examples__/checksums_need_updating/b.py",
-                    "description": "Updated checksum for sync-tag 'update_me' referencing 'checksums_need_updating/b.py:3' from 45678 to 249234014."
+                    "description": "Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/b.py:3' from 45678 to 249234014."
                 }
             },
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'update_me' in 'checksums_need_updating/c.jsx:3'. Make sure you've made the parallel changes in the source file, if necessary (1234 != 1992689801)",
+                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/c.jsx:3'. Make sure you've made the parallel changes in the source file, if necessary (1234 != 1992689801)",
                 "location": {
                     "line": 3
                 },
@@ -150,14 +153,14 @@ Verbose  Discovered paths: [
                     "line": 5,
                     "text": "    // sync-start:update_me 1992689801 __examples__/checksums_need_updating/c.jsx",
                     "declaration": "    // sync-start:update_me 1234 __examples__/checksums_need_updating/c.jsx",
-                    "description": "Updated checksum for sync-tag 'update_me' referencing 'checksums_need_updating/c.jsx:3' from 1234 to 1992689801."
+                    "description": "Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/c.jsx:3' from 1234 to 1992689801."
                 }
             }
         ],
         "__examples__/checksums_need_updating/b.py": [
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'update_me' in 'checksums_need_updating/a.js:4'. Make sure you've made the parallel changes in the source file, if necessary (4567 != 2050223083)",
+                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/a.js:4'. Make sure you've made the parallel changes in the source file, if necessary (4567 != 2050223083)",
                 "location": {
                     "line": 4
                 },
@@ -166,14 +169,14 @@ Verbose  Discovered paths: [
                     "line": 3,
                     "text": "# sync-start:update_me 2050223083 __examples__/checksums_need_updating/a.js",
                     "declaration": "# sync-start:update_me 4567 __examples__/checksums_need_updating/a.js",
-                    "description": "Updated checksum for sync-tag 'update_me' referencing 'checksums_need_updating/a.js:4' from 4567 to 2050223083."
+                    "description": "Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/a.js:4' from 4567 to 2050223083."
                 }
             }
         ],
         "__examples__/checksums_need_updating/c.jsx": [
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'update_me' in 'checksums_need_updating/a.js:5'. Make sure you've made the parallel changes in the source file, if necessary (123 != 2050223083)",
+                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/a.js:5'. Make sure you've made the parallel changes in the source file, if necessary (123 != 2050223083)",
                 "location": {
                     "line": 5
                 },
@@ -182,7 +185,7 @@ Verbose  Discovered paths: [
                     "line": 3,
                     "text": "        {/* sync-start:update_me 2050223083 __examples__/checksums_need_updating/a.js */}",
                     "declaration": "        {/* sync-start:update_me 123 __examples__/checksums_need_updating/a.js */}",
-                    "description": "Updated checksum for sync-tag 'update_me' referencing 'checksums_need_updating/a.js:5' from 123 to 2050223083."
+                    "description": "Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/a.js:5' from 123 to 2050223083."
                 }
             }
         ]
@@ -191,22 +194,23 @@ Verbose  Discovered paths: [
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example content_after_start to match snapshot 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["content_after_start/**"]}
+"Verbose  Options from arguments: {"includeGlobs":["**/content_after_start/**"]}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["content_after_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/content_after_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "content_after_start/**"
+    "**/content_after_start/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -216,51 +220,52 @@ Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/content_after_start/b.py",
     "ROOT_DIR/__examples__/content_after_start/c.js"
 ]
-Mismatch content_after_start/a.js:3
-Looks like you changed the target content for sync-tag 'content_after_start' in 'content_after_start/b.py:3'
+Mismatch __examples__/content_after_start/a.js:3
+Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/b.py:3'
 Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)
-Mismatch content_after_start/b.py:3
-Looks like you changed the target content for sync-tag 'content_after_start' in 'content_after_start/a.js:3'
+Mismatch __examples__/content_after_start/b.py:3
+Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/a.js:3'
 Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)
-Mismatch content_after_start/b.py:4
-Looks like you changed the target content for sync-tag 'content_after_start' in 'content_after_start/c.js:3'
+Mismatch __examples__/content_after_start/b.py:4
+Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/c.js:3'
 Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)
-Error    content_after_start/c.js:5
+Error    __examples__/content_after_start/c.js:5
 Sync-start for 'content_after_start' found after content started
-Mismatch content_after_start/c.js:3
-Looks like you changed the target content for sync-tag 'content_after_start' in 'content_after_start/b.py:4'
+Mismatch __examples__/content_after_start/c.js:3
+Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/b.py:4'
 Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)
-Error    content_after_start/c.js:5
-No return tag named 'content_after_start' in 'content_after_start/a.js'
+Error    __examples__/content_after_start/c.js:5
+No return tag named 'content_after_start' in '__examples__/content_after_start/a.js'
 
 <group 🛑  Desynchronized blocks detected and parsing errors were found. Fix the errors, update the blocks, then update the sync-start tags using: >
 
-  checksync -u content_after_start/a.js content_after_start/b.py content_after_start/c.js
+  checksync -u __examples__/content_after_start/a.js __examples__/content_after_start/b.py __examples__/content_after_start/c.js
 <end_group>
 
 <group 🛑  Unfixable errors found. Fix the errors in these files and try again. >
-  content_after_start/c.js
+  __examples__/content_after_start/c.js
 <end_group>"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example content_after_start to match snapshot with autofix dryrun 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["content_after_start/**"],"autoFix":true,"dryRun":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/content_after_start/**"],"autoFix":true,"dryRun":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["content_after_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/content_after_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "content_after_start/**"
+    "**/content_after_start/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -270,48 +275,49 @@ Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/content_after_start/b.py",
     "ROOT_DIR/__examples__/content_after_start/c.js"
 ]
-Verbose  content_after_start/a.js
+Verbose  __examples__/content_after_start/a.js
 File has errors; skipping auto-fix
-Fix      content_after_start/a.js:3
-Updated checksum for sync-tag 'content_after_start' referencing 'content_after_start/b.py:3' from no checksum to 249234014.
-Verbose  content_after_start/b.py
+Fix      __examples__/content_after_start/a.js:3
+Updated checksum for sync-tag 'content_after_start' referencing '__examples__/content_after_start/b.py:3' from no checksum to 249234014.
+Verbose  __examples__/content_after_start/b.py
 File has errors; skipping auto-fix
-Fix      content_after_start/b.py:3
-Updated checksum for sync-tag 'content_after_start' referencing 'content_after_start/a.js:3' from no checksum to 770446101.
-Fix      content_after_start/b.py:4
-Updated checksum for sync-tag 'content_after_start' referencing 'content_after_start/c.js:3' from no checksum to 770446101.
-Error    content_after_start/c.js:5
+Fix      __examples__/content_after_start/b.py:3
+Updated checksum for sync-tag 'content_after_start' referencing '__examples__/content_after_start/a.js:3' from no checksum to 770446101.
+Fix      __examples__/content_after_start/b.py:4
+Updated checksum for sync-tag 'content_after_start' referencing '__examples__/content_after_start/c.js:3' from no checksum to 770446101.
+Error    __examples__/content_after_start/c.js:5
 Sync-start for 'content_after_start' found after content started
-Error    content_after_start/c.js:5
-No return tag named 'content_after_start' in 'content_after_start/a.js'
+Error    __examples__/content_after_start/c.js:5
+No return tag named 'content_after_start' in '__examples__/content_after_start/a.js'
 
 <group 3 file(s) would have been fixed.
 To fix, run: >
-  checksync -u content_after_start/a.js content_after_start/b.py content_after_start/c.js
+  checksync -u __examples__/content_after_start/a.js __examples__/content_after_start/b.py __examples__/content_after_start/c.js
 <end_group>
 
 <group 🛑  Could not update all tags due to unfixable errors. Fix the errors in these files and try again. >
-  content_after_start/c.js
+  __examples__/content_after_start/c.js
 <end_group>"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example content_after_start to match snapshot with json 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["content_after_start/**"],"json":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/content_after_start/**"],"json":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["content_after_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/content_after_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "content_after_start/**"
+    "**/content_after_start/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -324,12 +330,12 @@ Verbose  Discovered paths: [
 Error    🛑  Unfixable errors found. Fix the errors and try again.
 {
     "version": "0.0.0",
-    "launchString": "checksync -u content_after_start/a.js content_after_start/b.py content_after_start/c.js",
+    "launchString": "checksync -u __examples__/content_after_start/a.js __examples__/content_after_start/b.py __examples__/content_after_start/c.js",
     "files": {
         "__examples__/content_after_start/a.js": [
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in 'content_after_start/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)",
+                "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)",
                 "location": {
                     "line": 3
                 },
@@ -338,14 +344,14 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
                     "line": 3,
                     "text": "// sync-start:content_after_start 249234014 __examples__/content_after_start/b.py",
                     "declaration": "// sync-start:content_after_start __examples__/content_after_start/b.py",
-                    "description": "Updated checksum for sync-tag 'content_after_start' referencing 'content_after_start/b.py:3' from no checksum to 249234014."
+                    "description": "Updated checksum for sync-tag 'content_after_start' referencing '__examples__/content_after_start/b.py:3' from no checksum to 249234014."
                 }
             }
         ],
         "__examples__/content_after_start/b.py": [
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in 'content_after_start/a.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)",
+                "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/a.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)",
                 "location": {
                     "line": 3
                 },
@@ -354,12 +360,12 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
                     "line": 3,
                     "text": "# sync-start:content_after_start 770446101 __examples__/content_after_start/a.js",
                     "declaration": "# sync-start:content_after_start __examples__/content_after_start/a.js",
-                    "description": "Updated checksum for sync-tag 'content_after_start' referencing 'content_after_start/a.js:3' from no checksum to 770446101."
+                    "description": "Updated checksum for sync-tag 'content_after_start' referencing '__examples__/content_after_start/a.js:3' from no checksum to 770446101."
                 }
             },
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in 'content_after_start/c.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)",
+                "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/c.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)",
                 "location": {
                     "line": 3
                 },
@@ -368,7 +374,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
                     "line": 4,
                     "text": "# sync-start:content_after_start 770446101 __examples__/content_after_start/c.js",
                     "declaration": "# sync-start:content_after_start __examples__/content_after_start/c.js",
-                    "description": "Updated checksum for sync-tag 'content_after_start' referencing 'content_after_start/c.js:3' from no checksum to 770446101."
+                    "description": "Updated checksum for sync-tag 'content_after_start' referencing '__examples__/content_after_start/c.js:3' from no checksum to 770446101."
                 }
             }
         ],
@@ -382,7 +388,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
             },
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in 'content_after_start/b.py:4'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)",
+                "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/b.py:4'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)",
                 "location": {
                     "line": 4
                 },
@@ -391,11 +397,11 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
                     "line": 3,
                     "text": "// sync-start:content_after_start 249234014 __examples__/content_after_start/b.py",
                     "declaration": "// sync-start:content_after_start __examples__/content_after_start/b.py",
-                    "description": "Updated checksum for sync-tag 'content_after_start' referencing 'content_after_start/b.py:4' from no checksum to 249234014."
+                    "description": "Updated checksum for sync-tag 'content_after_start' referencing '__examples__/content_after_start/b.py:4' from no checksum to 249234014."
                 }
             },
             {
-                "reason": "No return tag named 'content_after_start' in 'content_after_start/a.js'",
+                "reason": "No return tag named 'content_after_start' in '__examples__/content_after_start/a.js'",
                 "code": "no-return-tag",
                 "location": {
                     "line": 5
@@ -407,22 +413,23 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example correct_checksums to match snapshot 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["correct_checksums/**"]}
+"Verbose  Options from arguments: {"includeGlobs":["**/correct_checksums/**"]}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["correct_checksums/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/correct_checksums/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "correct_checksums/**"
+    "**/correct_checksums/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -436,23 +443,24 @@ Verbose  Discovered paths: [
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example correct_checksums to match snapshot with autofix dryrun 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["correct_checksums/**"],"autoFix":true,"dryRun":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/correct_checksums/**"],"autoFix":true,"dryRun":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["correct_checksums/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/correct_checksums/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "correct_checksums/**"
+    "**/correct_checksums/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -466,22 +474,23 @@ Verbose  Discovered paths: [
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example correct_checksums to match snapshot with json 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["correct_checksums/**"],"json":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/correct_checksums/**"],"json":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["correct_checksums/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/correct_checksums/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "correct_checksums/**"
+    "**/correct_checksums/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -499,22 +508,23 @@ Verbose  Discovered paths: [
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example directory_target to match snapshot 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["directory_target/**"]}
+"Verbose  Options from arguments: {"includeGlobs":["**/directory_target/**"]}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["directory_target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/directory_target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "directory_target/**"
+    "**/directory_target/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -523,34 +533,35 @@ Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/directory_target/a_directory/somefile.js",
     "ROOT_DIR/__examples__/directory_target/example.js"
 ]
-Error    directory_target/example.js:3
+Error    __examples__/directory_target/example.js:3
 Sync-start for 'directory_target' points to '__examples__/directory_target/a_directory', which does not exist or is a directory
-Error    directory_target/example.js:3
-No return tag named 'directory_target' in 'directory_target/a_directory'
+Error    __examples__/directory_target/example.js:3
+No return tag named 'directory_target' in '__examples__/directory_target/a_directory'
 
 <group 🛑  Unfixable errors found. Fix the errors in these files and try again. >
-  directory_target/example.js
+  __examples__/directory_target/example.js
 <end_group>"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example directory_target to match snapshot with autofix dryrun 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["directory_target/**"],"autoFix":true,"dryRun":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/directory_target/**"],"autoFix":true,"dryRun":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["directory_target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/directory_target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "directory_target/**"
+    "**/directory_target/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -559,33 +570,34 @@ Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/directory_target/a_directory/somefile.js",
     "ROOT_DIR/__examples__/directory_target/example.js"
 ]
-Error    directory_target/example.js:3
+Error    __examples__/directory_target/example.js:3
 Sync-start for 'directory_target' points to '__examples__/directory_target/a_directory', which does not exist or is a directory
-Error    directory_target/example.js:3
-No return tag named 'directory_target' in 'directory_target/a_directory'
+Error    __examples__/directory_target/example.js:3
+No return tag named 'directory_target' in '__examples__/directory_target/a_directory'
 
 <group 🛑  Could not update all tags due to unfixable errors. Fix the errors in these files and try again. >
-  directory_target/example.js
+  __examples__/directory_target/example.js
 <end_group>"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example directory_target to match snapshot with json 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["directory_target/**"],"json":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/directory_target/**"],"json":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["directory_target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/directory_target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "directory_target/**"
+    "**/directory_target/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -608,7 +620,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
                 "code": "file-does-not-exist"
             },
             {
-                "reason": "No return tag named 'directory_target' in 'directory_target/a_directory'",
+                "reason": "No return tag named 'directory_target' in '__examples__/directory_target/a_directory'",
                 "code": "no-return-tag",
                 "location": {
                     "line": 3
@@ -620,22 +632,23 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example duplicate-target to match snapshot 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["duplicate-target/**"]}
+"Verbose  Options from arguments: {"includeGlobs":["**/duplicate-target/**"]}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["duplicate-target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/duplicate-target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "duplicate-target/**"
+    "**/duplicate-target/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -644,42 +657,43 @@ Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/duplicate-target/a.js",
     "ROOT_DIR/__examples__/duplicate-target/b.py"
 ]
-Warning  duplicate-target/a.js:5
+Warning  __examples__/duplicate-target/a.js:5
 Duplicate target for sync-tag 'update_me'
-Mismatch duplicate-target/a.js:4
-Looks like you changed the target content for sync-tag 'update_me' in 'duplicate-target/b.py:3'
+Mismatch __examples__/duplicate-target/a.js:4
+Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/b.py:3'
 Make sure you've made the parallel changes in the source file, if necessary (12352 != 249234014)
-Mismatch duplicate-target/a.js:5
-Looks like you changed the target content for sync-tag 'update_me' in 'duplicate-target/b.py:3'
+Mismatch __examples__/duplicate-target/a.js:5
+Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/b.py:3'
 Make sure you've made the parallel changes in the source file, if necessary (12345 != 249234014)
-Mismatch duplicate-target/b.py:3
-Looks like you changed the target content for sync-tag 'update_me' in 'duplicate-target/a.js:4'
+Mismatch __examples__/duplicate-target/b.py:3
+Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/a.js:4'
 Make sure you've made the parallel changes in the source file, if necessary (4567 != 2050223083)
 
 <group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
 
-  checksync -u duplicate-target/a.js duplicate-target/b.py
+  checksync -u __examples__/duplicate-target/a.js __examples__/duplicate-target/b.py
 <end_group>"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example duplicate-target to match snapshot with autofix dryrun 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["duplicate-target/**"],"autoFix":true,"dryRun":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/duplicate-target/**"],"autoFix":true,"dryRun":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["duplicate-target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/duplicate-target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "duplicate-target/**"
+    "**/duplicate-target/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -688,41 +702,42 @@ Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/duplicate-target/a.js",
     "ROOT_DIR/__examples__/duplicate-target/b.py"
 ]
-Verbose  duplicate-target/a.js
+Verbose  __examples__/duplicate-target/a.js
 File has errors; skipping auto-fix
-Fix      duplicate-target/a.js:4
-Updated checksum for sync-tag 'update_me' referencing 'duplicate-target/b.py:3' from 12352 to 249234014.
-Fix      duplicate-target/a.js:5
+Fix      __examples__/duplicate-target/a.js:4
+Updated checksum for sync-tag 'update_me' referencing '__examples__/duplicate-target/b.py:3' from 12352 to 249234014.
+Fix      __examples__/duplicate-target/a.js:5
 Removed duplicate target for sync-tag 'update_me'
-Verbose  duplicate-target/b.py
+Verbose  __examples__/duplicate-target/b.py
 File has errors; skipping auto-fix
-Fix      duplicate-target/b.py:3
-Updated checksum for sync-tag 'update_me' referencing 'duplicate-target/a.js:4' from 4567 to 2050223083.
+Fix      __examples__/duplicate-target/b.py:3
+Updated checksum for sync-tag 'update_me' referencing '__examples__/duplicate-target/a.js:4' from 4567 to 2050223083.
 
 <group 2 file(s) would have been fixed.
 To fix, run: >
-  checksync -u duplicate-target/a.js duplicate-target/b.py
+  checksync -u __examples__/duplicate-target/a.js __examples__/duplicate-target/b.py
 <end_group>
 🎉  Everything is in sync!"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example duplicate-target to match snapshot with json 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["duplicate-target/**"],"json":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/duplicate-target/**"],"json":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["duplicate-target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/duplicate-target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "duplicate-target/**"
+    "**/duplicate-target/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -733,7 +748,7 @@ Verbose  Discovered paths: [
 ]
 {
     "version": "0.0.0",
-    "launchString": "checksync -u duplicate-target/a.js duplicate-target/b.py",
+    "launchString": "checksync -u __examples__/duplicate-target/a.js __examples__/duplicate-target/b.py",
     "files": {
         "__examples__/duplicate-target/a.js": [
             {
@@ -751,7 +766,7 @@ Verbose  Discovered paths: [
             },
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'update_me' in 'duplicate-target/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (12352 != 249234014)",
+                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (12352 != 249234014)",
                 "location": {
                     "line": 3
                 },
@@ -760,12 +775,12 @@ Verbose  Discovered paths: [
                     "line": 4,
                     "text": "    // sync-start:update_me 249234014 __examples__/duplicate-target/b.py",
                     "declaration": "    // sync-start:update_me 12352 __examples__/duplicate-target/b.py",
-                    "description": "Updated checksum for sync-tag 'update_me' referencing 'duplicate-target/b.py:3' from 12352 to 249234014."
+                    "description": "Updated checksum for sync-tag 'update_me' referencing '__examples__/duplicate-target/b.py:3' from 12352 to 249234014."
                 }
             },
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'update_me' in 'duplicate-target/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (12345 != 249234014)",
+                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (12345 != 249234014)",
                 "location": {
                     "line": 3
                 },
@@ -774,14 +789,14 @@ Verbose  Discovered paths: [
                     "line": 5,
                     "text": "    // sync-start:update_me 249234014 __examples__/duplicate-target/b.py",
                     "declaration": "    // sync-start:update_me 12345 __examples__/duplicate-target/b.py",
-                    "description": "Updated checksum for sync-tag 'update_me' referencing 'duplicate-target/b.py:3' from 12345 to 249234014."
+                    "description": "Updated checksum for sync-tag 'update_me' referencing '__examples__/duplicate-target/b.py:3' from 12345 to 249234014."
                 }
             }
         ],
         "__examples__/duplicate-target/b.py": [
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'update_me' in 'duplicate-target/a.js:4'. Make sure you've made the parallel changes in the source file, if necessary (4567 != 2050223083)",
+                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/a.js:4'. Make sure you've made the parallel changes in the source file, if necessary (4567 != 2050223083)",
                 "location": {
                     "line": 4
                 },
@@ -790,7 +805,7 @@ Verbose  Discovered paths: [
                     "line": 3,
                     "text": "# sync-start:update_me 2050223083 __examples__/duplicate-target/a.js",
                     "declaration": "# sync-start:update_me 4567 __examples__/duplicate-target/a.js",
-                    "description": "Updated checksum for sync-tag 'update_me' referencing 'duplicate-target/a.js:4' from 4567 to 2050223083."
+                    "description": "Updated checksum for sync-tag 'update_me' referencing '__examples__/duplicate-target/a.js:4' from 4567 to 2050223083."
                 }
             }
         ]
@@ -799,22 +814,23 @@ Verbose  Discovered paths: [
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example end_with_no_start to match snapshot 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["end_with_no_start/**"]}
+"Verbose  Options from arguments: {"includeGlobs":["**/end_with_no_start/**"]}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["end_with_no_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/end_with_no_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "end_with_no_start/**"
+    "**/end_with_no_start/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -822,32 +838,33 @@ Verbose  Exclude globs: [
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/end_with_no_start/example.js"
 ]
-Error    end_with_no_start/example.js:5
+Error    __examples__/end_with_no_start/example.js:5
 Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start
 
 <group 🛑  Unfixable errors found. Fix the errors in these files and try again. >
-  end_with_no_start/example.js
+  __examples__/end_with_no_start/example.js
 <end_group>"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example end_with_no_start to match snapshot with autofix dryrun 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["end_with_no_start/**"],"autoFix":true,"dryRun":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/end_with_no_start/**"],"autoFix":true,"dryRun":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["end_with_no_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/end_with_no_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "end_with_no_start/**"
+    "**/end_with_no_start/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -855,31 +872,32 @@ Verbose  Exclude globs: [
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/end_with_no_start/example.js"
 ]
-Error    end_with_no_start/example.js:5
+Error    __examples__/end_with_no_start/example.js:5
 Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start
 
 <group 🛑  Could not update all tags due to unfixable errors. Fix the errors in these files and try again. >
-  end_with_no_start/example.js
+  __examples__/end_with_no_start/example.js
 <end_group>"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example end_with_no_start to match snapshot with json 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["end_with_no_start/**"],"json":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/end_with_no_start/**"],"json":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["end_with_no_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/end_with_no_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "end_with_no_start/**"
+    "**/end_with_no_start/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -906,22 +924,23 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example excluded to match snapshot 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["excluded/**"]}
+"Verbose  Options from arguments: {"includeGlobs":["**/excluded/**"]}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["excluded/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/excluded/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "excluded/**"
+    "**/excluded/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -931,23 +950,24 @@ Error    No matching files"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example excluded to match snapshot with autofix dryrun 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["excluded/**"],"autoFix":true,"dryRun":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/excluded/**"],"autoFix":true,"dryRun":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["excluded/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/excluded/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "excluded/**"
+    "**/excluded/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -957,22 +977,23 @@ Error    No matching files"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example excluded to match snapshot with json 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["excluded/**"],"json":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/excluded/**"],"json":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["excluded/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/excluded/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "excluded/**"
+    "**/excluded/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -982,112 +1003,115 @@ Error    No matching files"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example ignore_files_at_different_depths to match snapshot 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["ignore_files_at_different_depths/**"]}
+"Verbose  Options from arguments: {"includeGlobs":["**/ignore_files_at_different_depths/**"]}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["ignore_files_at_different_depths/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/ignore_files_at_different_depths/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "ignore_files_at_different_depths/**"
+    "**/ignore_files_at_different_depths/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
 ]
-Verbose  IGNORED  : ignore_files_at_different_depths/ignore-file.txt by ignore_files_at_different_depths/ignore-file.txt
-Verbose  IGNORED  : ignore_files_at_different_depths/ignorethesewhennotinsome/bad-sync-tags-never-parsed.js by ignore_files_at_different_depths/ignore-file.txt
-Verbose  IGNORED  : ignore_files_at_different_depths/some/alsoignorethis.txt by ignore_files_at_different_depths/some/ignore-file.txt
-Verbose  IGNORED  : ignore_files_at_different_depths/some/ignore-file.txt by ignore_files_at_different_depths/ignore-file.txt
-Verbose  IGNORED  : ignore_files_at_different_depths/some/ignore-file.txt by ignore_files_at_different_depths/some/ignore-file.txt
-Verbose  IGNORED  : ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js by ignore_files_at_different_depths/ignore-file.txt
-Verbose  UNIGNORED: ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js by ignore_files_at_different_depths/some/ignore-file.txt
+Verbose  IGNORED  : __examples__/ignore_files_at_different_depths/ignore-file.txt by __examples__/ignore_files_at_different_depths/ignore-file.txt
+Verbose  IGNORED  : __examples__/ignore_files_at_different_depths/ignorethesewhennotinsome/bad-sync-tags-never-parsed.js by __examples__/ignore_files_at_different_depths/ignore-file.txt
+Verbose  IGNORED  : __examples__/ignore_files_at_different_depths/some/alsoignorethis.txt by __examples__/ignore_files_at_different_depths/some/ignore-file.txt
+Verbose  IGNORED  : __examples__/ignore_files_at_different_depths/some/ignore-file.txt by __examples__/ignore_files_at_different_depths/ignore-file.txt
+Verbose  IGNORED  : __examples__/ignore_files_at_different_depths/some/ignore-file.txt by __examples__/ignore_files_at_different_depths/some/ignore-file.txt
+Verbose  IGNORED  : __examples__/ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js by __examples__/ignore_files_at_different_depths/ignore-file.txt
+Verbose  UNIGNORED: __examples__/ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js by __examples__/ignore_files_at_different_depths/some/ignore-file.txt
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js"
 ]
-Error    ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js:5
+Error    __examples__/ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js:5
 Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start
 
 <group 🛑  Unfixable errors found. Fix the errors in these files and try again. >
-  ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js
+  __examples__/ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js
 <end_group>"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example ignore_files_at_different_depths to match snapshot with autofix dryrun 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["ignore_files_at_different_depths/**"],"autoFix":true,"dryRun":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/ignore_files_at_different_depths/**"],"autoFix":true,"dryRun":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["ignore_files_at_different_depths/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/ignore_files_at_different_depths/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "ignore_files_at_different_depths/**"
+    "**/ignore_files_at_different_depths/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
 ]
-Verbose  IGNORED  : ignore_files_at_different_depths/ignore-file.txt by ignore_files_at_different_depths/ignore-file.txt
-Verbose  IGNORED  : ignore_files_at_different_depths/ignorethesewhennotinsome/bad-sync-tags-never-parsed.js by ignore_files_at_different_depths/ignore-file.txt
-Verbose  IGNORED  : ignore_files_at_different_depths/some/alsoignorethis.txt by ignore_files_at_different_depths/some/ignore-file.txt
-Verbose  IGNORED  : ignore_files_at_different_depths/some/ignore-file.txt by ignore_files_at_different_depths/ignore-file.txt
-Verbose  IGNORED  : ignore_files_at_different_depths/some/ignore-file.txt by ignore_files_at_different_depths/some/ignore-file.txt
-Verbose  IGNORED  : ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js by ignore_files_at_different_depths/ignore-file.txt
-Verbose  UNIGNORED: ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js by ignore_files_at_different_depths/some/ignore-file.txt
+Verbose  IGNORED  : __examples__/ignore_files_at_different_depths/ignore-file.txt by __examples__/ignore_files_at_different_depths/ignore-file.txt
+Verbose  IGNORED  : __examples__/ignore_files_at_different_depths/ignorethesewhennotinsome/bad-sync-tags-never-parsed.js by __examples__/ignore_files_at_different_depths/ignore-file.txt
+Verbose  IGNORED  : __examples__/ignore_files_at_different_depths/some/alsoignorethis.txt by __examples__/ignore_files_at_different_depths/some/ignore-file.txt
+Verbose  IGNORED  : __examples__/ignore_files_at_different_depths/some/ignore-file.txt by __examples__/ignore_files_at_different_depths/ignore-file.txt
+Verbose  IGNORED  : __examples__/ignore_files_at_different_depths/some/ignore-file.txt by __examples__/ignore_files_at_different_depths/some/ignore-file.txt
+Verbose  IGNORED  : __examples__/ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js by __examples__/ignore_files_at_different_depths/ignore-file.txt
+Verbose  UNIGNORED: __examples__/ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js by __examples__/ignore_files_at_different_depths/some/ignore-file.txt
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js"
 ]
-Error    ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js:5
+Error    __examples__/ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js:5
 Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start
 
 <group 🛑  Could not update all tags due to unfixable errors. Fix the errors in these files and try again. >
-  ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js
+  __examples__/ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js
 <end_group>"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example ignore_files_at_different_depths to match snapshot with json 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["ignore_files_at_different_depths/**"],"json":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/ignore_files_at_different_depths/**"],"json":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["ignore_files_at_different_depths/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/ignore_files_at_different_depths/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "ignore_files_at_different_depths/**"
+    "**/ignore_files_at_different_depths/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
 ]
-Verbose  IGNORED  : ignore_files_at_different_depths/ignore-file.txt by ignore_files_at_different_depths/ignore-file.txt
-Verbose  IGNORED  : ignore_files_at_different_depths/ignorethesewhennotinsome/bad-sync-tags-never-parsed.js by ignore_files_at_different_depths/ignore-file.txt
-Verbose  IGNORED  : ignore_files_at_different_depths/some/alsoignorethis.txt by ignore_files_at_different_depths/some/ignore-file.txt
-Verbose  IGNORED  : ignore_files_at_different_depths/some/ignore-file.txt by ignore_files_at_different_depths/ignore-file.txt
-Verbose  IGNORED  : ignore_files_at_different_depths/some/ignore-file.txt by ignore_files_at_different_depths/some/ignore-file.txt
-Verbose  IGNORED  : ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js by ignore_files_at_different_depths/ignore-file.txt
-Verbose  UNIGNORED: ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js by ignore_files_at_different_depths/some/ignore-file.txt
+Verbose  IGNORED  : __examples__/ignore_files_at_different_depths/ignore-file.txt by __examples__/ignore_files_at_different_depths/ignore-file.txt
+Verbose  IGNORED  : __examples__/ignore_files_at_different_depths/ignorethesewhennotinsome/bad-sync-tags-never-parsed.js by __examples__/ignore_files_at_different_depths/ignore-file.txt
+Verbose  IGNORED  : __examples__/ignore_files_at_different_depths/some/alsoignorethis.txt by __examples__/ignore_files_at_different_depths/some/ignore-file.txt
+Verbose  IGNORED  : __examples__/ignore_files_at_different_depths/some/ignore-file.txt by __examples__/ignore_files_at_different_depths/ignore-file.txt
+Verbose  IGNORED  : __examples__/ignore_files_at_different_depths/some/ignore-file.txt by __examples__/ignore_files_at_different_depths/some/ignore-file.txt
+Verbose  IGNORED  : __examples__/ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js by __examples__/ignore_files_at_different_depths/ignore-file.txt
+Verbose  UNIGNORED: __examples__/ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js by __examples__/ignore_files_at_different_depths/some/ignore-file.txt
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js"
 ]
@@ -1110,22 +1134,23 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example malformed_end to match snapshot 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["malformed_end/**"]}
+"Verbose  Options from arguments: {"includeGlobs":["**/malformed_end/**"]}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["malformed_end/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/malformed_end/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "malformed_end/**"
+    "**/malformed_end/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -1134,39 +1159,40 @@ Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/malformed_end/malformed_badid.js",
     "ROOT_DIR/__examples__/malformed_end/malformed_noid.js"
 ]
-Error    malformed_end/malformed_badid.js:7
+Error    __examples__/malformed_end/malformed_badid.js:7
 Malformed sync-end: format should be 'sync-end:<label>'
-Error    malformed_end/malformed_badid.js:4
+Error    __examples__/malformed_end/malformed_badid.js:4
 Sync-start 'tagid' has no corresponding sync-end
-Error    malformed_end/malformed_noid.js:7
+Error    __examples__/malformed_end/malformed_noid.js:7
 Malformed sync-end: format should be 'sync-end:<label>'
-Error    malformed_end/malformed_noid.js:4
+Error    __examples__/malformed_end/malformed_noid.js:4
 Sync-start 'tagid' has no corresponding sync-end
 
 <group 🛑  Unfixable errors found. Fix the errors in these files and try again. >
-  malformed_end/malformed_badid.js
-malformed_end/malformed_noid.js
+  __examples__/malformed_end/malformed_badid.js
+__examples__/malformed_end/malformed_noid.js
 <end_group>"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example malformed_end to match snapshot with autofix dryrun 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["malformed_end/**"],"autoFix":true,"dryRun":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/malformed_end/**"],"autoFix":true,"dryRun":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["malformed_end/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/malformed_end/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "malformed_end/**"
+    "**/malformed_end/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -1175,38 +1201,39 @@ Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/malformed_end/malformed_badid.js",
     "ROOT_DIR/__examples__/malformed_end/malformed_noid.js"
 ]
-Error    malformed_end/malformed_badid.js:7
+Error    __examples__/malformed_end/malformed_badid.js:7
 Malformed sync-end: format should be 'sync-end:<label>'
-Error    malformed_end/malformed_badid.js:4
+Error    __examples__/malformed_end/malformed_badid.js:4
 Sync-start 'tagid' has no corresponding sync-end
-Error    malformed_end/malformed_noid.js:7
+Error    __examples__/malformed_end/malformed_noid.js:7
 Malformed sync-end: format should be 'sync-end:<label>'
-Error    malformed_end/malformed_noid.js:4
+Error    __examples__/malformed_end/malformed_noid.js:4
 Sync-start 'tagid' has no corresponding sync-end
 
 <group 🛑  Could not update all tags due to unfixable errors. Fix the errors in these files and try again. >
-  malformed_end/malformed_badid.js
-malformed_end/malformed_noid.js
+  __examples__/malformed_end/malformed_badid.js
+__examples__/malformed_end/malformed_noid.js
 <end_group>"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example malformed_end to match snapshot with json 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["malformed_end/**"],"json":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/malformed_end/**"],"json":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["malformed_end/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/malformed_end/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "malformed_end/**"
+    "**/malformed_end/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -1257,22 +1284,23 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example malformed_start to match snapshot 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["malformed_start/**"]}
+"Verbose  Options from arguments: {"includeGlobs":["**/malformed_start/**"]}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["malformed_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/malformed_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "malformed_start/**"
+    "**/malformed_start/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -1282,44 +1310,45 @@ Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/malformed_start/malformed_badid.js",
     "ROOT_DIR/__examples__/malformed_start/malformed_onlytagid.js"
 ]
-Error    malformed_start/malformed_badchecksum.js:4
+Error    __examples__/malformed_start/malformed_badchecksum.js:4
 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
-Error    malformed_start/malformed_badchecksum.js:7
+Error    __examples__/malformed_start/malformed_badchecksum.js:7
 Sync-end for 'tagid' found, but there was no corresponding sync-start
-Error    malformed_start/malformed_badid.js:4
+Error    __examples__/malformed_start/malformed_badid.js:4
 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
-Error    malformed_start/malformed_badid.js:7
+Error    __examples__/malformed_start/malformed_badid.js:7
 Sync-end for 'tagid' found, but there was no corresponding sync-start
-Error    malformed_start/malformed_onlytagid.js:4
+Error    __examples__/malformed_start/malformed_onlytagid.js:4
 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
-Error    malformed_start/malformed_onlytagid.js:7
+Error    __examples__/malformed_start/malformed_onlytagid.js:7
 Sync-end for 'tagid' found, but there was no corresponding sync-start
 
 <group 🛑  Unfixable errors found. Fix the errors in these files and try again. >
-  malformed_start/malformed_badchecksum.js
-malformed_start/malformed_badid.js
-malformed_start/malformed_onlytagid.js
+  __examples__/malformed_start/malformed_badchecksum.js
+__examples__/malformed_start/malformed_badid.js
+__examples__/malformed_start/malformed_onlytagid.js
 <end_group>"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example malformed_start to match snapshot with autofix dryrun 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["malformed_start/**"],"autoFix":true,"dryRun":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/malformed_start/**"],"autoFix":true,"dryRun":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["malformed_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/malformed_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "malformed_start/**"
+    "**/malformed_start/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -1329,43 +1358,44 @@ Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/malformed_start/malformed_badid.js",
     "ROOT_DIR/__examples__/malformed_start/malformed_onlytagid.js"
 ]
-Error    malformed_start/malformed_badchecksum.js:4
+Error    __examples__/malformed_start/malformed_badchecksum.js:4
 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
-Error    malformed_start/malformed_badchecksum.js:7
+Error    __examples__/malformed_start/malformed_badchecksum.js:7
 Sync-end for 'tagid' found, but there was no corresponding sync-start
-Error    malformed_start/malformed_badid.js:4
+Error    __examples__/malformed_start/malformed_badid.js:4
 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
-Error    malformed_start/malformed_badid.js:7
+Error    __examples__/malformed_start/malformed_badid.js:7
 Sync-end for 'tagid' found, but there was no corresponding sync-start
-Error    malformed_start/malformed_onlytagid.js:4
+Error    __examples__/malformed_start/malformed_onlytagid.js:4
 Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
-Error    malformed_start/malformed_onlytagid.js:7
+Error    __examples__/malformed_start/malformed_onlytagid.js:7
 Sync-end for 'tagid' found, but there was no corresponding sync-start
 
 <group 🛑  Could not update all tags due to unfixable errors. Fix the errors in these files and try again. >
-  malformed_start/malformed_badchecksum.js
-malformed_start/malformed_badid.js
-malformed_start/malformed_onlytagid.js
+  __examples__/malformed_start/malformed_badchecksum.js
+__examples__/malformed_start/malformed_badid.js
+__examples__/malformed_start/malformed_onlytagid.js
 <end_group>"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example malformed_start to match snapshot with json 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["malformed_start/**"],"json":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/malformed_start/**"],"json":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["malformed_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/malformed_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "malformed_start/**"
+    "**/malformed_start/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -1433,22 +1463,23 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example missing_target to match snapshot 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["missing_target/**"]}
+"Verbose  Options from arguments: {"includeGlobs":["**/missing_target/**"]}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["missing_target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/missing_target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "missing_target/**"
+    "**/missing_target/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -1456,34 +1487,35 @@ Verbose  Exclude globs: [
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/missing_target/example.js"
 ]
-Error    missing_target/example.js:3
+Error    __examples__/missing_target/example.js:3
 Sync-start for 'missing_target' points to '__examples__/missing_target/missing_target.py', which does not exist or is a directory
-Error    missing_target/example.js:3
-No return tag named 'missing_target' in 'missing_target/missing_target.py'
+Error    __examples__/missing_target/example.js:3
+No return tag named 'missing_target' in '__examples__/missing_target/missing_target.py'
 
 <group 🛑  Unfixable errors found. Fix the errors in these files and try again. >
-  missing_target/example.js
+  __examples__/missing_target/example.js
 <end_group>"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example missing_target to match snapshot with autofix dryrun 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["missing_target/**"],"autoFix":true,"dryRun":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/missing_target/**"],"autoFix":true,"dryRun":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["missing_target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/missing_target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "missing_target/**"
+    "**/missing_target/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -1491,33 +1523,34 @@ Verbose  Exclude globs: [
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/missing_target/example.js"
 ]
-Error    missing_target/example.js:3
+Error    __examples__/missing_target/example.js:3
 Sync-start for 'missing_target' points to '__examples__/missing_target/missing_target.py', which does not exist or is a directory
-Error    missing_target/example.js:3
-No return tag named 'missing_target' in 'missing_target/missing_target.py'
+Error    __examples__/missing_target/example.js:3
+No return tag named 'missing_target' in '__examples__/missing_target/missing_target.py'
 
 <group 🛑  Could not update all tags due to unfixable errors. Fix the errors in these files and try again. >
-  missing_target/example.js
+  __examples__/missing_target/example.js
 <end_group>"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example missing_target to match snapshot with json 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["missing_target/**"],"json":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/missing_target/**"],"json":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["missing_target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/missing_target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "missing_target/**"
+    "**/missing_target/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -1539,7 +1572,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
                 "code": "file-does-not-exist"
             },
             {
-                "reason": "No return tag named 'missing_target' in 'missing_target/missing_target.py'",
+                "reason": "No return tag named 'missing_target' in '__examples__/missing_target/missing_target.py'",
                 "code": "no-return-tag",
                 "location": {
                     "line": 3
@@ -1551,22 +1584,23 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example no_back_reference to match snapshot 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["no_back_reference/**"]}
+"Verbose  Options from arguments: {"includeGlobs":["**/no_back_reference/**"]}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["no_back_reference/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/no_back_reference/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "no_back_reference/**"
+    "**/no_back_reference/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -1575,32 +1609,33 @@ Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/no_back_reference/file1.js",
     "ROOT_DIR/__examples__/no_back_reference/file2.js"
 ]
-Error    no_back_reference/file1.js:1
-No return tag named 'markerID' in 'no_back_reference/file2.js'
+Error    __examples__/no_back_reference/file1.js:1
+No return tag named 'markerID' in '__examples__/no_back_reference/file2.js'
 
 <group 🛑  Unfixable errors found. Fix the errors in these files and try again. >
-  no_back_reference/file1.js
+  __examples__/no_back_reference/file1.js
 <end_group>"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example no_back_reference to match snapshot with autofix dryrun 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["no_back_reference/**"],"autoFix":true,"dryRun":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/no_back_reference/**"],"autoFix":true,"dryRun":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["no_back_reference/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/no_back_reference/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "no_back_reference/**"
+    "**/no_back_reference/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -1609,31 +1644,32 @@ Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/no_back_reference/file1.js",
     "ROOT_DIR/__examples__/no_back_reference/file2.js"
 ]
-Error    no_back_reference/file1.js:1
-No return tag named 'markerID' in 'no_back_reference/file2.js'
+Error    __examples__/no_back_reference/file1.js:1
+No return tag named 'markerID' in '__examples__/no_back_reference/file2.js'
 
 <group 🛑  Could not update all tags due to unfixable errors. Fix the errors in these files and try again. >
-  no_back_reference/file1.js
+  __examples__/no_back_reference/file1.js
 <end_group>"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example no_back_reference to match snapshot with json 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["no_back_reference/**"],"json":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/no_back_reference/**"],"json":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["no_back_reference/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/no_back_reference/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "no_back_reference/**"
+    "**/no_back_reference/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -1649,7 +1685,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
     "files": {
         "__examples__/no_back_reference/file1.js": [
             {
-                "reason": "No return tag named 'markerID' in 'no_back_reference/file2.js'",
+                "reason": "No return tag named 'markerID' in '__examples__/no_back_reference/file2.js'",
                 "code": "no-return-tag",
                 "location": {
                     "line": 1
@@ -1661,22 +1697,23 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example no_checksums to match snapshot 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["no_checksums/**"]}
+"Verbose  Options from arguments: {"includeGlobs":["**/no_checksums/**"]}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["no_checksums/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/no_checksums/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "no_checksums/**"
+    "**/no_checksums/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -1685,37 +1722,38 @@ Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/no_checksums/example_one-a.js",
     "ROOT_DIR/__examples__/no_checksums/example_one-b.py"
 ]
-Mismatch no_checksums/example_one-a.js:3
-Looks like you changed the target content for sync-tag 'example_one' in 'no_checksums/example_one-b.py:3'
+Mismatch __examples__/no_checksums/example_one-a.js:3
+Looks like you changed the target content for sync-tag 'example_one' in '__examples__/no_checksums/example_one-b.py:3'
 Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)
-Mismatch no_checksums/example_one-b.py:3
-Looks like you changed the target content for sync-tag 'example_one' in 'no_checksums/example_one-a.js:3'
+Mismatch __examples__/no_checksums/example_one-b.py:3
+Looks like you changed the target content for sync-tag 'example_one' in '__examples__/no_checksums/example_one-a.js:3'
 Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)
 
 <group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
 
-  checksync -u no_checksums/example_one-a.js no_checksums/example_one-b.py
+  checksync -u __examples__/no_checksums/example_one-a.js __examples__/no_checksums/example_one-b.py
 <end_group>"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example no_checksums to match snapshot with autofix dryrun 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["no_checksums/**"],"autoFix":true,"dryRun":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/no_checksums/**"],"autoFix":true,"dryRun":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["no_checksums/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/no_checksums/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "no_checksums/**"
+    "**/no_checksums/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -1724,39 +1762,40 @@ Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/no_checksums/example_one-a.js",
     "ROOT_DIR/__examples__/no_checksums/example_one-b.py"
 ]
-Verbose  no_checksums/example_one-a.js
+Verbose  __examples__/no_checksums/example_one-a.js
 File has errors; skipping auto-fix
-Fix      no_checksums/example_one-a.js:3
-Updated checksum for sync-tag 'example_one' referencing 'no_checksums/example_one-b.py:3' from no checksum to 249234014.
-Verbose  no_checksums/example_one-b.py
+Fix      __examples__/no_checksums/example_one-a.js:3
+Updated checksum for sync-tag 'example_one' referencing '__examples__/no_checksums/example_one-b.py:3' from no checksum to 249234014.
+Verbose  __examples__/no_checksums/example_one-b.py
 File has errors; skipping auto-fix
-Fix      no_checksums/example_one-b.py:3
-Updated checksum for sync-tag 'example_one' referencing 'no_checksums/example_one-a.js:3' from no checksum to 770446101.
+Fix      __examples__/no_checksums/example_one-b.py:3
+Updated checksum for sync-tag 'example_one' referencing '__examples__/no_checksums/example_one-a.js:3' from no checksum to 770446101.
 
 <group 2 file(s) would have been fixed.
 To fix, run: >
-  checksync -u no_checksums/example_one-a.js no_checksums/example_one-b.py
+  checksync -u __examples__/no_checksums/example_one-a.js __examples__/no_checksums/example_one-b.py
 <end_group>
 🎉  Everything is in sync!"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example no_checksums to match snapshot with json 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["no_checksums/**"],"json":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/no_checksums/**"],"json":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["no_checksums/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/no_checksums/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "no_checksums/**"
+    "**/no_checksums/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -1767,12 +1806,12 @@ Verbose  Discovered paths: [
 ]
 {
     "version": "0.0.0",
-    "launchString": "checksync -u no_checksums/example_one-a.js no_checksums/example_one-b.py",
+    "launchString": "checksync -u __examples__/no_checksums/example_one-a.js __examples__/no_checksums/example_one-b.py",
     "files": {
         "__examples__/no_checksums/example_one-a.js": [
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'example_one' in 'no_checksums/example_one-b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)",
+                "reason": "Looks like you changed the target content for sync-tag 'example_one' in '__examples__/no_checksums/example_one-b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)",
                 "location": {
                     "line": 3
                 },
@@ -1781,14 +1820,14 @@ Verbose  Discovered paths: [
                     "line": 3,
                     "text": "// sync-start:example_one 249234014 __examples__/no_checksums/example_one-b.py",
                     "declaration": "// sync-start:example_one __examples__/no_checksums/example_one-b.py",
-                    "description": "Updated checksum for sync-tag 'example_one' referencing 'no_checksums/example_one-b.py:3' from no checksum to 249234014."
+                    "description": "Updated checksum for sync-tag 'example_one' referencing '__examples__/no_checksums/example_one-b.py:3' from no checksum to 249234014."
                 }
             }
         ],
         "__examples__/no_checksums/example_one-b.py": [
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'example_one' in 'no_checksums/example_one-a.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)",
+                "reason": "Looks like you changed the target content for sync-tag 'example_one' in '__examples__/no_checksums/example_one-a.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)",
                 "location": {
                     "line": 3
                 },
@@ -1797,7 +1836,7 @@ Verbose  Discovered paths: [
                     "line": 3,
                     "text": "# sync-start:example_one 770446101 __examples__/no_checksums/example_one-a.js",
                     "declaration": "# sync-start:example_one __examples__/no_checksums/example_one-a.js",
-                    "description": "Updated checksum for sync-tag 'example_one' referencing 'no_checksums/example_one-a.js:3' from no checksum to 770446101."
+                    "description": "Updated checksum for sync-tag 'example_one' referencing '__examples__/no_checksums/example_one-a.js:3' from no checksum to 770446101."
                 }
             }
         ]
@@ -1806,22 +1845,23 @@ Verbose  Discovered paths: [
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example no_self_reference to match snapshot 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["no_self_reference/**"]}
+"Verbose  Options from arguments: {"includeGlobs":["**/no_self_reference/**"]}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["no_self_reference/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/no_self_reference/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "no_self_reference/**"
+    "**/no_self_reference/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -1829,40 +1869,41 @@ Verbose  Exclude globs: [
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/no_self_reference/example.js"
 ]
-Error    no_self_reference/example.js:3
+Error    __examples__/no_self_reference/example.js:3
 Sync-tag 'example_three' cannot target itself
-Mismatch no_self_reference/example.js:3
-Looks like you changed the target content for sync-tag 'example_three' in 'no_self_reference/example.js:3'
+Mismatch __examples__/no_self_reference/example.js:3
+Looks like you changed the target content for sync-tag 'example_three' in '__examples__/no_self_reference/example.js:3'
 Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)
 
 <group 🛑  Desynchronized blocks detected and parsing errors were found. Fix the errors, update the blocks, then update the sync-start tags using: >
 
-  checksync -u no_self_reference/example.js
+  checksync -u __examples__/no_self_reference/example.js
 <end_group>
 
 <group 🛑  Unfixable errors found. Fix the errors in these files and try again. >
-  no_self_reference/example.js
+  __examples__/no_self_reference/example.js
 <end_group>"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example no_self_reference to match snapshot with autofix dryrun 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["no_self_reference/**"],"autoFix":true,"dryRun":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/no_self_reference/**"],"autoFix":true,"dryRun":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["no_self_reference/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/no_self_reference/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "no_self_reference/**"
+    "**/no_self_reference/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -1870,36 +1911,37 @@ Verbose  Exclude globs: [
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/no_self_reference/example.js"
 ]
-Error    no_self_reference/example.js:3
+Error    __examples__/no_self_reference/example.js:3
 Sync-tag 'example_three' cannot target itself
 
 <group 1 file(s) would have been fixed.
 To fix, run: >
-  checksync -u no_self_reference/example.js
+  checksync -u __examples__/no_self_reference/example.js
 <end_group>
 
 <group 🛑  Could not update all tags due to unfixable errors. Fix the errors in these files and try again. >
-  no_self_reference/example.js
+  __examples__/no_self_reference/example.js
 <end_group>"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example no_self_reference to match snapshot with json 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["no_self_reference/**"],"json":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/no_self_reference/**"],"json":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["no_self_reference/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/no_self_reference/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "no_self_reference/**"
+    "**/no_self_reference/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -1910,7 +1952,7 @@ Verbose  Discovered paths: [
 Error    🛑  Unfixable errors found. Fix the errors and try again.
 {
     "version": "0.0.0",
-    "launchString": "checksync -u no_self_reference/example.js",
+    "launchString": "checksync -u __examples__/no_self_reference/example.js",
     "files": {
         "__examples__/no_self_reference/example.js": [
             {
@@ -1922,7 +1964,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
             },
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'example_three' in 'no_self_reference/example.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)",
+                "reason": "Looks like you changed the target content for sync-tag 'example_three' in '__examples__/no_self_reference/example.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)",
                 "location": {
                     "line": 3
                 },
@@ -1931,7 +1973,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
                     "line": 3,
                     "text": "// sync-start:example_three 770446101 __examples__/no_self_reference/example.js",
                     "declaration": "// sync-start:example_three __examples__/no_self_reference/example.js",
-                    "description": "Updated checksum for sync-tag 'example_three' referencing 'no_self_reference/example.js:3' from no checksum to 770446101."
+                    "description": "Updated checksum for sync-tag 'example_three' referencing '__examples__/no_self_reference/example.js:3' from no checksum to 770446101."
                 }
             }
         ]
@@ -1940,22 +1982,23 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example unterminated_marker to match snapshot 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["unterminated_marker/**"]}
+"Verbose  Options from arguments: {"includeGlobs":["**/unterminated_marker/**"]}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["unterminated_marker/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/unterminated_marker/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "unterminated_marker/**"
+    "**/unterminated_marker/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -1964,35 +2007,36 @@ Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/unterminated_marker/example_two-a.js",
     "ROOT_DIR/__examples__/unterminated_marker/example_two-b.py"
 ]
-Error    unterminated_marker/example_two-a.js:3
-No return tag named 'example_two' in 'unterminated_marker/example_two-b.py'
-Error    unterminated_marker/example_two-b.py:3
+Error    __examples__/unterminated_marker/example_two-a.js:3
+No return tag named 'example_two' in '__examples__/unterminated_marker/example_two-b.py'
+Error    __examples__/unterminated_marker/example_two-b.py:3
 Sync-start 'example_two' has no corresponding sync-end
 
 <group 🛑  Unfixable errors found. Fix the errors in these files and try again. >
-  unterminated_marker/example_two-a.js
-unterminated_marker/example_two-b.py
+  __examples__/unterminated_marker/example_two-a.js
+__examples__/unterminated_marker/example_two-b.py
 <end_group>"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example unterminated_marker to match snapshot with autofix dryrun 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["unterminated_marker/**"],"autoFix":true,"dryRun":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/unterminated_marker/**"],"autoFix":true,"dryRun":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["unterminated_marker/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/unterminated_marker/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "unterminated_marker/**"
+    "**/unterminated_marker/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -2001,34 +2045,35 @@ Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/unterminated_marker/example_two-a.js",
     "ROOT_DIR/__examples__/unterminated_marker/example_two-b.py"
 ]
-Error    unterminated_marker/example_two-a.js:3
-No return tag named 'example_two' in 'unterminated_marker/example_two-b.py'
-Error    unterminated_marker/example_two-b.py:3
+Error    __examples__/unterminated_marker/example_two-a.js:3
+No return tag named 'example_two' in '__examples__/unterminated_marker/example_two-b.py'
+Error    __examples__/unterminated_marker/example_two-b.py:3
 Sync-start 'example_two' has no corresponding sync-end
 
 <group 🛑  Could not update all tags due to unfixable errors. Fix the errors in these files and try again. >
-  unterminated_marker/example_two-a.js
-unterminated_marker/example_two-b.py
+  __examples__/unterminated_marker/example_two-a.js
+__examples__/unterminated_marker/example_two-b.py
 <end_group>"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example unterminated_marker to match snapshot with json 1`] = `
-"Verbose  Options from arguments: {"includeGlobs":["unterminated_marker/**"],"json":true}
+"Verbose  Options from arguments: {"includeGlobs":["**/unterminated_marker/**"],"json":true}
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
 Verbose  Checking ROOT_DIR/.checksyncrc.json...
 Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
 Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
 Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
-Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["unterminated_marker/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["**/unterminated_marker/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
 ]
 Verbose  Include globs: [
-    "unterminated_marker/**"
+    "**/unterminated_marker/**"
 ]
 Verbose  Exclude globs: [
     "**/excluded/**"
@@ -2044,7 +2089,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
     "files": {
         "__examples__/unterminated_marker/example_two-a.js": [
             {
-                "reason": "No return tag named 'example_two' in 'unterminated_marker/example_two-b.py'",
+                "reason": "No return tag named 'example_two' in '__examples__/unterminated_marker/example_two-b.py'",
                 "code": "no-return-tag",
                 "location": {
                     "line": 3

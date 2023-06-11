@@ -10,7 +10,9 @@ import {version} from "../../package.json";
 import * as DetermineOptions from "../determine-options";
 import defaultOptions from "../default-options";
 import * as Exit from "../exit";
+import * as SetCwd from "../set-cwd";
 
+jest.mock("../set-cwd");
 jest.mock("minimist");
 jest.mock("../logger", () => {
     const realLogger = jest.requireActual("../logger").default;
@@ -136,43 +138,13 @@ describe("#run", () => {
         jest.spyOn(CheckSync, "default").mockResolvedValue(0);
         // @ts-expect-error this is typed to never, but we want to mock it
         jest.spyOn(Exit, "default").mockImplementation(() => {});
-        const chdirSpy = jest
-            .spyOn(process, "chdir")
-            .mockImplementationOnce(() => {});
+        const setCwdSpy = jest.spyOn(SetCwd, "default");
 
         // Act
         await run(__filename);
 
         // Assert
-        expect(chdirSpy).toHaveBeenCalledWith("/some/path");
-    });
-
-    it("should exit with ExitCode.CATASTROPHIC if cwd arg present and chdir fails", async () => {
-        // Arrange
-        const fakeParsedArgs: any = {
-            cwd: "/some/path",
-        } as const;
-        jest.spyOn(minimist, "default").mockReturnValue(fakeParsedArgs);
-        jest.spyOn(DetermineOptions, "default").mockResolvedValue(
-            defaultOptions,
-        );
-        jest.spyOn(CheckSync, "default").mockResolvedValue(0);
-        const exitSpy = jest
-            .spyOn(Exit, "default")
-            // @ts-expect-error this is typed to never, but we want to mock it
-            .mockImplementation(() => {});
-        jest.spyOn(process, "chdir").mockImplementationOnce(() => {
-            throw new Error("PRETEND CHDIR FAIL!");
-        });
-
-        // Act
-        await run(__filename);
-
-        // Assert
-        expect(exitSpy).toHaveBeenCalledWith(
-            expect.anything(),
-            ExitCode.CATASTROPHIC,
-        );
+        expect(setCwdSpy).toHaveBeenCalledWith(expect.anything(), "/some/path");
     });
 
     it("should pass arguments to determineOptions", async () => {
