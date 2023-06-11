@@ -4,11 +4,12 @@ import * as minimist from "minimist";
 import fs from "fs";
 import {run} from "../cli";
 import * as CheckSync from "../check-sync";
-import ExitCodes from "../exit-codes";
+import {ExitCode} from "../exit-codes";
 import Logger from "../logger";
 import {version} from "../../package.json";
 import * as DetermineOptions from "../determine-options";
 import defaultOptions from "../default-options";
+import * as Exit from "../exit";
 
 jest.mock("minimist");
 jest.mock("../logger", () => {
@@ -45,7 +46,7 @@ describe("#run", () => {
         );
         jest.spyOn(CheckSync, "default").mockResolvedValue(0);
         // @ts-expect-error this is typed to never, but we want to mock it
-        jest.spyOn(process, "exit").mockImplementationOnce(() => {});
+        jest.spyOn(Exit, "default").mockImplementation(() => {});
 
         // Act
         await run(__filename);
@@ -66,8 +67,8 @@ describe("#run", () => {
             } as const;
             jest.spyOn(minimist, "default").mockReturnValue(fakeParsedArgs);
             const exitSpy = jest
-                .spyOn(process, "exit")
-                .mockImplementationOnce(() => {
+                .spyOn(Exit, "default")
+                .mockImplementation(() => {
                     throw new Error("PRETEND PROCESS EXIT!");
                 });
 
@@ -76,7 +77,10 @@ describe("#run", () => {
 
             // Assert
             expect(underTest).toThrowError("PRETEND PROCESS EXIT!");
-            expect(exitSpy).toHaveBeenCalledWith(ExitCodes.SUCCESS);
+            expect(exitSpy).toHaveBeenCalledWith(
+                expect.anything(),
+                ExitCode.SUCCESS,
+            );
         },
     );
 
@@ -86,7 +90,7 @@ describe("#run", () => {
             version: true,
         } as const;
         jest.spyOn(minimist, "default").mockReturnValue(fakeParsedArgs);
-        jest.spyOn(process, "exit").mockImplementationOnce(() => {
+        jest.spyOn(Exit, "default").mockImplementation(() => {
             throw new Error("PRETEND PROCESS EXIT!");
         });
         const logSpy = jest.spyOn(new Logger(null), "log");
@@ -105,7 +109,7 @@ describe("#run", () => {
             help: true,
         } as const;
         jest.spyOn(minimist, "default").mockReturnValue(fakeParsedArgs);
-        jest.spyOn(process, "exit").mockImplementationOnce(() => {
+        jest.spyOn(Exit, "default").mockImplementation(() => {
             throw new Error("PRETEND PROCESS EXIT!");
         });
         const logSpy = jest.spyOn(new Logger(null), "log");
@@ -119,6 +123,58 @@ describe("#run", () => {
         expect(logSpy.mock.calls[0][0]).toMatchSnapshot();
     });
 
+    it("should change the working directory if cwd arg present", async () => {
+        // Arrange
+        const fakeParsedArgs: any = {
+            cwd: "/some/path",
+            verbose: true,
+        } as const;
+        jest.spyOn(minimist, "default").mockReturnValue(fakeParsedArgs);
+        jest.spyOn(DetermineOptions, "default").mockResolvedValue(
+            defaultOptions,
+        );
+        jest.spyOn(CheckSync, "default").mockResolvedValue(0);
+        // @ts-expect-error this is typed to never, but we want to mock it
+        jest.spyOn(Exit, "default").mockImplementation(() => {});
+        const chdirSpy = jest
+            .spyOn(process, "chdir")
+            .mockImplementationOnce(() => {});
+
+        // Act
+        await run(__filename);
+
+        // Assert
+        expect(chdirSpy).toHaveBeenCalledWith("/some/path");
+    });
+
+    it("should exit with ExitCode.CATASTROPHIC if cwd arg present and chdir fails", async () => {
+        // Arrange
+        const fakeParsedArgs: any = {
+            cwd: "/some/path",
+        } as const;
+        jest.spyOn(minimist, "default").mockReturnValue(fakeParsedArgs);
+        jest.spyOn(DetermineOptions, "default").mockResolvedValue(
+            defaultOptions,
+        );
+        jest.spyOn(CheckSync, "default").mockResolvedValue(0);
+        const exitSpy = jest
+            .spyOn(Exit, "default")
+            // @ts-expect-error this is typed to never, but we want to mock it
+            .mockImplementation(() => {});
+        jest.spyOn(process, "chdir").mockImplementationOnce(() => {
+            throw new Error("PRETEND CHDIR FAIL!");
+        });
+
+        // Act
+        await run(__filename);
+
+        // Assert
+        expect(exitSpy).toHaveBeenCalledWith(
+            expect.anything(),
+            ExitCode.CATASTROPHIC,
+        );
+    });
+
     it("should pass arguments to determineOptions", async () => {
         // Arrange
         const fakeParsedArgs: any = {
@@ -130,7 +186,7 @@ describe("#run", () => {
             .mockResolvedValue(defaultOptions);
         jest.spyOn(CheckSync, "default").mockResolvedValue(0);
         // @ts-expect-error this is typed to never, but we want to mock it
-        jest.spyOn(process, "exit").mockImplementationOnce(() => {});
+        jest.spyOn(Exit, "default").mockImplementation(() => {});
 
         // Act
         await run(__filename);
@@ -158,7 +214,7 @@ describe("#run", () => {
             .spyOn(CheckSync, "default")
             .mockResolvedValue(0);
         // @ts-expect-error this is typed to never, but we want to mock it
-        jest.spyOn(process, "exit").mockImplementationOnce(() => {});
+        jest.spyOn(Exit, "default").mockImplementation(() => {});
 
         // Act
         await run(__filename);
@@ -181,7 +237,7 @@ describe("#run", () => {
         jest.spyOn(minimist, "default").mockReturnValue(fakeParsedArgs);
         jest.spyOn(fs, "existsSync").mockReturnValueOnce(false);
         // @ts-expect-error this is typed to never, but we want to mock it
-        jest.spyOn(process, "exit").mockImplementationOnce(() => {});
+        jest.spyOn(Exit, "default").mockImplementation(() => {});
         const setVerboseSpy = jest.spyOn(new Logger(null), "setVerbose");
 
         // Act
@@ -198,15 +254,18 @@ describe("#run", () => {
         );
         jest.spyOn(minimist, "default").mockReturnValue({} as any);
         const exitSpy = jest
-            .spyOn(process, "exit")
+            .spyOn(Exit, "default")
             // @ts-expect-error this is typed to never, but we want to mock it
-            .mockImplementationOnce(() => {});
+            .mockImplementation(() => {});
 
         // Act
         await run(__filename);
 
         // Assert
-        expect(exitSpy).toHaveBeenCalledWith(ExitCodes.BAD_CONFIG);
+        expect(exitSpy).toHaveBeenCalledWith(
+            expect.anything(),
+            ExitCode.BAD_CONFIG,
+        );
     });
 
     it("should exit process with the exit code from checkSync", async () => {
@@ -217,15 +276,15 @@ describe("#run", () => {
         );
         jest.spyOn(minimist, "default").mockReturnValue({} as any);
         const exitSpy = jest
-            .spyOn(process, "exit")
+            .spyOn(Exit, "default")
             // @ts-expect-error this is typed to never, but we want to mock it
-            .mockImplementationOnce(() => {});
+            .mockImplementation(() => {});
 
         // Act
         await run(__filename);
 
         // Assert
-        expect(exitSpy).toHaveBeenCalledWith(42);
+        expect(exitSpy).toHaveBeenCalledWith(expect.anything(), 42);
     });
 
     it("should log error on rejection of checkSync method", async () => {
@@ -238,7 +297,7 @@ describe("#run", () => {
         );
         jest.spyOn(minimist, "default").mockReturnValue({} as any);
         // @ts-expect-error this is typed to never, but we want to mock it
-        jest.spyOn(process, "exit").mockImplementation(() => {});
+        jest.spyOn(Exit, "default").mockImplementation(() => {});
         const logSpy = jest.spyOn(new Logger(null), "error");
 
         // Act
@@ -260,7 +319,7 @@ describe("#run", () => {
         );
         jest.spyOn(minimist, "default").mockReturnValue({} as any);
         const exitSpy = jest
-            .spyOn(process, "exit")
+            .spyOn(Exit, "default")
             // @ts-expect-error this is typed to never, but we want to mock it
             .mockImplementation(() => {});
 
@@ -268,7 +327,10 @@ describe("#run", () => {
         await run(__filename);
 
         // Assert
-        expect(exitSpy).toHaveBeenCalledWith(ExitCodes.CATASTROPHIC);
+        expect(exitSpy).toHaveBeenCalledWith(
+            expect.anything(),
+            ExitCode.CATASTROPHIC,
+        );
     });
 
     describe("unknown arg handling", () => {
@@ -279,7 +341,7 @@ describe("#run", () => {
                 defaultOptions,
             );
             // @ts-expect-error this is typed to never, but we want to mock it
-            jest.spyOn(process, "exit").mockImplementationOnce(() => {});
+            jest.spyOn(Exit, "default").mockImplementation(() => {});
             const minimistSpy = jest
                 .spyOn(minimist, "default")
                 .mockReturnValue({} as any);
@@ -300,7 +362,7 @@ describe("#run", () => {
                 defaultOptions,
             );
             // @ts-expect-error this is typed to never, but we want to mock it
-            jest.spyOn(process, "exit").mockImplementationOnce(() => {});
+            jest.spyOn(Exit, "default").mockImplementation(() => {});
             const minimistSpy = jest
                 .spyOn(minimist, "default")
                 .mockReturnValue({} as any);
@@ -321,7 +383,7 @@ describe("#run", () => {
                 defaultOptions,
             );
             // @ts-expect-error this is typed to never, but we want to mock it
-            jest.spyOn(process, "exit").mockImplementationOnce(() => {});
+            jest.spyOn(Exit, "default").mockImplementation(() => {});
             const minimistSpy = jest
                 .spyOn(minimist, "default")
                 .mockReturnValue({} as any);
@@ -342,7 +404,7 @@ describe("#run", () => {
                 defaultOptions,
             );
             // @ts-expect-error this is typed to never, but we want to mock it
-            jest.spyOn(process, "exit").mockImplementationOnce(() => {});
+            jest.spyOn(Exit, "default").mockImplementation(() => {});
             const minimistSpy = jest
                 .spyOn(minimist, "default")
                 .mockReturnValue({} as any);
@@ -366,7 +428,7 @@ describe("#run", () => {
                 defaultOptions,
             );
             const exitSpy = jest
-                .spyOn(process, "exit")
+                .spyOn(Exit, "default")
                 // @ts-expect-error this is typed to never, but we want to mock it
                 .mockImplementation(() => {});
             const minimistSpy = jest
@@ -379,7 +441,10 @@ describe("#run", () => {
             unknownHandler?.("--imadethisup");
 
             // Assert
-            expect(exitSpy).toHaveBeenCalledWith(ExitCodes.UNKNOWN_ARGS);
+            expect(exitSpy).toHaveBeenCalledWith(
+                expect.anything(),
+                ExitCode.UNKNOWN_ARGS,
+            );
         });
 
         it("should report unknown arguments starting with -", async () => {
@@ -389,7 +454,7 @@ describe("#run", () => {
                 defaultOptions,
             );
             // @ts-expect-error this is typed to never, but we want to mock it
-            jest.spyOn(process, "exit").mockImplementation(() => {});
+            jest.spyOn(Exit, "default").mockImplementation(() => {});
             const minimistSpy = jest
                 .spyOn(minimist, "default")
                 .mockReturnValue({} as any);
@@ -413,7 +478,7 @@ describe("#run", () => {
                 defaultOptions,
             );
             // @ts-expect-error this is typed to never, but we want to mock it
-            jest.spyOn(process, "exit").mockImplementation(() => {});
+            jest.spyOn(Exit, "default").mockImplementation(() => {});
             const minimistSpy = jest
                 .spyOn(minimist, "default")
                 .mockReturnValue({} as any);

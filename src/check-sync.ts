@@ -1,6 +1,6 @@
 import getMarkersFromFiles from "./get-markers-from-files";
 import getFiles from "./get-files";
-import ExitCodes, {ExitCode} from "./exit-codes";
+import {ExitCode} from "./exit-codes";
 import processCache from "./process-cache";
 
 import {ILog, Options} from "./types";
@@ -27,7 +27,7 @@ export default async function checkSync(
 
     if (files.length === 0) {
         log.error("No matching files");
-        return ExitCodes.NO_FILES;
+        return ExitCode.NO_FILES;
     }
 
     const cache = await getMarkersFromFiles(options, files);

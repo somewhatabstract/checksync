@@ -2,8 +2,8 @@ import Logger from "../logger";
 import StringLogger from "../string-logger";
 import OutputSink from "../output-sink";
 import defaultOptions from "../default-options";
-import {errorCodes} from "../error-codes";
-import ExitCodes from "../exit-codes";
+import {ErrorCode} from "../error-codes";
+import {ExitCode} from "../exit-codes";
 import * as MaybeReportError from "../maybe-report-error";
 import * as FileReferenceLogger from "../file-reference-logger";
 import * as FixFile from "../fix-file";
@@ -58,7 +58,7 @@ describe("OutputSink", () => {
             outputSink.startFile("foo.js");
             outputSink.processError({
                 reason: "REASON",
-                code: errorCodes.couldNotParse,
+                code: ErrorCode.couldNotParse,
             });
             await outputSink.endFile();
 
@@ -82,7 +82,7 @@ describe("OutputSink", () => {
             const underTest = () =>
                 outputSink.processError({
                     reason: "REASON",
-                    code: errorCodes.couldNotParse,
+                    code: ErrorCode.couldNotParse,
                 });
 
             // Assert
@@ -109,7 +109,7 @@ describe("OutputSink", () => {
                 const reportSpy = jest.spyOn(MaybeReportError, "default");
                 const errorDetails: ErrorDetails = {
                     reason: "REASON",
-                    code: errorCodes.couldNotParse,
+                    code: ErrorCode.couldNotParse,
                 };
                 outputSink.startFile("foo.js");
 
@@ -144,7 +144,7 @@ describe("OutputSink", () => {
                         const outputSink = new OutputSink(options, NullLogger);
                         const errorDetails: ErrorDetails = {
                             reason: "REASON",
-                            code: errorCodes.mismatchedChecksum,
+                            code: ErrorCode.mismatchedChecksum,
                             fix: {
                                 type: "replace",
                                 line: 1,
@@ -166,8 +166,8 @@ describe("OutputSink", () => {
                     });
 
                     it.each(
-                        Object.values(errorCodes).filter(
-                            (e) => e !== errorCodes.mismatchedChecksum,
+                        Object.values(ErrorCode).filter(
+                            (e) => e !== ErrorCode.mismatchedChecksum,
                         ),
                     )("should log %s errors with log.warn", (code) => {
                         // Arrange
@@ -211,7 +211,7 @@ describe("OutputSink", () => {
                 });
 
                 describe("options.autoFix = true", () => {
-                    it.each(Object.values(errorCodes))(
+                    it.each(Object.values(ErrorCode))(
                         "should not log %s errors with log.mismatch",
                         (code) => {
                             // Arrange
@@ -256,7 +256,7 @@ describe("OutputSink", () => {
                         },
                     );
 
-                    it.each(Object.values(errorCodes))(
+                    it.each(Object.values(ErrorCode))(
                         "should not log %s errors with log.warn",
                         (code) => {
                             // Arrange
@@ -320,7 +320,7 @@ describe("OutputSink", () => {
                 const reportSpy = jest.spyOn(MaybeReportError, "default");
                 const errorDetails: ErrorDetails = {
                     reason: "REASON",
-                    code: errorCodes.couldNotParse,
+                    code: ErrorCode.couldNotParse,
                 };
                 outputSink.startFile("foo.js");
 
@@ -331,7 +331,7 @@ describe("OutputSink", () => {
                 expect(reportSpy).not.toHaveBeenCalled();
             });
 
-            it.each(Object.values(errorCodes))(
+            it.each(Object.values(ErrorCode))(
                 "should not log %s errors with log.mismatch",
                 (code) => {
                     // Arrange
@@ -370,7 +370,7 @@ describe("OutputSink", () => {
                 },
             );
 
-            it.each(Object.values(errorCodes))(
+            it.each(Object.values(ErrorCode))(
                 "should not log %s errors with log.warn",
                 (code) => {
                     // Arrange
@@ -470,7 +470,7 @@ describe("OutputSink", () => {
             const outputSink = new OutputSink(options, NullLogger);
             const errorDetails: ErrorDetails = {
                 reason: "REASON",
-                code: errorCodes.duplicateTarget,
+                code: ErrorCode.duplicateTarget,
                 fix: {
                     type: "replace",
                     line: 1,
@@ -513,11 +513,11 @@ describe("OutputSink", () => {
             const outputSink = new OutputSink(options, NullLogger);
             const unfixableError: ErrorDetails = {
                 reason: "REASON",
-                code: errorCodes.couldNotParse,
+                code: ErrorCode.couldNotParse,
             };
             const fixableError: ErrorDetails = {
                 reason: "REASON",
-                code: errorCodes.duplicateTarget,
+                code: ErrorCode.duplicateTarget,
                 fix: {
                     type: "replace",
                     line: 1,
@@ -555,7 +555,7 @@ describe("OutputSink", () => {
             const outputSink = new OutputSink(options, NullLogger);
             const fixableError: ErrorDetails = {
                 reason: "REASON",
-                code: errorCodes.duplicateTarget,
+                code: ErrorCode.duplicateTarget,
                 fix: {
                     type: "replace",
                     line: 1,
@@ -713,7 +713,7 @@ describe("OutputSink", () => {
                 outputSink.startFile("foo.js");
                 outputSink.processError({
                     reason: "REASON",
-                    code: errorCodes.duplicateTarget,
+                    code: ErrorCode.duplicateTarget,
                     fix: {
                         type: "replace",
                         line: 1,
@@ -726,7 +726,7 @@ describe("OutputSink", () => {
                 outputSink.startFile("bar.js");
                 outputSink.processError({
                     reason: "REASON",
-                    code: errorCodes.duplicateTarget,
+                    code: ErrorCode.duplicateTarget,
                     fix: {
                         type: "replace",
                         line: 1,
@@ -764,7 +764,7 @@ describe("OutputSink", () => {
                 );
                 const errorA = {
                     reason: "REASON_A",
-                    code: errorCodes.couldNotParse,
+                    code: ErrorCode.couldNotParse,
                 } as const;
                 outputSink.startFile("foo.js");
                 outputSink.processError(errorA);
@@ -772,7 +772,7 @@ describe("OutputSink", () => {
                 outputSink.startFile("bar.js");
                 const errorB1 = {
                     reason: "REASON_B1",
-                    code: errorCodes.duplicateTarget,
+                    code: ErrorCode.duplicateTarget,
                     fix: {
                         type: "replace",
                         line: 1,
@@ -784,7 +784,7 @@ describe("OutputSink", () => {
                 outputSink.processError(errorB1);
                 const errorB2 = {
                     reason: "REASON_B2",
-                    code: errorCodes.duplicateTarget,
+                    code: ErrorCode.duplicateTarget,
                     location: {
                         line: 42,
                         startColumn: 1,
@@ -832,7 +832,7 @@ describe("OutputSink", () => {
                 );
                 const errorA = {
                     reason: "REASON_A",
-                    code: errorCodes.couldNotParse,
+                    code: ErrorCode.couldNotParse,
                 } as const;
                 outputSink.startFile("foo.js");
                 outputSink.processError(errorA);
@@ -847,7 +847,7 @@ describe("OutputSink", () => {
                 );
             });
 
-            it("should return ExitCodes.PARSE_ERRORS when there are unfixable errors", async () => {
+            it("should return ExitCode.PARSE_ERRORS when there are unfixable errors", async () => {
                 // Arrange
                 const NullLogger = new Logger();
                 jest.spyOn(FileReferenceLogger, "default").mockImplementation(
@@ -865,7 +865,7 @@ describe("OutputSink", () => {
                 );
                 const errorA = {
                     reason: "REASON_A",
-                    code: errorCodes.couldNotParse,
+                    code: ErrorCode.couldNotParse,
                 } as const;
                 outputSink.startFile("foo.js");
                 outputSink.processError(errorA);
@@ -875,10 +875,10 @@ describe("OutputSink", () => {
                 const result = outputSink.end();
 
                 // Assert
-                expect(result).toBe(ExitCodes.PARSE_ERRORS);
+                expect(result).toBe(ExitCode.PARSE_ERRORS);
             });
 
-            it("should return ExitCodes.DESYNCHRONIZED_BLOCKS if there are fixable files and autoFix is false", async () => {
+            it("should return ExitCode.DESYNCHRONIZED_BLOCKS if there are fixable files and autoFix is false", async () => {
                 // Arrange
                 const NullLogger = new Logger();
                 jest.spyOn(FileReferenceLogger, "default").mockImplementation(
@@ -896,7 +896,7 @@ describe("OutputSink", () => {
                 );
                 const errorA = {
                     reason: "REASON_A",
-                    code: errorCodes.duplicateTarget,
+                    code: ErrorCode.duplicateTarget,
                     fix: {
                         type: "replace",
                         line: 1,
@@ -913,10 +913,10 @@ describe("OutputSink", () => {
                 const result = outputSink.end();
 
                 // Assert
-                expect(result).toBe(ExitCodes.DESYNCHRONIZED_BLOCKS);
+                expect(result).toBe(ExitCode.DESYNCHRONIZED_BLOCKS);
             });
 
-            it("should return ExitCodes.SUCCESS if all errors are fixed", async () => {
+            it("should return ExitCode.SUCCESS if all errors are fixed", async () => {
                 // Arrange
                 const NullLogger = new Logger();
                 jest.spyOn(FileReferenceLogger, "default").mockImplementation(
@@ -936,7 +936,7 @@ describe("OutputSink", () => {
                 );
                 const errorA = {
                     reason: "REASON_A",
-                    code: errorCodes.duplicateTarget,
+                    code: ErrorCode.duplicateTarget,
                     fix: {
                         type: "replace",
                         line: 1,
@@ -953,10 +953,10 @@ describe("OutputSink", () => {
                 const result = outputSink.end();
 
                 // Assert
-                expect(result).toBe(ExitCodes.SUCCESS);
+                expect(result).toBe(ExitCode.SUCCESS);
             });
 
-            it("should return ExitCodes.SUCCESS if there are no errors", () => {
+            it("should return ExitCode.SUCCESS if there are no errors", () => {
                 // Arrange
                 const NullLogger = new Logger();
                 const outputSink = new OutputSink(
@@ -972,7 +972,7 @@ describe("OutputSink", () => {
                 const result = outputSink.end();
 
                 // Assert
-                expect(result).toBe(ExitCodes.SUCCESS);
+                expect(result).toBe(ExitCode.SUCCESS);
             });
         });
 
@@ -1000,14 +1000,14 @@ describe("OutputSink", () => {
                 );
                 const errorA = {
                     reason: "REASON_A",
-                    code: errorCodes.couldNotParse,
+                    code: ErrorCode.couldNotParse,
                 } as const;
                 outputSink.startFile("foo.js");
                 outputSink.processError(errorA);
                 outputSink.endFile();
                 const errorB1 = {
                     reason: "REASON_B",
-                    code: errorCodes.duplicateTarget,
+                    code: ErrorCode.duplicateTarget,
                     fix: {
                         type: "replace",
                         line: 1,
@@ -1063,7 +1063,7 @@ describe("OutputSink", () => {
                 );
                 const errorA = {
                     reason: "REASON_A",
-                    code: errorCodes.duplicateTarget,
+                    code: ErrorCode.duplicateTarget,
                     fix: {
                         type: "replace",
                         line: 1,
@@ -1115,7 +1115,7 @@ describe("OutputSink", () => {
                 );
                 const errorA = {
                     reason: "REASON_A",
-                    code: errorCodes.mismatchedChecksum,
+                    code: ErrorCode.mismatchedChecksum,
                     fix: {
                         type: "replace",
                         line: 1,
@@ -1129,7 +1129,7 @@ describe("OutputSink", () => {
                 outputSink.endFile();
                 const errorB1 = {
                     reason: "REASON_B",
-                    code: errorCodes.duplicateTarget,
+                    code: ErrorCode.duplicateTarget,
                     fix: {
                         type: "replace",
                         line: 1,
@@ -1178,7 +1178,7 @@ describe("OutputSink", () => {
                 );
                 const errorA = {
                     reason: "REASON_A",
-                    code: errorCodes.duplicateTarget,
+                    code: ErrorCode.duplicateTarget,
                     fix: {
                         type: "replace",
                         line: 1,
@@ -1237,7 +1237,7 @@ describe("OutputSink", () => {
                 );
                 const errorA = {
                     reason: "REASON_A",
-                    code: errorCodes.couldNotParse,
+                    code: ErrorCode.couldNotParse,
                 } as const;
                 outputSink.startFile("foo.js");
                 outputSink.processError(errorA);
@@ -1256,7 +1256,7 @@ describe("OutputSink", () => {
                 `);
             });
 
-            it("should return ExitCodes.PARSE_ERRORS when there are unfixable errors", async () => {
+            it("should return ExitCode.PARSE_ERRORS when there are unfixable errors", async () => {
                 // Arrange
                 const NullLogger = new Logger();
                 jest.spyOn(FileReferenceLogger, "default").mockImplementation(
@@ -1274,7 +1274,7 @@ describe("OutputSink", () => {
                 );
                 const errorA = {
                     reason: "REASON_A",
-                    code: errorCodes.couldNotParse,
+                    code: ErrorCode.couldNotParse,
                 } as const;
                 outputSink.startFile("foo.js");
                 outputSink.processError(errorA);
@@ -1284,10 +1284,10 @@ describe("OutputSink", () => {
                 const result = outputSink.end();
 
                 // Assert
-                expect(result).toBe(ExitCodes.PARSE_ERRORS);
+                expect(result).toBe(ExitCode.PARSE_ERRORS);
             });
 
-            it("should return ExitCodes.DESYNCHRONIZED_BLOCKS if there are fixable files and autoFix is false", async () => {
+            it("should return ExitCode.DESYNCHRONIZED_BLOCKS if there are fixable files and autoFix is false", async () => {
                 // Arrange
                 const NullLogger = new Logger();
                 jest.spyOn(FileReferenceLogger, "default").mockImplementation(
@@ -1306,7 +1306,7 @@ describe("OutputSink", () => {
                 );
                 const errorA = {
                     reason: "REASON_A",
-                    code: errorCodes.duplicateTarget,
+                    code: ErrorCode.duplicateTarget,
                     fix: {
                         type: "replace",
                         line: 1,
@@ -1323,10 +1323,10 @@ describe("OutputSink", () => {
                 const result = outputSink.end();
 
                 // Assert
-                expect(result).toBe(ExitCodes.DESYNCHRONIZED_BLOCKS);
+                expect(result).toBe(ExitCode.DESYNCHRONIZED_BLOCKS);
             });
 
-            it("should return ExitCodes.SUCCESS if all errors are fixed", async () => {
+            it("should return ExitCode.SUCCESS if all errors are fixed", async () => {
                 // Arrange
                 const NullLogger = new Logger();
                 jest.spyOn(FileReferenceLogger, "default").mockImplementation(
@@ -1346,7 +1346,7 @@ describe("OutputSink", () => {
                 );
                 const errorA = {
                     reason: "REASON_A",
-                    code: errorCodes.duplicateTarget,
+                    code: ErrorCode.duplicateTarget,
                     fix: {
                         type: "replace",
                         line: 1,
@@ -1363,10 +1363,10 @@ describe("OutputSink", () => {
                 const result = outputSink.end();
 
                 // Assert
-                expect(result).toBe(ExitCodes.SUCCESS);
+                expect(result).toBe(ExitCode.SUCCESS);
             });
 
-            it("should return ExitCodes.SUCCESS if there are no errors", () => {
+            it("should return ExitCode.SUCCESS if there are no errors", () => {
                 // Arrange
                 const NullLogger = new Logger();
                 const outputSink = new OutputSink(
@@ -1382,7 +1382,7 @@ describe("OutputSink", () => {
                 const result = outputSink.end();
 
                 // Assert
-                expect(result).toBe(ExitCodes.SUCCESS);
+                expect(result).toBe(ExitCode.SUCCESS);
             });
         });
     });

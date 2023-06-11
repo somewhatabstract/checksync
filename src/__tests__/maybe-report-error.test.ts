@@ -1,7 +1,7 @@
 import Logger from "../logger";
 import FileReferenceLogger from "../file-reference-logger";
 import maybeReportError from "../maybe-report-error";
-import {errorCodes} from "../error-codes";
+import {ErrorCode} from "../error-codes";
 
 describe("#maybeReportError", () => {
     it("should not report a fixable error", () => {
@@ -12,7 +12,7 @@ describe("#maybeReportError", () => {
         );
         const errorSpy = jest.spyOn(NullPositionLogger, "error");
         const error = {
-            code: errorCodes.mismatchedChecksum,
+            code: ErrorCode.mismatchedChecksum,
             reason: "test error",
             fix: {
                 type: "replace",
@@ -30,7 +30,7 @@ describe("#maybeReportError", () => {
         expect(errorSpy).not.toHaveBeenCalled();
     });
 
-    it.each(Object.values(errorCodes))(
+    it.each(Object.values(ErrorCode))(
         "should report non-fixable error %s with log.error",
         (code) => {
             // Arrange

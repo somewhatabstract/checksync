@@ -3,7 +3,7 @@ import {runCli, checkSync, loadConfigurationFile} from "../main";
 import * as Cli from "../cli";
 import * as CheckSync from "../check-sync";
 import * as LoadConfigurationFile from "../load-configuration-file";
-import ExitCodes from "../exit-codes";
+import {ExitCode} from "../exit-codes";
 
 describe("main.js", () => {
     describe("#runCli", () => {
@@ -24,7 +24,7 @@ describe("main.js", () => {
             // Arrange
             const checkSyncSpy = jest
                 .spyOn(CheckSync, "default")
-                .mockImplementation(() => Promise.resolve(ExitCodes.SUCCESS));
+                .mockImplementation(() => Promise.resolve(ExitCode.SUCCESS));
             const logger: any = {
                 fake: "logger",
             };

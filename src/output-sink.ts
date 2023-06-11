@@ -1,12 +1,12 @@
 import FileReferenceLogger from "./file-reference-logger";
 import maybeReportError from "./maybe-report-error";
-import ExitCodes, {ExitCode} from "./exit-codes";
+import {ExitCode} from "./exit-codes";
 import defaultOptions from "./default-options";
 import getLaunchString from "./get-launch-string";
 import cwdRelativePath from "./cwd-relative-path";
 import {version} from "../package.json";
 import fixFile from "./fix-file";
-import ErrorCodes from "./error-codes";
+import {ErrorCode} from "./error-codes";
 import rootRelativePath from "./root-relative-path";
 
 import {ErrorDetails, Options, ILog, ErrorDetailsByDeclaration} from "./types";
@@ -86,7 +86,7 @@ export default class OutputSink {
             this._fixableFileNames.add(fileLog.file);
 
             if (!this._options.autoFix && !this._options.json) {
-                if (code === ErrorCodes.mismatchedChecksum) {
+                if (code === ErrorCode.mismatchedChecksum) {
                     fileLog.mismatch(reason, fix.line);
                 } else {
                     fileLog.warn(reason, fix.line);
@@ -254,18 +254,18 @@ export default class OutputSink {
 
         // Determine the exit code.
         if (this._filesWithUnfixableErrors.size > 0) {
-            return ExitCodes.PARSE_ERRORS;
+            return ExitCode.PARSE_ERRORS;
         }
         if (this._fixableFileNames.size > 0 && !this._options.autoFix) {
             // We have files that can be fixed and we aren't autofixing them
             // so report desynchronized blocks.
-            return ExitCodes.DESYNCHRONIZED_BLOCKS;
+            return ExitCode.DESYNCHRONIZED_BLOCKS;
         }
 
         if (!this._options.json) {
             // If we get here, everything worked.
             this._mainLog.log("🎉  Everything is in sync!");
         }
-        return ExitCodes.SUCCESS;
+        return ExitCode.SUCCESS;
     }
 }

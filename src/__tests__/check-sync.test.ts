@@ -4,7 +4,7 @@ import * as ProcessCache from "../process-cache";
 import Logger from "../logger";
 
 import checkSync from "../check-sync";
-import ExitCodes from "../exit-codes";
+import {ExitCode} from "../exit-codes";
 
 import {Options} from "../types";
 
@@ -110,16 +110,14 @@ describe("#checkSync", () => {
         const result = await checkSync(options, NullLogger);
 
         // Assert
-        expect(result).toBe(ExitCodes.NO_FILES);
+        expect(result).toBe(ExitCode.NO_FILES);
     });
 
     it("should build a marker cache from the files", async () => {
         // Arrange
         const NullLogger = new Logger();
         jest.spyOn(GetFiles, "default").mockResolvedValue(["filea", "fileb"]);
-        jest.spyOn(ProcessCache, "default").mockResolvedValue(
-            ExitCodes.SUCCESS,
-        );
+        jest.spyOn(ProcessCache, "default").mockResolvedValue(ExitCode.SUCCESS);
         const getMarkersFromFilesSpy = jest
             .spyOn(GetMarkersFromFiles, "default")
             .mockResolvedValue({});
@@ -151,7 +149,7 @@ describe("#checkSync", () => {
         jest.spyOn(GetMarkersFromFiles, "default").mockResolvedValue(fakeCache);
         const ProcessCacheSpy = jest
             .spyOn(ProcessCache, "default")
-            .mockResolvedValue(ExitCodes.SUCCESS);
+            .mockResolvedValue(ExitCode.SUCCESS);
         const options: Options = {
             includeGlobs: ["glob1", "glob2"],
             excludeGlobs: [],
@@ -180,9 +178,7 @@ describe("#checkSync", () => {
         const fakeCache: Record<string, any> = {};
         jest.spyOn(GetFiles, "default").mockResolvedValue(["filea", "fileb"]);
         jest.spyOn(GetMarkersFromFiles, "default").mockResolvedValue(fakeCache);
-        jest.spyOn(ProcessCache, "default").mockResolvedValue(
-            ExitCodes.SUCCESS,
-        );
+        jest.spyOn(ProcessCache, "default").mockResolvedValue(ExitCode.SUCCESS);
 
         // Act
         const result = await checkSync(
@@ -199,6 +195,6 @@ describe("#checkSync", () => {
         );
 
         // Assert
-        expect(result).toBe(ExitCodes.SUCCESS);
+        expect(result).toBe(ExitCode.SUCCESS);
     });
 });
