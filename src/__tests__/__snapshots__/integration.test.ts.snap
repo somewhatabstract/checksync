@@ -11,21 +11,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["checksums_need_updating/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "checksums_need_updating/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/checksums_need_updating/a.js",
@@ -63,21 +57,15 @@ Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["checksums_need_updating/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "checksums_need_updating/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/checksums_need_updating/a.js",
@@ -117,21 +105,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["checksums_need_updating/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "checksums_need_updating/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/checksums_need_updating/a.js",
@@ -219,21 +201,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["content_after_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "content_after_start/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/content_after_start/a.js",
@@ -279,21 +255,15 @@ Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["content_after_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "content_after_start/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/content_after_start/a.js",
@@ -336,21 +306,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["content_after_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "content_after_start/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/content_after_start/a.js",
@@ -453,21 +417,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["correct_checksums/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "correct_checksums/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/correct_checksums/a.js",
@@ -489,21 +447,15 @@ Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["correct_checksums/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "correct_checksums/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/correct_checksums/a.js",
@@ -524,21 +476,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["correct_checksums/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "correct_checksums/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/correct_checksums/a.js",
@@ -563,21 +509,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["directory_target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "directory_target/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/directory_target/a_directory/somefile.js",
@@ -605,21 +545,15 @@ Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["directory_target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "directory_target/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/directory_target/a_directory/somefile.js",
@@ -646,21 +580,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["directory_target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "directory_target/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/directory_target/a_directory/somefile.js",
@@ -702,21 +630,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["duplicate-target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "duplicate-target/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/duplicate-target/a.js",
@@ -752,21 +674,15 @@ Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["duplicate-target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "duplicate-target/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/duplicate-target/a.js",
@@ -801,21 +717,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["duplicate-target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "duplicate-target/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/duplicate-target/a.js",
@@ -899,21 +809,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["end_with_no_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "end_with_no_start/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/end_with_no_start/example.js"
@@ -938,21 +842,15 @@ Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["end_with_no_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "end_with_no_start/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/end_with_no_start/example.js"
@@ -976,21 +874,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["end_with_no_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "end_with_no_start/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/end_with_no_start/example.js"
@@ -1024,21 +916,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["excluded/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "excluded/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: []
 Error    No matching files"
@@ -1056,21 +942,15 @@ Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["excluded/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "excluded/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: []
 Error    No matching files"
@@ -1087,21 +967,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["excluded/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "excluded/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: []
 Error    No matching files"
@@ -1118,24 +992,32 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["ignore_files_at_different_depths/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "ignore_files_at_different_depths/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
-Verbose  Discovered paths: []
-Error    No matching files"
+Verbose  IGNORED  : ignore_files_at_different_depths/ignore-file.txt by ignore_files_at_different_depths/ignore-file.txt
+Verbose  IGNORED  : ignore_files_at_different_depths/ignorethesewhennotinsome/bad-sync-tags-never-parsed.js by ignore_files_at_different_depths/ignore-file.txt
+Verbose  IGNORED  : ignore_files_at_different_depths/some/alsoignorethis.txt by ignore_files_at_different_depths/some/ignore-file.txt
+Verbose  IGNORED  : ignore_files_at_different_depths/some/ignore-file.txt by ignore_files_at_different_depths/ignore-file.txt
+Verbose  IGNORED  : ignore_files_at_different_depths/some/ignore-file.txt by ignore_files_at_different_depths/some/ignore-file.txt
+Verbose  IGNORED  : ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js by ignore_files_at_different_depths/ignore-file.txt
+Verbose  UNIGNORED: ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js by ignore_files_at_different_depths/some/ignore-file.txt
+Verbose  Discovered paths: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js"
+]
+Error    ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js:5
+Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start
+
+<group 🛑  Unfixable errors found. Fix the errors in these files and try again. >
+  ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js
+<end_group>"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example ignore_files_at_different_depths to match snapshot with autofix dryrun 1`] = `
@@ -1150,24 +1032,32 @@ Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["ignore_files_at_different_depths/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "ignore_files_at_different_depths/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
-Verbose  Discovered paths: []
-Error    No matching files"
+Verbose  IGNORED  : ignore_files_at_different_depths/ignore-file.txt by ignore_files_at_different_depths/ignore-file.txt
+Verbose  IGNORED  : ignore_files_at_different_depths/ignorethesewhennotinsome/bad-sync-tags-never-parsed.js by ignore_files_at_different_depths/ignore-file.txt
+Verbose  IGNORED  : ignore_files_at_different_depths/some/alsoignorethis.txt by ignore_files_at_different_depths/some/ignore-file.txt
+Verbose  IGNORED  : ignore_files_at_different_depths/some/ignore-file.txt by ignore_files_at_different_depths/ignore-file.txt
+Verbose  IGNORED  : ignore_files_at_different_depths/some/ignore-file.txt by ignore_files_at_different_depths/some/ignore-file.txt
+Verbose  IGNORED  : ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js by ignore_files_at_different_depths/ignore-file.txt
+Verbose  UNIGNORED: ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js by ignore_files_at_different_depths/some/ignore-file.txt
+Verbose  Discovered paths: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js"
+]
+Error    ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js:5
+Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start
+
+<group 🛑  Could not update all tags due to unfixable errors. Fix the errors in these files and try again. >
+  ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js
+<end_group>"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example ignore_files_at_different_depths to match snapshot with json 1`] = `
@@ -1181,24 +1071,42 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["ignore_files_at_different_depths/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "ignore_files_at_different_depths/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
-Verbose  Discovered paths: []
-Error    No matching files"
+Verbose  IGNORED  : ignore_files_at_different_depths/ignore-file.txt by ignore_files_at_different_depths/ignore-file.txt
+Verbose  IGNORED  : ignore_files_at_different_depths/ignorethesewhennotinsome/bad-sync-tags-never-parsed.js by ignore_files_at_different_depths/ignore-file.txt
+Verbose  IGNORED  : ignore_files_at_different_depths/some/alsoignorethis.txt by ignore_files_at_different_depths/some/ignore-file.txt
+Verbose  IGNORED  : ignore_files_at_different_depths/some/ignore-file.txt by ignore_files_at_different_depths/ignore-file.txt
+Verbose  IGNORED  : ignore_files_at_different_depths/some/ignore-file.txt by ignore_files_at_different_depths/some/ignore-file.txt
+Verbose  IGNORED  : ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js by ignore_files_at_different_depths/ignore-file.txt
+Verbose  UNIGNORED: ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js by ignore_files_at_different_depths/some/ignore-file.txt
+Verbose  Discovered paths: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js"
+]
+Error    🛑  Unfixable errors found. Fix the errors and try again.
+{
+    "version": "0.0.0",
+    "launchString": "checksync -u ",
+    "files": {
+        "__examples__/ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js": [
+            {
+                "reason": "Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start",
+                "location": {
+                    "line": 5
+                },
+                "code": "end-tag-without-start-tag"
+            }
+        ]
+    }
+}"
 `;
 
 exports[`Integration Tests (see __examples__ folder) should report example malformed_end to match snapshot 1`] = `
@@ -1212,21 +1120,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["malformed_end/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "malformed_end/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/malformed_end/malformed_badid.js",
@@ -1259,21 +1161,15 @@ Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["malformed_end/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "malformed_end/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/malformed_end/malformed_badid.js",
@@ -1305,21 +1201,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["malformed_end/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "malformed_end/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/malformed_end/malformed_badid.js",
@@ -1377,21 +1267,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["malformed_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "malformed_start/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/malformed_start/malformed_badchecksum.js",
@@ -1430,21 +1314,15 @@ Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["malformed_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "malformed_start/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/malformed_start/malformed_badchecksum.js",
@@ -1482,21 +1360,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["malformed_start/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "malformed_start/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/malformed_start/malformed_badchecksum.js",
@@ -1571,21 +1443,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["missing_target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "missing_target/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/missing_target/example.js"
@@ -1612,21 +1478,15 @@ Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["missing_target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "missing_target/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/missing_target/example.js"
@@ -1652,21 +1512,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["missing_target/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "missing_target/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/missing_target/example.js"
@@ -1707,21 +1561,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["no_back_reference/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "no_back_reference/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/no_back_reference/file1.js",
@@ -1747,21 +1595,15 @@ Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["no_back_reference/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "no_back_reference/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/no_back_reference/file1.js",
@@ -1786,21 +1628,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["no_back_reference/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "no_back_reference/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/no_back_reference/file1.js",
@@ -1835,21 +1671,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["no_checksums/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "no_checksums/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/no_checksums/example_one-a.js",
@@ -1880,21 +1710,15 @@ Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["no_checksums/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "no_checksums/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/no_checksums/example_one-a.js",
@@ -1927,21 +1751,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["no_checksums/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "no_checksums/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/no_checksums/example_one-a.js",
@@ -1998,21 +1816,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["no_self_reference/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "no_self_reference/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/no_self_reference/example.js"
@@ -2045,21 +1857,15 @@ Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["no_self_reference/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "no_self_reference/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/no_self_reference/example.js"
@@ -2088,21 +1894,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["no_self_reference/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "no_self_reference/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/no_self_reference/example.js"
@@ -2150,21 +1950,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["unterminated_marker/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "unterminated_marker/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/unterminated_marker/example_two-a.js",
@@ -2193,21 +1987,15 @@ Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":true,"json":false,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":true,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["unterminated_marker/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
 Info     DRY-RUN: Files will not be modified
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "unterminated_marker/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/unterminated_marker/example_two-a.js",
@@ -2235,21 +2023,15 @@ Verbose  Validating configuration
 Verbose  Configuration is valid
 Verbose  Options from config: {"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.","autoFix":false,"comments":["//","#","{/*"],"dryRun":false,"excludeGlobs":["**/excluded/**"],"ignoreFiles":["**/ignore-file.txt"],"json":false}
 Verbose  Combined options with defaults: {"autoFix":false,"json":true,"comments":["//","#","{/*"],"excludeGlobs":["**/excluded/**"],"dryRun":false,"ignoreFiles":["**/ignore-file.txt"],"includeGlobs":["unterminated_marker/**"],"$schema":"./src/checksync.schema.json","$comment":"This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
 Verbose  Include globs: [
     "unterminated_marker/**"
 ]
 Verbose  Exclude globs: [
-    "**/excluded/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/ignorethese/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/ignorethese",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/**/*.ignored/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/**/*.ignored",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/ignore-file.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/**/alsoignorethis.txt/**",
-    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+    "**/excluded/**"
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/unterminated_marker/example_two-a.js",

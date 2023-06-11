@@ -1,7 +1,7 @@
 import glob from "fast-glob";
 import path from "path";
 import fs from "fs";
-import ignoreFileGlobsToExcludeGlobs from "./ignore-file-globs-to-exclude-globs";
+import ignoreFileGlobsToAllowPredicate from "./ignore-file-globs-to-allow-predicate";
 
 import {ILog} from "./types";
 
@@ -15,15 +15,15 @@ import {ILog} from "./types";
  */
 export default async function getFiles(
     includeGlobs: ReadonlyArray<string>,
-    explicitExcludeGlobs: ReadonlyArray<string>,
+    excludeGlobs: ReadonlyArray<string>,
     ignoreFileGlobs: ReadonlyArray<string>,
-    log?: ILog,
+    log: ILog,
 ): Promise<Array<string>> {
-    const ignoreFileExcludeGlobs = await ignoreFileGlobsToExcludeGlobs(
+    // We turn all the ignore files we're using into a single predicate that
+    // returns true if a file is allowed, or false if it is ignored.
+    const allowPredicate = await ignoreFileGlobsToAllowPredicate(
         ignoreFileGlobs,
-    );
-    const allExcludeGlobs = Array.from(
-        new Set([...explicitExcludeGlobs, ...ignoreFileExcludeGlobs]),
+        log,
     );
 
     // If any of our input globs don't contain a * and they are a directory
@@ -44,23 +44,26 @@ export default async function getFiles(
             : pattern,
     );
 
-    log?.verbose(
+    log.verbose(
         () => `Include globs: ${JSON.stringify(includeGlobs, null, 4)}`,
     );
-    log?.verbose(
-        () => `Exclude globs: ${JSON.stringify(allExcludeGlobs, null, 4)}`,
+    log.verbose(
+        () => `Exclude globs: ${JSON.stringify(excludeGlobs, null, 4)}`,
     );
 
     // Now let's match the patterns and see what files we get.
     const paths = await glob([...includeGlobs], {
         onlyFiles: true,
         absolute: true,
-        ignore: allExcludeGlobs,
+        ignore: excludeGlobs as Array<string>, // remove readonly-ness
     });
     const sortedPaths = paths
+        // Filter out any paths that are not allowed by the ignore files.
+        .filter((p) => allowPredicate(p))
+        // Replace the `/` with the OS-specific path separator.
         .map((p) => p.replace(new RegExp("/", "g"), path.sep))
         .sort();
-    log?.verbose(
+    log.verbose(
         () => `Discovered paths: ${JSON.stringify(sortedPaths, null, 4)}`,
     );
     return sortedPaths;
