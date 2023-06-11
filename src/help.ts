@@ -69,6 +69,21 @@ Where:
                                .map((n) => `\`${n}\``)
                                .join("\n                           ")}
 
+                       Paths within the config file are resolved relative to
+                       the location of the config file.
+
+    \`--cwd\`              The current working directory to use when searching
+                       for a configuration file, and resolving relative paths
+                       and globs.
+
+                       The \`--config\` path takes precedence over this
+                       argument. If there is no \`--config\` argument, this
+                       location is used to find a config file. If a config file
+                       is found, the working directory will then change to
+                       the location of that file, otherwise this argument's
+                       value is used when resolve the remainder of the given
+                       arguments.
+
     \`--dry-run,-n\`       Ignored unless supplied with \`--update-tags\`.
 
     \`--help,-h\`          Outputs this help text.

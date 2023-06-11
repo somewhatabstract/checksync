@@ -2,7 +2,7 @@ import escapeRegExp from "lodash/escapeRegExp";
 
 import calcChecksum from "./checksum";
 import {NoChecksum} from "./types";
-import ErrorCodes from "./error-codes";
+import {ErrorCode} from "./error-codes";
 
 import {Targets, normalizePathFn, ErrorDetails} from "./types";
 
@@ -226,7 +226,7 @@ export default class MarkerParser {
             this._recordError({
                 reason: `Sync-start tags for '${id}' given in different comment styles. Please use the same style for all sync-start tags that have identical identifiers.`,
                 location: {line},
-                code: ErrorCodes.differentCommentSyntax,
+                code: ErrorCode.differentCommentSyntax,
             });
         }
 
@@ -234,7 +234,7 @@ export default class MarkerParser {
             this._recordError({
                 reason: `Sync-start for '${id}' points to '${file}', which does not exist or is a directory`,
                 location: {line},
-                code: ErrorCodes.fileDoesNotExist,
+                code: ErrorCode.fileDoesNotExist,
             });
         }
 
@@ -242,7 +242,7 @@ export default class MarkerParser {
             this._recordError({
                 reason: `Duplicate target for sync-tag '${id}'`,
                 location: {line},
-                code: ErrorCodes.duplicateTarget,
+                code: ErrorCode.duplicateTarget,
                 fix: {
                     type: "delete",
                     description: `Removed duplicate target for sync-tag '${id}'`,
@@ -256,7 +256,7 @@ export default class MarkerParser {
             this._recordError({
                 reason: `Sync-start for '${id}' found after content started`,
                 location: {line},
-                code: ErrorCodes.startTagAfterContent,
+                code: ErrorCode.startTagAfterContent,
             });
         }
         const targets = this._openMarkers[id].targets[normalized.file] || [];
@@ -274,13 +274,13 @@ export default class MarkerParser {
             this._recordError({
                 reason: `Sync-end for '${id}' found, but there was no corresponding sync-start`,
                 location: {line},
-                code: ErrorCodes.endTagWithoutStartTag,
+                code: ErrorCode.endTagWithoutStartTag,
             });
         } else if (marker.content.length === 0) {
             this._recordError({
                 reason: `Sync-tag '${id}' has no content`,
                 location: {line},
-                code: ErrorCodes.emptyMarker,
+                code: ErrorCode.emptyMarker,
             });
         }
 
@@ -301,7 +301,7 @@ export default class MarkerParser {
             this._recordError({
                 reason: `Sync-start '${id}' has no corresponding sync-end`,
                 location: {line},
-                code: ErrorCodes.startTagWithoutEndTag,
+                code: ErrorCode.startTagWithoutEndTag,
             });
         }
     };
@@ -314,7 +314,7 @@ export default class MarkerParser {
         this._recordError({
             reason: `Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'`,
             location: {line},
-            code: ErrorCodes.malformedStartTag,
+            code: ErrorCode.malformedStartTag,
         });
     };
 
@@ -325,7 +325,7 @@ export default class MarkerParser {
         this._recordError({
             reason: `Malformed sync-end: format should be 'sync-end:<label>'`,
             location: {line},
-            code: ErrorCodes.malformedEndTag,
+            code: ErrorCode.malformedEndTag,
         });
     };
 

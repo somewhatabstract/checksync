@@ -1,6 +1,6 @@
 import processCache from "../process-cache";
 import Logger from "../logger";
-import ExitCodes from "../exit-codes";
+import {ExitCode} from "../exit-codes";
 import * as OutputSink from "../output-sink";
 import * as GenerateErrorsForFile from "../generate-errors-for-file";
 
@@ -307,7 +307,7 @@ describe("#processCache", () => {
             startFile: jest.fn<any, any>(),
             processError: jest.fn<any, any>(),
             endFile: jest.fn<any, any>(),
-            end: jest.fn<any, any>().mockReturnValue(ExitCodes.CATASTROPHIC),
+            end: jest.fn<any, any>().mockReturnValue(ExitCode.CATASTROPHIC),
         } as const;
         jest.spyOn(OutputSink, "default").mockImplementation(
             () => fakeOutputSink,
@@ -322,6 +322,6 @@ describe("#processCache", () => {
         const result = await processCache(options, markerCache, NullLogger);
 
         // Assert
-        expect(result).toBe(ExitCodes.CATASTROPHIC);
+        expect(result).toBe(ExitCode.CATASTROPHIC);
     });
 });

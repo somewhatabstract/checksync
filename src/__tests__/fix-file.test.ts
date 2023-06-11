@@ -1,7 +1,7 @@
 import fs from "fs";
 import readline from "readline";
 
-import ErrorCodes from "../error-codes";
+import {ErrorCode} from "../error-codes";
 import Logger from "../logger";
 import FileReferenceLogger from "../file-reference-logger";
 import fixFile from "../fix-file";
@@ -86,7 +86,7 @@ describe("#fixFile", () => {
         const promise = fixFile(options, "filea", NullFileLogger, {
             BROKEN_DECLARATION: [
                 {
-                    code: ErrorCodes.mismatchedChecksum,
+                    code: ErrorCode.mismatchedChecksum,
                     reason: "MISMATCHED CHECKSUMS REASON",
                     fix: {
                         type: "replace",
@@ -141,7 +141,7 @@ describe("#fixFile", () => {
         const promise = fixFile(options, "filea", NullFileLogger, {
             BROKEN_DECLARATION: [
                 {
-                    code: ErrorCodes.mismatchedChecksum,
+                    code: ErrorCode.mismatchedChecksum,
                     reason: "MISMATCHED CHECKSUMS REASON",
                     fix: {
                         type: "replace",
@@ -196,7 +196,7 @@ describe("#fixFile", () => {
         const promise = fixFile(options, "filea", NullFileLogger, {
             BROKEN_DECLARATION: [
                 {
-                    code: ErrorCodes.mismatchedChecksum,
+                    code: ErrorCode.mismatchedChecksum,
                     reason: "MISMATCHED CHECKSUMS REASON",
                     fix: {
                         type: "replace",
@@ -253,7 +253,7 @@ describe("#fixFile", () => {
         const promise = fixFile(options, "filea", NullFileLogger, {
             BROKEN_DECLARATION: [
                 {
-                    code: ErrorCodes.duplicateTarget,
+                    code: ErrorCode.duplicateTarget,
                     reason: "MISMATCHED CHECKSUMS REASON",
                     fix: {
                         type: "delete",
@@ -306,7 +306,7 @@ describe("#fixFile", () => {
         const promise = fixFile(options, "filea", NullFileLogger, {
             BROKEN_DECLARATION: [
                 {
-                    code: ErrorCodes.mismatchedChecksum,
+                    code: ErrorCode.mismatchedChecksum,
                     reason: "MISMATCHED CHECKSUMS REASON",
                     fix: {
                         type: "replace",
@@ -317,7 +317,7 @@ describe("#fixFile", () => {
                     },
                 },
                 {
-                    code: ErrorCodes.mismatchedChecksum,
+                    code: ErrorCode.mismatchedChecksum,
                     reason: "MISMATCHED CHECKSUMS REASON",
                     fix: {
                         type: "replace",
@@ -384,7 +384,7 @@ describe("#fixFile", () => {
         const promise = fixFile(testOptions, "filea", NullFileLogger, {
             BROKEN_DECLARATION: [
                 {
-                    code: ErrorCodes.mismatchedChecksum,
+                    code: ErrorCode.mismatchedChecksum,
                     reason: "MISMATCHED CHECKSUMS REASON",
                     fix: {
                         type: "replace",

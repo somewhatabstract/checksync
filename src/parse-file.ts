@@ -6,7 +6,7 @@ import fs from "fs";
 
 import MarkerParser from "./marker-parser";
 import getNormalizedTargetFileInfo from "./get-normalized-target-file-info";
-import ErrorCodes from "./error-codes";
+import {ErrorCode} from "./error-codes";
 import {ancesdirOrCurrentDir} from "./ancesdir-or-currentdir";
 
 import {
@@ -58,7 +58,7 @@ export default function parseFile(
                     location: {
                         line: lineNumber,
                     },
-                    code: ErrorCodes.duplicateMarker,
+                    code: ErrorCode.duplicateMarker,
                 });
             }
 
@@ -69,7 +69,7 @@ export default function parseFile(
                     location: {
                         line: lineNumber,
                     },
-                    code: ErrorCodes.selfTargeting,
+                    code: ErrorCode.selfTargeting,
                 });
             }
         }
@@ -140,7 +140,7 @@ export default function parseFile(
         (res) => res,
         (reason: Error) => {
             recordError({
-                code: "could-not-parse",
+                code: ErrorCode.couldNotParse,
                 reason: `Could not parse file: ${reason.message}`,
             });
             return {

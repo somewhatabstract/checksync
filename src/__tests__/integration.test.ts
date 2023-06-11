@@ -34,7 +34,7 @@ describe("Integration Tests (see __examples__ folder)", () => {
         .filter((name) => fs.lstatSync(name).isDirectory())
         // Finally, this has to be an actual glob, or it won't work,
         // and we need our ignore files.
-        .map((name) => [name, `${name}/**`])
+        .map((name) => [name, `**/${name}/**`])
         .sort();
 
     it.each(exampleGlobs)(

@@ -6,10 +6,12 @@ import chalk from "chalk";
 import minimist from "minimist";
 import checkSync from "./check-sync";
 import Logger from "./logger";
-import ExitCodes from "./exit-codes";
+import {ExitCode} from "./exit-codes";
 import logHelp from "./help";
 import {version} from "../package.json";
 import determineOptions from "./determine-options";
+import exit from "./exit";
+import setCwd from "./set-cwd";
 
 /**
  * Run the command line.
@@ -26,7 +28,14 @@ export const run = (launchFilePath: string): Promise<void> => {
     // as a flag inversion of the none-`no` version.
     const args = minimist(process.argv, {
         boolean: ["updateTags", "dryRun", "help", "verbose", "version", "json"],
-        string: ["comments", "rootMarker", "ignore", "ignoreFiles", "config"],
+        string: [
+            "cwd",
+            "comments",
+            "rootMarker",
+            "ignore",
+            "ignoreFiles",
+            "config",
+        ],
         alias: {
             comments: ["c"],
             dryRun: ["n", "dry-run"],
@@ -62,7 +71,7 @@ export const run = (launchFilePath: string): Promise<void> => {
 
             if (arg.startsWith("-")) {
                 log.error(`Unknown argument: ${arg}`);
-                process.exit(ExitCodes.UNKNOWN_ARGS);
+                exit(log, ExitCode.UNKNOWN_ARGS);
             }
             return true;
         },
@@ -74,33 +83,38 @@ export const run = (launchFilePath: string): Promise<void> => {
     // Process arguments that fail early.
     if (args.version) {
         log.log(version);
-        process.exit(ExitCodes.SUCCESS);
+        exit(log, ExitCode.SUCCESS);
     }
 
     if (args.help) {
         logHelp(log);
-        process.exit(ExitCodes.SUCCESS);
+        exit(log, ExitCode.SUCCESS);
     }
 
     log.verbose(() => `Launched with args: ${JSON.stringify(args, null, 4)}`);
+
+    // We need to apply the cwd argument to the process, otherwise the
+    // configuration file discovery and other tasks will be working off a
+    // different working directory.
+    if (args.cwd != null) {
+        setCwd(log, args.cwd);
+    }
 
     // Parse arguments and configurations to get our options.
     return determineOptions(args, log)
         .then(
             (options) => checkSync(options, log),
-            (e) => ExitCodes.BAD_CONFIG,
+            (e) => ExitCode.BAD_CONFIG,
         )
         .then(
             (exitCode) => {
                 log.verbose(() => `Exiting with code ${exitCode}`);
-                process.exit(exitCode);
+                exit(log, exitCode);
             },
             (e) => {
                 log.error(`Unexpected error: ${e}`);
-                log.verbose(
-                    () => `Exiting with code ${ExitCodes.CATASTROPHIC}`,
-                );
-                process.exit(ExitCodes.CATASTROPHIC);
+                log.verbose(() => `Exiting with code ${ExitCode.CATASTROPHIC}`);
+                exit(log, ExitCode.CATASTROPHIC);
             },
         );
 };

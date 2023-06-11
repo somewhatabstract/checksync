@@ -1,6 +1,6 @@
 import path from "path";
 import escapeRegExp from "lodash/escapeRegExp";
-import ErrorCodes from "./error-codes";
+import {ErrorCode} from "./error-codes";
 import rootRelativePath from "./root-relative-path";
 import cwdRelativePath from "./cwd-relative-path";
 import {NoChecksum} from "./types";
@@ -102,7 +102,7 @@ export default function* generateErrors(
                     reason: `No return tag named '${markerID}' in '${cwdRelativePath(
                         targetRef.file,
                     )}'`,
-                    code: "no-return-tag",
+                    code: ErrorCode.noReturnTag,
                     location: {line: sourceLine},
                 };
                 continue;
@@ -125,7 +125,7 @@ export default function* generateErrors(
             )}${commentEnd || ""}`;
 
             yield {
-                code: ErrorCodes.mismatchedChecksum,
+                code: ErrorCode.mismatchedChecksum,
                 reason: `Looks like you changed the target content for sync-tag '${markerID}' in '${cwdRelativePath(
                     normalizedTargetFile,
                 )}:${
