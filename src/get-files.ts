@@ -58,11 +58,12 @@ export default async function getFiles(
         ignore: excludeGlobs as Array<string>, // remove readonly-ness
     });
     const sortedPaths = paths
+        // Sort the paths first to ensure we get a deterministic output.
+        .sort()
         // Filter out any paths that are not allowed by the ignore files.
         .filter((p) => allowPredicate(p))
         // Replace the `/` with the OS-specific path separator.
-        .map((p) => p.replace(new RegExp("/", "g"), path.sep))
-        .sort();
+        .map((p) => p.replace(new RegExp("/", "g"), path.sep));
     log.verbose(
         () => `Discovered paths: ${JSON.stringify(sortedPaths, null, 4)}`,
     );
