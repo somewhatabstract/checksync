@@ -3,6 +3,7 @@
     "version": "5.0.0",
     "description": "A tool that allows code to be annotated across different files to ensure they remain in sync.",
     "main": "dist/main.js",
+    "types": "dist/main.d.ts",
     "bin": {
         "checksync": "./bin/checksync.js"
     },
@@ -22,7 +23,9 @@
     "license": "MIT",
     "private": false,
     "engines": {
-        "node": ">= 16"
+        "node": ">= 16",
+        "npm": "please-use-yarn",
+        "yarn": ">=1.18.0 <2"
     },
     "files": [
         "bin/checksync.js",
