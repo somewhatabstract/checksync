@@ -1,5 +1,11 @@
 # checksync
 
+## 5.0.2
+
+### Patch Changes
+
+-   7654f97: Add publishConfig
+
 ## 5.0.1
 
 ### Patch Changes
