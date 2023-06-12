@@ -27,7 +27,6 @@
     },
     "engines": {
         "node": ">= 16",
-        "npm": "please-use-yarn",
         "yarn": ">=1.18.0 <2"
     },
     "files": [
