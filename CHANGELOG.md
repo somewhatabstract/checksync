@@ -1,5 +1,11 @@
 # checksync
 
+## 5.0.3
+
+### Patch Changes
+
+-   003a91a: Fix rollup config to bundle deps
+
 ## 5.0.2
 
 ### Patch Changes
