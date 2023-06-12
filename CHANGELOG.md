@@ -1,5 +1,11 @@
 # checksync
 
+## 5.0.4
+
+### Patch Changes
+
+-   c7e3562: Fix engines
+
 ## 5.0.3
 
 ### Patch Changes
