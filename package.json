@@ -22,6 +22,9 @@
     "author": "Jeff Yates <jeff@somewhatabstract.com>",
     "license": "MIT",
     "private": false,
+    "publishConfig": {
+        "access": "public"
+    },
     "engines": {
         "node": ">= 16",
         "npm": "please-use-yarn",
