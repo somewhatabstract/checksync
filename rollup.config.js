@@ -17,7 +17,10 @@ export default {
     },
     plugins: [
         json(),
-        resolve({preferBuiltins: true, extensions: [".ts"]}),
+        resolve({
+            preferBuiltins: true,
+            extensions: [".ts", ".mjs", ".js", ".json", ".node"],
+        }),
         babel({
             configFile: "./babel.config.js",
             extensions: [".ts"],
