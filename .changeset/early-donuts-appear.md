@@ -1,0 +1,5 @@
+---
+"checksync": patch
+---
+
+Add publishConfig
