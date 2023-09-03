@@ -53,7 +53,7 @@ describe("OutputSink", () => {
                 () =>
                     ({
                         file: "foo.js",
-                    } as any),
+                    }) as any,
             );
             outputSink.startFile("foo.js");
             outputSink.processError({
@@ -698,7 +698,7 @@ describe("OutputSink", () => {
                     (file) =>
                         ({
                             file,
-                        } as any),
+                        }) as any,
                 );
                 const outputSink = new OutputSink(
                     {
@@ -756,7 +756,7 @@ describe("OutputSink", () => {
                     (file) =>
                         ({
                             file,
-                        } as any),
+                        }) as any,
                 );
                 const outputSink = new OutputSink(
                     {...defaultOptions, json: true},
@@ -820,7 +820,7 @@ describe("OutputSink", () => {
                     (file) =>
                         ({
                             file,
-                        } as any),
+                        }) as any,
                 );
                 const outputSink = new OutputSink(
                     {
@@ -854,7 +854,7 @@ describe("OutputSink", () => {
                     (file) =>
                         ({
                             file,
-                        } as any),
+                        }) as any,
                 );
                 const outputSink = new OutputSink(
                     {
@@ -885,7 +885,7 @@ describe("OutputSink", () => {
                     (file) =>
                         ({
                             file,
-                        } as any),
+                        }) as any,
                 );
                 const outputSink = new OutputSink(
                     {
@@ -924,7 +924,7 @@ describe("OutputSink", () => {
                         ({
                             file,
                             verbose: jest.fn<any, any>(),
-                        } as any),
+                        }) as any,
                 );
                 const outputSink = new OutputSink(
                     {
@@ -985,7 +985,7 @@ describe("OutputSink", () => {
                         ({
                             file,
                             warn: jest.fn<any, any>(),
-                        } as any),
+                        }) as any,
                 );
                 jest.spyOn(GetLaunchString, "default").mockReturnValue(
                     "LAUNCHSTRING",
@@ -1047,7 +1047,7 @@ describe("OutputSink", () => {
                             file,
                             warn: jest.fn<any, any>(),
                             verbose: jest.fn<any, any>(),
-                        } as any),
+                        }) as any,
                 );
                 jest.spyOn(GetLaunchString, "default").mockReturnValue(
                     "LAUNCHSTRING",
@@ -1100,7 +1100,7 @@ describe("OutputSink", () => {
                             file,
                             warn: jest.fn<any, any>(),
                             mismatch: jest.fn<any, any>(),
-                        } as any),
+                        }) as any,
                 );
                 jest.spyOn(GetLaunchString, "default").mockReturnValue(
                     "LAUNCHSTRING",
@@ -1174,7 +1174,7 @@ describe("OutputSink", () => {
                             file,
                             warn: jest.fn<any, any>(),
                             verbose: jest.fn<any, any>(),
-                        } as any),
+                        }) as any,
                 );
                 const errorA = {
                     reason: "REASON_A",
@@ -1225,7 +1225,7 @@ describe("OutputSink", () => {
                     (file) =>
                         ({
                             file,
-                        } as any),
+                        }) as any,
                 );
                 const outputSink = new OutputSink(
                     {
@@ -1263,7 +1263,7 @@ describe("OutputSink", () => {
                     (file) =>
                         ({
                             file,
-                        } as any),
+                        }) as any,
                 );
                 const outputSink = new OutputSink(
                     {
@@ -1295,7 +1295,7 @@ describe("OutputSink", () => {
                         ({
                             file,
                             warn: jest.fn<any, any>(),
-                        } as any),
+                        }) as any,
                 );
                 const outputSink = new OutputSink(
                     {
@@ -1334,7 +1334,7 @@ describe("OutputSink", () => {
                         ({
                             file,
                             verbose: jest.fn<any, any>(),
-                        } as any),
+                        }) as any,
                 );
                 const outputSink = new OutputSink(
                     {
