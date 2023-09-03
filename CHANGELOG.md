@@ -1,5 +1,11 @@
 # checksync
 
+## 5.0.5
+
+### Patch Changes
+
+-   5273520: Update dependencies
+
 ## 5.0.4
 
 ### Patch Changes
