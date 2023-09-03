@@ -59,7 +59,7 @@
         "@typescript-eslint/eslint-plugin": "^6.5.0",
         "@typescript-eslint/parser": "^6.5.0",
         "adler-32": "^1.2.0",
-        "ancesdir": "^5.0.0",
+        "ancesdir": "^5.0.1",
         "babel-jest": "^29.6.4",
         "chalk": "^4.0.0",
         "eslint": "^8.48.0",
