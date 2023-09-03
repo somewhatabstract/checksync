@@ -23,7 +23,7 @@ describe("#getFiles", () => {
             () =>
                 ({
                     isDirectory: () => true,
-                } as any),
+                }) as any,
         );
         const globSpy = jest
             .spyOn(FastGlob, "default")
