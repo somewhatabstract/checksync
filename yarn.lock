@@ -2077,9 +2077,9 @@
   integrity sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==
 
 "@types/parse-gitignore@^1.0.0":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@types/parse-gitignore/-/parse-gitignore-1.0.1.tgz#be059743581748fad58494c847ab39cf875361f8"
-  integrity sha512-1GWhOQmViONHm+QhIusko1M6oH5xwgKkbmZwRUtAPM3RayEI3vKMCd3FDxiUrfAk+WK9nK6ohwVN6eURwQy2JA==
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@types/parse-gitignore/-/parse-gitignore-1.0.2.tgz#ee82f98465166090d44fb1ff12b642f3c361b32c"
+  integrity sha512-AQwj+lNTWI7y1kkMe8qLByiToXoXs/du70qGFIHJZaJUVrF5jB8QzvWmLyR1VWYqRagpY8ABrqAjs7uHsJnVBQ==
   dependencies:
     "@types/node" "*"
 
