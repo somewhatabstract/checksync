@@ -27,8 +27,8 @@ export default async function determineOptions(
         args.config === false
             ? null
             : args.config != null
-            ? (args.config as any)
-            : findConfigurationFile(args.rootMarker as any, log);
+              ? (args.config as any)
+              : findConfigurationFile(args.rootMarker as any, log);
 
     log.verbose(() => {
         if (!!configFilePath && args.config === configFilePath) {
