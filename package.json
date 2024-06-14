@@ -90,9 +90,17 @@
         "typescript": "^5.4.5"
     },
     "resolutions": {
-        "nanomatch/kind-of": "^6.0.3",
-        "micromatch/kind-of": "^6.0.3",
-        "is-descriptor/kind-of": "^6.0.3",
+        "kind-of": "^6.0.3",
+        "//ip": [
+            "ip SSRF improper categorization in isPublic",
+            "https://github.com/somewhatabstract/checksync/security/dependabot/18"
+        ],
+        "ip": "^2.0.1",
+        "//tar": [
+            "Denial of service while parsing a tar file due to lack of folders count validation",
+            "https://github.com/somewhatabstract/checksync/security/dependabot/17"
+        ],
+        "tar": "6.2.1",
         "//string-width": [
             "We needed to update jest so that it was compatible with Node 20,",
             "but this introduced new conflicts for these three modules. These",
