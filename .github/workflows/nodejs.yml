@@ -71,11 +71,11 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macOS-latest, windows-latest]
-        node-version: [16.x, 18.x]
+        node-version: [20.x]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Install & cache node_modules
-      uses: Khan/actions@shared-node-cache-v0
+      uses: Khan/actions@shared-node-cache-v2
       with:
         node-version: ${{ matrix.node-version }}
     - name: Run integration tests
@@ -91,11 +91,11 @@ jobs:
     strategy:
       matrix:
         os: [windows-latest, ubuntu-latest, macOS-latest]
-        node-version: [16.x, 18.x]
+        node-version: [20.x]
     steps:
     - uses: actions/checkout@v3
     - name: Install & cache node_modules
-      uses: Khan/actions@shared-node-cache-v0
+      uses: Khan/actions@shared-node-cache-v2
       with:
         node-version: ${{ matrix.node-version }}
     - name: Run tests and build
