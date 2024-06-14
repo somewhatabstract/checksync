@@ -18,11 +18,11 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: [16.x]
+        node-version: [20.x]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Install & cache node_modules
-      uses: Khan/actions@shared-node-cache-v0
+      uses: Khan/actions@shared-node-cache-v2
       with:
         node-version: ${{ matrix.node-version }}
     - name: Lint
@@ -30,7 +30,7 @@ jobs:
     - name: Static Types
       run: yarn typecheck
     - name: Changesets check
-      uses: Khan/actions@check-for-changeset-v0.1.0
+      uses: Khan/actions@check-for-changeset-v1
       if: |
         github.actor != 'dependabot[bot]' &&
         github.actor != 'dependabot-preview[bot]' &&
@@ -47,17 +47,17 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: [16.x]
+        node-version: [20.x]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Install & cache node_modules
-      uses: Khan/actions@shared-node-cache-v0
+      uses: Khan/actions@shared-node-cache-v2
       with:
         node-version: ${{ matrix.node-version }}
     - name: Run tests with coverage
       run: yarn coverage:unit
     - name: Upload coverage
-      uses: codecov/codecov-action@v3
+      uses: codecov/codecov-action@v4
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
 
