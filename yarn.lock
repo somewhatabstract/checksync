@@ -1350,7 +1350,7 @@
     pubsub-js "^1.9.4"
     uri-js "^4.4.1"
 
-"@hyperjump/json-schema@^0.23.0":
+"@hyperjump/json-schema@^0.23.4":
   version "0.23.5"
   resolved "https://registry.yarnpkg.com/@hyperjump/json-schema/-/json-schema-0.23.5.tgz#bbd7e9ee42e29d40ede0d1966c29aa01f1c749c0"
   integrity sha512-gb1jOT6+BlZBR9Nc/tMGDt757YM7rjS71Dml3+TBYebdGOZlSrTzTfVAUfGzOlsceB3gP4K9b7HzAwEGMWmexQ==
