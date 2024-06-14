@@ -597,7 +597,9 @@ describe("OutputSink", () => {
 
             it("should output the tool version that generated the file", async () => {
                 // Arrange
-                const {version} = await import("../../package.json");
+                const {
+                    default: {version},
+                } = await import("../../package.json");
                 const NullLogger = new Logger();
                 const logSpy = jest.spyOn(NullLogger, "log");
                 const outputSink = new OutputSink(
