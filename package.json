@@ -42,7 +42,7 @@
         "@babel/preset-env": "^7.24.7",
         "@babel/preset-typescript": "^7.24.7",
         "@babel/register": "^7.21.0",
-        "@changesets/cli": "^2.26.2",
+        "@changesets/cli": "^2.27.5",
         "@eslint/compat": "^1.1.0",
         "@eslint/eslintrc": "^3.1.0",
         "@eslint/js": "^9.5.0",
@@ -92,7 +92,16 @@
     "resolutions": {
         "nanomatch/kind-of": "^6.0.3",
         "micromatch/kind-of": "^6.0.3",
-        "is-descriptor/kind-of": "^6.0.3"
+        "is-descriptor/kind-of": "^6.0.3",
+        "//string-width": [
+            "We needed to update jest so that it was compatible with Node 20,",
+            "but this introduced new conflicts for these three modules. These",
+            "resolutions were needed to ensure jest would run. It's not ideal,",
+            "but for now, this is what we must do."
+        ],
+        "string-width": "^3",
+        "strip-ansi": "^6",
+        "wrap-ansi": "^7"
     },
     "scripts": {
         "prepublishOnly": "yarn clean && yarn build",
