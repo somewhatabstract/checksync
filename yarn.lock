@@ -1630,9 +1630,9 @@
   integrity sha512-9kNKzlXqJXPr22YnfqsHcgbX14jqkc8DhN6BwaLI7CwLVfPNploOCv2Ja46IP9PN+PZP5rSQxfkv1FaNg1dj3g==
 
 "@khanacademy/eslint-plugin@^3.0.0":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@khanacademy/eslint-plugin/-/eslint-plugin-3.0.1.tgz#ebbdd252a5f13aa886a3c94c97ee6bd74fc373d0"
-  integrity sha512-DsfvjILr3zrE2t0akG35Fle8hGdH5jipPlO2hgjelQAdD6MW15wubxNrgXFCgnelk+nikkbigKAEZk1lG/vfMA==
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@khanacademy/eslint-plugin/-/eslint-plugin-3.1.1.tgz#86cf706c28fbaa11083dc175202056665ab44124"
+  integrity sha512-1tOJRN1MWc7tOiSwxBT9KfOmo46d0/eB3P3On4PCZKkrrdC+wDNTxQ3FWX+xZBCjl6bSdh/ab5HZkOatDD7efA==
   dependencies:
     "@babel/types" "^7.23.0"
     "@typescript-eslint/utils" "8.17.0"
