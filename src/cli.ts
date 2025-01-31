@@ -27,7 +27,15 @@ export const run = (launchFilePath: string): Promise<void> => {
     // NOTE: minimist treats `no` on the front of a known flag
     // as a flag inversion of the none-`no` version.
     const args = minimist(process.argv, {
-        boolean: ["updateTags", "dryRun", "help", "verbose", "version", "json"],
+        boolean: [
+            "updateTags",
+            "dryRun",
+            "help",
+            "verbose",
+            "version",
+            "json",
+            "allowEmptyTags",
+        ],
         string: [
             "cwd",
             "comments",
@@ -35,7 +43,6 @@ export const run = (launchFilePath: string): Promise<void> => {
             "ignore",
             "ignoreFiles",
             "config",
-            "allowEmptyTags",
         ],
         alias: {
             comments: ["c"],

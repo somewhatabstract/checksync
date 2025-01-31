@@ -15,167 +15,173 @@ describe("#logHelp", () => {
 
         // Assert
         expect(logger.getLog()).toMatchInlineSnapshot(`
-            "checksync 0.0.0 ✅ 🔗
+"checksync 0.0.0 ✅ 🔗
 
-            Checksync uses tags in your files to identify blocks that need to remain
-            synchronised. It works on any text file as long as it can find the tags.
+Checksync uses tags in your files to identify blocks that need to remain
+synchronised. It works on any text file as long as it can find the tags.
 
-            Tag Format
+Tag Format
 
-            Each tagged block is identified by one or more sync-start tags and a single
-            sync-end tag.
+Each tagged block is identified by one or more sync-start tags and a single
+sync-end tag.
 
-            The sync-start tags take the form:
+The sync-start tags take the form:
 
-                <comment> sync-start:<marker_id> <?checksum> <target_file>
+    <comment> sync-start:<marker_id> <?checksum> <target_file>
 
-            The sync-end tags take the form:
+The sync-end tags take the form:
 
-                <comment> sync-end:<marker_id>
+    <comment> sync-end:<marker_id>
 
-            Each marker_id can have multiple sync-start tags, each with a different
-            target file, but there must be only one corresponding sync-end tag.
+Each marker_id can have multiple sync-start tags, each with a different
+target file, but there must be only one corresponding sync-end tag.
 
-            Where:
+Where:
 
-                <comment>       is one of the comment tokens provided by the --comment
-                                argument
+    <comment>       is one of the comment tokens provided by the --comment
+                    argument
 
-                <marker_id>     is the unique identifier for this marker
+    <marker_id>     is the unique identifier for this marker
 
-                <checksum>      is the expected checksum of the corresponding block in
-                                the target file
+    <checksum>      is the expected checksum of the corresponding block in
+                    the target file
 
-                <target_file>   is the path from your package root to the target file
-                                with a corresponding sync block with the same marker_id
+    <target_file>   is the path from your package root to the target file
+                    with a corresponding sync block with the same marker_id
 
-            Usage
+Usage
 
-            checksync <arguments> <include_paths>
+checksync <arguments> <include_paths>
 
-            Where:
+Where:
 
-                <arguments>        are the arguments you provide (see below).
+    <arguments>        are the arguments you provide (see below).
 
-                <include_paths>    are space-separated paths and glob patterns
-                                   for identifying files to check.
-                                   Defaults to all files below the current working
-                                   directory.
+    <include_paths>    are space-separated paths and glob patterns
+                       for identifying files to check.
+                       Defaults to all files below the current working
+                       directory.
 
-            Arguments
+Arguments
 
-                --comments,-c      A string containing space-separated tokens that
-                                   indicate the start of lines where tags appear.
-                                   Defaults to "// #".
+    --allowEmptyTags,-aBy default, empty tags are not allowed. Use this
+                       to allow empty tags.
 
-                --config           Path to a JSON file containing configuration options.
-                                   When not specified, checksync will look for a config
-                                   file; use --no-config to disable this search.
+    --comments,-c      A string containing space-separated tokens that
+                       indicate the start of lines where tags appear.
+                       Defaults to "// #".
 
-                                   The search starts relative to the current working
-                                   directory, first by looking adjacent to a marker file
-                                   match, otherwise, by looking for a configuration file in
-                                   or above the current working directory. Filenames that
-                                   are considered:
-                                       .checksyncrc
-                                       .checksyncrc.json
+    --config           Path to a JSON file containing configuration options.
+                       When not specified, checksync will look for a config
+                       file; use --no-config to disable this search.
 
-                                   Paths within the config file are resolved relative to
-                                   the location of the config file.
+                       The search starts relative to the current working
+                       directory, first by looking adjacent to a marker file
+                       match, otherwise, by looking for a configuration file in
+                       or above the current working directory. Filenames that
+                       are considered:
+                           .checksyncrc
+                           .checksyncrc.json
 
-                --cwd              The current working directory to use when searching
-                                   for a configuration file, and resolving relative paths
-                                   and globs.
+                       Paths within the config file are resolved relative to
+                       the location of the config file.
 
-                                   The --config path takes precedence over this
-                                   argument. If there is no --config argument, this
-                                   location is used to find a config file. If a config file
-                                   is found, the working directory will then change to
-                                   the location of that file, otherwise this argument's
-                                   value is used when resolve the remainder of the given
-                                   arguments.
+    --cwd              The current working directory to use when searching
+                       for a configuration file, and resolving relative paths
+                       and globs.
 
-                --dry-run,-n       Ignored unless supplied with --update-tags.
+                       The --config path takes precedence over this
+                       argument. If there is no --config argument, this
+                       location is used to find a config file. If a config file
+                       is found, the working directory will then change to
+                       the location of that file, otherwise this argument's
+                       value is used when resolve the remainder of the given
+                       arguments.
 
-                --help,-h          Outputs this help text.
+    --dry-run,-n       Ignored unless supplied with --update-tags.
 
-                --ignore,-i        A string containing semi-colon-separated globs that
-                                   identify files that should not be checked.
+    --help,-h          Outputs this help text.
 
-                --ignore-files     A semi-colon-separated list of paths and globs that
-                                   identify .gitignore-format files defining patterns for
-                                   paths to be ignored. These will be combined with the
-                                   explicit --ignore globs.
-                                   Ignored if --no-ignore-file is present.
-                                   Defaults to .gitignore.
+    --ignore,-i        A string containing semi-colon-separated globs that
+                       identify files that should not be checked.
 
-                --json,-j          Output errors and violations as JSON.
+    --ignore-files     A semi-colon-separated list of paths and globs that
+                       identify .gitignore-format files defining patterns for
+                       paths to be ignored. These will be combined with the
+                       explicit --ignore globs.
+                       Ignored if --no-ignore-file is present.
+                       Defaults to .gitignore.
 
-                --no-config        Prevents searching for a configuration file.
-                                   Ignored if --config is supplied.
+    --json,-j          Output errors and violations as JSON.
 
-                --no-ignore-files  When true, does not use any ignore file. This is
-                                   useful when the default value for --ignore-file is
-                                   not wanted.
+    --no-config        Prevents searching for a configuration file.
+                       Ignored if --config is supplied.
 
-                --root-marker,-m   By default, the root directory (used to generate
-                                   interpret and generate target paths for sync-start
-                                   tags) for your project is determined by the nearest
-                                   ancestor directory to the processed files that
-                                   contains a package.json file. If you want to
-                                   use a different file or directory to identify your
-                                   root directory, specify that using this argument.
-                                   For example, --root-marker .gitignore would mean
-                                   the first ancestor directory containing a
-                                   .gitignore file.
+    --no-ignore-files  When true, does not use any ignore file. This is
+                       useful when the default value for --ignore-file is
+                       not wanted.
 
-                --update-tags,-u   Updates tags with incorrect target checksums. This
-                                   modifies files in place; run with --dry-run to see
-                                   what files will change without modifying them.
+    --root-marker,-m   By default, the root directory (used to generate
+                       interpret and generate target paths for sync-start
+                       tags) for your project is determined by the nearest
+                       ancestor directory to the processed files that
+                       contains a package.json file. If you want to
+                       use a different file or directory to identify your
+                       root directory, specify that using this argument.
+                       For example, --root-marker .gitignore would mean
+                       the first ancestor directory containing a
+                       .gitignore file.
 
-                --verbose          More details will be added to the output when this
-                                   option is provided. This is useful when determining if
-                                   provided glob patterns are applying as expected, for
-                                   example.
+    --update-tags,-u   Updates tags with incorrect target checksums. This
+                       modifies files in place; run with --dry-run to see
+                       what files will change without modifying them.
 
-                --version          Outputs the version and exits.
+    --verbose          More details will be added to the output when this
+                       option is provided. This is useful when determining if
+                       provided glob patterns are applying as expected, for
+                       example.
 
-            Configuration Format
-            A configuration file is a JSON file containing configuration options. All
-            of the values are optional (defaults apply per the corresponding CLI arguments).
-            Arguments supplied along with a configuration file will override the
-            configuration file.
+    --version          Outputs the version and exits.
 
-                autoFix             Equivalent to using the --update-tags option.
+Configuration Format
+A configuration file is a JSON file containing configuration options. All
+of the values are optional (defaults apply per the corresponding CLI arguments).
+Arguments supplied along with a configuration file will override the
+configuration file.
 
-                dryRun              Equivalent to using the --dry-run option.
+    allowEmptyTags      Equivalent to using the --allow-empty-tags option.
 
-                comments            Equivalent to using the --comments option,
-                                    except an array instead of space-separated string.
+    autoFix             Equivalent to using the --update-tags option.
 
-                ignoreFiles         Equivalent to using the --ignore-files option,
-                                    except an array instead of semi-colon-separated string.
-                                    An empty array is equivalent to --no-ignore-files.
+    dryRun              Equivalent to using the --dry-run option.
 
-                excludeGlobs        Equivalent to using the --ignore option, except
-                                    an array instead of semi-colon-separated string.
+    comments            Equivalent to using the --comments option,
+                        except an array instead of space-separated string.
 
-                includeGlobs        Equivalent to the include_paths passed at the
-                                    end of the command line.
+    ignoreFiles         Equivalent to using the --ignore-files option,
+                        except an array instead of semi-colon-separated string.
+                        An empty array is equivalent to --no-ignore-files.
 
-                rootMarker          Equivalent to using the --root-marker option.
+    excludeGlobs        Equivalent to using the --ignore option, except
+                        an array instead of semi-colon-separated string.
 
-            Example:
-                {
-                    "autoFix": true,
-                    "dryRun": false,
-                    "comments": ["//", "#"],
-                    "ignoreFiles": [".gitignore"],
-                    "includeGlobs": ["**/*.js"],
-                    "excludeGlobs": ["**/node_modules/**"],
-                    "rootMarker": ".gitignore",
-                    "json": false
-                }"
-        `);
+    includeGlobs        Equivalent to the include_paths passed at the
+                        end of the command line.
+
+    rootMarker          Equivalent to using the --root-marker option.
+
+Example:
+    {
+        "autoFix": true,
+        "dryRun": false,
+        "comments": ["//", "#"],
+        "ignoreFiles": [".gitignore"],
+        "includeGlobs": ["**/*.js"],
+        "excludeGlobs": ["**/node_modules/**"],
+        "rootMarker": ".gitignore",
+        "json": false,
+        "allowEmptyTags", false
+    }"
+`);
     });
 });

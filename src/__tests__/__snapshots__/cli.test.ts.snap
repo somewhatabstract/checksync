@@ -50,6 +50,9 @@ Where:
 
 [1m[32mArguments[39m[22m
 
+    [1m[33m--allowEmptyTags,-a[39m[22mBy default, empty tags are not allowed. Use this
+                       to allow empty tags.
+
     [1m[33m--comments,-c[39m[22m      A string containing space-separated tokens that
                        indicate the start of lines where tags appear.
                        Defaults to [1m[33m"// #"[39m[22m.
@@ -132,6 +135,8 @@ of the values are optional (defaults apply per the corresponding CLI arguments).
 Arguments supplied along with a configuration file will override the
 configuration file.
 
+    [1m[33mallowEmptyTags[39m[22m      Equivalent to using the [1m[33m--allow-empty-tags[39m[22m option.
+
     [1m[33mautoFix[39m[22m             Equivalent to using the [1m[33m--update-tags[39m[22m option.
 
     [1m[33mdryRun[39m[22m              Equivalent to using the [1m[33m--dry-run[39m[22m option.
@@ -160,7 +165,8 @@ Example:
 [1m[33m        "includeGlobs": ["**/*.js"],[39m[22m
 [1m[33m        "excludeGlobs": ["**/node_modules/**"],[39m[22m
 [1m[33m        "rootMarker": ".gitignore",[39m[22m
-[1m[33m        "json": false[39m[22m
+[1m[33m        "json": false,[39m[22m
+[1m[33m        "allowEmptyTags", false[39m[22m
 [1m[33m    }[39m[22m
 "
 `;
