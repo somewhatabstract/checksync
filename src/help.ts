@@ -52,6 +52,9 @@ Where:
 
 ## Arguments
 
+    \`--allowEmptyTags,-a\`By default, empty tags are not allowed. Use this
+                       to allow empty tags.
+
     \`--comments,-c\`      A string containing space-separated tokens that
                        indicate the start of lines where tags appear.
                        Defaults to \`"// #"\`.
@@ -135,6 +138,8 @@ of the values are optional (defaults apply per the corresponding CLI arguments).
 Arguments supplied along with a configuration file will override the
 configuration file.
 
+    \`allowEmptyTags\`      Equivalent to using the \`--allow-empty-tags\` option.
+
     \`autoFix\`             Equivalent to using the \`--update-tags\` option.
 
     \`dryRun\`              Equivalent to using the \`--dry-run\` option.
@@ -163,7 +168,8 @@ Example:
         "includeGlobs": ["**/*.js"],
         "excludeGlobs": ["**/node_modules/**"],
         "rootMarker": ".gitignore",
-        "json": false
+        "json": false,
+        "allowEmptyTags", false
     }\`
 `;
 
