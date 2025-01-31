@@ -2,6 +2,7 @@ import {Options} from "./types";
 const defaultOptions: Options = {
     autoFix: false,
     json: false,
+    allowEmptyTags: false,
     comments: ["#", "//", "{/*"],
     excludeGlobs: [],
     dryRun: false,

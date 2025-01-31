@@ -49,5 +49,9 @@ export const optionsFromArgs = (args: ParsedArgs): Partial<Options> => {
         options.rootMarker = args.rootMarker as any;
     }
 
+    if (args.allowEmptyTags != null) {
+        options.allowEmptyTags = !!args.allowEmptyTags;
+    }
+
     return options;
 };

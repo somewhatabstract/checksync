@@ -27,23 +27,24 @@ describe("defaultOptions", () => {
 
         // Assert
         expect(result).toMatchInlineSnapshot(`
-            {
-              "autoFix": false,
-              "comments": [
-                "#",
-                "//",
-                "{/*",
-              ],
-              "dryRun": false,
-              "excludeGlobs": [],
-              "ignoreFiles": [
-                ".gitignore",
-              ],
-              "includeGlobs": [
-                "/**",
-              ],
-              "json": false,
-            }
-        `);
+{
+  "allowEmptyTags": false,
+  "autoFix": false,
+  "comments": [
+    "#",
+    "//",
+    "{/*",
+  ],
+  "dryRun": false,
+  "excludeGlobs": [],
+  "ignoreFiles": [
+    ".gitignore",
+  ],
+  "includeGlobs": [
+    "/**",
+  ],
+  "json": false,
+}
+`);
     });
 });

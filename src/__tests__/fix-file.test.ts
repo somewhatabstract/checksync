@@ -38,6 +38,7 @@ describe("#fixFile", () => {
         comments: [],
         rootMarker: null,
         json: false,
+        allowEmptyTags: false,
     };
 
     it("should resolve if there are no mismatches for file", async () => {

@@ -8,6 +8,7 @@ import * as GetNormalizedTargetFileInfo from "../get-normalized-target-file-info
 import parseFile from "../parse-file";
 
 import {Options} from "../types";
+import {ErrorCode} from "../error-codes";
 
 jest.mock("fs");
 jest.mock("../get-normalized-target-file-info");
@@ -57,6 +58,7 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -80,6 +82,7 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -114,6 +117,7 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -145,6 +149,7 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -186,6 +191,7 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -224,6 +230,7 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -261,6 +268,7 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -311,6 +319,102 @@ describe("#parseFile", () => {
         });
     });
 
+    it("should record empty marker error if allowEmptyTargets is false", async () => {
+        // Arrange
+        const fakeInterface: any = {on: jest.fn<any, any>()} as const;
+        fakeInterface.on.mockReturnValue(fakeInterface);
+        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
+        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null as any);
+        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
+            fakeInterface,
+        );
+        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
+        const markerParserSpy = jest.spyOn(MarkerParser, "default");
+        setupMarkerParser();
+        const options: Options = {
+            includeGlobs: ["a.js", "b.js"],
+            comments: [],
+            autoFix: true,
+            rootMarker: null,
+            dryRun: false,
+            excludeGlobs: [],
+            ignoreFiles: [],
+            json: false,
+            allowEmptyTags: false,
+        };
+
+        // Act
+        const promise = parseFile(options, "file.js", true);
+        const recorderror = markerParserSpy.mock.calls[0][2];
+        recorderror({
+            code: ErrorCode.emptyMarker,
+            location: {line: 1},
+            reason: "Sync-tag 'MARKER_ID1' has no content",
+        });
+        finishReadingFile();
+        const result = await promise;
+
+        // Assert
+        expect(result).toStrictEqual({
+            errors: [
+                {
+                    code: ErrorCode.emptyMarker,
+                    location: {line: 1},
+                    reason: "Sync-tag 'MARKER_ID1' has no content",
+                },
+            ],
+            markers: null,
+            readOnly: true,
+            referencedFiles: [],
+            lineCount: 0,
+        });
+    });
+
+    it("should not record empty marker error if allowEmptyTargets is true", async () => {
+        // Arrange
+        const fakeInterface: any = {on: jest.fn<any, any>()} as const;
+        fakeInterface.on.mockReturnValue(fakeInterface);
+        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
+        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null as any);
+        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
+            fakeInterface,
+        );
+        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
+        const markerParserSpy = jest.spyOn(MarkerParser, "default");
+        setupMarkerParser();
+        const options: Options = {
+            includeGlobs: ["a.js", "b.js"],
+            comments: [],
+            autoFix: true,
+            rootMarker: null,
+            dryRun: false,
+            excludeGlobs: [],
+            ignoreFiles: [],
+            json: false,
+            allowEmptyTags: true,
+        };
+
+        // Act
+        const promise = parseFile(options, "file.js", true);
+        const recorderror = markerParserSpy.mock.calls[0][2];
+        recorderror({
+            code: ErrorCode.emptyMarker,
+            location: {line: 1},
+            reason: "Sync-tag 'MARKER_ID1' has no content",
+        });
+        finishReadingFile();
+        const result = await promise;
+
+        // Assert
+        expect(result).toStrictEqual({
+            errors: [],
+            markers: null,
+            readOnly: true,
+            referencedFiles: [],
+            lineCount: 0,
+        });
+    });
+
     it("should normalize referenced files for marker parser", async () => {
         // Arrange
         const fakeInterface: any = {on: jest.fn<any, any>()} as const;
@@ -339,6 +443,7 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -383,6 +488,7 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -425,6 +531,7 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -460,6 +567,7 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
+            allowEmptyTags: false,
         };
         const promise = parseFile(options, "file.js", false);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
@@ -550,6 +658,7 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
+            allowEmptyTags: false,
         };
         const promise = parseFile(options, "file.js", false);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];

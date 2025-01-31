@@ -213,6 +213,11 @@ export type Options = {
      * The name of the marker file that identifies the root of sync-tag paths.
      */
     rootMarker?: string | null | undefined;
+    /**
+     * When false, a tag must contain content to be considered valid;
+     * when true, a tag may be empty.
+     */
+    allowEmptyTags: boolean;
 };
 
 export type NormalizedFileInfo = {
