@@ -252,4 +252,30 @@ describe("#optionsFromArgs", () => {
         // Assert
         expect(result.rootMarker).toBe("ROOT_MARKER");
     });
+
+    it("should not add allowEmptyTags if args.allowEmptyTags is not provided", () => {
+        // Arrange
+        const args: any = {
+            allowEmptyTags: null,
+        };
+
+        // Act
+        const result = optionsFromArgs(args);
+
+        // Assert
+        expect(result.allowEmptyTags).not.toBeDefined();
+    });
+
+    it("should add allowEmptyTags if args.allowEmptyTags is provided", () => {
+        // Arrange
+        const args: any = {
+            allowEmptyTags: false,
+        };
+
+        // Act
+        const result = optionsFromArgs(args);
+
+        // Assert
+        expect(result.allowEmptyTags).toBe(false);
+    });
 });

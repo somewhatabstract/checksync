@@ -35,6 +35,7 @@ export const run = (launchFilePath: string): Promise<void> => {
             "ignore",
             "ignoreFiles",
             "config",
+            "allowEmptyTags",
         ],
         alias: {
             comments: ["c"],
@@ -45,6 +46,7 @@ export const run = (launchFilePath: string): Promise<void> => {
             json: ["j"],
             rootMarker: ["m", "root-marker"],
             updateTags: ["u", "update-tags"],
+            allowEmptyTags: ["a", "allow-empty-tags"],
         },
         unknown: (arg) => {
             // Filter out the node process.

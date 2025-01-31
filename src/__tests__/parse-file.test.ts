@@ -58,7 +58,7 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
-            allowEmptyTargets: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -82,7 +82,7 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
-            allowEmptyTargets: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -117,7 +117,7 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
-            allowEmptyTargets: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -149,7 +149,7 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
-            allowEmptyTargets: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -191,7 +191,7 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
-            allowEmptyTargets: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -230,7 +230,7 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
-            allowEmptyTargets: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -268,7 +268,7 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
-            allowEmptyTargets: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -340,7 +340,7 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
-            allowEmptyTargets: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -391,7 +391,7 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
-            allowEmptyTargets: true,
+            allowEmptyTags: true,
         };
 
         // Act
@@ -443,7 +443,7 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
-            allowEmptyTargets: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -488,7 +488,7 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
-            allowEmptyTargets: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -531,7 +531,7 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
-            allowEmptyTargets: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -567,7 +567,7 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
-            allowEmptyTargets: false,
+            allowEmptyTags: false,
         };
         const promise = parseFile(options, "file.js", false);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
@@ -658,7 +658,7 @@ describe("#parseFile", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
-            allowEmptyTargets: false,
+            allowEmptyTags: false,
         };
         const promise = parseFile(options, "file.js", false);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];

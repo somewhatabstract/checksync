@@ -24,7 +24,7 @@ describe("#fromFiles", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
-            allowEmptyTargets: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -61,7 +61,7 @@ describe("#fromFiles", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
-            allowEmptyTargets: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -94,7 +94,7 @@ describe("#fromFiles", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
-            allowEmptyTargets: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -130,7 +130,7 @@ describe("#fromFiles", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
-            allowEmptyTargets: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -187,7 +187,7 @@ describe("#fromFiles", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
-            allowEmptyTargets: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -243,7 +243,7 @@ describe("#fromFiles", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
-            allowEmptyTargets: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -300,7 +300,7 @@ describe("#fromFiles", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
-            allowEmptyTargets: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -347,7 +347,7 @@ describe("#fromFiles", () => {
             excludeGlobs: [],
             ignoreFiles: [],
             json: false,
-            allowEmptyTargets: false,
+            allowEmptyTags: false,
         };
 
         // Act

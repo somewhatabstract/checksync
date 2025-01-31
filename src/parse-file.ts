@@ -40,7 +40,7 @@ export default function parseFile(
     const errors: Array<ErrorDetails> = [];
 
     const recordError = (e: ErrorDetails): void => {
-        if (e.code === ErrorCode.emptyMarker && options.allowEmptyTargets) {
+        if (e.code === ErrorCode.emptyMarker && options.allowEmptyTags) {
             // We don't error on empty markers if we've been told not to.
             return;
         }

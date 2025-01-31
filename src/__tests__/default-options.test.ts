@@ -28,7 +28,7 @@ describe("defaultOptions", () => {
         // Assert
         expect(result).toMatchInlineSnapshot(`
 {
-  "allowEmptyTargets": false,
+  "allowEmptyTags": false,
   "autoFix": false,
   "comments": [
     "#",

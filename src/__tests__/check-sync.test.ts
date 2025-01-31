@@ -30,7 +30,7 @@ describe("#checkSync", () => {
                 autoFix: true,
                 comments: ["//"],
                 json: false,
-                allowEmptyTargets: false,
+                allowEmptyTags: false,
             },
             NullLogger,
         );
@@ -58,7 +58,7 @@ describe("#checkSync", () => {
                 autoFix: true,
                 comments: ["//"],
                 json: false,
-                allowEmptyTargets: false,
+                allowEmptyTags: false,
             },
             NullLogger,
         );
@@ -85,7 +85,7 @@ describe("#checkSync", () => {
             autoFix: false,
             comments: ["//"],
             json: false,
-            allowEmptyTargets: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -107,7 +107,7 @@ describe("#checkSync", () => {
             autoFix: false,
             comments: ["//"],
             json: false,
-            allowEmptyTargets: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -133,7 +133,7 @@ describe("#checkSync", () => {
             autoFix: true,
             comments: ["//"],
             json: false,
-            allowEmptyTargets: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -164,7 +164,7 @@ describe("#checkSync", () => {
             comments: ["//"],
             rootMarker: "marker",
             json: false,
-            allowEmptyTargets: false,
+            allowEmptyTags: false,
         };
 
         // Act
@@ -196,7 +196,7 @@ describe("#checkSync", () => {
                 comments: ["//"],
                 dryRun: false,
                 json: false,
-                allowEmptyTargets: false,
+                allowEmptyTags: false,
             },
             NullLogger,
         );
