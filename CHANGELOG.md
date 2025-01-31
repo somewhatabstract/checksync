@@ -1,59 +1,65 @@
 # checksync
 
+## 6.0.1
+
+### Patch Changes
+
+- e996820: Add support for empty tags. This is a non-breaking change. The configuration must be updated to allow this.
+
 ## 6.0.0
 
 ### Major Changes
 
--   3b4b35d: - Node 20 or higher required. Support for Node 16 and Node 18 is deprecated.
+- 3b4b35d: - Node 20 or higher required. Support for Node 16 and Node 18 is deprecated.
 
-    -   Eslint updated to version 9. For maintainers of this repo, this means some rules aren't working properly as they don't yet support the new flat configuration format of Eslint 9. See the configuration file for details.
-    -   Babel, jest, typescript, and various other dependencies have been updated to their latest versions.
-    -   Security vulnerabilities have been addressed with resolutions (https://github.com/somewhatabstract/checksync/security/dependabot/17, https://github.com/somewhatabstract/checksync/security/dependabot/18)
+    - Eslint updated to version 9. For maintainers of this repo, this means some rules aren't working properly as they don't yet support the new flat configuration format of Eslint 9. See the configuration file for details.
+    - Babel, jest, typescript, and various other dependencies have been updated to their latest versions.
+    - Security vulnerabilities have been addressed with resolutions (https://github.com/somewhatabstract/checksync/security/dependabot/17, https://github.com/somewhatabstract/checksync/security/dependabot/18)
 
 ## 5.0.5
 
 ### Patch Changes
 
--   5273520: Update dependencies
+- 5273520: Update dependencies
 
 ## 5.0.4
 
 ### Patch Changes
 
--   c7e3562: Fix engines
+- c7e3562: Fix engines
 
 ## 5.0.3
 
 ### Patch Changes
 
--   003a91a: Fix rollup config to bundle deps
+- 003a91a: Fix rollup config to bundle deps
 
 ## 5.0.2
 
 ### Patch Changes
 
--   7654f97: Add publishConfig
+- 7654f97: Add publishConfig
 
 ## 5.0.1
 
 ### Patch Changes
 
--   52ddefd: Updating some things to get automated changeset release working
+- 52ddefd: Updating some things to get automated changeset release working
 
 ## 5.0.0
 
 ### Major Changes
 
--   6b561be: Migrate to TypeScript
+- 6b561be: Migrate to TypeScript
 
     Although there are no functional changes here, we are bumping the major version since changing our static types are provided from Flow to TypeScript could break some folks development setups.
 
--   14bbc5f: Working directory updates
-    -   The location of the configuration file is now used as the current working directory, if a configuration file is used. This means that globs are resolved relative to the configuration file, not the current working directory of the process launching checksync, which makes for a more deterministic behavior for
-        folks trying to define and use their config files.
-    -   A `--cwd` argument has been added for specifying the working directory in cases where a configuration file is not used, or the configuration file discover needs to start in a place other than where checksync is invoked. If a configuration file is loaded, the location of that file takes precedence.
--   95d1a29: Update gitignore support to support full range of syntax. We now use the [`ignore`](https://www.npmjs.com/package/ignore) package to support the gitignore file syntax. New verbose logging has been added to help debug ignore file issues, too.
+- 14bbc5f: Working directory updates
+    - The location of the configuration file is now used as the current working directory, if a configuration file is used. This means that globs are resolved relative to the configuration file, not the current working directory of the process launching checksync, which makes for a more deterministic behavior for
+      folks trying to define and use their config files.
+    - A `--cwd` argument has been added for specifying the working directory in cases where a configuration file is not used, or the configuration file discover needs to start in a place other than where checksync is invoked. If a configuration file is loaded, the location of that file takes precedence.
+- 95d1a29: Update gitignore support to support full range of syntax. We now use the [`ignore`](https://www.npmjs.com/package/ignore) package to support the gitignore file syntax. New verbose logging has been added to help debug ignore file issues, too.
 
 ### Patch Changes
 
--   9534465: Improved console output to make things easier to read/scan
+- 9534465: Improved console output to make things easier to read/scan
