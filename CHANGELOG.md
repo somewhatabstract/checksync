@@ -1,5 +1,11 @@
 # checksync
 
+## 6.0.2
+
+### Patch Changes
+
+- e20347a: Fix --allowEmptyTags arg and update help.
+
 ## 6.0.1
 
 ### Patch Changes
