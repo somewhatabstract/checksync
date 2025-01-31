@@ -80,6 +80,11 @@
             "description": "The string that identifies the root of the project from which all sync-tags are relative",
             "type": "string",
             "pattern": "^[^/\\\\]+$"
+        },
+        "allowEmptyTags": {
+            "description": "When true, checksync will not report an error if a sync-tag is empty",
+            "type": "boolean",
+            "default": false
         }
     },
     "required": [],

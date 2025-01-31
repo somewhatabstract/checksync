@@ -23,5 +23,7 @@ module.exports = {
         enableGlobally: true,
     },
 
+    prettierPath: null,
+
     setupFilesAfterEnv: ["jest-extended/all", "./jest.setup.js"],
 };
