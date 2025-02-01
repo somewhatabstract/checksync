@@ -1,10 +1,10 @@
 import {Options} from "./types";
-import {ParsedArgs} from "minimist";
+import {Arguments} from "yargs";
 
 /**
  * Convert arguments to options.
  */
-export const optionsFromArgs = (args: ParsedArgs): Partial<Options> => {
+export const optionsFromArgs = (args: Arguments<any>): Partial<Options> => {
     const options: Partial<Options> = {};
     if (args._ && args._.length > 0) {
         options.includeGlobs = args._;

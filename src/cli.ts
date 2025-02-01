@@ -3,7 +3,6 @@
  */
 import fs from "fs";
 import chalk from "chalk";
-import minimist from "minimist";
 import checkSync from "./check-sync";
 import Logger from "./logger";
 import {ExitCode} from "./exit-codes";
@@ -12,79 +11,54 @@ import {version} from "../package.json";
 import determineOptions from "./determine-options";
 import exit from "./exit";
 import setCwd from "./set-cwd";
+import {parseArgs} from "./parse-args";
 
 /**
  * Run the command line.
  *
  * @param {string} launchFilePath
  */
-export const run = (launchFilePath: string): Promise<void> => {
+export const run = async (launchFilePath: string): Promise<void> => {
     // Configure our logging output and argument parsing.
     chalk.level = 3;
 
     const log = new Logger(console);
+    const args = await parseArgs(log);
 
-    // NOTE: minimist treats `no` on the front of a known flag
-    // as a flag inversion of the none-`no` version.
-    const args = minimist(process.argv, {
-        boolean: [
-            "updateTags",
-            "dryRun",
-            "help",
-            "verbose",
-            "version",
-            "json",
-            "allowEmptyTags",
-        ],
-        string: [
-            "cwd",
-            "comments",
-            "rootMarker",
-            "ignore",
-            "ignoreFiles",
-            "config",
-        ],
-        alias: {
-            comments: ["c"],
-            dryRun: ["n", "dry-run"],
-            help: ["h", "?"],
-            ignore: ["i"],
-            ignoreFiles: ["ignore-files"],
-            json: ["j"],
-            rootMarker: ["m", "root-marker"],
-            updateTags: ["u", "update-tags"],
-            allowEmptyTags: ["a", "allow-empty-tags"],
-        },
-        unknown: (arg) => {
-            // Filter out the node process.
-            if (arg === process.execPath) {
+    const isValidPath = (arg: string): boolean => {
+        // Filter out the node process.
+        if (arg === process.execPath) {
+            return false;
+        }
+        // Filter out our entry point.
+        if (arg === launchFilePath) {
+            return false;
+        }
+        // Filter out the command that yarn/npm might install.
+        if (arg.endsWith(".bin/checksync")) {
+            return false;
+        }
+        // Handle the entry point being a symlink
+        try {
+            const realpath = fs.realpathSync(arg);
+            if (realpath === launchFilePath) {
                 return false;
             }
-            // Filter out our entry point.
-            if (arg === launchFilePath) {
-                return false;
-            }
-            // Filter out the command that yarn/npm might install.
-            if (arg.endsWith(".bin/checksync")) {
-                return false;
-            }
-            // Handle the entry point being a symlink
-            try {
-                const realpath = fs.realpathSync(arg);
-                if (realpath === launchFilePath) {
-                    return false;
-                }
-            } catch {
-                /* ignore errors, the arg may not be a path at all */
-            }
+        } catch {
+            /* ignore errors, the arg may not be a path at all */
+        }
+        return true;
+    };
 
-            if (arg.startsWith("-")) {
-                log.error(`Unknown argument: ${arg}`);
-                exit(log, ExitCode.UNKNOWN_ARGS);
-            }
-            return true;
-        },
-    });
+    // We filter the set of file paths to verify them.
+    const fileSet = new Set(args._);
+    for (const file of fileSet) {
+        if (!isValidPath(String(file))) {
+            fileSet.delete(file);
+        }
+    }
+    args._ = Array.from(fileSet);
+
     if (args.verbose) {
         log.setVerbose();
     }
@@ -117,12 +91,10 @@ export const run = (launchFilePath: string): Promise<void> => {
         )
         .then(
             (exitCode) => {
-                log.verbose(() => `Exiting with code ${exitCode}`);
                 exit(log, exitCode);
             },
             (e) => {
                 log.error(`Unexpected error: ${e}`);
-                log.verbose(() => `Exiting with code ${ExitCode.CATASTROPHIC}`);
                 exit(log, ExitCode.CATASTROPHIC);
             },
         );

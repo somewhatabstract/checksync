@@ -4,12 +4,12 @@ import defaultOptions from "./default-options";
 import {optionsFromArgs} from "./options-from-args";
 
 import {ILog, Options} from "./types";
-import {ParsedArgs} from "minimist";
+import {Arguments} from "yargs";
 import path from "path";
 import setCwd from "./set-cwd";
 
 export default async function determineOptions(
-    args: ParsedArgs,
+    args: Arguments<any>,
     log: ILog,
 ): Promise<Options> {
     /**
@@ -21,7 +21,14 @@ export default async function determineOptions(
     }
 
     const argsOptions = optionsFromArgs(args);
-    log.verbose(() => `Options from arguments: ${JSON.stringify(argsOptions)}`);
+    log.verbose(
+        () =>
+            `Options from arguments: ${JSON.stringify(
+                argsOptions,
+                undefined,
+                2,
+            )}`,
+    );
 
     const configFilePath: string | null | undefined =
         args.config === false
@@ -54,7 +61,11 @@ export default async function determineOptions(
     log.verbose(() =>
         configFromFile == null
             ? null
-            : `Options from config: ${JSON.stringify(configFromFile)}`,
+            : `Options from config: ${JSON.stringify(
+                  configFromFile,
+                  undefined,
+                  2,
+              )}`,
     );
 
     // We have to now build the options, with args taking precedence over
@@ -68,6 +79,8 @@ export default async function determineOptions(
         () =>
             `Combined options with defaults: ${JSON.stringify(
                 combinedOptions,
+                undefined,
+                2,
             )}`,
     );
 
