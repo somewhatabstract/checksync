@@ -6,6 +6,8 @@ import {ILog} from "./types";
 
 export const parseArgs = (log: ILog) =>
     yargs(hideBin(process.argv))
+        .help(false)
+        .version(false)
         .boolean([
             "updateTags",
             "dryRun",
@@ -37,7 +39,5 @@ export const parseArgs = (log: ILog) =>
             log.error(msg);
             exit(log, ExitCode.UNKNOWN_ARGS);
         })
-        .help(false)
-        .version(false)
         .showHelpOnFail(false)
         .parse();
