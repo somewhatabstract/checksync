@@ -1,5 +1,11 @@
 # checksync
 
+## 7.0.1
+
+### Patch Changes
+
+- 2d2d6a4: Fix --help and --version
+
 ## 7.0.0
 
 ### Major Changes

@@ -1,6 +1,6 @@
 {
     "name": "checksync",
-    "version": "7.0.0",
+    "version": "7.0.1",
     "description": "A tool that allows code to be annotated across different files to ensure they remain in sync.",
     "main": "dist/main.js",
     "types": "dist/main.d.ts",
