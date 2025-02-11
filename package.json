@@ -47,7 +47,7 @@
         "@eslint/eslintrc": "^3.1.0",
         "@eslint/js": "^9.5.0",
         "@hyperjump/json-schema": "^0.23.4",
-        "@khanacademy/eslint-config": "^4.0.0",
+        "@khanacademy/eslint-config": "^5.1.0",
         "@khanacademy/eslint-plugin": "^3.0.0",
         "@rollup/plugin-babel": "^6.0.4",
         "@rollup/plugin-commonjs": "^26.0.1",
