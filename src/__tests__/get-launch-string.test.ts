@@ -58,6 +58,21 @@ describe("#getLaunchString", () => {
             expect(result).toBe("yarn checksync");
         });
 
+        it("and npm_execpath contains pnpm, should return `pnpm checksync`", () => {
+            // Arrange
+            jest.spyOn(path, "join").mockReturnValueOnce(".bin/checksync");
+            jest.spyOn(CwdRelativePath, "default").mockReturnValueOnce(
+                "the_path/.bin/checksync",
+            );
+            process.env.npm_execpath = "pnpm";
+
+            // Act
+            const result = getLaunchString();
+
+            // Assert
+            expect(result).toBe("pnpm checksync");
+        });
+
         it("and npm_execpath is not yarn, should return `npx checksync`", () => {
             // Arrange
             jest.spyOn(path, "join").mockReturnValueOnce(".bin/checksync");
