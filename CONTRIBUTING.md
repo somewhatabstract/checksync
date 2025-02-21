@@ -22,8 +22,10 @@ To work in the `checksync` repository, follow these steps:
 
 1. Clone the repository
    `git clone git@github.com:somewhatabstract/checksync.git`
-2. Install `yarn` (see [🔗yarnpkg.com](https://yarnpkg.com))
-3. Run `yarn install` to install the dependencies
+2. Install `pnpm`
+   - `corepack enable pnpm`
+   - `corepack prepare pnpm --activate`
+3. Run `pnpm install` to install the dependencies
 
 You can now work on `checksync`. We prefer [🔗Visual Studio Code](https://code.visualstudio.com/) as our development environment (it's cross-platform and awesome), but please use what you feel comfortable with (we'll even forgive you for using vim).
 
@@ -43,11 +45,11 @@ We love code reviews. If there are open pull requests, please feel free to revie
 
 To ensure code quality, we use prettier, TypeScript, eslint, and jest. These are all executed when you submit a pull request to ensure contributions meet our code quality standards.
 
-To execute these operations outside of a pull request, you can use `yarn`.
+To execute these operations outside of a pull request, you can use `pnpm`.
 
-- `yarn typecheck`
-- `yarn lint`
-- `yarn test` (or `yarn test:integration` and `yarn test:unit` to run test categories separately)
+- `pnpm typecheck`
+- `pnpm lint`
+- `pnpm test` (or `pnpm test:integration` and `pnpm test:unit` to run test categories separately)
 
 If you make changes that change snapshots, you may need to run tests with the `-u` jest option and commit the updated snapshot files along with the rest of your contribution.
 
@@ -55,7 +57,7 @@ If you make changes that change snapshots, you may need to run tests with the `-
 
 ## 📦 Build And Publish
 
-Anyone can create a local build of the distributed code by running `yarn build`.
+Anyone can create a local build of the distributed code by running `pnpm build`.
 
 Running the build will execute tests first.
 

@@ -33,7 +33,6 @@
         "bin/checksync.js",
         "dist"
     ],
-    "dependencies": {},
     "devDependencies": {
         "@babel/cli": "^7.24.7",
         "@babel/core": "^7.24.7",
@@ -47,6 +46,7 @@
         "@eslint/eslintrc": "^3.1.0",
         "@eslint/js": "^9.5.0",
         "@hyperjump/json-schema": "^0.23.4",
+        "@jest/globals": "^29.7.0",
         "@khanacademy/eslint-config": "^4.0.0",
         "@khanacademy/eslint-plugin": "^3.0.0",
         "@rollup/plugin-babel": "^6.0.4",
@@ -110,7 +110,8 @@
         "coverage:integration": "jest --colors --config jest.config.js --coverage integration.test.ts",
         "coverage": "jest --colors --config jest.config.js --coverage",
         "lint": "eslint --config eslint.config.mjs '{src,bin,__{tests,mocks}__}/**/*.ts'",
-        "publish:ci": "git diff --stat --exit-code HEAD && pnpm build && changeset publish"
+        "publish:ci": "git diff --stat --exit-code HEAD && pnpm build && changeset publish",
+        "env": "node"
     },
     "packageManager": "pnpm@10.4.1+sha512.c753b6c3ad7afa13af388fa6d808035a008e30ea9993f58c6663e2bc5ff21679aa834db094987129aa4d488b86df57f7b634981b2f827cdcacc698cc0cfb88af"
 }

@@ -49,13 +49,13 @@ For detailed usage information, run `npx checksync --help`.
 1. Run `checksync` to verify the tags are correct:
 
     ```shell
-    yarn checksync <globs|files|dirs>
+    pnpm checksync <globs|files|dirs>
     ```
 
 1. Run with `--update-tags` or `-u` to automatically insert the missing checksums:
 
     ```shell
-    yarn checksync -u <globs|files|dirs>
+    pnpm checksync -u <globs|files|dirs>
     ```
 
 1. Add a pre-commit step to run `checksync` on commiting changes so that you catch when synchronized blocks change.
@@ -63,7 +63,7 @@ For detailed usage information, run `npx checksync --help`.
 
 1. Commit your tagged files!
 
-To get more information about the various arguments that `checksync` supports as well as information about sync-tags, run `yarn checksync --help`.
+To get more information about the various arguments that `checksync` supports as well as information about sync-tags, run `pnpm checksync --help`.
 
 ### Target file paths
 

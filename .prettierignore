@@ -10,6 +10,7 @@ __examples__
 .flowconfig
 .prettierignore
 yarn.lock
+pnpm-lock.yaml
 .babelrc
 __snapshots__
 .gitignore

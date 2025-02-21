@@ -34,7 +34,7 @@ export const run = async (launchFilePath: string): Promise<void> => {
         if (arg === launchFilePath) {
             return false;
         }
-        // Filter out the command that yarn/npm might install.
+        // Filter out the command that package manager might install.
         if (arg.endsWith(".bin/checksync")) {
             return false;
         }
