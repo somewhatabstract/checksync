@@ -6,3 +6,4 @@ report/
 yarn-error.log
 _quokka.js
 *.tsbuildinfo
+.integrationtests/
