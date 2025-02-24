@@ -218,8 +218,8 @@ describe("integration-test-support", () => {
 
             // Assert
             await expect(
-                underTest,
-            ).rejects.toThrowErrorMatchingInlineSnapshot();
+  underTest
+).rejects.toThrowErrorMatchingInlineSnapshot(`"BAD THINGS"`);
         });
 
         it("should replace the version JSON", async () => {
@@ -337,8 +337,8 @@ describe("integration-test-support", () => {
 
             // Assert
             await expect(
-                underTest,
-            ).rejects.toThrowErrorMatchingInlineSnapshot();
+  underTest
+).rejects.toThrowErrorMatchingInlineSnapshot(`"BAD THINGS"`);
         });
 
         it("should resolve to the contents of the log file for the given example and scenario", async () => {
