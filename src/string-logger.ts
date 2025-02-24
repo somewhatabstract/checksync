@@ -54,7 +54,7 @@ class StringLoggerInternal implements IStandardLog {
         // snapshots.
         const line = `${"  ".repeat(this._groupIndent)}${args
             .map(normalize)
-            .join("")}`.trimRight();
+            .join("")}`.trimEnd();
         this._buffer.push(line);
     };
 
