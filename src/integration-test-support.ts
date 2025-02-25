@@ -18,6 +18,7 @@ import StringLogger from "../src/string-logger";
 import checkSync from "../src/check-sync";
 import determineOptions from "../src/determine-options";
 import getLaunchString from "./get-launch-string";
+import normalizeSeparators from "./normalize-separators";
 
 export enum Scenario {
     Autofix = "autofix",
@@ -127,7 +128,7 @@ export const writeLog = (
     // 2. All runs might output the launch string. We can grab that and then
     //    do a find/replace.
     log = log.replaceAll(/"version": "\d+\.\d+\.\d+"/g, `"version": "0.0.0"`);
-    log = log.replaceAll(getLaunchString(), "checksync");
+    log = log.replaceAll(normalizeSeparators(getLaunchString()), "checksync");
 
     return new Promise((resolve, reject) => {
         fs.writeFile(logPath, log, (err) => {
