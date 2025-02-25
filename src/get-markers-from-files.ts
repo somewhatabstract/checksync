@@ -66,10 +66,11 @@ export default async function getMarkersFromFiles(
                 // Since this might be a symlink source, let's make sure we
                 // store the markers under its target filepath too.
                 if (realFilePath !== file) {
+                    const dataForFile: FileInfo = cacheData[file] ?? {};
                     // Close as unfixable, since this file already exists in
                     // a fixable version, and we don't need to fix it twice.
                     setCacheData(realFilePath, {
-                        ...cacheData[file],
+                        ...dataForFile,
                         readOnly: true,
                     });
                 }
