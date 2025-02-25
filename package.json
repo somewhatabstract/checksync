@@ -104,7 +104,7 @@
         "build": "pnpm test:unit && rollup -c && pnpm build:types",
         "build:types": "tsc --emitDeclarationOnly --declaration --project src/tsconfig-types.json",
         "test:unit": "jest --colors --config jest.config.js --testPathIgnorePatterns integration.test.ts",
-        "test:integration": "./bin/gen-integration-test-logs.ts && jest --colors --config jest.config.js integration.test.ts",
+        "test:integration": "node -r @swc-node/register ./bin/gen-integration-test-logs.ts && jest --colors --config jest.config.js integration.test.ts",
         "test": "pnpm run test:unit && pnpm run test:integration",
         "coverage:unit": "jest --colors --config jest.config.js --coverage --testPathIgnorePatterns integration.test.ts",
         "coverage:integration": "jest --colors --config jest.config.js --coverage integration.test.ts",
