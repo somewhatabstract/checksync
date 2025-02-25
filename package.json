@@ -26,14 +26,12 @@
         "access": "public"
     },
     "engines": {
-        "node": ">= 20",
-        "yarn": ">=1.18.0 <2"
+        "node": ">= 20"
     },
     "files": [
         "bin/checksync.js",
         "dist"
     ],
-    "dependencies": {},
     "devDependencies": {
         "@babel/cli": "^7.24.7",
         "@babel/core": "^7.24.7",
@@ -47,12 +45,14 @@
         "@eslint/eslintrc": "^3.1.0",
         "@eslint/js": "^9.5.0",
         "@hyperjump/json-schema": "^0.23.4",
+        "@jest/globals": "^29.7.0",
         "@khanacademy/eslint-config": "^4.0.0",
         "@khanacademy/eslint-plugin": "^3.0.0",
         "@rollup/plugin-babel": "^6.0.4",
         "@rollup/plugin-commonjs": "^26.0.1",
         "@rollup/plugin-json": "^6.1.0",
         "@rollup/plugin-node-resolve": "^15.2.3",
+        "@swc-node/register": "^1.10.9",
         "@types/jest": "^29.5.12",
         "@types/lodash": "^4.17.5",
         "@types/micromatch": "^4.0.7",
@@ -91,39 +91,27 @@
     },
     "resolutions": {
         "kind-of": "^6.0.3",
-        "//ip": [
-            "ip SSRF improper categorization in isPublic",
-            "https://github.com/somewhatabstract/checksync/security/dependabot/18"
-        ],
         "ip": "^2.0.1",
-        "//tar": [
-            "Denial of service while parsing a tar file due to lack of folders count validation",
-            "https://github.com/somewhatabstract/checksync/security/dependabot/17"
-        ],
         "tar": "6.2.1",
-        "//string-width": [
-            "We needed to update jest so that it was compatible with Node 20,",
-            "but this introduced new conflicts for these three modules. These",
-            "resolutions were needed to ensure jest would run. It's not ideal,",
-            "but for now, this is what we must do."
-        ],
         "string-width": "^3",
         "strip-ansi": "^6",
         "wrap-ansi": "^7"
     },
     "scripts": {
-        "prepublishOnly": "yarn clean && yarn build",
+        "prepublishOnly": "pnpm clean && pnpm build",
         "typecheck": "tsc --noEmit --project src/tsconfig.json",
         "clean": "rm -rf dist && rm -rf obj",
-        "build": "yarn test:unit && rollup -c && yarn build:types",
+        "build": "pnpm test:unit && rollup -c && pnpm build:types",
         "build:types": "tsc --emitDeclarationOnly --declaration --project src/tsconfig-types.json",
         "test:unit": "jest --colors --config jest.config.js --testPathIgnorePatterns integration.test.ts",
-        "test:integration": "jest --colors --config jest.config.js integration.test.ts",
-        "test": "jest --colors --config jest.config.js",
+        "test:integration": "node -r @swc-node/register ./bin/gen-integration-test-logs.ts && jest --colors --config jest.config.js integration.test.ts",
+        "test": "pnpm run test:unit && pnpm run test:integration",
         "coverage:unit": "jest --colors --config jest.config.js --coverage --testPathIgnorePatterns integration.test.ts",
         "coverage:integration": "jest --colors --config jest.config.js --coverage integration.test.ts",
         "coverage": "jest --colors --config jest.config.js --coverage",
         "lint": "eslint --config eslint.config.mjs '{src,bin,__{tests,mocks}__}/**/*.ts'",
-        "publish:ci": "git diff --stat --exit-code HEAD && yarn build && changeset publish"
-    }
+        "publish:ci": "git diff --stat --exit-code HEAD && pnpm build && changeset publish",
+        "env": "node"
+    },
+    "packageManager": "pnpm@10.4.1+sha512.c753b6c3ad7afa13af388fa6d808035a008e30ea9993f58c6663e2bc5ff21679aa834db094987129aa4d488b86df57f7b634981b2f827cdcacc698cc0cfb88af"
 }

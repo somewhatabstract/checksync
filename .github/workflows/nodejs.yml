@@ -21,14 +21,30 @@ jobs:
         node-version: [20.x]
     steps:
     - uses: actions/checkout@v4
-    - name: Install & cache node_modules
-      uses: Khan/actions@shared-node-cache-v2
+
+    - uses: pnpm/action-setup@v4
+      name: Install pnpm
+      with:
+        run_install: false
+        package_json_file: 'package.json'
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
+        cache: 'pnpm'
+        cache-dependency-path: 'pnpm-lock.yaml'
+
+    - name: Install Dependencies
+      shell: bash
+      run: pnpm install --frozen-lockfile
+
     - name: Lint
-      run: yarn lint
+      run: pnpm lint
+
     - name: Static Types
-      run: yarn typecheck
+      run: pnpm typecheck
+
     - name: Changesets check
       uses: Khan/actions@check-for-changeset-v1
       if: |
@@ -50,12 +66,26 @@ jobs:
         node-version: [20.x]
     steps:
     - uses: actions/checkout@v4
-    - name: Install & cache node_modules
-      uses: Khan/actions@shared-node-cache-v2
+
+    - uses: pnpm/action-setup@v4
+      name: Install pnpm
+      with:
+        run_install: false
+        package_json_file: 'package.json'
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
+        cache: 'pnpm'
+        cache-dependency-path: 'pnpm-lock.yaml'
+
+    - name: Install Dependencies
+      shell: bash
+      run: pnpm install --frozen-lockfile
+
     - name: Run tests with coverage
-      run: yarn coverage:unit
+      run: pnpm coverage:unit
     - name: Upload coverage
       uses: codecov/codecov-action@v4
       env:
@@ -74,12 +104,26 @@ jobs:
         node-version: [20.x]
     steps:
     - uses: actions/checkout@v4
-    - name: Install & cache node_modules
-      uses: Khan/actions@shared-node-cache-v2
+
+    - uses: pnpm/action-setup@v4
+      name: Install pnpm
+      with:
+        run_install: false
+        package_json_file: 'package.json'
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
+        cache: 'pnpm'
+        cache-dependency-path: 'pnpm-lock.yaml'
+
+    - name: Install Dependencies
+      shell: bash
+      run: pnpm install --frozen-lockfile
+
     - name: Run integration tests
-      run: yarn test:integration
+      run: pnpm test:integration
 
 
   test_and_build:
@@ -93,10 +137,24 @@ jobs:
         os: [windows-latest, ubuntu-latest, macOS-latest]
         node-version: [20.x]
     steps:
-    - uses: actions/checkout@v3
-    - name: Install & cache node_modules
-      uses: Khan/actions@shared-node-cache-v2
+    - uses: actions/checkout@v4
+
+    - uses: pnpm/action-setup@v4
+      name: Install pnpm
+      with:
+        run_install: false
+        package_json_file: 'package.json'
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
+        cache: 'pnpm'
+        cache-dependency-path: 'pnpm-lock.yaml'
+
+    - name: Install Dependencies
+      shell: bash
+      run: pnpm install --frozen-lockfile
+
     - name: Run tests and build
-      run: yarn build
+      run: pnpm build
