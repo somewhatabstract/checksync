@@ -217,7 +217,7 @@ export type Options = {
      * When false, a tag must contain content to be considered valid;
      * when true, a tag may be empty.
      */
-    allowEmptyTags: boolean;
+    allowEmptyTags?: boolean;
 };
 
 export type NormalizedFileInfo = {
