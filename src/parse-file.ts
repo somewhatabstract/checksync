@@ -5,7 +5,7 @@ import readline from "readline";
 import fs from "fs";
 
 import MarkerParser from "./marker-parser";
-import getNormalizedRefInfo from "./get-normalized-ref-info";
+import getNormalizedPathInfo from "./get-normalized-path-info";
 import {ErrorCode} from "./error-codes";
 import {ancesdirOrCurrentDir} from "./ancesdir-or-currentdir";
 import calcChecksum from "./checksum";
@@ -83,7 +83,7 @@ export default function parseFile(
 
         // We need the normalized path of the file we're processing to
         // include it in the selfChecksum.
-        const {path: normalizedFile} = getNormalizedRefInfo(rootPath, file);
+        const {path: normalizedFile} = getNormalizedPathInfo(rootPath, file);
         markers[id] = {
             contentChecksum:
                 content == null ? NoChecksum : calcChecksum(content),
@@ -99,7 +99,7 @@ export default function parseFile(
 
     const referencedFiles: Array<string> = [];
     const normalizeTargetPath = (targetRef: string) => {
-        const targetInfo = getNormalizedRefInfo(rootPath, targetRef);
+        const targetInfo = getNormalizedPathInfo(rootPath, targetRef);
         if (!readOnly && targetInfo.exists && targetInfo.type === "local") {
             referencedFiles.push(targetInfo.path);
         }

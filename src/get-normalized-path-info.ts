@@ -1,21 +1,21 @@
 import fs from "fs";
 import path from "path";
 
-import {NormalizedTargetInfo as NormalizedRefInfo} from "./types";
+import {NormalizedPathInfo} from "./types";
 
 /**
  * Get normalized path and existence for given target.
  *
- * @param {string} rootPath The absolute path of the root directory for the
+ * @param rootPath The absolute path of the root directory for the
  * check run.
- * @param {string} ref The path, relative to `rootPath` of the file to be
+ * @param ref The path, relative to `rootPath` of the file to be
  * normalized.
- * @returns {NormalizedRefInfo} The info for the given `targetRef` file.
+ * @returns The info for the given `targetRef` file.
  */
-const getNormalizedRefInfo = (
+const getNormalizedPathInfo = (
     rootPath: string,
     ref: string,
-): NormalizedRefInfo => {
+): NormalizedPathInfo => {
     // If the targetRef is a URL, we just return that as-is and mark exists as
     // true by default. If we implement #2037, we can have exists be based on
     // some sort of fetch to detect if the URL is valid, perhaps.
@@ -33,4 +33,4 @@ const getNormalizedRefInfo = (
     return {path: osPathSep, exists, type: "local"};
 };
 
-export default getNormalizedRefInfo;
+export default getNormalizedPathInfo;

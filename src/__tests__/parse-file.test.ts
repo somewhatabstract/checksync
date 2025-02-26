@@ -3,7 +3,7 @@ import readline from "readline";
 
 import * as AncesdirOrCurrentDir from "../ancesdir-or-currentdir";
 import * as MarkerParser from "../marker-parser";
-import * as GetNormalizedTargetFileInfo from "../get-normalized-ref-info";
+import * as GetNormalizedTargetFileInfo from "../get-normalized-path-info";
 
 import parseFile from "../parse-file";
 

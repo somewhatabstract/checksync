@@ -188,7 +188,7 @@ export type MarkerCache = {
 
 export type normalizeTargetFn = (
     relativeFile: string,
-) => Readonly<NormalizedTargetInfo>;
+) => Readonly<NormalizedPathInfo>;
 
 export type Options = {
     /**
@@ -237,7 +237,7 @@ export type Options = {
     allowEmptyTags?: boolean;
 };
 
-export type NormalizedTargetInfo = {
+export type NormalizedPathInfo = {
     path: string;
     exists: boolean;
     type: TargetType;
