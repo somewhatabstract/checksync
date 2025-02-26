@@ -5,9 +5,10 @@ import readline from "readline";
 import fs from "fs";
 
 import MarkerParser from "./marker-parser";
-import getNormalizedTargetFileInfo from "./get-normalized-target-file-info";
+import getNormalizedRefInfo from "./get-normalized-ref-info";
 import {ErrorCode} from "./error-codes";
 import {ancesdirOrCurrentDir} from "./ancesdir-or-currentdir";
+import calcChecksum from "./checksum";
 
 import {
     Markers,
@@ -15,6 +16,7 @@ import {
     Options,
     FileParseResult,
     ErrorDetails,
+    NoChecksum,
 } from "./types";
 
 /**
@@ -49,7 +51,8 @@ export default function parseFile(
 
     const addMarker = (
         id: string,
-        checksum: string,
+        file: string,
+        content: ReadonlyArray<string> | undefined,
         targets: Targets,
         commentStart: string,
         commentEnd: string,
@@ -67,7 +70,7 @@ export default function parseFile(
             }
 
             const target = targets[lineNumber];
-            if (target.file === file) {
+            if (target.target === file) {
                 recordError({
                     reason: `Sync-tag '${id}' cannot target itself`,
                     location: {
@@ -78,8 +81,16 @@ export default function parseFile(
             }
         }
 
+        // We need the normalized path of the file we're processing to
+        // include it in the selfChecksum.
+        const {path: normalizedFile} = getNormalizedRefInfo(rootPath, file);
         markers[id] = {
-            checksum,
+            contentChecksum:
+                content == null ? NoChecksum : calcChecksum(content),
+            selfChecksum:
+                content == null
+                    ? NoChecksum
+                    : calcChecksum([...content, normalizedFile]),
             targets,
             commentStart,
             commentEnd,
@@ -87,22 +98,33 @@ export default function parseFile(
     };
 
     const referencedFiles: Array<string> = [];
-    const normalizeFileRef = (fileRef: string) => {
-        const normalizedFileInfo = getNormalizedTargetFileInfo(
-            rootPath,
-            fileRef,
-        );
-        if (!readOnly && normalizedFileInfo.exists) {
-            referencedFiles.push(normalizedFileInfo.file);
+    const normalizeTargetPath = (targetRef: string) => {
+        const targetInfo = getNormalizedRefInfo(rootPath, targetRef);
+        if (!readOnly && targetInfo.exists && targetInfo.type === "local") {
+            referencedFiles.push(targetInfo.path);
         }
-        return normalizedFileInfo;
+        return targetInfo;
     };
 
     return new Promise<FileParseResult>((resolve, reject) => {
         try {
             const markerParser = new MarkerParser(
-                normalizeFileRef,
-                addMarker,
+                normalizeTargetPath,
+                (
+                    id: string,
+                    content: ReadonlyArray<string> | undefined,
+                    targets: Targets,
+                    commentStart: string,
+                    commentEnd: string,
+                ) =>
+                    addMarker(
+                        id,
+                        normalizeTargetPath(file).path,
+                        content,
+                        targets,
+                        commentStart,
+                        commentEnd,
+                    ),
                 recordError,
                 options.comments,
             );

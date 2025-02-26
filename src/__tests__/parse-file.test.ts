@@ -3,7 +3,7 @@ import readline from "readline";
 
 import * as AncesdirOrCurrentDir from "../ancesdir-or-currentdir";
 import * as MarkerParser from "../marker-parser";
-import * as GetNormalizedTargetFileInfo from "../get-normalized-target-file-info";
+import * as GetNormalizedTargetFileInfo from "../get-normalized-ref-info";
 
 import parseFile from "../parse-file";
 
@@ -279,7 +279,7 @@ describe("#parseFile", () => {
             "ID1_CHECKSUM",
             {
                 [1]: {
-                    file: "file.js",
+                    target: "file.js",
                     checksum: "TARGET_CHECKSUM1",
                     declaration: "DECLARATION",
                 },
@@ -433,7 +433,7 @@ describe("#parseFile", () => {
         setupMarkerParser();
         const getNormalizedTargetFileInfoSpy = jest
             .spyOn(GetNormalizedTargetFileInfo, "default")
-            .mockReturnValue({file: "NORMALIZED", exists: false});
+            .mockReturnValue({path: "NORMALIZED", exists: false});
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
             comments: [],
@@ -477,8 +477,8 @@ describe("#parseFile", () => {
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
         jest.spyOn(GetNormalizedTargetFileInfo, "default")
-            .mockReturnValueOnce({file: "NORMALIZED_A", exists: false})
-            .mockReturnValueOnce({file: "NORMALIZED_B", exists: true});
+            .mockReturnValueOnce({path: "NORMALIZED_A", exists: false})
+            .mockReturnValueOnce({path: "NORMALIZED_B", exists: true});
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
             comments: [],
@@ -520,8 +520,8 @@ describe("#parseFile", () => {
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
         jest.spyOn(GetNormalizedTargetFileInfo, "default")
-            .mockReturnValueOnce({file: "NORMALIZED_A", exists: true})
-            .mockReturnValueOnce({file: "NORMALIZED_B", exists: true});
+            .mockReturnValueOnce({path: "NORMALIZED_A", exists: true})
+            .mockReturnValueOnce({path: "NORMALIZED_B", exists: true});
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
             comments: [],
@@ -578,7 +578,7 @@ describe("#parseFile", () => {
             "ID1_CHECKSUM",
             {
                 [1]: {
-                    file: "TARGET_FILE1",
+                    target: "TARGET_FILE1",
                     checksum: "TARGET_CHECKSUM1",
                     declaration: "DECLARATION1",
                 },
@@ -591,7 +591,7 @@ describe("#parseFile", () => {
             "ID2_CHECKSUM",
             {
                 [34]: {
-                    file: "TARGET_FILE2",
+                    target: "TARGET_FILE2",
                     checksum: "TARGET_CHECKSUM2",
                     declaration: "DECLARATION2",
                 },
@@ -669,7 +669,7 @@ describe("#parseFile", () => {
             "ID1_CHECKSUM",
             {
                 [1]: {
-                    file: "target.a",
+                    target: "target.a",
                     checksum: "CHECKSUM_A",
                     declaration: "DECLARATION_A",
                 },
@@ -682,7 +682,7 @@ describe("#parseFile", () => {
             "ID2_CHECKSUM",
             {
                 [1]: {
-                    file: "target.2",
+                    target: "target.2",
                     checksum: "CHECKSUM_2",
                     declaration: "DECLARATION_2",
                 },

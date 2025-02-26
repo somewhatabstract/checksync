@@ -1,11 +1,10 @@
-import path from "path";
-import escapeRegExp from "lodash/escapeRegExp";
 import {ErrorCode} from "./error-codes";
 import rootRelativePath from "./root-relative-path";
 import cwdRelativePath from "./cwd-relative-path";
 import {NoChecksum} from "./types";
 
 import {FileInfo, Marker, MarkerCache, ErrorDetails, Options} from "./types";
+import normalizeSeparators from "./normalize-separators";
 
 /**
  * Generate errors for a given source file.
@@ -34,7 +33,7 @@ export default function* generateErrors(
         // We look for a target that points to our file or an alias of our
         // file - the file is considered its own alias.
         const matchingTargets = Object.entries(targetMarker.targets).filter(
-            ([_, target]: [any, any]) => aliases.includes((target as any).file),
+            ([_, target]) => aliases.includes(target.target),
         );
         if (matchingTargets.length === 0) {
             return null;
@@ -47,7 +46,7 @@ export default function* generateErrors(
             // The first index is the target, the second index is the key
             // of that target, which equates to its line number.
             line: parseInt(matchingTargets[0][0]),
-            checksum: targetMarker.checksum,
+            checksum: targetMarker.contentChecksum,
         };
     };
 
@@ -81,69 +80,113 @@ export default function* generateErrors(
          * file and then try to map them to the target marker they reference.
          */
         for (const sourceLine of targetLines) {
-            const targetRef = sourceMarker.targets[sourceLine];
-            const targetInfo: FileInfo | null | undefined =
-                cache[targetRef.file];
-            const targetMarker: Marker | null | undefined =
-                targetInfo?.markers[markerID];
+            const sourceRef = sourceMarker.targets[sourceLine];
 
-            const targetDetails = getTargetDetail(targetMarker, aliases);
+            if (sourceRef.type === "local") {
+                const targetInfo: FileInfo | null | undefined =
+                    cache[sourceRef.target];
+                const targetMarker: Marker | null | undefined =
+                    targetInfo?.markers[markerID];
 
-            const sourceChecksum = targetRef.checksum;
-            const targetChecksum = targetDetails?.checksum;
-            if (sourceChecksum === targetChecksum) {
-                // If the checksum matches and we have no errors, we can skip
-                // this edge.
-                continue;
-            }
+                const targetDetails = getTargetDetail(targetMarker, aliases);
 
-            if (targetDetails?.line == null || targetChecksum == null) {
+                const currentChecksum = sourceRef.checksum;
+                const targetChecksum = targetDetails?.checksum;
+                if (currentChecksum === targetChecksum) {
+                    // If the checksum matches and we have no errors, we can skip
+                    // this edge.
+                    continue;
+                }
+
+                if (targetDetails?.line == null || targetChecksum == null) {
+                    yield {
+                        reason: `No return tag named '${markerID}' in '${cwdRelativePath(
+                            sourceRef.target,
+                        )}'`,
+                        code: ErrorCode.noReturnTag,
+                        location: {line: sourceLine},
+                    };
+                    continue;
+                }
+
+                const normalizedTargetRef = normalizeSeparators(
+                    sourceRef.target,
+                );
+
+                const {commentStart, commentEnd} = sourceMarker;
+                const startOfComment =
+                    sourceRef.declaration.indexOf(commentStart);
+                const indent = sourceRef.declaration.substring(
+                    0,
+                    startOfComment,
+                );
+                const checksums = `${
+                    currentChecksum || NoChecksum
+                } != ${targetChecksum}`;
+                const fix = `${indent}${commentStart} sync-start:${markerID} ${targetChecksum} ${rootRelativePath(
+                    normalizedTargetRef,
+                    options.rootMarker,
+                )}${commentEnd || ""}`;
+
                 yield {
-                    reason: `No return tag named '${markerID}' in '${cwdRelativePath(
-                        targetRef.file,
-                    )}'`,
-                    code: ErrorCode.noReturnTag,
-                    location: {line: sourceLine},
+                    code: ErrorCode.mismatchedChecksum,
+                    reason: `Looks like you changed the target content for sync-tag '${markerID}' in '${cwdRelativePath(
+                        normalizedTargetRef,
+                    )}:${
+                        targetDetails.line
+                    }'. Make sure you've made corresponding changes in the source file, if necessary (${checksums})`,
+                    location: {line: targetDetails.line},
+                    fix: {
+                        type: "replace",
+                        line: sourceLine,
+                        text: fix,
+                        declaration: sourceRef.declaration,
+                        description: `Updated checksum for sync-tag '${markerID}' referencing '${cwdRelativePath(
+                            normalizedTargetRef,
+                        )}:${targetDetails.line}' from ${
+                            currentChecksum || NoChecksum.toLowerCase()
+                        } to ${targetChecksum}.`,
+                    },
                 };
-                continue;
+            } else if (sourceRef.type === "remote") {
+                const currentChecksum = sourceRef.checksum;
+                const targetChecksum = sourceMarker.selfChecksum;
+                if (currentChecksum === targetChecksum) {
+                    // If the checksum matches and we have no errors, we can skip
+                    // this edge.
+                    continue;
+                }
+
+                const {commentStart, commentEnd} = sourceMarker;
+                const startOfComment =
+                    sourceRef.declaration.indexOf(commentStart);
+                const indent = sourceRef.declaration.substring(
+                    0,
+                    startOfComment,
+                );
+                const checksums = `${
+                    currentChecksum || NoChecksum
+                } != ${targetChecksum}`;
+                const fix = `${indent}${commentStart} sync-start:${markerID} ${targetChecksum} ${sourceRef.target}${commentEnd || ""}`;
+
+                yield {
+                    code: ErrorCode.mismatchedChecksum,
+                    reason: `Looks like you changed the content of sync-tag '${markerID} or the path of the file that contains the tag'.
+Make sure you've made corresponding changes at ${sourceRef.target}, if necessary (${checksums})`,
+                    location: {line: sourceLine},
+                    fix: {
+                        type: "replace",
+                        line: sourceLine,
+                        text: fix,
+                        declaration: sourceRef.declaration,
+                        description: `Updated checksum for sync-tag '${markerID}' referencing '${sourceRef.target}' from ${
+                            currentChecksum || NoChecksum.toLowerCase()
+                        } to ${targetChecksum}.`,
+                    },
+                };
+            } else {
+                throw new Error(`Unknown target type: ${sourceRef.type}`);
             }
-
-            const normalizedTargetFile = targetRef.file.replace(
-                new RegExp(escapeRegExp(path.sep), "g"),
-                "/",
-            );
-
-            const {commentStart, commentEnd} = sourceMarker;
-            const startOfComment = targetRef.declaration.indexOf(commentStart);
-            const indent = targetRef.declaration.substring(0, startOfComment);
-            const checksums = `${
-                sourceChecksum || NoChecksum
-            } != ${targetChecksum}`;
-            const fix = `${indent}${commentStart} sync-start:${markerID} ${targetChecksum} ${rootRelativePath(
-                normalizedTargetFile,
-                options.rootMarker,
-            )}${commentEnd || ""}`;
-
-            yield {
-                code: ErrorCode.mismatchedChecksum,
-                reason: `Looks like you changed the target content for sync-tag '${markerID}' in '${cwdRelativePath(
-                    normalizedTargetFile,
-                )}:${
-                    targetDetails.line
-                }'. Make sure you've made the parallel changes in the source file, if necessary (${checksums})`,
-                location: {line: targetDetails.line},
-                fix: {
-                    type: "replace",
-                    line: sourceLine,
-                    text: fix,
-                    declaration: targetRef.declaration,
-                    description: `Updated checksum for sync-tag '${markerID}' referencing '${cwdRelativePath(
-                        normalizedTargetFile,
-                    )}:${targetDetails.line}' from ${
-                        sourceChecksum || NoChecksum.toLowerCase()
-                    } to ${targetChecksum}.`,
-                },
-            };
         }
     }
 }

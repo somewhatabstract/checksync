@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-import getNormalizedTargetFileInfo from "../get-normalized-target-file-info";
+import getNormalizedRefInfo from "../get-normalized-ref-info";
 
 jest.mock("fs");
 jest.mock("path");
@@ -18,10 +18,10 @@ describe("#getNormalizedTargetFileInfo", () => {
         jest.spyOn(fs, "existsSync").mockReturnValue(false);
 
         // Act
-        const result = getNormalizedTargetFileInfo("root.path", "file.ref");
+        const result = getNormalizedRefInfo("root.path", "file.ref");
 
         // Assert
-        expect(result.file).toBe("normalized|root.path|file.ref");
+        expect(result.path).toBe("normalized|root.path|file.ref");
     });
 
     it("should set exists to false if the path does not exist", () => {
@@ -34,7 +34,7 @@ describe("#getNormalizedTargetFileInfo", () => {
         jest.spyOn(fs, "existsSync").mockReturnValue(false);
 
         // Act
-        const result = getNormalizedTargetFileInfo("root.path", "file.ref");
+        const result = getNormalizedRefInfo("root.path", "file.ref");
 
         // Assert
         expect(result.exists).toBeFalse();
@@ -53,7 +53,7 @@ describe("#getNormalizedTargetFileInfo", () => {
         } as any);
 
         // Act
-        const result = getNormalizedTargetFileInfo("root.path", "file.ref");
+        const result = getNormalizedRefInfo("root.path", "file.ref");
 
         // Assert
         expect(result.exists).toBeFalse();
@@ -72,7 +72,7 @@ describe("#getNormalizedTargetFileInfo", () => {
         } as any);
 
         // Act
-        const result = getNormalizedTargetFileInfo("root.path", "file.ref");
+        const result = getNormalizedRefInfo("root.path", "file.ref");
 
         // Assert
         expect(result.exists).toBeTrue();

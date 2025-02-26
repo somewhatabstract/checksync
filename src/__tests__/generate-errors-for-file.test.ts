@@ -29,11 +29,11 @@ describe("#generateMarkerEdges", () => {
                     marker: {
                         commentStart: "//",
                         commentEnd: undefined,
-                        checksum: "",
+                        contentChecksum: "",
                         targets: {
                             [1]: {
                                 checksum: "5678",
-                                file: "fileb",
+                                target: "fileb",
                                 declaration: "// sync-start:marker 5678 fileb",
                             } as Target,
                         },
@@ -48,11 +48,11 @@ describe("#generateMarkerEdges", () => {
                     marker: {
                         commentStart: "//",
                         commentEnd: undefined,
-                        checksum: "",
+                        contentChecksum: "",
                         targets: {
                             [1]: {
                                 checksum: "1234",
-                                file: "filea",
+                                target: "filea",
                                 declaration: "// sync-start:marker 1234 filea",
                             } as Target,
                         },
@@ -82,11 +82,11 @@ describe("#generateMarkerEdges", () => {
                     marker: {
                         commentStart: "//",
                         commentEnd: undefined,
-                        checksum: "1234",
+                        contentChecksum: "1234",
                         targets: {
                             [1]: {
                                 checksum: "5678",
-                                file: "fileb",
+                                target: "fileb",
                                 declaration: "// sync-start:marker 5678 fileb",
                             } as Target,
                         },
@@ -101,11 +101,11 @@ describe("#generateMarkerEdges", () => {
                     marker: {
                         commentStart: "//",
                         commentEnd: undefined,
-                        checksum: "5678",
+                        contentChecksum: "5678",
                         targets: {
                             [1]: {
                                 checksum: "WRONG",
-                                file: "filea",
+                                target: "filea",
                                 declaration: "// sync-start:marker WRONG filea",
                             } as Target,
                         } as any,
@@ -149,11 +149,11 @@ describe("#generateMarkerEdges", () => {
                     marker: {
                         commentStart: "//",
                         commentEnd: undefined,
-                        checksum: "1234",
+                        contentChecksum: "1234",
                         targets: {
                             [1]: {
                                 checksum: "5678",
-                                file: "fileb",
+                                target: "fileb",
                                 declaration: "// sync-start:marker 5678 fileb",
                             } as Target,
                         },
@@ -168,11 +168,11 @@ describe("#generateMarkerEdges", () => {
                     marker: {
                         commentStart: "//",
                         commentEnd: undefined,
-                        checksum: "5678",
+                        contentChecksum: "5678",
                         targets: {
                             [1]: {
                                 checksum: "",
-                                file: "filea",
+                                target: "filea",
                                 declaration: "// sync-start:marker WRONG filea",
                             } as Target,
                         } as any,
@@ -222,11 +222,11 @@ describe("#generateMarkerEdges", () => {
                     marker: {
                         commentStart: "//",
                         commentEnd: undefined,
-                        checksum: "1234",
+                        contentChecksum: "1234",
                         targets: {
                             [1]: {
                                 checksum: "5678",
-                                file: "fileb",
+                                target: "fileb",
                                 declaration: "// sync-start:marker 5678 fileb",
                             } as Target,
                         },
@@ -247,11 +247,11 @@ describe("#generateMarkerEdges", () => {
                     marker: {
                         commentStart: "//",
                         commentEnd: undefined,
-                        checksum: "5678",
+                        contentChecksum: "5678",
                         targets: {
                             [1]: {
                                 checksum: "1234",
-                                file: "filea",
+                                target: "filea",
                                 declaration: "// sync-start:marker 1234 filea",
                             } as Target,
                         },
@@ -281,11 +281,11 @@ describe("#generateMarkerEdges", () => {
                     marker: {
                         commentStart: "//",
                         commentEnd: undefined,
-                        checksum: "",
+                        contentChecksum: "",
                         targets: {
                             [1]: {
                                 checksum: "5678",
-                                file: "fileb",
+                                target: "fileb",
                                 declaration: "// sync-start:marker 5678 fileb",
                             } as Target,
                         },
@@ -327,11 +327,11 @@ describe("#generateMarkerEdges", () => {
                     marker: {
                         commentStart: "//",
                         commentEnd: undefined,
-                        checksum: "",
+                        contentChecksum: "",
                         targets: {
                             [1]: {
                                 checksum: "5678",
-                                file: "fileb",
+                                target: "fileb",
                                 declaration: "// sync-start:marker 5678 fileb",
                             } as Target,
                         },
@@ -346,7 +346,7 @@ describe("#generateMarkerEdges", () => {
                     marker: {
                         commentStart: "//",
                         commentEnd: undefined,
-                        checksum: "",
+                        contentChecksum: "",
                         targets: {},
                     } as Marker,
                 },
@@ -380,11 +380,11 @@ describe("#generateMarkerEdges", () => {
                     marker: {
                         commentStart: "//",
                         commentEnd: undefined,
-                        checksum: "1234",
+                        contentChecksum: "1234",
                         targets: {
                             [1]: {
                                 checksum: "5678",
-                                file: "fileb",
+                                target: "fileb",
                                 declaration: "// sync-start:marker 5678 fileb",
                             } as Target,
                         },
@@ -399,11 +399,11 @@ describe("#generateMarkerEdges", () => {
                     marker: {
                         commentStart: "//",
                         commentEnd: undefined,
-                        checksum: "5678",
+                        contentChecksum: "5678",
                         targets: {
                             [1]: {
                                 checksum: "1234",
-                                file: "filea",
+                                target: "filea",
                                 declaration: "// sync-start:marker 1234 filea",
                             } as Target,
                         },

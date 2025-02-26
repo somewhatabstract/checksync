@@ -58,18 +58,31 @@ export type ErrorDetails = {
     fix?: FixAction;
 };
 
+export type TargetType = "local" | "remote";
+
 /**
  * A marker target.
  */
 export type Target = {
     /**
-     * The file that a marker references.
+     * The target file path or URL that a marker references.
      */
-    readonly file: string;
+    readonly target: string;
+    /**
+     * The type of the target.
+     *
+     * Local targets are files we can parse for the return markers.
+     * Remote targets are URLs.
+     */
+    readonly type: TargetType;
     /**
      * The checksum that a marker has recorded for the target marker.
-     * The mismatch between this and the target marker's actual checksum is
-     * what we will pick up and report/fix.
+     *
+     * For local targets, the mismatch between this and the target marker's
+     * actual checksum is what we will pick up and report/fix.
+     *
+     * For remote targets, the mismatch between this and the marker's
+     * self-checksum is what we will pick up and report/fix.
      */
     readonly checksum: string;
     /**
@@ -125,7 +138,12 @@ export type Marker = {
     /**
      * The actual checksum value of the marker content.
      */
-    readonly checksum: string;
+    readonly contentChecksum: string;
+    /**
+     * The actual checksum value of the marker content and the relative path
+     * of the file containing the marker.
+     */
+    readonly selfChecksum: string;
     /**
      * The targets that the marker syncs with.
      */
@@ -168,10 +186,9 @@ export type MarkerCache = {
     [file: string]: FileInfo;
 };
 
-export type normalizePathFn = (relativeFile: string) => {
-    readonly file: string;
-    readonly exists: boolean;
-};
+export type normalizeTargetFn = (
+    relativeFile: string,
+) => Readonly<NormalizedTargetInfo>;
 
 export type Options = {
     /**
@@ -220,9 +237,10 @@ export type Options = {
     allowEmptyTags?: boolean;
 };
 
-export type NormalizedFileInfo = {
-    file: string;
+export type NormalizedTargetInfo = {
+    path: string;
     exists: boolean;
+    type: TargetType;
 };
 
 export type ErrorDetailsByDeclaration = {
