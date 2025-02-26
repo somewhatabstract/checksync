@@ -1,6 +1,6 @@
 import generateErrorsForFile from "../generate-errors-for-file";
 
-import {MarkerCache, Target, Marker, Options} from "../types";
+import {MarkerCache, Options} from "../types";
 
 describe("#generateMarkerEdges", () => {
     it("should yield empty sequence if cache does not contain file", () => {
@@ -30,14 +30,16 @@ describe("#generateMarkerEdges", () => {
                         commentStart: "//",
                         commentEnd: undefined,
                         contentChecksum: "",
+                        selfChecksum: "",
                         targets: {
                             [1]: {
+                                type: "local",
                                 checksum: "5678",
                                 target: "fileb",
                                 declaration: "// sync-start:marker 5678 fileb",
-                            } as Target,
+                            },
                         },
-                    } as Marker,
+                    },
                 },
             },
             fileb: {
@@ -49,14 +51,16 @@ describe("#generateMarkerEdges", () => {
                         commentStart: "//",
                         commentEnd: undefined,
                         contentChecksum: "",
+                        selfChecksum: "",
                         targets: {
                             [1]: {
+                                type: "local",
                                 checksum: "1234",
                                 target: "filea",
                                 declaration: "// sync-start:marker 1234 filea",
-                            } as Target,
+                            },
                         },
-                    } as Marker,
+                    },
                 },
             },
         };
@@ -83,14 +87,16 @@ describe("#generateMarkerEdges", () => {
                         commentStart: "//",
                         commentEnd: undefined,
                         contentChecksum: "1234",
+                        selfChecksum: "9999",
                         targets: {
                             [1]: {
                                 checksum: "5678",
                                 target: "fileb",
                                 declaration: "// sync-start:marker 5678 fileb",
-                            } as Target,
+                                type: "local",
+                            },
                         },
-                    } as Marker,
+                    },
                 },
             },
             fileb: {
@@ -102,14 +108,16 @@ describe("#generateMarkerEdges", () => {
                         commentStart: "//",
                         commentEnd: undefined,
                         contentChecksum: "5678",
+                        selfChecksum: "1111",
                         targets: {
                             [1]: {
                                 checksum: "WRONG",
                                 target: "filea",
                                 declaration: "// sync-start:marker WRONG filea",
-                            } as Target,
-                        } as any,
-                    } as Marker,
+                                type: "local",
+                            },
+                        },
+                    },
                 },
             },
         };
@@ -123,7 +131,7 @@ describe("#generateMarkerEdges", () => {
         expect(result).toEqual([
             {
                 code: "mismatched-checksum",
-                reason: "Looks like you changed the target content for sync-tag 'marker' in 'filea:1'. Make sure you've made the parallel changes in the source file, if necessary (WRONG != 1234)",
+                reason: "Looks like you changed the target content for sync-tag 'marker' in 'filea:1'. Make sure you've made corresponding changes in the source file, if necessary (WRONG != 1234)",
                 location: {line: 1},
                 fix: {
                     line: 1,
@@ -150,14 +158,16 @@ describe("#generateMarkerEdges", () => {
                         commentStart: "//",
                         commentEnd: undefined,
                         contentChecksum: "1234",
+                        selfChecksum: "9999",
                         targets: {
                             [1]: {
                                 checksum: "5678",
                                 target: "fileb",
                                 declaration: "// sync-start:marker 5678 fileb",
-                            } as Target,
+                                type: "local",
+                            },
                         },
-                    } as Marker,
+                    },
                 },
             },
             fileb: {
@@ -169,14 +179,16 @@ describe("#generateMarkerEdges", () => {
                         commentStart: "//",
                         commentEnd: undefined,
                         contentChecksum: "5678",
+                        selfChecksum: "1111",
                         targets: {
                             [1]: {
                                 checksum: "",
                                 target: "filea",
                                 declaration: "// sync-start:marker WRONG filea",
-                            } as Target,
-                        } as any,
-                    } as Marker,
+                                type: "local",
+                            },
+                        },
+                    },
                 },
             },
         };
@@ -190,7 +202,7 @@ describe("#generateMarkerEdges", () => {
         expect(result).toEqual([
             {
                 code: "mismatched-checksum",
-                reason: "Looks like you changed the target content for sync-tag 'marker' in 'filea:1'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 1234)",
+                reason: "Looks like you changed the target content for sync-tag 'marker' in 'filea:1'. Make sure you've made corresponding changes in the source file, if necessary (No checksum != 1234)",
                 location: {line: 1},
                 fix: {
                     line: 1,
@@ -223,14 +235,16 @@ describe("#generateMarkerEdges", () => {
                         commentStart: "//",
                         commentEnd: undefined,
                         contentChecksum: "1234",
+                        selfChecksum: "9999",
                         targets: {
                             [1]: {
                                 checksum: "5678",
                                 target: "fileb",
                                 declaration: "// sync-start:marker 5678 fileb",
-                            } as Target,
+                                type: "local",
+                            },
                         },
-                    } as Marker,
+                    },
                 },
             },
             fileb: {
@@ -248,14 +262,16 @@ describe("#generateMarkerEdges", () => {
                         commentStart: "//",
                         commentEnd: undefined,
                         contentChecksum: "5678",
+                        selfChecksum: "1111",
                         targets: {
                             [1]: {
                                 checksum: "1234",
                                 target: "filea",
                                 declaration: "// sync-start:marker 1234 filea",
-                            } as Target,
+                                type: "local",
+                            },
                         },
-                    } as Marker,
+                    },
                 },
             },
         };
@@ -282,14 +298,16 @@ describe("#generateMarkerEdges", () => {
                         commentStart: "//",
                         commentEnd: undefined,
                         contentChecksum: "",
+                        selfChecksum: "",
                         targets: {
                             [1]: {
                                 checksum: "5678",
                                 target: "fileb",
                                 declaration: "// sync-start:marker 5678 fileb",
-                            } as Target,
+                                type: "local",
+                            },
                         },
-                    } as Marker,
+                    },
                 },
             },
             fileb: {
@@ -328,14 +346,16 @@ describe("#generateMarkerEdges", () => {
                         commentStart: "//",
                         commentEnd: undefined,
                         contentChecksum: "",
+                        selfChecksum: "",
                         targets: {
                             [1]: {
                                 checksum: "5678",
                                 target: "fileb",
                                 declaration: "// sync-start:marker 5678 fileb",
-                            } as Target,
+                                type: "local",
+                            },
                         },
-                    } as Marker,
+                    },
                 },
             },
             fileb: {
@@ -347,8 +367,9 @@ describe("#generateMarkerEdges", () => {
                         commentStart: "//",
                         commentEnd: undefined,
                         contentChecksum: "",
+                        selfChecksum: "",
                         targets: {},
-                    } as Marker,
+                    },
                 },
             },
         };
@@ -368,7 +389,7 @@ describe("#generateMarkerEdges", () => {
         ]);
     });
 
-    it("should not yield errors when checksums match", () => {
+    it("should not yield errors when checksums match for local targets", () => {
         // Arrange
         const options: Options = {} as any;
         const markerCache: MarkerCache = {
@@ -381,14 +402,16 @@ describe("#generateMarkerEdges", () => {
                         commentStart: "//",
                         commentEnd: undefined,
                         contentChecksum: "1234",
+                        selfChecksum: "9999",
                         targets: {
                             [1]: {
                                 checksum: "5678",
                                 target: "fileb",
                                 declaration: "// sync-start:marker 5678 fileb",
-                            } as Target,
+                                type: "local",
+                            },
                         },
-                    } as Marker,
+                    },
                 },
             },
             fileb: {
@@ -400,14 +423,16 @@ describe("#generateMarkerEdges", () => {
                         commentStart: "//",
                         commentEnd: undefined,
                         contentChecksum: "5678",
+                        selfChecksum: "1111",
                         targets: {
                             [1]: {
                                 checksum: "1234",
                                 target: "filea",
                                 declaration: "// sync-start:marker 1234 filea",
-                            } as Target,
+                                type: "local",
+                            },
                         },
-                    } as Marker,
+                    },
                 },
             },
         };
@@ -415,6 +440,94 @@ describe("#generateMarkerEdges", () => {
         // Act
         const result = Array.from(
             generateErrorsForFile(options, "fileb", markerCache),
+        );
+
+        // Assert
+        expect(result).toBeEmpty();
+    });
+
+    it("should yield error when self checksum does not match for remote targets", () => {
+        // Arrange
+        const options: Options = {} as any;
+        const markerCache: MarkerCache = {
+            filea: {
+                readOnly: false,
+                errors: [],
+                aliases: ["filea"],
+                markers: {
+                    marker: {
+                        commentStart: "//",
+                        commentEnd: undefined,
+                        contentChecksum: "9999",
+                        selfChecksum: "1234",
+                        targets: {
+                            [1]: {
+                                checksum: "WRONG",
+                                target: "https://fileb",
+                                declaration:
+                                    "// sync-start:marker WRONG https://fileb",
+                                type: "remote",
+                            },
+                        },
+                    },
+                },
+            },
+        };
+
+        // Act
+        const result = Array.from(
+            generateErrorsForFile(options, "filea", markerCache),
+        );
+
+        // Assert
+        expect(result).toEqual([
+            {
+                code: "mismatched-checksum",
+                reason: "Looks like you changed the content of sync-tag 'marker' or the path of the file that contains the tag.\nMake sure you've made corresponding changes at https://fileb, if necessary (WRONG != 1234)",
+                location: {line: 1},
+                fix: {
+                    line: 1,
+                    type: "replace",
+                    text: "// sync-start:marker 1234 https://fileb",
+                    declaration: "// sync-start:marker WRONG https://fileb",
+                    description:
+                        "Updated checksum for sync-tag 'marker' referencing 'https://fileb' from WRONG to 1234.",
+                },
+            },
+        ]);
+    });
+
+    it("should not yield errors when self checksum matches for remote target", () => {
+        // Arrange
+        const options: Options = {} as any;
+        const markerCache: MarkerCache = {
+            filea: {
+                readOnly: false,
+                errors: [],
+                aliases: ["filea"],
+                markers: {
+                    marker: {
+                        commentStart: "//",
+                        commentEnd: undefined,
+                        contentChecksum: "9999",
+                        selfChecksum: "5678",
+                        targets: {
+                            [1]: {
+                                checksum: "5678",
+                                target: "https://fileb",
+                                declaration:
+                                    "// sync-start:marker 5678 https://fileb",
+                                type: "remote",
+                            },
+                        },
+                    },
+                },
+            },
+        };
+
+        // Act
+        const result = Array.from(
+            generateErrorsForFile(options, "filea", markerCache),
         );
 
         // Assert
