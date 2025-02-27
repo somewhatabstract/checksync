@@ -42,10 +42,6 @@ export default function parseFile(
     const errors: Array<ErrorDetails> = [];
 
     const recordError = (e: ErrorDetails): void => {
-        if (e.code === ErrorCode.emptyMarker && options.allowEmptyTags) {
-            // We don't error on empty markers if we've been told not to.
-            return;
-        }
         errors.push(e);
     };
 
@@ -59,6 +55,14 @@ export default function parseFile(
     ): void => {
         for (const line of Object.keys(targets)) {
             const lineNumber = parseInt(line);
+            if ((content?.length ?? 0) === 0 && !options.allowEmptyTags) {
+                recordError({
+                    reason: `Sync-tag '${id}' has no content`,
+                    location: {line: lineNumber},
+                    code: ErrorCode.emptyMarker,
+                });
+            }
+
             if (markers[id]) {
                 recordError({
                     reason: `Sync-tag '${id}' declared multiple times`,
@@ -87,10 +91,7 @@ export default function parseFile(
         markers[id] = {
             contentChecksum:
                 content == null ? NoChecksum : calcChecksum(content),
-            selfChecksum:
-                content == null
-                    ? NoChecksum
-                    : calcChecksum([...content, normalizedFile]),
+            selfChecksum: calcChecksum([...(content ?? []), normalizedFile]),
             targets,
             commentStart,
             commentEnd,

@@ -284,12 +284,6 @@ export default class MarkerParser {
                 location: {line},
                 code: ErrorCode.endTagWithoutStartTag,
             });
-        } else if (marker.content.length === 0) {
-            this._recordError({
-                reason: `Sync-tag '${id}' has no content`,
-                location: {line},
-                code: ErrorCode.emptyMarker,
-            });
         }
 
         this._addMarker(

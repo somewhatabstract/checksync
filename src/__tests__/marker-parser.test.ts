@@ -213,29 +213,6 @@ describe("MarkerParser", () => {
             });
         });
 
-        it("should record error if marker is empty", () => {
-            // Arrange
-            const addMarker = jest.fn<any, any>();
-            const recordError = jest.fn<any, any>();
-            const parser = new MarkerParser(
-                (target) => ({path: target, exists: true, type: "local"}),
-                addMarker,
-                recordError,
-                [],
-            );
-
-            // Act
-            parser.parseLine("sync-start:markerid target1");
-            parser.parseLine("sync-end:markerid");
-
-            // Assert
-            expect(recordError).toHaveBeenCalledWith({
-                code: "empty-marker",
-                location: {line: 2},
-                reason: "Sync-tag 'markerid' has no content",
-            });
-        });
-
         it("should record error if tag id used in two different comment styles", () => {
             // Arrange
             const addMarker = jest.fn<any, any>();
