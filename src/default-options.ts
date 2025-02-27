@@ -10,6 +10,8 @@ const defaultOptions: Options = {
     // Make sure we have something to search, so default to current working
     // directory if no globs are given.
     includeGlobs: [`${process.cwd()}**`],
+    cachePath: "cache.json",
+    cacheMode: "ignore",
 };
 
 export default defaultOptions;
