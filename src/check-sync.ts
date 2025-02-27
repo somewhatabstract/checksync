@@ -45,7 +45,7 @@ export default async function checkSync(
                 return ExitCode.BAD_CACHE;
             }
             if (error.exitCode === ExitCode.NO_FILES) {
-                log.error("No files found");
+                log.error("No matching files");
                 return ExitCode.NO_FILES;
             }
         }
