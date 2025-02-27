@@ -533,4 +533,41 @@ describe("#generateMarkerEdges", () => {
         // Assert
         expect(result).toBeEmpty();
     });
+
+    it("should throw an error when the target type is unknown", () => {
+        // Arrange
+        const options: Options = {} as any;
+        const markerCache: MarkerCache = {
+            filea: {
+                readOnly: false,
+                errors: [],
+                aliases: ["filea"],
+                markers: {
+                    marker: {
+                        commentStart: "//",
+                        commentEnd: undefined,
+                        contentChecksum: "",
+                        selfChecksum: "",
+                        targets: {
+                            [1]: {
+                                checksum: "5678",
+                                target: "fileb",
+                                declaration: "// sync-start:marker 5678 fileb",
+                                type: "unknown" as any,
+                            },
+                        },
+                    },
+                },
+            },
+        };
+
+        // Act
+        const underTest = () =>
+            Array.from(generateErrorsForFile(options, "filea", markerCache));
+
+        // Assert
+        expect(underTest).toThrowErrorMatchingInlineSnapshot(
+            `"Unknown target type: unknown"`,
+        );
+    });
 });
