@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 
 import getNormalizedPathInfo from "../get-normalized-path-info";
+import normalizeSeparators from "../normalize-separators";
 
 jest.mock("fs");
 jest.mock("path");
@@ -74,10 +75,14 @@ describe("#getNormalizedRefInfo", () => {
                 });
 
                 // Act
-                const result = getNormalizedPathInfo("/root.path", ref);
+                // We have to normalize separators so that this passes
+                // cross-platform.
+                const result = normalizeSeparators(
+                    getNormalizedPathInfo("/root.path", ref).path,
+                );
 
                 // Assert
-                expect(result.path).toBe(`${normalized}`);
+                expect(result).toBe(normalized);
             },
         );
 
