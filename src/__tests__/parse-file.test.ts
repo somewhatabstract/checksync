@@ -49,7 +49,7 @@ describe("#parseFile", () => {
 
         const ancesdirSpy = jest
             .spyOn(AncesdirOrCurrentDir, "ancesdirOrCurrentDir")
-            .mockReturnValue("file.dirname");
+            .mockReturnValue("root.path");
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
             comments: [],
@@ -87,7 +87,7 @@ describe("#parseFile", () => {
         };
 
         // Act
-        const result = await parseFile(options, "file.js", false);
+        const result = await parseFile(options, "root.path/file.js", false);
 
         // Assert
         expect(result.errors).toContainAllValues([
@@ -122,7 +122,7 @@ describe("#parseFile", () => {
         };
 
         // Act
-        const promise = parseFile(options, "file.js", false);
+        const promise = parseFile(options, "root.path/file.js", false);
         finishReadingFile();
         const result = await promise;
 
@@ -154,7 +154,7 @@ describe("#parseFile", () => {
         };
 
         // Act
-        const result = await parseFile(options, "file.js", false);
+        const result = await parseFile(options, "root.path/file.js", false);
 
         // Assert
         expect(result).toStrictEqual({
@@ -196,7 +196,7 @@ describe("#parseFile", () => {
         };
 
         // Act
-        const promise = parseFile(options, "file.js", true);
+        const promise = parseFile(options, "root.path/file.js", true);
         readLine("Line1");
         readLine("Line2");
         finishReadingFile();
@@ -235,7 +235,7 @@ describe("#parseFile", () => {
         };
 
         // Act
-        const promise = parseFile(options, "file.js", true);
+        const promise = parseFile(options, "root.path/file.js", true);
         finishReadingFile();
         await promise;
 
@@ -260,14 +260,7 @@ describe("#parseFile", () => {
         jest.spyOn(
             AncesdirOrCurrentDir,
             "ancesdirOrCurrentDir",
-        ).mockReturnValue("file.dirname");
-        jest.spyOn(GetNormalizedPathInfo, "default").mockImplementation(
-            (ref) => ({
-                path: "file.js",
-                exists: false,
-                type: "local",
-            }),
-        );
+        ).mockReturnValue("root.path");
         jest.spyOn(Checksum, "default")
             .mockReturnValueOnce("ID1_CONTENT_CHECKSUM")
             .mockReturnValueOnce("ID1_SELF_CHECKSUM");
@@ -287,7 +280,7 @@ describe("#parseFile", () => {
         };
 
         // Act
-        const promise = parseFile(options, "file.js", true);
+        const promise = parseFile(options, "root.path/file.js", true);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
         addMarkerCb(
             "MARKER_ID1",
@@ -295,7 +288,7 @@ describe("#parseFile", () => {
             {
                 [1]: {
                     type: "local",
-                    target: "file.js",
+                    target: "root.path/file.js",
                     checksum: "TARGET_CHECKSUM1",
                     declaration: "DECLARATION",
                 },
@@ -324,7 +317,7 @@ describe("#parseFile", () => {
                     targets: {
                         "1": {
                             checksum: "TARGET_CHECKSUM1",
-                            target: "file.js",
+                            target: "root.path/file.js",
                             type: "local",
                             declaration: "DECLARATION",
                         },
@@ -349,12 +342,7 @@ describe("#parseFile", () => {
         jest.spyOn(
             AncesdirOrCurrentDir,
             "ancesdirOrCurrentDir",
-        ).mockReturnValue("file.dirname");
-        jest.spyOn(GetNormalizedPathInfo, "default").mockReturnValue({
-            path: "file.js",
-            exists: false,
-            type: "local",
-        });
+        ).mockReturnValue("root.path");
         const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
@@ -371,7 +359,7 @@ describe("#parseFile", () => {
         };
 
         // Act
-        const promise = parseFile(options, "file.js", true);
+        const promise = parseFile(options, "root.path/file.js", true);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
         addMarkerCb(
             "MARKER_ID1",
@@ -418,12 +406,7 @@ describe("#parseFile", () => {
         jest.spyOn(
             AncesdirOrCurrentDir,
             "ancesdirOrCurrentDir",
-        ).mockReturnValue("file.dirname");
-        jest.spyOn(GetNormalizedPathInfo, "default").mockReturnValue({
-            path: "file.js",
-            exists: false,
-            type: "local",
-        });
+        ).mockReturnValue("root.path");
         const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
@@ -440,7 +423,7 @@ describe("#parseFile", () => {
         };
 
         // Act
-        const promise = parseFile(options, "file.js", true);
+        const promise = parseFile(options, "root.path/file.js", true);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
         addMarkerCb(
             "MARKER_ID1",
@@ -501,7 +484,7 @@ describe("#parseFile", () => {
         };
 
         // Act
-        const promise = parseFile(options, "file.js", true);
+        const promise = parseFile(options, "root.path/file.js", true);
         const normalizeFn = markerParserSpy.mock.calls[0][0];
         normalizeFn("FILE_REF");
         finishReadingFile();
@@ -554,7 +537,7 @@ describe("#parseFile", () => {
         };
 
         // Act
-        const promise = parseFile(options, "file.js", false);
+        const promise = parseFile(options, "root.path/file.js", false);
         const normalizeFn = markerParserSpy.mock.calls[0][0];
         normalizeFn("FILE_REF_A");
         normalizeFn("FILE_REF_B");
@@ -605,7 +588,7 @@ describe("#parseFile", () => {
         };
 
         // Act
-        const promise = parseFile(options, "file.js", true);
+        const promise = parseFile(options, "root.path/file.js", true);
         const normalizeFn = markerParserSpy.mock.calls[0][0];
         normalizeFn("FILE_REF_A");
         normalizeFn("FILE_REF_B");
@@ -635,11 +618,6 @@ describe("#parseFile", () => {
             .spyOn(Checksum, "default")
             .mockReturnValueOnce("ID1_CONTENT_CHECKSUM")
             .mockReturnValueOnce("ID1_SELF_CHECKSUM");
-        jest.spyOn(GetNormalizedPathInfo, "default").mockReturnValue({
-            path: "file.js",
-            exists: false,
-            type: "local",
-        });
         const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
@@ -652,7 +630,7 @@ describe("#parseFile", () => {
             json: false,
             allowEmptyTags: false,
         };
-        const promise = parseFile(options, "file.js", false);
+        const promise = parseFile(options, "root.path/file.js", false);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
 
         // Act
@@ -695,11 +673,6 @@ describe("#parseFile", () => {
         jest.spyOn(Checksum, "default").mockReturnValueOnce(
             "ID1_SELF_CHECKSUM",
         );
-        jest.spyOn(GetNormalizedPathInfo, "default").mockReturnValue({
-            path: "file.js",
-            exists: false,
-            type: "local",
-        });
         const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
@@ -712,7 +685,7 @@ describe("#parseFile", () => {
             json: false,
             allowEmptyTags: true,
         };
-        const promise = parseFile(options, "file.js", false);
+        const promise = parseFile(options, "root.path/file.js", false);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
 
         // Act
@@ -777,11 +750,6 @@ describe("#parseFile", () => {
             .spyOn(Checksum, "default")
             .mockReturnValueOnce("ID1_CONTENT_CHECKSUM")
             .mockReturnValueOnce("ID1_SELF_CHECKSUM");
-        jest.spyOn(GetNormalizedPathInfo, "default").mockReturnValue({
-            path: "root.path/file.js",
-            exists: false,
-            type: "local",
-        });
         const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
@@ -794,7 +762,7 @@ describe("#parseFile", () => {
             json: false,
             allowEmptyTags: false,
         };
-        const promise = parseFile(options, "file.js", false);
+        const promise = parseFile(options, "root.path/file.js", false);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
 
         // Act
@@ -840,11 +808,6 @@ describe("#parseFile", () => {
         const checksumSpy = jest
             .spyOn(Checksum, "default")
             .mockReturnValueOnce("ID1_SELF_CHECKSUM");
-        jest.spyOn(GetNormalizedPathInfo, "default").mockReturnValue({
-            path: "root.path/file.js",
-            exists: false,
-            type: "local",
-        });
         const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
@@ -857,7 +820,7 @@ describe("#parseFile", () => {
             json: false,
             allowEmptyTags: false,
         };
-        const promise = parseFile(options, "/full/path/to/file/file.js", false);
+        const promise = parseFile(options, "root.path/file.js", false);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
 
         // Act
@@ -902,11 +865,6 @@ describe("#parseFile", () => {
             .mockReturnValueOnce("ID1_SELF_CHECKSUM")
             .mockReturnValueOnce("ID2_CONTENT_CHECKSUM")
             .mockReturnValueOnce("ID2_SELF_CHECKSUM");
-        jest.spyOn(GetNormalizedPathInfo, "default").mockReturnValue({
-            path: "root.path/file.js",
-            exists: false,
-            type: "local",
-        });
         const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
@@ -919,7 +877,7 @@ describe("#parseFile", () => {
             json: false,
             allowEmptyTags: false,
         };
-        const promise = parseFile(options, "file.js", false);
+        const promise = parseFile(options, "root.path/file.js", false);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
 
         // Act
@@ -1013,11 +971,6 @@ describe("#parseFile", () => {
             .mockReturnValueOnce("ID1_SELF_CHECKSUM")
             .mockReturnValueOnce("ID2_CONTENT_CHECKSUM")
             .mockReturnValueOnce("ID2_SELF_CHECKSUM");
-        jest.spyOn(GetNormalizedPathInfo, "default").mockReturnValue({
-            path: "root.path/file.js",
-            exists: false,
-            type: "local",
-        });
         const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
@@ -1030,7 +983,7 @@ describe("#parseFile", () => {
             json: false,
             allowEmptyTags: false,
         };
-        const promise = parseFile(options, "file.js", false);
+        const promise = parseFile(options, "root.path/file.js", false);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
 
         // Act
