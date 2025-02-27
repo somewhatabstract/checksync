@@ -483,7 +483,7 @@ describe("#generateMarkerEdges", () => {
         expect(result).toEqual([
             {
                 code: "mismatched-checksum",
-                reason: "Looks like you changed the content of sync-tag 'marker' or the path of the file that contains the tag.\nMake sure you've made corresponding changes at https://fileb, if necessary (WRONG != 1234)",
+                reason: "Looks like you changed the content of sync-tag 'marker' or the path of the file that contains the tag. Make sure you've made corresponding changes at https://fileb, if necessary (WRONG != 1234)",
                 location: {line: 1},
                 fix: {
                     line: 1,
