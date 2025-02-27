@@ -165,16 +165,16 @@ Verbose  Discovered paths: [
 ]
 Mismatch __examples__/checksums_need_updating/a.js:4
 Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/b.py:3'
-Make sure you've made the parallel changes in the source file, if necessary (45678 != 249234014)
+Make sure you've made corresponding changes in the source file, if necessary (45678 != 249234014)
 Mismatch __examples__/checksums_need_updating/a.js:5
 Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/c.jsx:3'
-Make sure you've made the parallel changes in the source file, if necessary (1234 != 1992689801)
+Make sure you've made corresponding changes in the source file, if necessary (1234 != 1992689801)
 Mismatch __examples__/checksums_need_updating/b.py:3
 Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/a.js:4'
-Make sure you've made the parallel changes in the source file, if necessary (4567 != 2050223083)
+Make sure you've made corresponding changes in the source file, if necessary (4567 != 2050223083)
 Mismatch __examples__/checksums_need_updating/c.jsx:3
 Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/a.js:5'
-Make sure you've made the parallel changes in the source file, if necessary (123 != 2050223083)
+Make sure you've made corresponding changes in the source file, if necessary (123 != 2050223083)
 
 <group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
 
@@ -259,7 +259,7 @@ Verbose  Discovered paths: [
         "__examples__/checksums_need_updating/a.js": [
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (45678 != 249234014)",
+                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/b.py:3'. Make sure you've made corresponding changes in the source file, if necessary (45678 != 249234014)",
                 "location": {
                     "line": 3
                 },
@@ -273,7 +273,7 @@ Verbose  Discovered paths: [
             },
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/c.jsx:3'. Make sure you've made the parallel changes in the source file, if necessary (1234 != 1992689801)",
+                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/c.jsx:3'. Make sure you've made corresponding changes in the source file, if necessary (1234 != 1992689801)",
                 "location": {
                     "line": 3
                 },
@@ -289,7 +289,7 @@ Verbose  Discovered paths: [
         "__examples__/checksums_need_updating/b.py": [
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/a.js:4'. Make sure you've made the parallel changes in the source file, if necessary (4567 != 2050223083)",
+                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/a.js:4'. Make sure you've made corresponding changes in the source file, if necessary (4567 != 2050223083)",
                 "location": {
                     "line": 4
                 },
@@ -305,7 +305,7 @@ Verbose  Discovered paths: [
         "__examples__/checksums_need_updating/c.jsx": [
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/a.js:5'. Make sure you've made the parallel changes in the source file, if necessary (123 != 2050223083)",
+                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/a.js:5'. Make sure you've made corresponding changes in the source file, if necessary (123 != 2050223083)",
                 "location": {
                     "line": 5
                 },
@@ -490,18 +490,18 @@ Verbose  Discovered paths: [
 ]
 Mismatch __examples__/content_after_start/a.js:3
 Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/b.py:3'
-Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)
+Make sure you've made corresponding changes in the source file, if necessary (No checksum != 249234014)
 Mismatch __examples__/content_after_start/b.py:3
 Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/a.js:3'
-Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)
+Make sure you've made corresponding changes in the source file, if necessary (No checksum != 770446101)
 Mismatch __examples__/content_after_start/b.py:4
 Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/c.js:3'
-Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)
+Make sure you've made corresponding changes in the source file, if necessary (No checksum != 770446101)
 Error    __examples__/content_after_start/c.js:5
 Sync-start for 'content_after_start' found after content started
 Mismatch __examples__/content_after_start/c.js:3
 Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/b.py:4'
-Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)
+Make sure you've made corresponding changes in the source file, if necessary (No checksum != 249234014)
 Error    __examples__/content_after_start/c.js:5
 No return tag named 'content_after_start' in '__examples__/content_after_start/a.js'
 
@@ -593,7 +593,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
         "__examples__/content_after_start/a.js": [
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)",
+                "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/b.py:3'. Make sure you've made corresponding changes in the source file, if necessary (No checksum != 249234014)",
                 "location": {
                     "line": 3
                 },
@@ -609,7 +609,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
         "__examples__/content_after_start/b.py": [
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/a.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)",
+                "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/a.js:3'. Make sure you've made corresponding changes in the source file, if necessary (No checksum != 770446101)",
                 "location": {
                     "line": 3
                 },
@@ -623,7 +623,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
             },
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/c.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)",
+                "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/c.js:3'. Make sure you've made corresponding changes in the source file, if necessary (No checksum != 770446101)",
                 "location": {
                     "line": 3
                 },
@@ -646,7 +646,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
             },
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/b.py:4'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)",
+                "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/b.py:4'. Make sure you've made corresponding changes in the source file, if necessary (No checksum != 249234014)",
                 "location": {
                     "line": 4
                 },
@@ -1308,13 +1308,13 @@ Warning  __examples__/duplicate-target/a.js:5
 Duplicate target for sync-tag 'update_me'
 Mismatch __examples__/duplicate-target/a.js:4
 Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/b.py:3'
-Make sure you've made the parallel changes in the source file, if necessary (12352 != 249234014)
+Make sure you've made corresponding changes in the source file, if necessary (12352 != 249234014)
 Mismatch __examples__/duplicate-target/a.js:5
 Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/b.py:3'
-Make sure you've made the parallel changes in the source file, if necessary (12345 != 249234014)
+Make sure you've made corresponding changes in the source file, if necessary (12345 != 249234014)
 Mismatch __examples__/duplicate-target/b.py:3
 Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/a.js:4'
-Make sure you've made the parallel changes in the source file, if necessary (4567 != 2050223083)
+Make sure you've made corresponding changes in the source file, if necessary (4567 != 2050223083)
 
 <group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
 
@@ -1411,7 +1411,7 @@ Verbose  Discovered paths: [
             },
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (12352 != 249234014)",
+                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/b.py:3'. Make sure you've made corresponding changes in the source file, if necessary (12352 != 249234014)",
                 "location": {
                     "line": 3
                 },
@@ -1425,7 +1425,7 @@ Verbose  Discovered paths: [
             },
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (12345 != 249234014)",
+                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/b.py:3'. Make sure you've made corresponding changes in the source file, if necessary (12345 != 249234014)",
                 "location": {
                     "line": 3
                 },
@@ -1441,7 +1441,7 @@ Verbose  Discovered paths: [
         "__examples__/duplicate-target/b.py": [
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/a.js:4'. Make sure you've made the parallel changes in the source file, if necessary (4567 != 2050223083)",
+                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/a.js:4'. Make sure you've made corresponding changes in the source file, if necessary (4567 != 2050223083)",
                 "location": {
                     "line": 4
                 },
@@ -1529,7 +1529,7 @@ Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/empty_tag/a.js",
     "ROOT_DIR/__examples__/empty_tag/b.js"
 ]
-Error    __examples__/empty_tag/a.js:3
+Error    __examples__/empty_tag/a.js:2
 Sync-tag 'no_content' has no content
 
 <group 🛑  Could not update all tags due to unfixable errors. Fix the errors in these files and try again. >
@@ -1605,7 +1605,7 @@ Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/empty_tag/a.js",
     "ROOT_DIR/__examples__/empty_tag/b.js"
 ]
-Error    __examples__/empty_tag/a.js:3
+Error    __examples__/empty_tag/a.js:2
 Sync-tag 'no_content' has no content
 
 <group 🛑  Unfixable errors found. Fix the errors in these files and try again. >
@@ -1691,7 +1691,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
             {
                 "reason": "Sync-tag 'no_content' has no content",
                 "location": {
-                    "line": 3
+                    "line": 2
                 },
                 "code": "empty-marker"
             }
@@ -3643,10 +3643,10 @@ Verbose  Discovered paths: [
 ]
 Mismatch __examples__/no_checksums/example_one-a.js:3
 Looks like you changed the target content for sync-tag 'example_one' in '__examples__/no_checksums/example_one-b.py:3'
-Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)
+Make sure you've made corresponding changes in the source file, if necessary (No checksum != 249234014)
 Mismatch __examples__/no_checksums/example_one-b.py:3
 Looks like you changed the target content for sync-tag 'example_one' in '__examples__/no_checksums/example_one-a.js:3'
-Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)
+Make sure you've made corresponding changes in the source file, if necessary (No checksum != 770446101)
 
 <group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
 
@@ -3730,7 +3730,7 @@ Verbose  Discovered paths: [
         "__examples__/no_checksums/example_one-a.js": [
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'example_one' in '__examples__/no_checksums/example_one-b.py:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 249234014)",
+                "reason": "Looks like you changed the target content for sync-tag 'example_one' in '__examples__/no_checksums/example_one-b.py:3'. Make sure you've made corresponding changes in the source file, if necessary (No checksum != 249234014)",
                 "location": {
                     "line": 3
                 },
@@ -3746,7 +3746,7 @@ Verbose  Discovered paths: [
         "__examples__/no_checksums/example_one-b.py": [
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'example_one' in '__examples__/no_checksums/example_one-a.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)",
+                "reason": "Looks like you changed the target content for sync-tag 'example_one' in '__examples__/no_checksums/example_one-a.js:3'. Make sure you've made corresponding changes in the source file, if necessary (No checksum != 770446101)",
                 "location": {
                     "line": 3
                 },
@@ -3917,7 +3917,7 @@ Error    __examples__/no_self_reference/example.js:3
 Sync-tag 'example_three' cannot target itself
 Mismatch __examples__/no_self_reference/example.js:3
 Looks like you changed the target content for sync-tag 'example_three' in '__examples__/no_self_reference/example.js:3'
-Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)
+Make sure you've made corresponding changes in the source file, if necessary (No checksum != 770446101)
 
 <group 🛑  Desynchronized blocks detected and parsing errors were found. Fix the errors, update the blocks, then update the sync-start tags using: >
 
@@ -4012,7 +4012,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
             },
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'example_three' in '__examples__/no_self_reference/example.js:3'. Make sure you've made the parallel changes in the source file, if necessary (No checksum != 770446101)",
+                "reason": "Looks like you changed the target content for sync-tag 'example_three' in '__examples__/no_self_reference/example.js:3'. Make sure you've made corresponding changes in the source file, if necessary (No checksum != 770446101)",
                 "location": {
                     "line": 3
                 },
@@ -4022,6 +4022,508 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
                     "text": "// sync-start:example_three 770446101 __examples__/no_self_reference/example.js",
                     "declaration": "// sync-start:example_three __examples__/no_self_reference/example.js",
                     "description": "Updated checksum for sync-tag 'example_three' referencing '__examples__/no_self_reference/example.js:3' from no checksum to 770446101."
+                }
+            }
+        ]
+    }
+}"
+`;
+
+exports[`Integration Tests (see __examples__ folder) Example remote_tags_broken should report example remote_tags_broken to match snapshot for scenario autofix 1`] = `
+"Verbose  Options from arguments: {
+  "includeGlobs": [
+    "**/remote_tags_broken/**"
+  ],
+  "autoFix": true,
+  "dryRun": true
+}
+Verbose  Looking for configuration file based on root marker...
+Verbose  Checking ROOT_DIR/.checksyncrc...
+Verbose  Checking ROOT_DIR/.checksyncrc.json...
+Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
+Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
+Verbose  Validating configuration
+Verbose  Configuration is valid
+Verbose  Options from config: {
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "autoFix": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "dryRun": false,
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "json": false
+}
+Verbose  Combined options with defaults: {
+  "autoFix": true,
+  "json": false,
+  "allowEmptyTags": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "dryRun": true,
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "includeGlobs": [
+    "**/remote_tags_broken/**"
+  ],
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+}
+Info     DRY-RUN: Files will not be modified
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
+Verbose  Include globs: [
+    "**/remote_tags_broken/**"
+]
+Verbose  Exclude globs: [
+    "**/excluded/**"
+]
+Verbose  Discovered paths: [
+    "ROOT_DIR/__examples__/remote_tags_broken/example.jsx"
+]
+Verbose  __examples__/remote_tags_broken/example.jsx
+File has errors; skipping auto-fix
+Fix      __examples__/remote_tags_broken/example.jsx:3
+Updated checksum for sync-tag 'remote_target_self_hash' referencing 'https://github.com/somewhatabstract/checksync/blob/b9433f22ed9cfdf6c79edfd7254670ff53f82f7c/__examples__/remote_tags_match/example.jsx#L3' from 840225308 to 461186408.
+
+<group 1 file(s) would have been fixed.
+To fix, run: >
+  checksync -u __examples__/remote_tags_broken/example.jsx
+<end_group>
+🎉  Everything is in sync!"
+`;
+
+exports[`Integration Tests (see __examples__ folder) Example remote_tags_broken should report example remote_tags_broken to match snapshot for scenario check-only 1`] = `
+"Verbose  Options from arguments: {
+  "includeGlobs": [
+    "**/remote_tags_broken/**"
+  ]
+}
+Verbose  Looking for configuration file based on root marker...
+Verbose  Checking ROOT_DIR/.checksyncrc...
+Verbose  Checking ROOT_DIR/.checksyncrc.json...
+Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
+Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
+Verbose  Validating configuration
+Verbose  Configuration is valid
+Verbose  Options from config: {
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "autoFix": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "dryRun": false,
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "json": false
+}
+Verbose  Combined options with defaults: {
+  "autoFix": false,
+  "json": false,
+  "allowEmptyTags": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "dryRun": false,
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "includeGlobs": [
+    "**/remote_tags_broken/**"
+  ],
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
+Verbose  Include globs: [
+    "**/remote_tags_broken/**"
+]
+Verbose  Exclude globs: [
+    "**/excluded/**"
+]
+Verbose  Discovered paths: [
+    "ROOT_DIR/__examples__/remote_tags_broken/example.jsx"
+]
+Mismatch __examples__/remote_tags_broken/example.jsx:3
+Looks like you changed the content of sync-tag 'remote_target_self_hash' or the path of the file that contains the tag.
+Make sure you've made corresponding changes at https://github.com/somewhatabstract/checksync/blob/b9433f22ed9cfdf6c79edfd7254670ff53f82f7c/__examples__/remote_tags_match/example.jsx#L3, if necessary (840225308 != 461186408)
+
+<group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
+
+  checksync -u __examples__/remote_tags_broken/example.jsx
+<end_group>"
+`;
+
+exports[`Integration Tests (see __examples__ folder) Example remote_tags_broken should report example remote_tags_broken to match snapshot for scenario json-check-only 1`] = `
+"Verbose  Options from arguments: {
+  "includeGlobs": [
+    "**/remote_tags_broken/**"
+  ],
+  "json": true
+}
+Verbose  Looking for configuration file based on root marker...
+Verbose  Checking ROOT_DIR/.checksyncrc...
+Verbose  Checking ROOT_DIR/.checksyncrc.json...
+Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
+Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
+Verbose  Validating configuration
+Verbose  Configuration is valid
+Verbose  Options from config: {
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "autoFix": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "dryRun": false,
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "json": false
+}
+Verbose  Combined options with defaults: {
+  "autoFix": false,
+  "json": true,
+  "allowEmptyTags": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "dryRun": false,
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "includeGlobs": [
+    "**/remote_tags_broken/**"
+  ],
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
+Verbose  Include globs: [
+    "**/remote_tags_broken/**"
+]
+Verbose  Exclude globs: [
+    "**/excluded/**"
+]
+Verbose  Discovered paths: [
+    "ROOT_DIR/__examples__/remote_tags_broken/example.jsx"
+]
+{
+    "version": "0.0.0",
+    "launchString": "checksync -u __examples__/remote_tags_broken/example.jsx",
+    "files": {
+        "__examples__/remote_tags_broken/example.jsx": [
+            {
+                "code": "mismatched-checksum",
+                "reason": "Looks like you changed the content of sync-tag 'remote_target_self_hash' or the path of the file that contains the tag.\\nMake sure you've made corresponding changes at https://github.com/somewhatabstract/checksync/blob/b9433f22ed9cfdf6c79edfd7254670ff53f82f7c/__examples__/remote_tags_match/example.jsx#L3, if necessary (840225308 != 461186408)",
+                "location": {
+                    "line": 3
+                },
+                "fix": {
+                    "type": "replace",
+                    "line": 3,
+                    "text": "        {/* sync-start:remote_target_self_hash 461186408 https://github.com/somewhatabstract/checksync/blob/b9433f22ed9cfdf6c79edfd7254670ff53f82f7c/__examples__/remote_tags_match/example.jsx#L3 */}",
+                    "declaration": "        {/* sync-start:remote_target_self_hash 840225308 https://github.com/somewhatabstract/checksync/blob/b9433f22ed9cfdf6c79edfd7254670ff53f82f7c/__examples__/remote_tags_match/example.jsx#L3 */}",
+                    "description": "Updated checksum for sync-tag 'remote_target_self_hash' referencing 'https://github.com/somewhatabstract/checksync/blob/b9433f22ed9cfdf6c79edfd7254670ff53f82f7c/__examples__/remote_tags_match/example.jsx#L3' from 840225308 to 461186408."
+                }
+            }
+        ]
+    }
+}"
+`;
+
+exports[`Integration Tests (see __examples__ folder) Example remote_tags_match should report example remote_tags_match to match snapshot for scenario autofix 1`] = `
+"Verbose  Options from arguments: {
+  "includeGlobs": [
+    "**/remote_tags_match/**"
+  ],
+  "autoFix": true,
+  "dryRun": true
+}
+Verbose  Looking for configuration file based on root marker...
+Verbose  Checking ROOT_DIR/.checksyncrc...
+Verbose  Checking ROOT_DIR/.checksyncrc.json...
+Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
+Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
+Verbose  Validating configuration
+Verbose  Configuration is valid
+Verbose  Options from config: {
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "autoFix": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "dryRun": false,
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "json": false
+}
+Verbose  Combined options with defaults: {
+  "autoFix": true,
+  "json": false,
+  "allowEmptyTags": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "dryRun": true,
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "includeGlobs": [
+    "**/remote_tags_match/**"
+  ],
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+}
+Info     DRY-RUN: Files will not be modified
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
+Verbose  Include globs: [
+    "**/remote_tags_match/**"
+]
+Verbose  Exclude globs: [
+    "**/excluded/**"
+]
+Verbose  Discovered paths: [
+    "ROOT_DIR/__examples__/remote_tags_match/example.jsx"
+]
+Verbose  __examples__/remote_tags_match/example.jsx
+File has errors; skipping auto-fix
+Fix      __examples__/remote_tags_match/example.jsx:3
+Updated checksum for sync-tag 'remote_target_self_hash' referencing 'https://github.com/somewhatabstract/checksync/blob/b9433f22ed9cfdf6c79edfd7254670ff53f82f7c/__examples__/remote_tags_broken/example.jsx#L3' from 1153645584 to 181852940.
+
+<group 1 file(s) would have been fixed.
+To fix, run: >
+  checksync -u __examples__/remote_tags_match/example.jsx
+<end_group>
+🎉  Everything is in sync!"
+`;
+
+exports[`Integration Tests (see __examples__ folder) Example remote_tags_match should report example remote_tags_match to match snapshot for scenario check-only 1`] = `
+"Verbose  Options from arguments: {
+  "includeGlobs": [
+    "**/remote_tags_match/**"
+  ]
+}
+Verbose  Looking for configuration file based on root marker...
+Verbose  Checking ROOT_DIR/.checksyncrc...
+Verbose  Checking ROOT_DIR/.checksyncrc.json...
+Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
+Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
+Verbose  Validating configuration
+Verbose  Configuration is valid
+Verbose  Options from config: {
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "autoFix": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "dryRun": false,
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "json": false
+}
+Verbose  Combined options with defaults: {
+  "autoFix": false,
+  "json": false,
+  "allowEmptyTags": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "dryRun": false,
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "includeGlobs": [
+    "**/remote_tags_match/**"
+  ],
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
+Verbose  Include globs: [
+    "**/remote_tags_match/**"
+]
+Verbose  Exclude globs: [
+    "**/excluded/**"
+]
+Verbose  Discovered paths: [
+    "ROOT_DIR/__examples__/remote_tags_match/example.jsx"
+]
+Mismatch __examples__/remote_tags_match/example.jsx:3
+Looks like you changed the content of sync-tag 'remote_target_self_hash' or the path of the file that contains the tag.
+Make sure you've made corresponding changes at https://github.com/somewhatabstract/checksync/blob/b9433f22ed9cfdf6c79edfd7254670ff53f82f7c/__examples__/remote_tags_broken/example.jsx#L3, if necessary (1153645584 != 181852940)
+
+<group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
+
+  checksync -u __examples__/remote_tags_match/example.jsx
+<end_group>"
+`;
+
+exports[`Integration Tests (see __examples__ folder) Example remote_tags_match should report example remote_tags_match to match snapshot for scenario json-check-only 1`] = `
+"Verbose  Options from arguments: {
+  "includeGlobs": [
+    "**/remote_tags_match/**"
+  ],
+  "json": true
+}
+Verbose  Looking for configuration file based on root marker...
+Verbose  Checking ROOT_DIR/.checksyncrc...
+Verbose  Checking ROOT_DIR/.checksyncrc.json...
+Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
+Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
+Verbose  Validating configuration
+Verbose  Configuration is valid
+Verbose  Options from config: {
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "autoFix": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "dryRun": false,
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "json": false
+}
+Verbose  Combined options with defaults: {
+  "autoFix": false,
+  "json": true,
+  "allowEmptyTags": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "dryRun": false,
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "includeGlobs": [
+    "**/remote_tags_match/**"
+  ],
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
+Verbose  Include globs: [
+    "**/remote_tags_match/**"
+]
+Verbose  Exclude globs: [
+    "**/excluded/**"
+]
+Verbose  Discovered paths: [
+    "ROOT_DIR/__examples__/remote_tags_match/example.jsx"
+]
+{
+    "version": "0.0.0",
+    "launchString": "checksync -u __examples__/remote_tags_match/example.jsx",
+    "files": {
+        "__examples__/remote_tags_match/example.jsx": [
+            {
+                "code": "mismatched-checksum",
+                "reason": "Looks like you changed the content of sync-tag 'remote_target_self_hash' or the path of the file that contains the tag.\\nMake sure you've made corresponding changes at https://github.com/somewhatabstract/checksync/blob/b9433f22ed9cfdf6c79edfd7254670ff53f82f7c/__examples__/remote_tags_broken/example.jsx#L3, if necessary (1153645584 != 181852940)",
+                "location": {
+                    "line": 3
+                },
+                "fix": {
+                    "type": "replace",
+                    "line": 3,
+                    "text": "        {/* sync-start:remote_target_self_hash 181852940 https://github.com/somewhatabstract/checksync/blob/b9433f22ed9cfdf6c79edfd7254670ff53f82f7c/__examples__/remote_tags_broken/example.jsx#L3 */}",
+                    "declaration": "        {/* sync-start:remote_target_self_hash 1153645584 https://github.com/somewhatabstract/checksync/blob/b9433f22ed9cfdf6c79edfd7254670ff53f82f7c/__examples__/remote_tags_broken/example.jsx#L3 */}",
+                    "description": "Updated checksum for sync-tag 'remote_target_self_hash' referencing 'https://github.com/somewhatabstract/checksync/blob/b9433f22ed9cfdf6c79edfd7254670ff53f82f7c/__examples__/remote_tags_broken/example.jsx#L3' from 1153645584 to 181852940."
                 }
             }
         ]

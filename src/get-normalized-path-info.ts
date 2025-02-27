@@ -24,7 +24,10 @@ const getNormalizedPathInfo = (
     }
 
     // Target paths are relative to the root location.
-    const normalizedFileRef = path.normalize(path.join(rootPath, ref));
+    // We assume the ref path passed in is either absolute or relative to
+    // the root path already.
+    const absolutePath = path.isAbsolute(ref) ? ref : path.join(rootPath, ref);
+    const normalizedFileRef = path.normalize(absolutePath);
 
     // Also, we want to ensure we're always using OS-specific pathing
     // internally.

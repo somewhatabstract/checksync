@@ -49,6 +49,38 @@ describe("#getNormalizedRefInfo", () => {
     });
 
     describe("when ref is a file path", () => {
+        it.each`
+            ref                            | normalized
+            ${"file.ref"}                  | ${"/root.path/file.ref"}
+            ${"/root.path/file.ref"}       | ${"/root.path/file.ref"}
+            ${"a/b/c/file.ref"}            | ${"/root.path/a/b/c/file.ref"}
+            ${"/root.path/a/b/c/file.ref"} | ${"/root.path/a/b/c/file.ref"}
+        `(
+            "should get the normalize $ref against the rootPath",
+            ({ref, normalized}) => {
+                // Arrange
+                jest.spyOn(fs, "existsSync").mockReturnValue(false);
+                jest.spyOn(path, "join").mockImplementation((...args) => {
+                    const realPath = jest.requireActual<typeof path>("path");
+                    return realPath.join(...args);
+                });
+                jest.spyOn(path, "normalize").mockImplementation((...args) => {
+                    const realPath = jest.requireActual<typeof path>("path");
+                    return realPath.normalize(...args);
+                });
+                jest.spyOn(path, "isAbsolute").mockImplementation((...args) => {
+                    const realPath = jest.requireActual<typeof path>("path");
+                    return realPath.isAbsolute(...args);
+                });
+
+                // Act
+                const result = getNormalizedPathInfo("/root.path", ref);
+
+                // Assert
+                expect(result.path).toBe(`${normalized}`);
+            },
+        );
+
         it("should get the normalize the path against the rootPath", () => {
             // Arrange
             jest.spyOn(path, "join").mockImplementation((...args) =>
