@@ -31,6 +31,8 @@ describe("#checkSync", () => {
                 comments: ["//"],
                 json: false,
                 allowEmptyTags: false,
+                cachePath: "",
+                cacheMode: "ignore",
             },
             NullLogger,
         );
@@ -59,6 +61,8 @@ describe("#checkSync", () => {
                 comments: ["//"],
                 json: false,
                 allowEmptyTags: false,
+                cachePath: "",
+                cacheMode: "ignore",
             },
             NullLogger,
         );
@@ -86,6 +90,8 @@ describe("#checkSync", () => {
             comments: ["//"],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
 
         // Act
@@ -108,6 +114,8 @@ describe("#checkSync", () => {
             comments: ["//"],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
 
         // Act
@@ -134,6 +142,8 @@ describe("#checkSync", () => {
             comments: ["//"],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
 
         // Act
@@ -165,6 +175,8 @@ describe("#checkSync", () => {
             rootMarker: "marker",
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
 
         // Act
@@ -197,6 +209,8 @@ describe("#checkSync", () => {
                 dryRun: false,
                 json: false,
                 allowEmptyTags: false,
+                cachePath: "",
+                cacheMode: "ignore",
             },
             NullLogger,
         );

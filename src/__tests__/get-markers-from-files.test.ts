@@ -25,6 +25,8 @@ describe("#fromFiles", () => {
             ignoreFiles: [],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
 
         // Act
@@ -62,6 +64,8 @@ describe("#fromFiles", () => {
             ignoreFiles: [],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
 
         // Act
@@ -95,6 +99,8 @@ describe("#fromFiles", () => {
             ignoreFiles: [],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
 
         // Act
@@ -131,6 +137,8 @@ describe("#fromFiles", () => {
             ignoreFiles: [],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
 
         // Act
@@ -188,6 +196,8 @@ describe("#fromFiles", () => {
             ignoreFiles: [],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
 
         // Act
@@ -244,6 +254,8 @@ describe("#fromFiles", () => {
             ignoreFiles: [],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
 
         // Act
@@ -301,6 +313,8 @@ describe("#fromFiles", () => {
             ignoreFiles: [],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
 
         // Act
@@ -348,6 +362,8 @@ describe("#fromFiles", () => {
             ignoreFiles: [],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
 
         // Act
