@@ -19,6 +19,7 @@ import {
     NoChecksum,
 } from "./types";
 import path from "path";
+import normalizeSeparators from "./normalize-separators";
 
 /**
  * Parse the given file and extract sync markers.
@@ -48,7 +49,7 @@ export default function parseFile(
 
     const addMarker = (
         id: string,
-        file: string,
+        relativeFilePath: string,
         content: ReadonlyArray<string> | undefined,
         targets: Targets,
         commentStart: string,
@@ -86,9 +87,6 @@ export default function parseFile(
             }
         }
 
-        // We need the normalized path of the file we're processing to
-        // include it in the selfChecksum.
-        const relativeFilePath = path.relative(rootPath, file);
         markers[id] = {
             contentChecksum:
                 content == null ? NoChecksum : calcChecksum(content),
@@ -121,7 +119,10 @@ export default function parseFile(
                 ) =>
                     addMarker(
                         id,
-                        normalizeTargetPath(file).path,
+                        // We need the normalized path of the file we're
+                        // processing to include it in the selfChecksum so
+                        // that it's the same across different OSes.
+                        normalizeSeparators(path.relative(rootPath, file)),
                         content,
                         targets,
                         commentStart,
