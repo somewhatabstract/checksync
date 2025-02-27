@@ -1,15 +1,3 @@
-#!/usr/bin/env -S node -r @swc-node/register
-
-/**
- * This will run checksync for each of our examples, and output the verbose
- * logs to disk so that the snapshot tests can be run against them.
- *
- * NOTE: This all used to happen in Jest but fast-glob promises aren't
- * resolving there properly. Rather than fight that, this is the workaround
- * that allows us to still leverage the Jest snapshot-style diffing and
- * feedback.
- */
-
 import path from "path";
 import fs from "fs";
 import ancesdir from "ancesdir";

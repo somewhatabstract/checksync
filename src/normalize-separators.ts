@@ -1,10 +1,10 @@
 import path from "path";
+import escapeRegExp from "lodash/escapeRegExp";
 
 /**
  * Normalize separators to forward slashes.
- *
- * This is used for testing.
  */
-const normalizeSeparators = (g: string): string => g.split(path.sep).join("/");
+const normalizeSeparators = (g: string): string =>
+    g.replace(new RegExp(escapeRegExp(path.sep), "g"), "/");
 
 export default normalizeSeparators;

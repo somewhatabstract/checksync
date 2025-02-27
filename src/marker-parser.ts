@@ -1,12 +1,19 @@
 import escapeRegExp from "lodash/escapeRegExp";
 
-import calcChecksum from "./checksum";
-import {NoChecksum} from "./types";
 import {ErrorCode} from "./error-codes";
 
-import {Targets, normalizePathFn, ErrorDetails} from "./types";
+import {Targets, normalizeTargetFn, ErrorDetails, TargetType} from "./types";
 
 type TrackedTarget = {
+    /**
+     * The type of the target.
+     *
+     * Local targets are files we can parse for the return markers.
+     * Remote targets are URLs.
+     *
+     * @type {TargetType}
+     */
+    type: TargetType;
     /**
      * The checksum for the target as recorded where the target is
      * referenced.
@@ -65,7 +72,7 @@ type TrackedMarkers = {
 
 type addMarkerFn = (
     id: string,
-    checksum: string,
+    content: ReadonlyArray<string> | undefined,
     targets: Targets,
     commentStart: string,
     commentEnd: string,
@@ -79,12 +86,11 @@ type recordErrorFn = (error: ErrorDetails) => void;
 const targetsFromTrackedTargets = (trackedTargets: TrackedTargets): Targets => {
     const targets: Targets = {};
 
-    for (const file of Object.keys(trackedTargets)) {
-        for (const {line, checksum, declaration} of trackedTargets[file]) {
+    for (const target of Object.keys(trackedTargets)) {
+        for (const {line, ...rest} of trackedTargets[target]) {
             targets[line] = {
-                file,
-                checksum,
-                declaration,
+                target,
+                ...rest,
             };
         }
     }
@@ -95,7 +101,7 @@ const targetsFromTrackedTargets = (trackedTargets: TrackedTargets): Targets => {
 const TagDecodeGroup = Object.freeze({
     tagId: 1,
     checksum: 2,
-    targetFileName: 3,
+    targetPath: 3,
     commentEnd: 4,
 });
 
@@ -114,7 +120,7 @@ export default class MarkerParser {
     _openMarkers: TrackedMarkers = {};
     _addMarker: addMarkerFn;
     _recordError: recordErrorFn;
-    _normalizePath: normalizePathFn;
+    _normalizePath: normalizeTargetFn;
 
     _startTagRegExp: string;
     _startTagDecodeRegExp: string;
@@ -126,13 +132,13 @@ export default class MarkerParser {
     /**
      * Construct a `MarkerParser` instance.
      *
-     * @param {normalizePathFn} normalizePath - Callback that will normalize a given path.
+     * @param {normalizeTargetFn} normalizePath - Callback that will normalize a given path.
      * @param {addMarkerFn} addMarker - Callback invoked when a complete marker has been parsed.
      * @param {recordErrorFn} recordError - Callback invoked to record an error.
      * @param {$ReadOnlyArray<string>} comments - An array of strings that are used to detect the start of single-line comments.
      */
     constructor(
-        normalizePath: normalizePathFn,
+        normalizePath: normalizeTargetFn,
         addMarker: addMarkerFn,
         recordError: recordErrorFn,
         comments: ReadonlyArray<string>,
@@ -193,7 +199,7 @@ export default class MarkerParser {
 
     _recordMarkerStart: (
         id: string,
-        file: string,
+        targetPath: string,
         line: number,
         checksum: string,
         commentStart: string,
@@ -201,7 +207,7 @@ export default class MarkerParser {
         declaration: string,
     ) => void = (
         id,
-        file,
+        targetPath,
         line,
         checksum,
         commentStart,
@@ -215,8 +221,9 @@ export default class MarkerParser {
             commentEnd,
         };
 
-        const normalized = this._normalizePath(file);
+        const normalizedTargetInfo = this._normalizePath(targetPath);
         const target: TrackedTarget = {
+            type: normalizedTargetInfo.type,
             line,
             checksum,
             declaration,
@@ -230,15 +237,15 @@ export default class MarkerParser {
             });
         }
 
-        if (!normalized.exists) {
+        if (!normalizedTargetInfo.exists) {
             this._recordError({
-                reason: `Sync-start for '${id}' points to '${file}', which does not exist or is a directory`,
+                reason: `Sync-start for '${id}' points to '${targetPath}', which does not exist or is a directory`,
                 location: {line},
                 code: ErrorCode.fileDoesNotExist,
             });
         }
 
-        if (this._openMarkers[id].targets[normalized.file]) {
+        if (this._openMarkers[id].targets[normalizedTargetInfo.path]) {
             this._recordError({
                 reason: `Duplicate target for sync-tag '${id}'`,
                 location: {line},
@@ -259,9 +266,10 @@ export default class MarkerParser {
                 code: ErrorCode.startTagAfterContent,
             });
         }
-        const targets = this._openMarkers[id].targets[normalized.file] || [];
+        const targets =
+            this._openMarkers[id].targets[normalizedTargetInfo.path] || [];
         targets.push(target);
-        this._openMarkers[id].targets[normalized.file] = targets;
+        this._openMarkers[id].targets[normalizedTargetInfo.path] = targets;
     };
 
     _recordMarkerEnd: (id: string, line: number) => void = (
@@ -276,17 +284,11 @@ export default class MarkerParser {
                 location: {line},
                 code: ErrorCode.endTagWithoutStartTag,
             });
-        } else if (marker.content.length === 0) {
-            this._recordError({
-                reason: `Sync-tag '${id}' has no content`,
-                location: {line},
-                code: ErrorCode.emptyMarker,
-            });
         }
 
         this._addMarker(
             id,
-            marker == null ? NoChecksum : calcChecksum(marker.content),
+            marker?.content,
             marker == null ? {} : targetsFromTrackedTargets(marker.targets),
             marker?.commentStart,
             marker?.commentEnd,
@@ -371,7 +373,7 @@ export default class MarkerParser {
                 // we'll just make sure they get coerced to empty strings.
                 this._recordMarkerStart(
                     startDecode[TagDecodeGroup.tagId],
-                    startDecode[TagDecodeGroup.targetFileName],
+                    startDecode[TagDecodeGroup.targetPath],
                     lineNumber,
                     startDecode[TagDecodeGroup.checksum] || "",
                     startMatch[1],

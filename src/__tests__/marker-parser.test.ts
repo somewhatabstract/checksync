@@ -7,7 +7,7 @@ describe("MarkerParser", () => {
             const addMarker = jest.fn<any, any>();
             const recordError = jest.fn<any, any>();
             const parser = new MarkerParser(
-                (target) => ({file: target, exists: true}),
+                (target) => ({path: target, exists: true, type: "local"}),
                 addMarker,
                 recordError,
                 [],
@@ -26,7 +26,7 @@ describe("MarkerParser", () => {
             const addMarker = jest.fn<any, any>();
             const recordError = jest.fn<any, any>();
             const parser = new MarkerParser(
-                (target) => ({file: target, exists: true}),
+                (target) => ({path: target, exists: true, type: "local"}),
                 addMarker,
                 recordError,
                 [],
@@ -49,7 +49,7 @@ describe("MarkerParser", () => {
             const addMarker = jest.fn<any, any>();
             const recordError = jest.fn<any, any>();
             const parser = new MarkerParser(
-                (target) => ({file: target, exists: true}),
+                (target) => ({path: target, exists: true, type: "local"}),
                 addMarker,
                 recordError,
                 [],
@@ -76,7 +76,7 @@ describe("MarkerParser", () => {
             const addMarker = jest.fn<any, any>();
             const recordError = jest.fn<any, any>();
             const parser = new MarkerParser(
-                (target) => ({file: target, exists: true}),
+                (target) => ({path: target, exists: true, type: "local"}),
                 addMarker,
                 recordError,
                 [],
@@ -98,7 +98,7 @@ describe("MarkerParser", () => {
             const addMarker = jest.fn<any, any>();
             const recordError = jest.fn<any, any>();
             const parser = new MarkerParser(
-                (target) => ({file: target, exists: true}),
+                (target) => ({path: target, exists: true, type: "local"}),
                 addMarker,
                 recordError,
                 [],
@@ -120,7 +120,7 @@ describe("MarkerParser", () => {
             const addMarker = jest.fn<any, any>();
             const recordError = jest.fn<any, any>();
             const parser = new MarkerParser(
-                (target) => ({file: target, exists: true}),
+                (target) => ({path: target, exists: true, type: "local"}),
                 addMarker,
                 recordError,
                 [],
@@ -142,7 +142,7 @@ describe("MarkerParser", () => {
             const addMarker = jest.fn<any, any>();
             const recordError = jest.fn<any, any>();
             const parser = new MarkerParser(
-                (target) => ({file: target, exists: false}),
+                (target) => ({path: target, exists: false, type: "local"}),
                 addMarker,
                 recordError,
                 [],
@@ -164,7 +164,7 @@ describe("MarkerParser", () => {
             const addMarker = jest.fn<any, any>();
             const recordError = jest.fn<any, any>();
             const parser = new MarkerParser(
-                (target) => ({file: target, exists: true}),
+                (target) => ({path: target, exists: true, type: "local"}),
                 addMarker,
                 recordError,
                 [],
@@ -188,7 +188,7 @@ describe("MarkerParser", () => {
             const addMarker = jest.fn<any, any>();
             const recordError = jest.fn<any, any>();
             const parser = new MarkerParser(
-                (target) => ({file: target, exists: true}),
+                (target) => ({path: target, exists: true, type: "local"}),
                 addMarker,
                 recordError,
                 [],
@@ -213,35 +213,12 @@ describe("MarkerParser", () => {
             });
         });
 
-        it("should record error if marker is empty", () => {
-            // Arrange
-            const addMarker = jest.fn<any, any>();
-            const recordError = jest.fn<any, any>();
-            const parser = new MarkerParser(
-                (target) => ({file: target, exists: true}),
-                addMarker,
-                recordError,
-                [],
-            );
-
-            // Act
-            parser.parseLine("sync-start:markerid target1");
-            parser.parseLine("sync-end:markerid");
-
-            // Assert
-            expect(recordError).toHaveBeenCalledWith({
-                code: "empty-marker",
-                location: {line: 2},
-                reason: "Sync-tag 'markerid' has no content",
-            });
-        });
-
         it("should record error if tag id used in two different comment styles", () => {
             // Arrange
             const addMarker = jest.fn<any, any>();
             const recordError = jest.fn<any, any>();
             const parser = new MarkerParser(
-                (target) => ({file: target, exists: true}),
+                (target) => ({path: target, exists: true, type: "local"}),
                 addMarker,
                 recordError,
                 ["//", "#", "{/*"],
@@ -266,7 +243,7 @@ describe("MarkerParser", () => {
             const addMarker = jest.fn<any, any>();
             const recordError = jest.fn<any, any>();
             const parser = new MarkerParser(
-                (target) => ({file: target, exists: true}),
+                (target) => ({path: target, exists: true, type: "local"}),
                 addMarker,
                 recordError,
                 ["//", "#", "{/*"],
@@ -284,12 +261,13 @@ describe("MarkerParser", () => {
             // Assert
             expect(addMarker).toHaveBeenCalledWith(
                 "markerid1",
-                "1284371662",
+                ["Some super important content!\n"],
                 expect.objectContaining({
                     "1": {
                         checksum: "",
+                        type: "local",
                         declaration: "// sync-start:markerid1 target1",
-                        file: "target1",
+                        target: "target1",
                     },
                 }),
                 "//",
@@ -297,12 +275,13 @@ describe("MarkerParser", () => {
             );
             expect(addMarker).toHaveBeenCalledWith(
                 "markerid2",
-                "1284371662",
+                ["Some super important content!\n"],
                 expect.objectContaining({
                     "2": {
+                        type: "local",
                         checksum: "9876",
                         declaration: "# sync-start:markerid2 9876 target2",
-                        file: "target2",
+                        target: "target2",
                     },
                 }),
                 "#",
@@ -310,13 +289,14 @@ describe("MarkerParser", () => {
             );
             expect(addMarker).toHaveBeenCalledWith(
                 "markerid3",
-                "1284371662",
+                ["Some super important content!\n"],
                 expect.objectContaining({
                     "3": {
                         checksum: "12345",
                         declaration:
                             "{/* sync-start:markerid3 12345 target1 */}",
-                        file: "target1",
+                        target: "target1",
+                        type: "local",
                     },
                 }),
                 "{/*",

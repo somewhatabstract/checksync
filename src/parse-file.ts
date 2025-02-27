@@ -5,9 +5,10 @@ import readline from "readline";
 import fs from "fs";
 
 import MarkerParser from "./marker-parser";
-import getNormalizedTargetFileInfo from "./get-normalized-target-file-info";
+import getNormalizedPathInfo from "./get-normalized-path-info";
 import {ErrorCode} from "./error-codes";
 import {ancesdirOrCurrentDir} from "./ancesdir-or-currentdir";
+import calcChecksum from "./checksum";
 
 import {
     Markers,
@@ -15,7 +16,10 @@ import {
     Options,
     FileParseResult,
     ErrorDetails,
+    NoChecksum,
 } from "./types";
+import path from "path";
+import normalizeSeparators from "./normalize-separators";
 
 /**
  * Parse the given file and extract sync markers.
@@ -40,22 +44,27 @@ export default function parseFile(
     const errors: Array<ErrorDetails> = [];
 
     const recordError = (e: ErrorDetails): void => {
-        if (e.code === ErrorCode.emptyMarker && options.allowEmptyTags) {
-            // We don't error on empty markers if we've been told not to.
-            return;
-        }
         errors.push(e);
     };
 
     const addMarker = (
         id: string,
-        checksum: string,
+        relativeFilePath: string,
+        content: ReadonlyArray<string> | undefined,
         targets: Targets,
         commentStart: string,
         commentEnd: string,
     ): void => {
         for (const line of Object.keys(targets)) {
             const lineNumber = parseInt(line);
+            if ((content?.length ?? 0) === 0 && !options.allowEmptyTags) {
+                recordError({
+                    reason: `Sync-tag '${id}' has no content`,
+                    location: {line: lineNumber},
+                    code: ErrorCode.emptyMarker,
+                });
+            }
+
             if (markers[id]) {
                 recordError({
                     reason: `Sync-tag '${id}' declared multiple times`,
@@ -67,7 +76,7 @@ export default function parseFile(
             }
 
             const target = targets[lineNumber];
-            if (target.file === file) {
+            if (target.target === file) {
                 recordError({
                     reason: `Sync-tag '${id}' cannot target itself`,
                     location: {
@@ -79,7 +88,9 @@ export default function parseFile(
         }
 
         markers[id] = {
-            checksum,
+            contentChecksum:
+                content == null ? NoChecksum : calcChecksum(content),
+            selfChecksum: calcChecksum([...(content ?? []), relativeFilePath]),
             targets,
             commentStart,
             commentEnd,
@@ -87,22 +98,36 @@ export default function parseFile(
     };
 
     const referencedFiles: Array<string> = [];
-    const normalizeFileRef = (fileRef: string) => {
-        const normalizedFileInfo = getNormalizedTargetFileInfo(
-            rootPath,
-            fileRef,
-        );
-        if (!readOnly && normalizedFileInfo.exists) {
-            referencedFiles.push(normalizedFileInfo.file);
+    const normalizeTargetPath = (targetRef: string) => {
+        const targetInfo = getNormalizedPathInfo(rootPath, targetRef);
+        if (!readOnly && targetInfo.exists && targetInfo.type === "local") {
+            referencedFiles.push(targetInfo.path);
         }
-        return normalizedFileInfo;
+        return targetInfo;
     };
 
     return new Promise<FileParseResult>((resolve, reject) => {
         try {
             const markerParser = new MarkerParser(
-                normalizeFileRef,
-                addMarker,
+                normalizeTargetPath,
+                (
+                    id: string,
+                    content: ReadonlyArray<string> | undefined,
+                    targets: Targets,
+                    commentStart: string,
+                    commentEnd: string,
+                ) =>
+                    addMarker(
+                        id,
+                        // We need the normalized path of the file we're
+                        // processing to include it in the selfChecksum so
+                        // that it's the same across different OSes.
+                        normalizeSeparators(path.relative(rootPath, file)),
+                        content,
+                        targets,
+                        commentStart,
+                        commentEnd,
+                    ),
                 recordError,
                 options.comments,
             );
