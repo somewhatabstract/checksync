@@ -10,7 +10,7 @@ describe("Integration Tests (see __examples__ folder)", () => {
     // For each example that we want to run for the current platform.
     describe.each(getExamples())("Example %s", (example) => {
         // For each scenario we want to cover
-        it.each(Object.values(Scenario))(
+        it.each([undefined, ...Object.values(Scenario)])(
             `should report example ${example} to match snapshot for scenario %s`,
             async (scenario) => {
                 const log = await readLog(example, scenario);
