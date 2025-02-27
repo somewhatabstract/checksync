@@ -18,6 +18,7 @@ import {
     ErrorDetails,
     NoChecksum,
 } from "./types";
+import path from "path";
 
 /**
  * Parse the given file and extract sync markers.
@@ -87,11 +88,11 @@ export default function parseFile(
 
         // We need the normalized path of the file we're processing to
         // include it in the selfChecksum.
-        const {path: normalizedFile} = getNormalizedPathInfo(rootPath, file);
+        const relativeFilePath = path.relative(rootPath, file);
         markers[id] = {
             contentChecksum:
                 content == null ? NoChecksum : calcChecksum(content),
-            selfChecksum: calcChecksum([...(content ?? []), normalizedFile]),
+            selfChecksum: calcChecksum([...(content ?? []), relativeFilePath]),
             targets,
             commentStart,
             commentEnd,
