@@ -4179,7 +4179,7 @@ Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/remote_tags_broken/example.jsx"
 ]
 Mismatch __examples__/remote_tags_broken/example.jsx:3
-Looks like you changed the content of sync-tag 'remote_target_self_hash' or the path of the file that contains the tag.
+Looks like you changed the content of sync-tag 'remote_target_self_hash' or the path of the file that contains the tag
 Make sure you've made corresponding changes at https://github.com/somewhatabstract/checksync/blob/b9433f22ed9cfdf6c79edfd7254670ff53f82f7c/__examples__/remote_tags_match/example.jsx#L3, if necessary (840225308 != 1603869099)
 
 <group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
@@ -4263,7 +4263,7 @@ Verbose  Discovered paths: [
         "__examples__/remote_tags_broken/example.jsx": [
             {
                 "code": "mismatched-checksum",
-                "reason": "Looks like you changed the content of sync-tag 'remote_target_self_hash' or the path of the file that contains the tag.\\nMake sure you've made corresponding changes at https://github.com/somewhatabstract/checksync/blob/b9433f22ed9cfdf6c79edfd7254670ff53f82f7c/__examples__/remote_tags_match/example.jsx#L3, if necessary (840225308 != 1603869099)",
+                "reason": "Looks like you changed the content of sync-tag 'remote_target_self_hash' or the path of the file that contains the tag. Make sure you've made corresponding changes at https://github.com/somewhatabstract/checksync/blob/b9433f22ed9cfdf6c79edfd7254670ff53f82f7c/__examples__/remote_tags_match/example.jsx#L3, if necessary (840225308 != 1603869099)",
                 "location": {
                     "line": 3
                 },

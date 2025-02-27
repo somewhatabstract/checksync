@@ -171,8 +171,7 @@ export default function* generateErrors(
 
                 yield {
                     code: ErrorCode.mismatchedChecksum,
-                    reason: `Looks like you changed the content of sync-tag '${markerID}' or the path of the file that contains the tag.
-Make sure you've made corresponding changes at ${sourceRef.target}, if necessary (${checksums})`,
+                    reason: `Looks like you changed the content of sync-tag '${markerID}' or the path of the file that contains the tag. Make sure you've made corresponding changes at ${sourceRef.target}, if necessary (${checksums})`,
                     location: {line: sourceLine},
                     fix: {
                         type: "replace",

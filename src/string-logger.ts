@@ -29,11 +29,14 @@ class StringLoggerInternal implements IStandardLog {
          * - Replace the root path so that it's platform-independent
          */
         const sepRegex =
-            /**
-             * If the path separator is a backslash we create a regex that
-             * recognizes a double backslash or a single backslash.  This is
-             * to handle the escaping from JSON.stringify() in output-json.js.
-             */
+            // If the path separator is a backslash we create a regex that
+            // recognizes a double backslash or a single backslash.  This is
+            // to handle the escaping from JSON.stringify() in output-json.js.
+            // NOTE: This is really naïve; it will also replace the escaping
+            // of special characters like newlines (\n) and tabs (\t), on
+            // systems where \ is the path separator, which we don't want.
+            // For now, messages that might be JSON.stringified shouldn't
+            // have those things.
             sep === "\\"
                 ? new RegExp(
                       `${escapeRegExp(sep + sep)}|${escapeRegExp(sep)}`,
