@@ -184,7 +184,7 @@ describe("#generateMarkerEdges", () => {
                             [1]: {
                                 checksum: "",
                                 target: "filea",
-                                declaration: "// sync-start:marker WRONG filea",
+                                declaration: "// sync-start:marker filea",
                                 type: "local",
                             },
                         },
@@ -208,7 +208,7 @@ describe("#generateMarkerEdges", () => {
                     line: 1,
                     type: "replace",
                     text: "// sync-start:marker 1234 filea",
-                    declaration: "// sync-start:marker WRONG filea",
+                    declaration: "// sync-start:marker filea",
                     description:
                         "Updated checksum for sync-tag 'marker' referencing 'filea:1' from no checksum to 1234.",
                 },
@@ -492,6 +492,57 @@ describe("#generateMarkerEdges", () => {
                     declaration: "// sync-start:marker WRONG https://fileb",
                     description:
                         "Updated checksum for sync-tag 'marker' referencing 'https://fileb' from WRONG to 1234.",
+                },
+            },
+        ]);
+    });
+
+    it("should yield error when tag checksum is NoChecksum for remote target", () => {
+        // Arrange
+        const options: Options = {} as any;
+        const markerCache: MarkerCache = {
+            filea: {
+                readOnly: false,
+                errors: [],
+                aliases: ["filea"],
+                markers: {
+                    marker: {
+                        commentStart: "//",
+                        commentEnd: undefined,
+                        contentChecksum: "9999",
+                        selfChecksum: "1234",
+                        targets: {
+                            [1]: {
+                                checksum: "",
+                                target: "https://fileb",
+                                declaration:
+                                    "// sync-start:marker https://fileb",
+                                type: "remote",
+                            },
+                        },
+                    },
+                },
+            },
+        };
+
+        // Act
+        const result = Array.from(
+            generateErrorsForFile(options, "filea", markerCache),
+        );
+
+        // Assert
+        expect(result).toEqual([
+            {
+                code: "mismatched-checksum",
+                reason: "Looks like you changed the content of sync-tag 'marker' or the path of the file that contains the tag. Make sure you've made corresponding changes at https://fileb, if necessary (No checksum != 1234)",
+                location: {line: 1},
+                fix: {
+                    line: 1,
+                    type: "replace",
+                    text: "// sync-start:marker 1234 https://fileb",
+                    declaration: "// sync-start:marker https://fileb",
+                    description:
+                        "Updated checksum for sync-tag 'marker' referencing 'https://fileb' from no checksum to 1234.",
                 },
             },
         ]);

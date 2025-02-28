@@ -1,3 +1,5 @@
+// We don't need coverage of this file...it's just yargs stuff.
+/* istanbul ignore file */
 import yargs from "yargs/yargs";
 import {hideBin} from "yargs/helpers";
 import {ExitCode} from "./exit-codes";

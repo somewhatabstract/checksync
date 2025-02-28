@@ -10,7 +10,7 @@ export class ExitError extends Error {
         this.exitCode = exitCode;
     }
 
-    exitCode: ExitCode;
+    readonly exitCode: ExitCode;
 
     toString(): string {
         return `${this.name}: ${this.message} (Exit code: ${this.exitCode})`;

@@ -1,6 +1,5 @@
 import fs from "fs/promises";
 import {ExitCode} from "./exit-codes";
-import {ExitError} from "./exit-error";
 import {ILog, MarkerCache, Options} from "./types";
 import path from "path";
 
@@ -21,7 +20,7 @@ export const outputCache = async (
     try {
         const cacheRaw = JSON.stringify(cache);
         if (options.json) {
-            log.info(cacheRaw);
+            log.log(cacheRaw);
         } else {
             const absCachePath = path.isAbsolute(options.cachePath)
                 ? options.cachePath
@@ -31,11 +30,7 @@ export const outputCache = async (
         }
         return ExitCode.SUCCESS;
     } catch (error) {
-        if (error instanceof ExitError) {
-            log.error("Unable to write cache");
-            return error.exitCode;
-        }
-        log.error("Unexpected catastrophic error");
+        log.error("Unable to output cache");
         return ExitCode.CATASTROPHIC;
     }
 };
