@@ -9,4 +9,5 @@ export enum ExitCode {
     UNKNOWN_ARGS = 4,
     CATASTROPHIC = 5,
     BAD_CONFIG = 6,
+    BAD_CACHE = 7,
 }
