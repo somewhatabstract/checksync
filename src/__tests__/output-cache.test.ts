@@ -1,6 +1,7 @@
 import fs from "fs/promises";
 import {outputCache} from "../output-cache";
 import {ExitCode} from "../exit-codes";
+import {osSeparators} from "../normalize-separators";
 
 describe("outputCache", () => {
     describe("with JSON flag", () => {
@@ -90,7 +91,7 @@ describe("outputCache", () => {
 
                 // Assert
                 expect(writeFileSpy).toHaveBeenCalledWith(
-                    "/<rootDir>/cache.json",
+                    osSeparators("/<rootDir>/cache.json"),
                     '{"foo":"bar"}',
                     "utf8",
                 );
@@ -120,7 +121,7 @@ describe("outputCache", () => {
 
                 // Assert
                 expect(log.info).toHaveBeenCalledWith(
-                    `Cache written to /<rootDir>/cache.json`,
+                    osSeparators(`Cache written to /<rootDir>/cache.json`),
                 );
             },
         );
