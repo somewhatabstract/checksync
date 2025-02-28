@@ -2,6 +2,7 @@ import fs from "fs/promises";
 import {loadCache} from "../load-cache";
 import {ExitCode} from "../exit-codes";
 import {ExitError} from "../exit-error";
+import {osSeparators} from "../normalize-separators";
 
 describe("loadCache", () => {
     it.each`
@@ -23,7 +24,7 @@ describe("loadCache", () => {
 
             // Assert
             expect(log.info).toHaveBeenCalledWith(
-                `Loading cache from /<rootDir>/cache.json`,
+                osSeparators(`Loading cache from /<rootDir>/cache.json`),
             );
         },
     );
