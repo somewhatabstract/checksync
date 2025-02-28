@@ -69,7 +69,7 @@ describe("outputCache", () => {
         it.each`
             cachePath
             ${"cache.json"}
-            ${"/<rootDir>/cache.json"}
+            ${osSeparators("/<rootDir>/cache.json")}
         `(
             "should write the JSON to the absolute cache path of $cachePath",
             async ({cachePath}) => {
@@ -101,7 +101,7 @@ describe("outputCache", () => {
         it.each`
             cachePath
             ${"cache.json"}
-            ${"/<rootDir>/cache.json"}
+            ${osSeparators("/<rootDir>/cache.json")}
         `(
             "should log that the cache has been written to the absolute cache path of $cachePath",
             async ({cachePath}) => {

@@ -8,7 +8,7 @@ describe("loadCache", () => {
     it.each`
         cachePath
         ${"cache.json"}
-        ${"/<rootDir>/cache.json"}
+        ${osSeparators("/<rootDir>/cache.json")}
     `(
         "should log the absolute cache file path for $cachePath",
         async ({cachePath}) => {
