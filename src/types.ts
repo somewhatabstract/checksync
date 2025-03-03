@@ -190,6 +190,11 @@ export type normalizeTargetFn = (
     relativeFile: string,
 ) => Readonly<NormalizedPathInfo>;
 
+export type MigrationOptions = {
+    mode: "all" | "missing";
+    mappings: ReadonlyMap<string, string>;
+};
+
 export type Options = {
     /**
      * The paths and globs for identifying files that are to be processed.
@@ -251,6 +256,17 @@ export type Options = {
      * to produce the desired output.
      */
     cacheMode: "ignore" | "write" | "read";
+    /**
+     * Migration configuration.
+     *
+     * Targets that begin with a given prefix in mappings will be replaced
+     * with the corresponding value.
+     *
+     * When mode is "all", all targets that match a mapping will be updated
+     * with the corresponding prefix; when mode is "missing", only local
+     * targets that cannot be found will be updated.
+     */
+    migration?: MigrationOptions;
 };
 
 export type NormalizedPathInfo = {

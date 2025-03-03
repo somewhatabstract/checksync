@@ -3,8 +3,10 @@ import * as FS from "fs";
 
 import Logger from "../logger";
 import loadConfigurationFile from "../load-configuration-file";
+import * as LoadMigrationConfig from "../load-migration-config";
 
 import PackageJson from "../../package.json";
+import FileReferenceLogger from "../file-reference-logger";
 
 jest.mock("fs");
 
@@ -233,5 +235,126 @@ describe("#loadConfigurationFile", () => {
                 "../.gitignore",
             ],
         });
+    });
+
+    it("should load the migration configuration", async () => {
+        // Arrange
+        const NullLogger = new Logger(null, true);
+        jest.spyOn(FS, "readFile").mockImplementationOnce((path, cb) => {
+            cb(
+                null,
+                Buffer.from(
+                    JSON.stringify({
+                        migration: {
+                            mode: "all",
+                            mappings: [
+                                {
+                                    from: ["a"],
+                                    to: "https://example.com",
+                                },
+                            ],
+                        },
+                    }),
+                ),
+            );
+        });
+        const loadMigrationConfigSpy = jest
+            .spyOn(LoadMigrationConfig, "loadMigrationConfig")
+            .mockReturnValueOnce(undefined);
+
+        // Act
+        await loadConfigurationFile("FILE", NullLogger);
+
+        // Assert
+        expect(loadMigrationConfigSpy).toHaveBeenCalledWith(
+            {
+                mode: "all",
+                mappings: [
+                    {
+                        from: ["a"],
+                        to: "https://example.com",
+                    },
+                ],
+            },
+            expect.any(FileReferenceLogger),
+        );
+    });
+
+    it("should return the loaded migration configuration", async () => {
+        // Arrange
+        const NullLogger = new Logger(null, true);
+        jest.spyOn(FS, "readFile").mockImplementationOnce((path, cb) => {
+            cb(
+                null,
+                Buffer.from(
+                    JSON.stringify({
+                        migration: {
+                            mode: "all",
+                            mappings: [
+                                {
+                                    from: ["a"],
+                                    to: "https://example.com",
+                                },
+                            ],
+                        },
+                    }),
+                ),
+            );
+        });
+        jest.spyOn(
+            LoadMigrationConfig,
+            "loadMigrationConfig",
+        ).mockReturnValueOnce({
+            mode: "all",
+            mappings: new Map([["a", "https://example.com"]]),
+        });
+
+        // Act
+        const result = await loadConfigurationFile("FILE", NullLogger);
+
+        // Assert
+        expect(result).toEqual({
+            migration: {
+                mode: "all",
+                mappings: new Map([["a", "https://example.com"]]),
+            },
+        });
+    });
+
+    it("should throw if the migration configuration loading throws", async () => {
+        // Arrange
+        const NullLogger = new Logger(null, true);
+        jest.spyOn(FS, "readFile").mockImplementationOnce((path, cb) => {
+            cb(
+                null,
+                Buffer.from(
+                    JSON.stringify({
+                        migration: {
+                            mode: "all",
+                            mappings: [
+                                {
+                                    from: ["a"],
+                                    to: "https://example.com",
+                                },
+                            ],
+                        },
+                    }),
+                ),
+            );
+        });
+        jest.spyOn(
+            LoadMigrationConfig,
+            "loadMigrationConfig",
+        ).mockImplementationOnce(() => {
+            throw new Error("BOOM!");
+        });
+
+        // Act
+        const underTest = loadConfigurationFile("FILE", NullLogger);
+
+        // Assert
+        await expect(underTest).rejects.toThrowErrorMatchingInlineSnapshot(
+            `"Unable to load rc file: FILE"`,
+        );
     });
 });
