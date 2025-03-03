@@ -85,6 +85,49 @@
             "description": "When true, checksync will not report an error if a sync-tag is empty",
             "type": "boolean",
             "default": false
+        },
+        "migration": {
+            "description": "Configuration for migrating local tags to different targets",
+            "type": "object",
+            "properties": {
+                "missingTargetsOnly": {
+                    "description": "When true, only tags where the existing target is missing will be migrated: otherwise, all matching targets will be migrated",
+                    "type": "boolean",
+                    "default": true
+                },
+                "mappings": {
+                    "description": "A mapping of new paths to regular expressions of old paths that should migrate to the given new path",
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "to": {
+                                "description": "A URL that is the new target to which the tag should migrate",
+                                "type": "string",
+                                "format": "uri"
+                            },
+                            "from": {
+                                "description": "An array of strings against which the starts of target paths are to be compared. Forward slashes must be used for path separation.",
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "pattern": "^([^/]+/?)+$"
+                                }
+                            }
+                        },
+                        "required": [
+                            "to",
+                            "from"
+                        ],
+                        "additionalProperties": false
+                    }
+                }
+            },
+            "required": [
+                "mappings"
+            ],
+            "additionalProperties": false
         }
     },
     "required": [],
