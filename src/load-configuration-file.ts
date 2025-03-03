@@ -6,13 +6,22 @@ import JsonSchema, {DETAILED} from "@hyperjump/json-schema";
 import {ILog, Options} from "./types";
 import FileReferenceLogger from "./file-reference-logger";
 import checksyncSchema from "./checksync.schema.json";
+import {loadMigrationConfig} from "./load-migration-config";
 
 const readFileAsync = promisify(fs.readFile);
 
+/**
+ * Load the configuration from the given path.
+ *
+ * @param configPath The path to the configuration file.
+ * @param log The log to use for reporting errors.
+ * @returns The options loaded from the configuration.
+ * @throws An error if the configuration file cannot be loaded.
+ */
 export default async function loadConfigurationFile(
     configPath: string,
     log: ILog,
-): Promise<Options | null | undefined> {
+): Promise<Options> {
     log.verbose(() => `Loading configuration from ${configPath}`);
     const rcLog = new FileReferenceLogger(configPath, log);
     try {
@@ -46,10 +55,17 @@ export default async function loadConfigurationFile(
             rcForValidation,
             DETAILED,
         );
-        if (validation.valid) {
-            log.verbose(() => `Configuration is valid`);
 
-            return rcJson;
+        if (validation.valid) {
+            // We need to parse the migrations config.
+            const {migration, ...rest} = rcJson;
+            const migrationOptions = loadMigrationConfig(migration, rcLog);
+
+            log.verbose(() => `Configuration is valid`);
+            return {
+                ...rest,
+                migration: migrationOptions,
+            };
         }
     } catch (error: any) {
         rcLog.error(error.stack);

@@ -90,12 +90,17 @@
             "description": "Configuration for migrating local tags to different targets",
             "type": "object",
             "properties": {
-                "missingTargetsOnly": {
-                    "description": "When true, only tags where the existing target is missing will be migrated: otherwise, all matching targets will be migrated",
-                    "type": "boolean",
-                    "default": true
+                "mode": {
+                    "description": "When set to missing, only tags where a local target cannot be found will be migrated: when set to all, all matching targets will be migrated",
+                    "type": "string",
+                    "enum": [
+                        "missing",
+                        "all"
+                    ],
+                    "default": "missing"
                 },
                 "mappings": {
+                    "minItems": 1,
                     "description": "A mapping of new paths to regular expressions of old paths that should migrate to the given new path",
                     "type": "array",
                     "items": {
