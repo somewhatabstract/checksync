@@ -231,6 +231,7 @@ export default class MarkerParser {
 
         if (this._openMarkers[id].commentStart !== commentStart) {
             this._recordError({
+                markerID: id,
                 reason: `Sync-start tags for '${id}' given in different comment styles. Please use the same style for all sync-start tags that have identical identifiers.`,
                 location: {line},
                 code: ErrorCode.differentCommentSyntax,
@@ -239,6 +240,7 @@ export default class MarkerParser {
 
         if (!normalizedTargetInfo.exists) {
             this._recordError({
+                markerID: id,
                 reason: `Sync-start for '${id}' points to '${targetPath}', which does not exist or is a directory`,
                 location: {line},
                 code: ErrorCode.fileDoesNotExist,
@@ -247,6 +249,7 @@ export default class MarkerParser {
 
         if (this._openMarkers[id].targets[normalizedTargetInfo.path]) {
             this._recordError({
+                markerID: id,
                 reason: `Duplicate target for sync-tag '${id}'`,
                 location: {line},
                 code: ErrorCode.duplicateTarget,
@@ -261,6 +264,7 @@ export default class MarkerParser {
 
         if (this._openMarkers[id].content.length !== 0) {
             this._recordError({
+                markerID: id,
                 reason: `Sync-start for '${id}' found after content started`,
                 location: {line},
                 code: ErrorCode.startTagAfterContent,
@@ -280,6 +284,7 @@ export default class MarkerParser {
         delete this._openMarkers[id];
         if (marker == null) {
             this._recordError({
+                markerID: id,
                 reason: `Sync-end for '${id}' found, but there was no corresponding sync-start`,
                 location: {line},
                 code: ErrorCode.endTagWithoutStartTag,
@@ -301,6 +306,7 @@ export default class MarkerParser {
         const targetFile = Object.keys(marker.targets)[0];
         for (const {line} of marker.targets[targetFile]) {
             this._recordError({
+                markerID: id,
                 reason: `Sync-start '${id}' has no corresponding sync-end`,
                 location: {line},
                 code: ErrorCode.startTagWithoutEndTag,
@@ -314,6 +320,7 @@ export default class MarkerParser {
         line: number,
     ) => void = (match, commentStart, line) => {
         this._recordError({
+            markerID: null,
             reason: `Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'`,
             location: {line},
             code: ErrorCode.malformedStartTag,
@@ -325,6 +332,7 @@ export default class MarkerParser {
         line,
     ) => {
         this._recordError({
+            markerID: null,
             reason: `Malformed sync-end: format should be 'sync-end:<label>'`,
             location: {line},
             code: ErrorCode.malformedEndTag,
