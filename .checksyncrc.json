@@ -14,5 +14,23 @@
     "ignoreFiles": [
         "**/ignore-file.txt"
     ],
-    "json": false
+    "json": false,
+    "migration": {
+        "mappings": [
+            {
+                "to": "https://example.com/1",
+                "from": [
+                    "remote/1/",
+                    "remote/2/"
+                ]
+            },
+            {
+                "to": "https://example.com/2",
+                "from": [
+                    "remote/3/",
+                    "remote/4/"
+                ]
+            }
+        ]
+    }
 }
