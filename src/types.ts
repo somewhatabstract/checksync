@@ -42,19 +42,33 @@ export type FixAction =
       };
 
 export type ErrorDetails = {
-    // The text we would log to the user about this.
+    /**
+     * The id of the marker that the error is associated with.
+     *
+     * This is null when an error cannot be associated to a specific marker.
+     */
+    markerID: string | null;
+    /**
+     * The text we would log to the user about this.
+     */
     reason: string;
-    // The type of error. This is an enumeration of strings
-    // giving semantic meaning to the error.
+    /**
+     * The type of error. This is an enumeration of strings
+     * giving semantic meaning to the error.
+     */
     code: ErrorCode;
-    // This is the specific range of the error.
-    // Useful for highlighting the specific issue.
+    /**
+     * This is the specific range of the error.
+     * Useful for highlighting the specific issue.
+     */
     location?: {
         line: number;
         startColumn?: number;
         endColumn?: number;
     };
-    // This describes how to fix the issue.
+    /**
+     * This describes how to fix the issue.
+     */
     fix?: FixAction;
 };
 

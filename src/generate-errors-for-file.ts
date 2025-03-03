@@ -57,6 +57,11 @@ export default function* generateErrors(
     }
 
     // First, we need to report the errors we got during parsing.
+    // TODO: Filter out any missing target errors where we have a migration
+    // rule. Then yield an ErrorCode.migratedTarget fix for each of those.
+    // To do that, we need to link the error to the tag that needs to be
+    // updated. So the parse should include that info, or the errors should
+    // be indexable by marker ID.
     yield* fileInfo.errors;
 
     // Now, let's look at the markers and trace errors for those.
@@ -82,6 +87,11 @@ export default function* generateErrors(
         for (const sourceLine of targetLines) {
             const sourceRef = sourceMarker.targets[sourceLine];
 
+            // TODO: If we are set to migrate all targets, not just missing,
+            // then we need to first check if this sourceRef.target is
+            // a migration. If so, we need to output an
+            // ErrorCode.migratedTarget and yield a fix for that.
+
             if (sourceRef.type === "local") {
                 const targetInfo: FileInfo | null | undefined =
                     cache[sourceRef.target];
@@ -100,6 +110,7 @@ export default function* generateErrors(
 
                 if (targetDetails?.line == null || targetChecksum == null) {
                     yield {
+                        markerID,
                         reason: `No return tag named '${markerID}' in '${cwdRelativePath(
                             sourceRef.target,
                         )}'`,
@@ -129,6 +140,7 @@ export default function* generateErrors(
                 )}${commentEnd || ""}`;
 
                 yield {
+                    markerID,
                     code: ErrorCode.mismatchedChecksum,
                     reason: `Looks like you changed the target content for sync-tag '${markerID}' in '${cwdRelativePath(
                         normalizedTargetRef,
@@ -170,6 +182,7 @@ export default function* generateErrors(
                 const fix = `${indent}${commentStart} sync-start:${markerID} ${targetChecksum} ${sourceRef.target}${commentEnd || ""}`;
 
                 yield {
+                    markerID,
                     code: ErrorCode.mismatchedChecksum,
                     reason: `Looks like you changed the content of sync-tag '${markerID}' or the path of the file that contains the tag. Make sure you've made corresponding changes at ${sourceRef.target}, if necessary (${checksums})`,
                     location: {line: sourceLine},
