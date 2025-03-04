@@ -12,6 +12,7 @@ describe("#maybeReportError", () => {
         );
         const errorSpy = jest.spyOn(NullPositionLogger, "error");
         const error = {
+            markerID: "MARKER_ID",
             code: ErrorCode.mismatchedChecksum,
             reason: "test error",
             fix: {
@@ -40,6 +41,7 @@ describe("#maybeReportError", () => {
             );
             const logSpy = jest.spyOn(NullPositionLogger, "error");
             const error = {
+                markerID: "MARKER_ID",
                 code,
                 location: {
                     line: 100,
