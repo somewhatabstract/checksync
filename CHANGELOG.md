@@ -1,5 +1,16 @@
 # checksync
 
+## 8.0.0
+
+### Major Changes
+
+- 4b044fb: Add support for self-hashed tags with remote targets
+
+### Patch Changes
+
+- 23439ea: Update to TypeScript 5.7.3
+- ecd9da4: Moving to pnpm instead of yarn
+
 ## 7.0.1
 
 ### Patch Changes
