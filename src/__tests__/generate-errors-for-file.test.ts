@@ -130,6 +130,7 @@ describe("#generateMarkerEdges", () => {
         // Assert
         expect(result).toEqual([
             {
+                markerID: "marker",
                 code: "mismatched-checksum",
                 reason: "Looks like you changed the target content for sync-tag 'marker' in 'filea:1'. Make sure you've made corresponding changes in the source file, if necessary (WRONG != 1234)",
                 location: {line: 1},
@@ -201,6 +202,7 @@ describe("#generateMarkerEdges", () => {
         // Assert
         expect(result).toEqual([
             {
+                markerID: "marker",
                 code: "mismatched-checksum",
                 reason: "Looks like you changed the target content for sync-tag 'marker' in 'filea:1'. Make sure you've made corresponding changes in the source file, if necessary (No checksum != 1234)",
                 location: {line: 1},
@@ -224,6 +226,7 @@ describe("#generateMarkerEdges", () => {
                 readOnly: false,
                 errors: [
                     {
+                        markerID: "marker",
                         reason: "It's an error from a fixable file",
                         code: "error-code" as any,
                         location: {line: 10, startColumn: 5, endColumn: 10},
@@ -251,6 +254,7 @@ describe("#generateMarkerEdges", () => {
                 readOnly: false,
                 errors: [
                     {
+                        markerID: "marker",
                         reason: "It's an error from a read-only file",
                         code: "error-code" as any,
                         location: {line: 10},
@@ -326,6 +330,7 @@ describe("#generateMarkerEdges", () => {
         // Assert
         expect(result).toEqual([
             {
+                markerID: "marker",
                 code: "no-return-tag",
                 location: {line: 1},
                 reason: "No return tag named 'marker' in 'fileb'",
@@ -382,6 +387,7 @@ describe("#generateMarkerEdges", () => {
         // Assert
         expect(result).toEqual([
             {
+                markerID: "marker",
                 code: "no-return-tag",
                 location: {line: 1},
                 reason: "No return tag named 'marker' in 'fileb'",
@@ -482,6 +488,7 @@ describe("#generateMarkerEdges", () => {
         // Assert
         expect(result).toEqual([
             {
+                markerID: "marker",
                 code: "mismatched-checksum",
                 reason: "Looks like you changed the content of sync-tag 'marker' or the path of the file that contains the tag. Make sure you've made corresponding changes at https://fileb, if necessary (WRONG != 1234)",
                 location: {line: 1},
@@ -533,6 +540,7 @@ describe("#generateMarkerEdges", () => {
         // Assert
         expect(result).toEqual([
             {
+                markerID: "marker",
                 code: "mismatched-checksum",
                 reason: "Looks like you changed the content of sync-tag 'marker' or the path of the file that contains the tag. Make sure you've made corresponding changes at https://fileb, if necessary (No checksum != 1234)",
                 location: {line: 1},
