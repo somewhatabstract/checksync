@@ -53,5 +53,23 @@ export const optionsFromArgs = (args: Arguments<any>): Partial<Options> => {
         options.allowEmptyTags = !!args.allowEmptyTags;
     }
 
+    if (args.outputCache != null) {
+        // Only overwrite the path if one was given, otherwise we'll let
+        // defaults handle that.
+        if (args.outputCache) {
+            options.cachePath = args.outputCache;
+        }
+        options.cacheMode = "write";
+    }
+
+    if (args.fromCache != null) {
+        // Only overwrite the path if one was given, otherwise we'll let
+        // defaults handle that.
+        if (args.fromCache) {
+            options.cachePath = args.fromCache;
+        }
+        options.cacheMode = "read";
+    }
+
     return options;
 };

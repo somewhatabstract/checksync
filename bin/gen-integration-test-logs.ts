@@ -48,21 +48,33 @@ const main = async () => {
         fs.mkdirSync(TESTOUTPUT_DIR);
     }
 
-    // For each example, run checksync and write out the results.
+    // For each example, run checksync to generate the marker cache.
+    // Then run checksync for each scenario using that cache.
     const examples = getExamples();
     for (const example of examples) {
-        for (const scenario of Object.values(Scenario)) {
-            try {
-                console.group(
-                    `Running example: ${example}, scenario: ${scenario}`,
-                );
-                const log = await runChecksync(example, scenario);
-                await writeLog(example, scenario, log);
-            } catch (error) {
-                console.error(error);
-            } finally {
-                console.groupEnd();
+        console.group(`Running example: ${example}`);
+
+        // Create the cache and write the log of the cache creation so we
+        // can snapshot it.
+        const log = await runChecksync(example);
+        await writeLog(example, undefined, log);
+
+        // Now run the scenarios. Using the cache should be faster as we'll
+        // only parse the markers once.
+        try {
+            for (const scenario of Object.values(Scenario)) {
+                try {
+                    console.group(`Scenario: ${scenario}`);
+                    const log = await runChecksync(example, scenario);
+                    await writeLog(example, scenario, log);
+                } catch (error) {
+                    console.error(error);
+                } finally {
+                    console.groupEnd();
+                }
             }
+        } finally {
+            console.groupEnd();
         }
     }
     console.log("All examples have been recorded.");

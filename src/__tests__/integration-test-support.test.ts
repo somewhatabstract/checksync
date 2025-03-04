@@ -113,6 +113,25 @@ describe("integration-test-support", () => {
             );
         });
 
+        it("should run checksync in cache write mode for the given example", async () => {
+            // Arrange
+            const checkSyncSpy = jest
+                .spyOn(Checksync, "default")
+                .mockResolvedValueOnce(ExitCode.SUCCESS);
+
+            // Act
+            await runChecksync("example");
+
+            // Assert
+            expect(checkSyncSpy).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    cachePath: expect.stringContaining("example.json"),
+                    cacheMode: "write",
+                }),
+                expect.any(StringLogger),
+            );
+        });
+
         it("should run checksync with the glob for the given example", async () => {
             // Arrange
             const checkSyncSpy = jest
