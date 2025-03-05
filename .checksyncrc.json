@@ -26,7 +26,8 @@
             {
                 "to": "https://example.com/2/",
                 "from": [
-                    "__examples__/migrate_existing_target/"
+                    "__examples__/migrate_existing_target/",
+                    "__examples__/migrate_missing_target/subfolder/"
                 ]
             }
         ]

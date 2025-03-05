@@ -62,10 +62,13 @@ export default function* generateErrors(
         if (error.code === ErrorCode.fileDoesNotExist) {
             // Does this error relate to a migrateable target?
             const sourceMarker = fileInfo.markers[error.markerID!];
-            const sourceRef = sourceMarker.targets[error.location!.line];
-            if (determineMigration(options, sourceRef) != null) {
-                // We will migrate this later.
-                continue;
+            // Malformed tags won't have a source marker.
+            if (sourceMarker) {
+                const sourceRef = sourceMarker.targets[error.location!.line];
+                if (determineMigration(options, sourceRef) != null) {
+                    // We will migrate this later.
+                    continue;
+                }
             }
         }
         yield error;
@@ -158,7 +161,10 @@ export default function* generateErrors(
                                 line: sourceLine,
                                 text: fix,
                                 declaration: sourceRef.declaration,
-                                description: `Migrated target for sync-tag '${markerID}' from '${sourceRef.target}' to ${migratedTarget} and updated checksum from ${currentChecksum || NoChecksum} to ${sourceMarker.selfChecksum}.`,
+                                description: `Migrated sync-tag '${markerID}'. Target changed from '${rootRelativePath(
+                                    sourceRef.target,
+                                    options.rootMarker,
+                                )}' to '${migratedTarget}'. Checksum: ${currentChecksum || NoChecksum} >>> ${sourceMarker.selfChecksum}`,
                             },
                         };
                     }
