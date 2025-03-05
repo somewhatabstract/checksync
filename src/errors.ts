@@ -242,13 +242,12 @@ export const noReturnTag = (
 /**
  * Create an error indicating a pending migration for missing local return tag.
  *
+ * @param options The options for the current run.
  * @param markerID The ID of the marker that is affected.
  * @param declaration The original declaration of the marker exhibiting the
  * mismatch.
  * @param line The line number where the marker is located.
- * @param currentCwdRelativeTargetPath The current path of the target tag.
- * @param currentRootRelativeTargetPath The current root-relative path of the
- * target tag.
+ * @param absoluteTargetPath The current path of the target tag.
  * @param migratedTarget The target to which the marker should be migrated.
  * @param incorrectChecksum The incorrect checksum.
  * @param correctChecksum The correct checksum.
