@@ -98,7 +98,7 @@ describe("#parseFile", () => {
             {
                 markerID: null,
                 code: "could-not-parse",
-                reason: "Could not parse file: ERROR_STRING",
+                reason: "Could not parse root.path/file.js: ERROR_STRING",
             },
         ]);
     });
@@ -171,7 +171,7 @@ describe("#parseFile", () => {
                 {
                     markerID: null,
                     code: "could-not-parse",
-                    reason: "Could not parse file: ERROR_STRING",
+                    reason: "Could not parse root.path/file.js: ERROR_STRING",
                 },
             ],
             readOnly: false,

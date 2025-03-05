@@ -6,7 +6,7 @@ import fs from "fs";
 
 import MarkerParser from "./marker-parser";
 import getNormalizedPathInfo from "./get-normalized-path-info";
-import {ErrorCode} from "./error-codes";
+import * as Errors from "./errors";
 import {ancesdirOrCurrentDir} from "./ancesdir-or-currentdir";
 import calcChecksum from "./checksum";
 
@@ -58,35 +58,16 @@ export default function parseFile(
         for (const line of Object.keys(targets)) {
             const lineNumber = parseInt(line);
             if ((content?.length ?? 0) === 0 && !options.allowEmptyTags) {
-                recordError({
-                    markerID: id,
-                    reason: `Sync-tag '${id}' has no content`,
-                    location: {line: lineNumber},
-                    code: ErrorCode.emptyMarker,
-                });
+                recordError(Errors.emptyMarker(id, lineNumber));
             }
 
             if (markers[id]) {
-                recordError({
-                    markerID: id,
-                    reason: `Sync-tag '${id}' declared multiple times`,
-                    location: {
-                        line: lineNumber,
-                    },
-                    code: ErrorCode.duplicateMarker,
-                });
+                recordError(Errors.duplicateMarker(id, lineNumber));
             }
 
             const target = targets[lineNumber];
             if (target.target === file) {
-                recordError({
-                    markerID: id,
-                    reason: `Sync-tag '${id}' cannot target itself`,
-                    location: {
-                        line: lineNumber,
-                    },
-                    code: ErrorCode.selfTargeting,
-                });
+                recordError(Errors.selfTargeting(id, lineNumber));
             }
         }
 
@@ -171,11 +152,7 @@ export default function parseFile(
     }).then(
         (res) => res,
         (reason: Error) => {
-            recordError({
-                markerID: null,
-                code: ErrorCode.couldNotParse,
-                reason: `Could not parse file: ${reason.message}`,
-            });
+            recordError(Errors.couldNotParse(file, reason.message));
             return {
                 markers: null,
                 referencedFiles: [],
