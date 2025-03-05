@@ -16,6 +16,11 @@ jest.mock("../file-reference-logger");
 jest.mock("../fix-file");
 jest.mock("../get-launch-string");
 
+const errorsNotLoggedWithWarn = [
+    ErrorCode.pendingMigration,
+    ErrorCode.mismatchedChecksum,
+];
+
 describe("OutputSink", () => {
     describe("#startFile", () => {
         it("should not throw if a file has not been started and it has not already been drained", () => {
@@ -57,6 +62,7 @@ describe("OutputSink", () => {
             );
             outputSink.startFile("foo.js");
             outputSink.processError({
+                markerID: "MARKER_ID",
                 reason: "REASON",
                 code: ErrorCode.couldNotParse,
             });
@@ -81,6 +87,7 @@ describe("OutputSink", () => {
             // Act
             const underTest = () =>
                 outputSink.processError({
+                    markerID: "MARKER_ID",
                     reason: "REASON",
                     code: ErrorCode.couldNotParse,
                 });
@@ -108,6 +115,7 @@ describe("OutputSink", () => {
                 const outputSink = new OutputSink(options, NullLogger);
                 const reportSpy = jest.spyOn(MaybeReportError, "default");
                 const errorDetails: ErrorDetails = {
+                    markerID: "MARKER_ID",
                     reason: "REASON",
                     code: ErrorCode.couldNotParse,
                 };
@@ -143,6 +151,7 @@ describe("OutputSink", () => {
                         ).mockImplementation(() => dummyFileLogger);
                         const outputSink = new OutputSink(options, NullLogger);
                         const errorDetails: ErrorDetails = {
+                            markerID: "MARKER_ID",
                             reason: "REASON",
                             code: ErrorCode.mismatchedChecksum,
                             fix: {
@@ -165,9 +174,50 @@ describe("OutputSink", () => {
                         );
                     });
 
+                    it("should log pending migrations with log.migrate", () => {
+                        // Arrange
+                        const NullLogger = new Logger();
+                        const options = {
+                            ...defaultOptions,
+                            json: false,
+                            autoFix: false,
+                        } as const;
+                        const dummyFileLogger: any = {
+                            file: "foo.js",
+                            migrate: jest.fn<any, any>(),
+                        } as const;
+                        jest.spyOn(
+                            FileReferenceLogger,
+                            "default",
+                        ).mockImplementation(() => dummyFileLogger);
+                        const outputSink = new OutputSink(options, NullLogger);
+                        const errorDetails: ErrorDetails = {
+                            markerID: "MARKER_ID",
+                            reason: "REASON",
+                            code: ErrorCode.pendingMigration,
+                            fix: {
+                                type: "replace",
+                                line: 1,
+                                text: "TEXT",
+                                description: "DESCRIPTION",
+                                declaration: "DECLARATION",
+                            },
+                        };
+                        outputSink.startFile("foo.js");
+
+                        // Act
+                        outputSink.processError(errorDetails);
+
+                        // Assert
+                        expect(dummyFileLogger.migrate).toHaveBeenCalledWith(
+                            "REASON",
+                            1,
+                        );
+                    });
+
                     it.each(
                         Object.values(ErrorCode).filter(
-                            (e) => e !== ErrorCode.mismatchedChecksum,
+                            (e) => !errorsNotLoggedWithWarn.includes(e),
                         ),
                     )("should log %s errors with log.warn", (code) => {
                         // Arrange
@@ -187,6 +237,7 @@ describe("OutputSink", () => {
                         ).mockImplementation(() => dummyFileLogger);
                         const outputSink = new OutputSink(options, NullLogger);
                         const errorDetails: ErrorDetails = {
+                            markerID: "MARKER_ID",
                             reason: "REASON",
                             code,
                             fix: {
@@ -234,6 +285,7 @@ describe("OutputSink", () => {
                                 NullLogger,
                             );
                             const errorDetails: ErrorDetails = {
+                                markerID: "MARKER_ID",
                                 reason: "REASON",
                                 code,
                                 fix: {
@@ -279,6 +331,7 @@ describe("OutputSink", () => {
                                 NullLogger,
                             );
                             const errorDetails: ErrorDetails = {
+                                markerID: "MARKER_ID",
                                 reason: "REASON",
                                 code,
                                 fix: {
@@ -319,6 +372,7 @@ describe("OutputSink", () => {
                 const outputSink = new OutputSink(options, NullLogger);
                 const reportSpy = jest.spyOn(MaybeReportError, "default");
                 const errorDetails: ErrorDetails = {
+                    markerID: "MARKER_ID",
                     reason: "REASON",
                     code: ErrorCode.couldNotParse,
                 };
@@ -350,6 +404,7 @@ describe("OutputSink", () => {
                     ).mockImplementation(() => dummyFileLogger);
                     const outputSink = new OutputSink(options, NullLogger);
                     const errorDetails: ErrorDetails = {
+                        markerID: "MARKER_ID",
                         reason: "REASON",
                         code,
                         fix: {
@@ -389,6 +444,7 @@ describe("OutputSink", () => {
                     ).mockImplementation(() => dummyFileLogger);
                     const outputSink = new OutputSink(options, NullLogger);
                     const errorDetails: ErrorDetails = {
+                        markerID: "MARKER_ID",
                         reason: "REASON",
                         code,
                         fix: {
@@ -469,6 +525,7 @@ describe("OutputSink", () => {
             const fixFileSpy = jest.spyOn(FixFile, "default");
             const outputSink = new OutputSink(options, NullLogger);
             const errorDetails: ErrorDetails = {
+                markerID: "MARKER_ID",
                 reason: "REASON",
                 code: ErrorCode.duplicateTarget,
                 fix: {
@@ -512,10 +569,12 @@ describe("OutputSink", () => {
             const fixFileSpy = jest.spyOn(FixFile, "default");
             const outputSink = new OutputSink(options, NullLogger);
             const unfixableError: ErrorDetails = {
+                markerID: "MARKER_ID",
                 reason: "REASON",
                 code: ErrorCode.couldNotParse,
             };
             const fixableError: ErrorDetails = {
+                markerID: "MARKER_ID",
                 reason: "REASON",
                 code: ErrorCode.duplicateTarget,
                 fix: {
@@ -554,6 +613,7 @@ describe("OutputSink", () => {
             const fixFileSpy = jest.spyOn(FixFile, "default");
             const outputSink = new OutputSink(options, NullLogger);
             const fixableError: ErrorDetails = {
+                markerID: "MARKER_ID",
                 reason: "REASON",
                 code: ErrorCode.duplicateTarget,
                 fix: {
@@ -714,6 +774,7 @@ describe("OutputSink", () => {
                 );
                 outputSink.startFile("foo.js");
                 outputSink.processError({
+                    markerID: "MARKER_ID",
                     reason: "REASON",
                     code: ErrorCode.duplicateTarget,
                     fix: {
@@ -727,6 +788,7 @@ describe("OutputSink", () => {
                 await outputSink.endFile();
                 outputSink.startFile("bar.js");
                 outputSink.processError({
+                    markerID: "MARKER_ID",
                     reason: "REASON",
                     code: ErrorCode.duplicateTarget,
                     fix: {
@@ -765,6 +827,7 @@ describe("OutputSink", () => {
                     NullLogger,
                 );
                 const errorA = {
+                    markerID: "MARKER_A",
                     reason: "REASON_A",
                     code: ErrorCode.couldNotParse,
                 } as const;
@@ -773,6 +836,7 @@ describe("OutputSink", () => {
                 await outputSink.endFile();
                 outputSink.startFile("bar.js");
                 const errorB1 = {
+                    markerID: "MARKER_B1",
                     reason: "REASON_B1",
                     code: ErrorCode.duplicateTarget,
                     fix: {
@@ -785,6 +849,7 @@ describe("OutputSink", () => {
                 } as const;
                 outputSink.processError(errorB1);
                 const errorB2 = {
+                    markerID: "MARKER_B2",
                     reason: "REASON_B2",
                     code: ErrorCode.duplicateTarget,
                     location: {
@@ -833,6 +898,7 @@ describe("OutputSink", () => {
                     NullLogger,
                 );
                 const errorA = {
+                    markerID: "MARKER_ID",
                     reason: "REASON_A",
                     code: ErrorCode.couldNotParse,
                 } as const;
@@ -866,6 +932,7 @@ describe("OutputSink", () => {
                     NullLogger,
                 );
                 const errorA = {
+                    markerID: "MARKER_ID",
                     reason: "REASON_A",
                     code: ErrorCode.couldNotParse,
                 } as const;
@@ -897,6 +964,7 @@ describe("OutputSink", () => {
                     NullLogger,
                 );
                 const errorA = {
+                    markerID: "MARKER_ID",
                     reason: "REASON_A",
                     code: ErrorCode.duplicateTarget,
                     fix: {
@@ -937,6 +1005,7 @@ describe("OutputSink", () => {
                     NullLogger,
                 );
                 const errorA = {
+                    markerID: "MARKER_ID",
                     reason: "REASON_A",
                     code: ErrorCode.duplicateTarget,
                     fix: {
@@ -1001,6 +1070,7 @@ describe("OutputSink", () => {
                     logger,
                 );
                 const errorA = {
+                    markerID: "MARKER_A",
                     reason: "REASON_A",
                     code: ErrorCode.couldNotParse,
                 } as const;
@@ -1008,6 +1078,7 @@ describe("OutputSink", () => {
                 outputSink.processError(errorA);
                 outputSink.endFile();
                 const errorB1 = {
+                    markerID: "MARKER_B1",
                     reason: "REASON_B",
                     code: ErrorCode.duplicateTarget,
                     fix: {
@@ -1064,6 +1135,7 @@ describe("OutputSink", () => {
                     logger,
                 );
                 const errorA = {
+                    markerID: "MARKER_ID",
                     reason: "REASON_A",
                     code: ErrorCode.duplicateTarget,
                     fix: {
@@ -1116,6 +1188,7 @@ describe("OutputSink", () => {
                     logger,
                 );
                 const errorA = {
+                    markerID: "MARKER_A",
                     reason: "REASON_A",
                     code: ErrorCode.mismatchedChecksum,
                     fix: {
@@ -1130,6 +1203,7 @@ describe("OutputSink", () => {
                 outputSink.processError(errorA);
                 outputSink.endFile();
                 const errorB1 = {
+                    markerID: "MARKER_B",
                     reason: "REASON_B",
                     code: ErrorCode.duplicateTarget,
                     fix: {
@@ -1179,6 +1253,7 @@ describe("OutputSink", () => {
                         }) as any,
                 );
                 const errorA = {
+                    markerID: "MARKER_ID",
                     reason: "REASON_A",
                     code: ErrorCode.duplicateTarget,
                     fix: {
@@ -1238,6 +1313,7 @@ describe("OutputSink", () => {
                     logger,
                 );
                 const errorA = {
+                    markerID: "MARKER_ID",
                     reason: "REASON_A",
                     code: ErrorCode.couldNotParse,
                 } as const;
@@ -1275,6 +1351,7 @@ describe("OutputSink", () => {
                     NullLogger,
                 );
                 const errorA = {
+                    markerID: "MARKER_ID",
                     reason: "REASON_A",
                     code: ErrorCode.couldNotParse,
                 } as const;
@@ -1307,6 +1384,7 @@ describe("OutputSink", () => {
                     NullLogger,
                 );
                 const errorA = {
+                    markerID: "MARKER_ID",
                     reason: "REASON_A",
                     code: ErrorCode.duplicateTarget,
                     fix: {
@@ -1347,6 +1425,7 @@ describe("OutputSink", () => {
                     NullLogger,
                 );
                 const errorA = {
+                    markerID: "MARKER_ID",
                     reason: "REASON_A",
                     code: ErrorCode.duplicateTarget,
                     fix: {

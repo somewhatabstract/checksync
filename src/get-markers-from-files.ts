@@ -81,6 +81,7 @@ export default async function getMarkersFromFiles(
                     aliases: [],
                     errors: [
                         {
+                            markerID: "MARKER_ID",
                             code: ErrorCode.couldNotParse,
                             reason: `Could not parse ${file}: ${e.message}`,
                         },

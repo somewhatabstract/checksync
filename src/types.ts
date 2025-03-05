@@ -21,6 +21,7 @@ export interface IPositionLog extends ILog {
     readonly log: (message: string, line?: string | number) => void;
     readonly warn: (message: string, line?: string | number) => void;
     readonly mismatch: (message: string, line?: string | number) => void;
+    readonly migrate: (message: string, line?: string | number) => void;
     readonly fix: (message: string, line?: string | number) => void;
 }
 
@@ -42,19 +43,33 @@ export type FixAction =
       };
 
 export type ErrorDetails = {
-    // The text we would log to the user about this.
+    /**
+     * The id of the marker that the error is associated with.
+     *
+     * This is null when an error cannot be associated to a specific marker.
+     */
+    markerID: string | null;
+    /**
+     * The text we would log to the user about this.
+     */
     reason: string;
-    // The type of error. This is an enumeration of strings
-    // giving semantic meaning to the error.
+    /**
+     * The type of error. This is an enumeration of strings
+     * giving semantic meaning to the error.
+     */
     code: ErrorCode;
-    // This is the specific range of the error.
-    // Useful for highlighting the specific issue.
+    /**
+     * This is the specific range of the error.
+     * Useful for highlighting the specific issue.
+     */
     location?: {
         line: number;
         startColumn?: number;
         endColumn?: number;
     };
-    // This describes how to fix the issue.
+    /**
+     * This describes how to fix the issue.
+     */
     fix?: FixAction;
 };
 
@@ -190,6 +205,11 @@ export type normalizeTargetFn = (
     relativeFile: string,
 ) => Readonly<NormalizedPathInfo>;
 
+export type MigrationOptions = {
+    mode: "all" | "missing";
+    mappings: ReadonlyMap<string, string>;
+};
+
 export type Options = {
     /**
      * The paths and globs for identifying files that are to be processed.
@@ -251,6 +271,17 @@ export type Options = {
      * to produce the desired output.
      */
     cacheMode: "ignore" | "write" | "read";
+    /**
+     * Migration configuration.
+     *
+     * Targets that begin with a given prefix in mappings will be replaced
+     * with the corresponding value.
+     *
+     * When mode is "all", all targets that match a mapping will be updated
+     * with the corresponding prefix; when mode is "missing", only local
+     * targets that cannot be found will be updated.
+     */
+    migration?: MigrationOptions;
 };
 
 export type NormalizedPathInfo = {

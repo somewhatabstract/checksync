@@ -44,7 +44,7 @@
         "@eslint/compat": "^1.1.0",
         "@eslint/eslintrc": "^3.1.0",
         "@eslint/js": "^9.5.0",
-        "@hyperjump/json-schema": "^0.23.4",
+        "@hyperjump/json-schema": "^0.23.5",
         "@jest/globals": "^29.7.0",
         "@khanacademy/eslint-config": "^5.2.0",
         "@khanacademy/eslint-plugin": "^3.0.0",
@@ -52,6 +52,7 @@
         "@rollup/plugin-commonjs": "^28.0.2",
         "@rollup/plugin-json": "^6.1.0",
         "@rollup/plugin-node-resolve": "^16.0.0",
+        "@rollup/plugin-terser": "^0.4.4",
         "@swc-node/register": "^1.10.9",
         "@types/jest": "^29.5.12",
         "@types/lodash": "^4.17.5",
@@ -85,8 +86,7 @@
         "rollup": "^4.18.0",
         "rollup-plugin-copy": "^3.5.0",
         "rollup-plugin-filesize": "^10.0.0",
-        "rollup-plugin-terser": "^7.0.2",
-        "typescript": "^5.4.5",
+        "typescript": "^5.8.2",
         "yargs": "^17.7.2"
     },
     "resolutions": {
@@ -114,5 +114,8 @@
         "publish:ci": "git diff --stat --exit-code HEAD && pnpm build && changeset publish",
         "env": "node"
     },
-    "packageManager": "pnpm@10.5.2+sha512.da9dc28cd3ff40d0592188235ab25d3202add8a207afbedc682220e4a0029ffbff4562102b9e6e46b4e3f9e8bd53e6d05de48544b0c57d4b0179e22c76d1199b"
+    "packageManager": "pnpm@10.5.2+sha512.da9dc28cd3ff40d0592188235ab25d3202add8a207afbedc682220e4a0029ffbff4562102b9e6e46b4e3f9e8bd53e6d05de48544b0c57d4b0179e22c76d1199b",
+    "dependencies": {
+        "es-iterator-helpers": "^1.2.1"
+    }
 }

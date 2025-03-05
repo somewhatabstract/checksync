@@ -89,6 +89,7 @@ describe("#fixFile", () => {
         const promise = fixFile(options, "filea", NullFileLogger, {
             BROKEN_DECLARATION: [
                 {
+                    markerID: "MARKER_ID",
                     code: ErrorCode.mismatchedChecksum,
                     reason: "MISMATCHED CHECKSUMS REASON",
                     fix: {
@@ -144,6 +145,7 @@ describe("#fixFile", () => {
         const promise = fixFile(options, "filea", NullFileLogger, {
             BROKEN_DECLARATION: [
                 {
+                    markerID: "MARKER_ID",
                     code: ErrorCode.mismatchedChecksum,
                     reason: "MISMATCHED CHECKSUMS REASON",
                     fix: {
@@ -199,6 +201,7 @@ describe("#fixFile", () => {
         const promise = fixFile(options, "filea", NullFileLogger, {
             BROKEN_DECLARATION: [
                 {
+                    markerID: "MARKER_ID",
                     code: ErrorCode.mismatchedChecksum,
                     reason: "MISMATCHED CHECKSUMS REASON",
                     fix: {
@@ -256,6 +259,7 @@ describe("#fixFile", () => {
         const promise = fixFile(options, "filea", NullFileLogger, {
             BROKEN_DECLARATION: [
                 {
+                    markerID: "MARKER_ID",
                     code: ErrorCode.duplicateTarget,
                     reason: "MISMATCHED CHECKSUMS REASON",
                     fix: {
@@ -309,6 +313,7 @@ describe("#fixFile", () => {
         const promise = fixFile(options, "filea", NullFileLogger, {
             BROKEN_DECLARATION: [
                 {
+                    markerID: "MARKER_ID1",
                     code: ErrorCode.mismatchedChecksum,
                     reason: "MISMATCHED CHECKSUMS REASON",
                     fix: {
@@ -320,6 +325,7 @@ describe("#fixFile", () => {
                     },
                 },
                 {
+                    markerID: "MARKER_ID2",
                     code: ErrorCode.mismatchedChecksum,
                     reason: "MISMATCHED CHECKSUMS REASON",
                     fix: {
@@ -387,6 +393,7 @@ describe("#fixFile", () => {
         const promise = fixFile(testOptions, "filea", NullFileLogger, {
             BROKEN_DECLARATION: [
                 {
+                    markerID: "MARKER_ID",
                     code: ErrorCode.mismatchedChecksum,
                     reason: "MISMATCHED CHECKSUMS REASON",
                     fix: {

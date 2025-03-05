@@ -4,7 +4,8 @@
         /* Language and Environment */
         "target": "es2022",
         "lib": [
-            "es2023"
+            "es2023",
+            "esnext.iterator"
         ],
         /* Modules */
         // Required for dynamic imports even though we aren't using
