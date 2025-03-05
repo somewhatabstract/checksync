@@ -30,6 +30,8 @@ describe("defaultOptions", () => {
 {
   "allowEmptyTags": false,
   "autoFix": false,
+  "cacheMode": "ignore",
+  "cachePath": "cache.json",
   "comments": [
     "#",
     "//",

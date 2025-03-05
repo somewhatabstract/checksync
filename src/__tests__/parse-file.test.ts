@@ -60,6 +60,8 @@ describe("#parseFile", () => {
             ignoreFiles: [],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
 
         // Act
@@ -84,6 +86,8 @@ describe("#parseFile", () => {
             ignoreFiles: [],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
 
         // Act
@@ -119,6 +123,8 @@ describe("#parseFile", () => {
             ignoreFiles: [],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
 
         // Act
@@ -151,6 +157,8 @@ describe("#parseFile", () => {
             ignoreFiles: [],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
 
         // Act
@@ -193,6 +201,8 @@ describe("#parseFile", () => {
             ignoreFiles: [],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
 
         // Act
@@ -232,6 +242,8 @@ describe("#parseFile", () => {
             ignoreFiles: [],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
 
         // Act
@@ -277,6 +289,8 @@ describe("#parseFile", () => {
             ignoreFiles: [],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
 
         // Act
@@ -356,6 +370,8 @@ describe("#parseFile", () => {
             ignoreFiles: [],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
 
         // Act
@@ -420,6 +436,8 @@ describe("#parseFile", () => {
             ignoreFiles: [],
             json: false,
             allowEmptyTags: true,
+            cachePath: "",
+            cacheMode: "ignore",
         };
 
         // Act
@@ -481,6 +499,8 @@ describe("#parseFile", () => {
             ignoreFiles: [],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
 
         // Act
@@ -534,6 +554,8 @@ describe("#parseFile", () => {
             ignoreFiles: [],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
 
         // Act
@@ -585,6 +607,8 @@ describe("#parseFile", () => {
             ignoreFiles: [],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
 
         // Act
@@ -629,6 +653,8 @@ describe("#parseFile", () => {
             ignoreFiles: [],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
         const promise = parseFile(options, "root.path/file.js", false);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
@@ -684,6 +710,8 @@ describe("#parseFile", () => {
             ignoreFiles: [],
             json: false,
             allowEmptyTags: true,
+            cachePath: "",
+            cacheMode: "ignore",
         };
         const promise = parseFile(options, "root.path/file.js", false);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
@@ -761,6 +789,8 @@ describe("#parseFile", () => {
             ignoreFiles: [],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
         const promise = parseFile(options, "root.path/file.js", false);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
@@ -819,6 +849,8 @@ describe("#parseFile", () => {
             ignoreFiles: [],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
         const promise = parseFile(options, "root.path/file.js", false);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
@@ -876,6 +908,8 @@ describe("#parseFile", () => {
             ignoreFiles: [],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
         const promise = parseFile(options, "root.path/file.js", false);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
@@ -982,6 +1016,8 @@ describe("#parseFile", () => {
             ignoreFiles: [],
             json: false,
             allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
         };
         const promise = parseFile(options, "root.path/file.js", false);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];

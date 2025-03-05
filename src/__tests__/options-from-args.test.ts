@@ -278,4 +278,96 @@ describe("#optionsFromArgs", () => {
         // Assert
         expect(result.allowEmptyTags).toBe(false);
     });
+
+    it.each`
+        outputCache
+        ${""}
+        ${"CACHE_PATH"}
+    `(
+        "should set cacheMode as write if args.outputCache is $outputCache",
+        ({outputCache}) => {
+            // Arrange
+            const args: any = {
+                outputCache,
+            };
+
+            // Act
+            const result = optionsFromArgs(args);
+
+            // Assert
+            expect(result.cacheMode).toBe("write");
+        },
+    );
+
+    it.each`
+        fromCache
+        ${""}
+        ${"CACHE_PATH"}
+    `(
+        "should set cacheMode as read if args.fromCache is $fromCache",
+        ({fromCache}) => {
+            // Arrange
+            const args: any = {
+                fromCache,
+            };
+
+            // Act
+            const result = optionsFromArgs(args);
+
+            // Assert
+            expect(result.cacheMode).toBe("read");
+        },
+    );
+
+    it("should set cachePath to args.outputCache if args.outputCache is defined and not falsy", () => {
+        // Arrange
+        const args: any = {
+            outputCache: "CACHE_PATH",
+        };
+
+        // Act
+        const result = optionsFromArgs(args);
+
+        // Assert
+        expect(result.cachePath).toBe("CACHE_PATH");
+    });
+
+    it("should set cachePath to args.fromCache if args.fromCache is defined and not falsy", () => {
+        // Arrange
+        const args: any = {
+            fromCache: "CACHE_PATH",
+        };
+
+        // Act
+        const result = optionsFromArgs(args);
+
+        // Assert
+        expect(result.cachePath).toBe("CACHE_PATH");
+    });
+
+    it("should not set cachePath if args.outputCache is defined but falsy", () => {
+        // Arrange
+        const args: any = {
+            outputCache: "",
+        };
+
+        // Act
+        const result = optionsFromArgs(args);
+
+        // Assert
+        expect(result.cachePath).not.toBeDefined();
+    });
+
+    it("should not set cachePath if args.fromCache is defined but falsy", () => {
+        // Arrange
+        const args: any = {
+            fromCache: "",
+        };
+
+        // Act
+        const result = optionsFromArgs(args);
+
+        // Assert
+        expect(result.cachePath).not.toBeDefined();
+    });
 });

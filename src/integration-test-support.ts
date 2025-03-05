@@ -40,11 +40,12 @@ export const getExamples = () =>
  * Run checksync for an example.
  *
  * @param example The glob or folder that represents the example being run.
+ * @param scenario The scenario to run.
  * @returns A promise of the verbose logs from the run.
  */
 export const runChecksync = async (
     example: string,
-    scenario: Scenario,
+    scenario?: Scenario,
 ): Promise<string> => {
     const stringLogger = new StringLogger(true);
 
@@ -53,7 +54,7 @@ export const runChecksync = async (
 
     // Depending on the scenario, let's set up the args object.
     const scenarioArgs =
-        scenario === Scenario.CheckOnly
+        scenario == null || scenario === Scenario.CheckOnly
             ? {}
             : scenario === Scenario.JsonCheckOnly
               ? {json: true}
@@ -65,17 +66,40 @@ export const runChecksync = async (
         return Promise.reject(new Error(`Unknown scenario: ${scenario}`));
     }
 
+    const cachePath = path.join(TESTOUTPUT_DIR, `${getFilename(example)}.json`);
+    const outputCache = scenario == null ? cachePath : undefined;
+    const fromCache = scenario == null ? undefined : cachePath;
+
     // This takes an args object, looks for and loads the config file,
     // and then combines them with defaults to get the options to run.
     const options = await determineOptions(
         {
             _: [glob],
             ...scenarioArgs,
+            outputCache,
+            fromCache,
         },
         stringLogger,
     );
     await checkSync(options, stringLogger);
     return stringLogger.getLog();
+};
+
+/**
+ * Get the base filename for a given example scenario.
+ *
+ * @param example The example for the log.
+ * @param scenario The scenario for the log.
+ * @returns The path to the log file.
+ */
+const getFilename = (example: string, scenario?: Scenario) => {
+    // Normalize the example name so that it's a valid file name.
+    // Replace spaces, path separators, and other invalid characters.
+    const exampleName = example.replace(/[^a-zA-Z0-9]/g, "_");
+    if (scenario) {
+        return `${exampleName}.${scenario}`;
+    }
+    return exampleName;
 };
 
 /**
@@ -85,24 +109,22 @@ export const runChecksync = async (
  * @param scenario The scenario for the log.
  * @returns The path to the log file.
  */
-const getLogPath = (example: string, scenario: Scenario) => {
-    // Normalize the example name so that it's a valid file name.
-    // Replace spaces, path separators, and other invalid characters.
-    const exampleName = example.replace(/[^a-zA-Z0-9]/g, "_");
-    return path.join(TESTOUTPUT_DIR, `${exampleName}.${scenario}.log`);
+const getLogPath = (example: string, scenario?: Scenario) => {
+    return path.join(TESTOUTPUT_DIR, `${getFilename(example, scenario)}.log`);
 };
 
 /**
  * Write the log to disk for an example.
  *
  * @param example The example being written.
+ * @param scenario The scenario being written.
  * @param log The log to write.
  * @returns A promise of the file path written that resolves when the log is
  * written.
  */
 export const writeLog = (
     example: string,
-    scenario: Scenario,
+    scenario: Scenario | undefined,
     log: string,
 ): Promise<string> => {
     // Get the file path where the log will be written.
@@ -139,7 +161,7 @@ export const writeLog = (
  */
 export const readLog = (
     example: string,
-    scenario: Scenario,
+    scenario: Scenario | undefined,
 ): Promise<string | null> => {
     // Get the file path where the log will be read.
     const logPath = getLogPath(example, scenario);

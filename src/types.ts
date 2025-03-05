@@ -235,6 +235,22 @@ export type Options = {
      * when true, a tag may be empty.
      */
     allowEmptyTags?: boolean;
+    /**
+     * The path to the cache file.
+     *
+     * This is only used if cacheMode is not "ignore".
+     */
+    cachePath: string;
+    /**
+     * The cache mode.
+     *
+     * When "write", all files are parsed and the cache is written to the
+     * given file.
+     *
+     * When "read", instead of parsing files, the cache file is read and used
+     * to produce the desired output.
+     */
+    cacheMode: "ignore" | "write" | "read";
 };
 
 export type NormalizedPathInfo = {
