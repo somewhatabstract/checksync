@@ -16,6 +16,11 @@ jest.mock("../file-reference-logger");
 jest.mock("../fix-file");
 jest.mock("../get-launch-string");
 
+const errorsNotLoggedWithWarn = [
+    ErrorCode.pendingMigration,
+    ErrorCode.mismatchedChecksum,
+];
+
 describe("OutputSink", () => {
     describe("#startFile", () => {
         it("should not throw if a file has not been started and it has not already been drained", () => {
@@ -169,9 +174,50 @@ describe("OutputSink", () => {
                         );
                     });
 
+                    it("should log pending migrations with log.migrate", () => {
+                        // Arrange
+                        const NullLogger = new Logger();
+                        const options = {
+                            ...defaultOptions,
+                            json: false,
+                            autoFix: false,
+                        } as const;
+                        const dummyFileLogger: any = {
+                            file: "foo.js",
+                            migrate: jest.fn<any, any>(),
+                        } as const;
+                        jest.spyOn(
+                            FileReferenceLogger,
+                            "default",
+                        ).mockImplementation(() => dummyFileLogger);
+                        const outputSink = new OutputSink(options, NullLogger);
+                        const errorDetails: ErrorDetails = {
+                            markerID: "MARKER_ID",
+                            reason: "REASON",
+                            code: ErrorCode.pendingMigration,
+                            fix: {
+                                type: "replace",
+                                line: 1,
+                                text: "TEXT",
+                                description: "DESCRIPTION",
+                                declaration: "DECLARATION",
+                            },
+                        };
+                        outputSink.startFile("foo.js");
+
+                        // Act
+                        outputSink.processError(errorDetails);
+
+                        // Assert
+                        expect(dummyFileLogger.migrate).toHaveBeenCalledWith(
+                            "REASON",
+                            1,
+                        );
+                    });
+
                     it.each(
                         Object.values(ErrorCode).filter(
-                            (e) => e !== ErrorCode.mismatchedChecksum,
+                            (e) => !errorsNotLoggedWithWarn.includes(e),
                         ),
                     )("should log %s errors with log.warn", (code) => {
                         // Arrange
