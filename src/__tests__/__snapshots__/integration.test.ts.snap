@@ -3874,7 +3874,13 @@ Info     Loading cache from ROOT_DIR/.integrationtests/migrate_missing_target.js
 Verbose  __examples__/migrate_missing_target/example.js
 File has errors; skipping auto-fix
 Fix      __examples__/migrate_missing_target/example.js:3
-Migrated target for sync-tag 'migrate_missing_target' from 'ROOT_DIR/__examples__/migrate_missing_target/missing_target.py' to https://example.com/1/missing_target.py and updated checksum from No checksum to 1291658605.
+Migrated sync-tag 'migrate_missing_target'
+Target changed from '__examples__/migrate_missing_target/missing_target.py' to 'https://example.com/1/missing_target.py'
+Checksum updated from 12345 to 1291658605
+Fix      __examples__/migrate_missing_target/example.js:4
+Migrated sync-tag 'migrate_missing_target2'
+Target changed from '__examples__/migrate_missing_target/subfolder/missing_target.py' to 'https://example.com/2/missing_target.py'
+Checksum updated from no checksum to 1291658605
 
 <group 1 file(s) would have been fixed.
 To fix, run: >
@@ -3950,7 +3956,10 @@ Verbose  Combined options with defaults: {
 Info     Loading cache from ROOT_DIR/.integrationtests/migrate_missing_target.json
 Migrate  __examples__/migrate_missing_target/example.js:3
 No return tag named 'migrate_missing_target' in '__examples__/migrate_missing_target/missing_target.py'
-Recommend migration to remote target 'https://example.com/1/missing_target.py' and update checksum (No checksum -> 1291658605).
+Recommend migration to remote target 'https://example.com/1/missing_target.py' and update checksum to 1291658605.
+Migrate  __examples__/migrate_missing_target/example.js:4
+No return tag named 'migrate_missing_target2' in '__examples__/migrate_missing_target/subfolder/missing_target.py'
+Recommend migration to remote target 'https://example.com/2/missing_target.py' and update checksum to 1291658605.
 
 <group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
 
@@ -4031,7 +4040,7 @@ Info     Loading cache from ROOT_DIR/.integrationtests/migrate_missing_target.js
         "__examples__/migrate_missing_target/example.js": [
             {
                 "markerID": "migrate_missing_target",
-                "reason": "No return tag named 'migrate_missing_target' in '__examples__/migrate_missing_target/missing_target.py'. Recommend migration to remote target 'https://example.com/1/missing_target.py' and update checksum (No checksum -> 1291658605).",
+                "reason": "No return tag named 'migrate_missing_target' in '__examples__/migrate_missing_target/missing_target.py'. Recommend migration to remote target 'https://example.com/1/missing_target.py' and update checksum to 1291658605.",
                 "code": "pending-migration",
                 "location": {
                     "line": 3
@@ -4040,8 +4049,23 @@ Info     Loading cache from ROOT_DIR/.integrationtests/migrate_missing_target.js
                     "type": "replace",
                     "line": 3,
                     "text": "// sync-start:migrate_missing_target 1291658605 https://example.com/1/missing_target.py",
-                    "declaration": "// sync-start:migrate_missing_target __examples__/migrate_missing_target/missing_target.py",
-                    "description": "Migrated target for sync-tag 'migrate_missing_target' from 'ROOT_DIR/__examples__/migrate_missing_target/missing_target.py' to https://example.com/1/missing_target.py and updated checksum from No checksum to 1291658605."
+                    "declaration": "// sync-start:migrate_missing_target 12345 __examples__/migrate_missing_target/missing_target.py",
+                    "description": "Migrated sync-tag 'migrate_missing_target'. Target changed from '__examples__/migrate_missing_target/missing_target.py' to 'https://example.com/1/missing_target.py'. Checksum updated from 12345 to 1291658605"
+                }
+            },
+            {
+                "markerID": "migrate_missing_target2",
+                "reason": "No return tag named 'migrate_missing_target2' in '__examples__/migrate_missing_target/subfolder/missing_target.py'. Recommend migration to remote target 'https://example.com/2/missing_target.py' and update checksum to 1291658605.",
+                "code": "pending-migration",
+                "location": {
+                    "line": 4
+                },
+                "fix": {
+                    "type": "replace",
+                    "line": 4,
+                    "text": "// sync-start:migrate_missing_target2 1291658605 https://example.com/2/missing_target.py",
+                    "declaration": "// sync-start:migrate_missing_target2 __examples__/migrate_missing_target/subfolder/missing_target.py",
+                    "description": "Migrated sync-tag 'migrate_missing_target2'. Target changed from '__examples__/migrate_missing_target/subfolder/missing_target.py' to 'https://example.com/2/missing_target.py'. Checksum updated from no checksum to 1291658605"
                 }
             }
         ]
