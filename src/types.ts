@@ -21,6 +21,7 @@ export interface IPositionLog extends ILog {
     readonly log: (message: string, line?: string | number) => void;
     readonly warn: (message: string, line?: string | number) => void;
     readonly mismatch: (message: string, line?: string | number) => void;
+    readonly migrate: (message: string, line?: string | number) => void;
     readonly fix: (message: string, line?: string | number) => void;
 }
 

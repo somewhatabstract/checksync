@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-unassigned-import
+import "./polyfills";
 import path from "path";
 import fs from "fs";
 import ancesdir from "ancesdir";

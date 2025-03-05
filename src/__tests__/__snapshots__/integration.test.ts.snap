@@ -3803,6 +3803,332 @@ Verbose  Discovered paths: [
 Info     Cache written to ROOT_DIR/.integrationtests/malformed_start.json"
 `;
 
+exports[`Integration Tests (see __examples__ folder) Example migrate_missing_target should report example migrate_missing_target to match snapshot for scenario autofix 1`] = `
+"Verbose  Options from arguments: {
+  "includeGlobs": [
+    "**/migrate_missing_target/**"
+  ],
+  "autoFix": true,
+  "dryRun": true,
+  "cachePath": "ROOT_DIR/.integrationtests/migrate_missing_target.json",
+  "cacheMode": "read"
+}
+Verbose  Looking for configuration file based on root marker...
+Verbose  Checking ROOT_DIR/.checksyncrc...
+Verbose  Checking ROOT_DIR/.checksyncrc.json...
+Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
+Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
+Verbose  Validating configuration
+Verbose  Configuration is valid
+Verbose  Options from config: {
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "autoFix": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "dryRun": false,
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
+}
+Verbose  Combined options with defaults: {
+  "autoFix": true,
+  "json": false,
+  "allowEmptyTags": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "dryRun": true,
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "includeGlobs": [
+    "**/migrate_missing_target/**"
+  ],
+  "cachePath": "ROOT_DIR/.integrationtests/migrate_missing_target.json",
+  "cacheMode": "read",
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
+}
+Info     DRY-RUN: Files will not be modified
+Info     Loading cache from ROOT_DIR/.integrationtests/migrate_missing_target.json
+Verbose  __examples__/migrate_missing_target/example.js
+File has errors; skipping auto-fix
+Fix      __examples__/migrate_missing_target/example.js:3
+Migrated target for sync-tag 'migrate_missing_target' from 'ROOT_DIR/__examples__/migrate_missing_target/missing_target.py' to https://example.com/1/missing_target.py and updated checksum from No checksum to 1291658605.
+
+<group 1 file(s) would have been fixed.
+To fix, run: >
+  checksync -u __examples__/migrate_missing_target/example.js
+<end_group>
+🎉  Everything is in sync!"
+`;
+
+exports[`Integration Tests (see __examples__ folder) Example migrate_missing_target should report example migrate_missing_target to match snapshot for scenario check-only 1`] = `
+"Verbose  Options from arguments: {
+  "includeGlobs": [
+    "**/migrate_missing_target/**"
+  ],
+  "cachePath": "ROOT_DIR/.integrationtests/migrate_missing_target.json",
+  "cacheMode": "read"
+}
+Verbose  Looking for configuration file based on root marker...
+Verbose  Checking ROOT_DIR/.checksyncrc...
+Verbose  Checking ROOT_DIR/.checksyncrc.json...
+Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
+Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
+Verbose  Validating configuration
+Verbose  Configuration is valid
+Verbose  Options from config: {
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "autoFix": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "dryRun": false,
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
+}
+Verbose  Combined options with defaults: {
+  "autoFix": false,
+  "json": false,
+  "allowEmptyTags": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "dryRun": false,
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "includeGlobs": [
+    "**/migrate_missing_target/**"
+  ],
+  "cachePath": "ROOT_DIR/.integrationtests/migrate_missing_target.json",
+  "cacheMode": "read",
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
+}
+Info     Loading cache from ROOT_DIR/.integrationtests/migrate_missing_target.json
+Migrate  __examples__/migrate_missing_target/example.js:3
+No return tag named 'migrate_missing_target' in '__examples__/migrate_missing_target/missing_target.py'
+Recommend migration to remote target 'https://example.com/1/missing_target.py' and update checksum (No checksum -> 1291658605).
+
+<group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
+
+  checksync -u __examples__/migrate_missing_target/example.js
+<end_group>"
+`;
+
+exports[`Integration Tests (see __examples__ folder) Example migrate_missing_target should report example migrate_missing_target to match snapshot for scenario json-check-only 1`] = `
+"Verbose  Options from arguments: {
+  "includeGlobs": [
+    "**/migrate_missing_target/**"
+  ],
+  "json": true,
+  "cachePath": "ROOT_DIR/.integrationtests/migrate_missing_target.json",
+  "cacheMode": "read"
+}
+Verbose  Looking for configuration file based on root marker...
+Verbose  Checking ROOT_DIR/.checksyncrc...
+Verbose  Checking ROOT_DIR/.checksyncrc.json...
+Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
+Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
+Verbose  Validating configuration
+Verbose  Configuration is valid
+Verbose  Options from config: {
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "autoFix": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "dryRun": false,
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
+}
+Verbose  Combined options with defaults: {
+  "autoFix": false,
+  "json": true,
+  "allowEmptyTags": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "dryRun": false,
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "includeGlobs": [
+    "**/migrate_missing_target/**"
+  ],
+  "cachePath": "ROOT_DIR/.integrationtests/migrate_missing_target.json",
+  "cacheMode": "read",
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
+}
+Info     Loading cache from ROOT_DIR/.integrationtests/migrate_missing_target.json
+{
+    "version": "0.0.0",
+    "launchString": "checksync -u __examples__/migrate_missing_target/example.js",
+    "files": {
+        "__examples__/migrate_missing_target/example.js": [
+            {
+                "markerID": "migrate_missing_target",
+                "reason": "No return tag named 'migrate_missing_target' in '__examples__/migrate_missing_target/missing_target.py'. Recommend migration to remote target 'https://example.com/1/missing_target.py' and update checksum (No checksum -> 1291658605).",
+                "code": "pending-migration",
+                "location": {
+                    "line": 3
+                },
+                "fix": {
+                    "type": "replace",
+                    "line": 3,
+                    "text": "// sync-start:migrate_missing_target 1291658605 https://example.com/1/missing_target.py",
+                    "declaration": "// sync-start:migrate_missing_target __examples__/migrate_missing_target/missing_target.py",
+                    "description": "Migrated target for sync-tag 'migrate_missing_target' from 'ROOT_DIR/__examples__/migrate_missing_target/missing_target.py' to https://example.com/1/missing_target.py and updated checksum from No checksum to 1291658605."
+                }
+            }
+        ]
+    }
+}"
+`;
+
+exports[`Integration Tests (see __examples__ folder) Example migrate_missing_target should report example migrate_missing_target to match snapshot for scenario undefined 1`] = `
+"Verbose  Options from arguments: {
+  "includeGlobs": [
+    "**/migrate_missing_target/**"
+  ],
+  "cachePath": "ROOT_DIR/.integrationtests/migrate_missing_target.json",
+  "cacheMode": "write"
+}
+Verbose  Looking for configuration file based on root marker...
+Verbose  Checking ROOT_DIR/.checksyncrc...
+Verbose  Checking ROOT_DIR/.checksyncrc.json...
+Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
+Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
+Verbose  Validating configuration
+Verbose  Configuration is valid
+Verbose  Options from config: {
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "autoFix": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "dryRun": false,
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
+}
+Verbose  Combined options with defaults: {
+  "autoFix": false,
+  "json": false,
+  "allowEmptyTags": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "dryRun": false,
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "includeGlobs": [
+    "**/migrate_missing_target/**"
+  ],
+  "cachePath": "ROOT_DIR/.integrationtests/migrate_missing_target.json",
+  "cacheMode": "write",
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
+}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
+Verbose  Include globs: [
+    "**/migrate_missing_target/**"
+]
+Verbose  Exclude globs: [
+    "**/excluded/**"
+]
+Verbose  Discovered paths: [
+    "ROOT_DIR/__examples__/migrate_missing_target/example.js"
+]
+Info     Cache written to ROOT_DIR/.integrationtests/migrate_missing_target.json"
+`;
+
 exports[`Integration Tests (see __examples__ folder) Example missing_target should report example missing_target to match snapshot for scenario autofix 1`] = `
 "Verbose  Options from arguments: {
   "includeGlobs": [

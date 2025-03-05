@@ -88,6 +88,8 @@ export default class OutputSink {
             if (!this._options.autoFix && !this._options.json) {
                 if (code === ErrorCode.mismatchedChecksum) {
                     fileLog.mismatch(reason, fix.line);
+                } else if (code === ErrorCode.pendingMigration) {
+                    fileLog.migrate(reason, fix.line);
                 } else {
                     fileLog.warn(reason, fix.line);
                 }

@@ -5,6 +5,7 @@ import {NoChecksum} from "./types";
 
 import {FileInfo, Marker, MarkerCache, ErrorDetails, Options} from "./types";
 import normalizeSeparators from "./normalize-separators";
+import {determineMigration} from "./determine-migration";
 
 /**
  * Generate errors for a given source file.
@@ -57,12 +58,18 @@ export default function* generateErrors(
     }
 
     // First, we need to report the errors we got during parsing.
-    // TODO: Filter out any missing target errors where we have a migration
-    // rule. Then yield an ErrorCode.migratedTarget fix for each of those.
-    // To do that, we need to link the error to the tag that needs to be
-    // updated. So the parse should include that info, or the errors should
-    // be indexable by marker ID.
-    yield* fileInfo.errors;
+    for (const error of fileInfo.errors) {
+        if (error.code === ErrorCode.fileDoesNotExist) {
+            // Does this error relate to a migrateable target?
+            const sourceMarker = fileInfo.markers[error.markerID!];
+            const sourceRef = sourceMarker.targets[error.location!.line];
+            if (determineMigration(options, sourceRef) != null) {
+                // We will migrate this later.
+                continue;
+            }
+        }
+        yield error;
+    }
 
     // Now, let's look at the markers and trace errors for those.
     // We only care about these in file that are not read-only since we
@@ -87,10 +94,12 @@ export default function* generateErrors(
         for (const sourceLine of targetLines) {
             const sourceRef = sourceMarker.targets[sourceLine];
 
-            // TODO: If we are set to migrate all targets, not just missing,
-            // then we need to first check if this sourceRef.target is
-            // a migration. If so, we need to output an
-            // ErrorCode.migratedTarget and yield a fix for that.
+            // TODO: Migrations
+            // 1. If mode is "all", then just determine if this should
+            //    be migrated and output that, then continue.
+            // 2. If mode is "missing", then we'll just do a migration for
+            //    local targets when the target line is missing or the target
+            //    checksum isn't available.
 
             if (sourceRef.type === "local") {
                 const targetInfo: FileInfo | null | undefined =
@@ -102,21 +111,58 @@ export default function* generateErrors(
 
                 const currentChecksum = sourceRef.checksum;
                 const targetChecksum = targetDetails?.checksum;
+
                 if (currentChecksum === targetChecksum) {
-                    // If the checksum matches and we have no errors, we can skip
-                    // this edge.
+                    // If the checksum matches and we have no errors, we can
+                    // skip this edge.
                     continue;
                 }
 
                 if (targetDetails?.line == null || targetChecksum == null) {
-                    yield {
-                        markerID,
-                        reason: `No return tag named '${markerID}' in '${cwdRelativePath(
-                            sourceRef.target,
-                        )}'`,
-                        code: ErrorCode.noReturnTag,
-                        location: {line: sourceLine},
-                    };
+                    // This is a missing return tag.
+                    // Can be because the target file doesn't exist or there's
+                    // no corresponding tag in that file. We don't split that
+                    // hair here; if the tag is not there, and we have a
+                    // migration, then we report it as a pending migration.
+                    const migratedTarget = determineMigration(
+                        options,
+                        sourceRef,
+                    );
+                    if (migratedTarget == null) {
+                        yield {
+                            markerID,
+                            reason: `No return tag named '${markerID}' in '${cwdRelativePath(
+                                sourceRef.target,
+                            )}'`,
+                            code: ErrorCode.noReturnTag,
+                            location: {line: sourceLine},
+                        };
+                    } else {
+                        const {commentStart, commentEnd} = sourceMarker;
+                        const startOfComment =
+                            sourceRef.declaration.indexOf(commentStart);
+                        const indent = sourceRef.declaration.substring(
+                            0,
+                            startOfComment,
+                        );
+                        const fix = `${indent}${commentStart} sync-start:${markerID} ${sourceMarker.selfChecksum} ${migratedTarget}${commentEnd || ""}`;
+                        yield {
+                            markerID,
+                            reason: `No return tag named '${markerID}' in '${cwdRelativePath(
+                                sourceRef.target,
+                            )}'. Recommend migration to remote target '${migratedTarget}' and update checksum (${currentChecksum || NoChecksum} -> ${sourceMarker.selfChecksum}).`,
+                            code: ErrorCode.pendingMigration,
+                            location: {line: sourceLine},
+                            fix: {
+                                type: "replace",
+                                line: sourceLine,
+                                text: fix,
+                                declaration: sourceRef.declaration,
+                                description: `Migrated target for sync-tag '${markerID}' from '${sourceRef.target}' to ${migratedTarget} and updated checksum from ${currentChecksum || NoChecksum} to ${sourceMarker.selfChecksum}.`,
+                            },
+                        };
+                    }
+                    // We're done with this one, so skip anymore processing.
                     continue;
                 }
 
@@ -124,6 +170,9 @@ export default function* generateErrors(
                     sourceRef.target,
                 );
 
+                const checksums = `${
+                    currentChecksum || NoChecksum
+                } != ${targetChecksum}`;
                 const {commentStart, commentEnd} = sourceMarker;
                 const startOfComment =
                     sourceRef.declaration.indexOf(commentStart);
@@ -131,9 +180,6 @@ export default function* generateErrors(
                     0,
                     startOfComment,
                 );
-                const checksums = `${
-                    currentChecksum || NoChecksum
-                } != ${targetChecksum}`;
                 const fix = `${indent}${commentStart} sync-start:${markerID} ${targetChecksum} ${rootRelativePath(
                     normalizedTargetRef,
                     options.rootMarker,
@@ -161,6 +207,9 @@ export default function* generateErrors(
                     },
                 };
             } else if (sourceRef.type === "remote") {
+                // TODO: We don't currently support migrating remote tags, but we
+                // could. Might be useful if code moved repos, or something,
+                // I suppose.
                 const currentChecksum = sourceRef.checksum;
                 const targetChecksum = sourceMarker.selfChecksum;
                 if (currentChecksum === targetChecksum) {

@@ -18,17 +18,15 @@
     "migration": {
         "mappings": [
             {
-                "to": "https://example.com/1",
+                "to": "https://example.com/1/",
                 "from": [
-                    "remote/1/",
-                    "remote/2/"
+                    "__examples__/migrate_missing_target/"
                 ]
             },
             {
-                "to": "https://example.com/2",
+                "to": "https://example.com/2/",
                 "from": [
-                    "remote/3/",
-                    "remote/4/"
+                    "__examples__/migrate_existing_target/"
                 ]
             }
         ]
