@@ -154,7 +154,7 @@ export const malformedStartTag = (line: number): ErrorDetails => ({
  * @param markerID The ID of the marker that is affected.
  * @param declaration The original declaration of the marker exhibiting the
  * mismatch.
- * @param targetPath The path of the target tag.
+ * @param absoluteTargetPath The path of the target tag.
  * @param targetLine The line number where the marker is located.
  * @param lineToBeFixed The line number where the fix should be applied.
  * @param incorrectChecksum The incorrect checksum.
@@ -164,27 +164,30 @@ export const malformedStartTag = (line: number): ErrorDetails => ({
 export const mismatchedChecksumForLocalTarget = (
     markerID: string,
     declaration: string,
-    targetPath: string,
+    absoluteTargetPath: string,
     targetLine: number,
     lineToBeFixed: number,
     incorrectChecksum: string,
     correctChecksum: string,
     fixedTag: string,
-): ErrorDetails => ({
-    markerID,
-    code: ErrorCode.mismatchedChecksum,
-    reason: `Looks like you changed the target content for sync-tag '${markerID}' in '${targetPath}:${
-        targetLine
-    }'. Make sure you've made corresponding changes in the source file, if necessary (${incorrectChecksum} != ${correctChecksum})`,
-    location: {line: targetLine},
-    fix: {
-        type: "replace",
-        line: lineToBeFixed,
-        text: fixedTag,
-        declaration,
-        description: `Updated checksum for sync-tag '${markerID}' referencing '${targetPath}:${targetLine}' from ${incorrectChecksum.toLowerCase()} to ${correctChecksum}.`,
-    },
-});
+): ErrorDetails => {
+    const currentCwdRelativeTargetPath = cwdRelativePath(absoluteTargetPath);
+    return {
+        markerID,
+        code: ErrorCode.mismatchedChecksum,
+        reason: `Looks like you changed the target content for sync-tag '${markerID}' in '${currentCwdRelativeTargetPath}:${
+            targetLine
+        }'. Make sure you've made corresponding changes in the source file, if necessary (${incorrectChecksum} != ${correctChecksum})`,
+        location: {line: targetLine},
+        fix: {
+            type: "replace",
+            line: lineToBeFixed,
+            text: fixedTag,
+            declaration,
+            description: `Updated checksum for sync-tag '${markerID}' referencing '${currentCwdRelativeTargetPath}:${targetLine}' from ${incorrectChecksum.toLowerCase()} to ${correctChecksum}.`,
+        },
+    };
+};
 
 /**
  * Create an error indicating a mismatched checksum for a remotely targeted tag.

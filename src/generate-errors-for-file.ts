@@ -104,10 +104,6 @@ export default function* generateErrors(
                     continue;
                 }
 
-                const normalizedTargetRef = normalizeSeparators(
-                    sourceRef.target,
-                );
-
                 if (targetDetails?.line == null || targetChecksum == null) {
                     // This is a missing return tag.
                     // Can be because the target file doesn't exist or there's
@@ -150,7 +146,7 @@ export default function* generateErrors(
                 yield Errors.mismatchedChecksumForLocalTarget(
                     markerID,
                     sourceRef.declaration,
-                    cwdRelativePath(normalizedTargetRef),
+                    sourceRef.target,
                     targetDetails.line,
                     sourceLine,
                     currentChecksum || NoChecksum,
@@ -160,9 +156,11 @@ export default function* generateErrors(
                         sourceMarker.commentStart,
                         sourceMarker.commentEnd,
                         targetChecksum,
-                        rootRelativePath(
-                            normalizedTargetRef,
-                            options.rootMarker,
+                        normalizeSeparators(
+                            rootRelativePath(
+                                sourceRef.target,
+                                options.rootMarker,
+                            ),
                         ),
                     )}`,
                 );
