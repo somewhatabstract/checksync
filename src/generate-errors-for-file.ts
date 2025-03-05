@@ -6,6 +6,7 @@ import {NoChecksum} from "./types";
 import {FileInfo, Marker, MarkerCache, ErrorDetails, Options} from "./types";
 import normalizeSeparators from "./normalize-separators";
 import {determineMigration} from "./determine-migration";
+import {getTargetDetailsForAlias} from "./get-target-details-for-alias";
 
 /**
  * Generate errors for a given source file.
@@ -24,33 +25,6 @@ export default function* generateErrors(
     file: string,
     cache: Readonly<MarkerCache>,
 ): Iterable<ErrorDetails> {
-    const getTargetDetail = (
-        targetMarker: Marker | null | undefined,
-        aliases: ReadonlyArray<string>,
-    ) => {
-        if (targetMarker == null) {
-            return null;
-        }
-        // We look for a target that points to our file or an alias of our
-        // file - the file is considered its own alias.
-        const matchingTargets = Object.entries(targetMarker.targets).filter(
-            ([_, target]) => aliases.includes(target.target),
-        );
-        if (matchingTargets.length === 0) {
-            return null;
-        }
-        return {
-            // We grab the line number of the first target file sync-start
-            // tag for this markerID and return that as the target line.
-            // This will allow us to identify the target content in our
-            // messaging to the user.
-            // The first index is the target, the second index is the key
-            // of that target, which equates to its line number.
-            line: parseInt(matchingTargets[0][0]),
-            checksum: targetMarker.contentChecksum,
-        };
-    };
-
     const fileInfo = cache[file];
     if (fileInfo == null) {
         // If, for some reason, this file doesn't exist, just skip it.
@@ -113,7 +87,10 @@ export default function* generateErrors(
                 const targetMarker: Marker | null | undefined =
                     targetInfo?.markers[markerID];
 
-                const targetDetails = getTargetDetail(targetMarker, aliases);
+                const targetDetails = getTargetDetailsForAlias(
+                    targetMarker,
+                    aliases,
+                );
 
                 const currentChecksum = sourceRef.checksum;
                 const targetChecksum = targetDetails?.checksum;
