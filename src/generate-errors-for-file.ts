@@ -153,7 +153,7 @@ export default function* generateErrors(
                             markerID,
                             reason: `No return tag named '${markerID}' in '${cwdRelativePath(
                                 sourceRef.target,
-                            )}'. Recommend migration to remote target '${migratedTarget}' and update checksum (${currentChecksum || NoChecksum} -> ${sourceMarker.selfChecksum}).`,
+                            )}'. Recommend migration to remote target '${migratedTarget}' and update checksum to ${sourceMarker.selfChecksum}.`,
                             code: ErrorCode.pendingMigration,
                             location: {line: sourceLine},
                             fix: {
@@ -164,7 +164,7 @@ export default function* generateErrors(
                                 description: `Migrated sync-tag '${markerID}'. Target changed from '${rootRelativePath(
                                     sourceRef.target,
                                     options.rootMarker,
-                                )}' to '${migratedTarget}'. Checksum: ${currentChecksum || NoChecksum} >>> ${sourceMarker.selfChecksum}`,
+                                )}' to '${migratedTarget}'. Checksum updated from ${currentChecksum || NoChecksum.toLowerCase()} to ${sourceMarker.selfChecksum}`,
                             },
                         };
                     }
