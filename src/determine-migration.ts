@@ -1,3 +1,4 @@
+import normalizeSeparators from "./normalize-separators";
 import rootRelativePath from "./root-relative-path";
 import {Options, Target} from "./types";
 
@@ -15,9 +16,8 @@ export const determineMigration = (
         .entries()
         .reduce(
             (migration, [from, to]) => {
-                const currentTarget = rootRelativePath(
-                    sourceRef.target,
-                    options.rootMarker,
+                const currentTarget = normalizeSeparators(
+                    rootRelativePath(sourceRef.target, options.rootMarker),
                 );
                 // We want the best match, which, since we only check
                 // that the target starts with the match, is determined to be
