@@ -1,5 +1,17 @@
 # checksync
 
+## 8.0.0
+
+### Major Changes
+
+- 4b044fb: Add support for self-hashed tags with remote targets
+
+### Patch Changes
+
+- 23439ea: Update to TypeScript 5.7.3
+- ecd9da4: Moving to pnpm instead of yarn
+- e2f8b09: Add ability to parse markers to a JSON file and then use that file as input to future runs
+
 ## 7.0.1
 
 ### Patch Changes
