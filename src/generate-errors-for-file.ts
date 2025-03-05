@@ -105,6 +105,9 @@ export default function* generateErrors(
             //    checksum isn't available.
 
             if (sourceRef.type === "local") {
+                const normalizedTargetRef = normalizeSeparators(
+                    sourceRef.target,
+                );
                 const targetInfo: FileInfo | null | undefined =
                     cache[sourceRef.target];
                 const targetMarker: Marker | null | undefined =
@@ -162,7 +165,7 @@ export default function* generateErrors(
                                 text: fix,
                                 declaration: sourceRef.declaration,
                                 description: `Migrated sync-tag '${markerID}'. Target changed from '${rootRelativePath(
-                                    sourceRef.target,
+                                    normalizedTargetRef,
                                     options.rootMarker,
                                 )}' to '${migratedTarget}'. Checksum updated from ${currentChecksum || NoChecksum.toLowerCase()} to ${sourceMarker.selfChecksum}`,
                             },
@@ -171,10 +174,6 @@ export default function* generateErrors(
                     // We're done with this one, so skip anymore processing.
                     continue;
                 }
-
-                const normalizedTargetRef = normalizeSeparators(
-                    sourceRef.target,
-                );
 
                 const checksums = `${
                     currentChecksum || NoChecksum
