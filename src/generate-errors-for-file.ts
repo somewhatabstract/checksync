@@ -1,4 +1,5 @@
 import {ErrorCode} from "./error-codes";
+import * as Errors from "./errors";
 import rootRelativePath from "./root-relative-path";
 import cwdRelativePath from "./cwd-relative-path";
 import {NoChecksum} from "./types";
@@ -7,6 +8,7 @@ import {FileInfo, Marker, MarkerCache, ErrorDetails, Options} from "./types";
 import normalizeSeparators from "./normalize-separators";
 import {determineMigration} from "./determine-migration";
 import {getTargetDetailsForAlias} from "./get-target-details-for-alias";
+import {formatSyncTagStart} from "./format-sync-tag-start";
 
 /**
  * Generate errors for a given source file.
@@ -70,6 +72,10 @@ export default function* generateErrors(
          */
         for (const sourceLine of targetLines) {
             const sourceRef = sourceMarker.targets[sourceLine];
+            const startOfComment = sourceRef.declaration.indexOf(
+                sourceMarker.commentStart,
+            );
+            const indent = sourceRef.declaration.substring(0, startOfComment);
 
             // TODO: Migrations
             // 1. If mode is "all", then just determine if this should
@@ -79,9 +85,6 @@ export default function* generateErrors(
             //    checksum isn't available.
 
             if (sourceRef.type === "local") {
-                const normalizedTargetRef = normalizeSeparators(
-                    sourceRef.target,
-                );
                 const targetInfo: FileInfo | null | undefined =
                     cache[sourceRef.target];
                 const targetMarker: Marker | null | undefined =
@@ -101,6 +104,10 @@ export default function* generateErrors(
                     continue;
                 }
 
+                const normalizedTargetRef = normalizeSeparators(
+                    sourceRef.target,
+                );
+
                 if (targetDetails?.line == null || targetChecksum == null) {
                     // This is a missing return tag.
                     // Can be because the target file doesn't exist or there's
@@ -112,82 +119,53 @@ export default function* generateErrors(
                         sourceRef,
                     );
                     if (migratedTarget == null) {
-                        yield {
+                        yield Errors.noReturnTag(
                             markerID,
-                            reason: `No return tag named '${markerID}' in '${cwdRelativePath(
-                                sourceRef.target,
-                            )}'`,
-                            code: ErrorCode.noReturnTag,
-                            location: {line: sourceLine},
-                        };
-                    } else {
-                        const {commentStart, commentEnd} = sourceMarker;
-                        const startOfComment =
-                            sourceRef.declaration.indexOf(commentStart);
-                        const indent = sourceRef.declaration.substring(
-                            0,
-                            startOfComment,
+                            sourceLine,
+                            cwdRelativePath(sourceRef.target),
                         );
-                        const fix = `${indent}${commentStart} sync-start:${markerID} ${sourceMarker.selfChecksum} ${migratedTarget}${commentEnd || ""}`;
-                        yield {
+                    } else {
+                        yield Errors.pendingMigrationForMissingTarget(
+                            options,
                             markerID,
-                            reason: `No return tag named '${markerID}' in '${cwdRelativePath(
-                                sourceRef.target,
-                            )}'. Recommend migration to remote target '${migratedTarget}' and update checksum to ${sourceMarker.selfChecksum}.`,
-                            code: ErrorCode.pendingMigration,
-                            location: {line: sourceLine},
-                            fix: {
-                                type: "replace",
-                                line: sourceLine,
-                                text: fix,
-                                declaration: sourceRef.declaration,
-                                description: `Migrated sync-tag '${markerID}'. Target changed from '${rootRelativePath(
-                                    normalizedTargetRef,
-                                    options.rootMarker,
-                                )}' to '${migratedTarget}'. Checksum updated from ${currentChecksum || NoChecksum.toLowerCase()} to ${sourceMarker.selfChecksum}`,
-                            },
-                        };
+                            sourceRef.declaration,
+                            sourceLine,
+                            sourceRef.target,
+                            migratedTarget,
+                            currentChecksum || NoChecksum,
+                            sourceMarker.selfChecksum,
+                            `${indent}${formatSyncTagStart(
+                                markerID,
+                                sourceMarker.commentStart,
+                                sourceMarker.commentEnd,
+                                sourceMarker.selfChecksum,
+                                migratedTarget,
+                            )}`,
+                        );
                     }
                     // We're done with this one, so skip anymore processing.
                     continue;
                 }
 
-                const checksums = `${
-                    currentChecksum || NoChecksum
-                } != ${targetChecksum}`;
-                const {commentStart, commentEnd} = sourceMarker;
-                const startOfComment =
-                    sourceRef.declaration.indexOf(commentStart);
-                const indent = sourceRef.declaration.substring(
-                    0,
-                    startOfComment,
-                );
-                const fix = `${indent}${commentStart} sync-start:${markerID} ${targetChecksum} ${rootRelativePath(
-                    normalizedTargetRef,
-                    options.rootMarker,
-                )}${commentEnd || ""}`;
-
-                yield {
+                yield Errors.mismatchedChecksumForLocalTarget(
                     markerID,
-                    code: ErrorCode.mismatchedChecksum,
-                    reason: `Looks like you changed the target content for sync-tag '${markerID}' in '${cwdRelativePath(
-                        normalizedTargetRef,
-                    )}:${
-                        targetDetails.line
-                    }'. Make sure you've made corresponding changes in the source file, if necessary (${checksums})`,
-                    location: {line: targetDetails.line},
-                    fix: {
-                        type: "replace",
-                        line: sourceLine,
-                        text: fix,
-                        declaration: sourceRef.declaration,
-                        description: `Updated checksum for sync-tag '${markerID}' referencing '${cwdRelativePath(
+                    sourceRef.declaration,
+                    cwdRelativePath(normalizedTargetRef),
+                    targetDetails.line,
+                    sourceLine,
+                    currentChecksum || NoChecksum,
+                    targetChecksum,
+                    `${indent}${formatSyncTagStart(
+                        markerID,
+                        sourceMarker.commentStart,
+                        sourceMarker.commentEnd,
+                        targetChecksum,
+                        rootRelativePath(
                             normalizedTargetRef,
-                        )}:${targetDetails.line}' from ${
-                            currentChecksum || NoChecksum.toLowerCase()
-                        } to ${targetChecksum}.`,
-                    },
-                };
+                            options.rootMarker,
+                        ),
+                    )}`,
+                );
             } else if (sourceRef.type === "remote") {
                 // TODO: We don't currently support migrating remote tags, but we
                 // could. Might be useful if code moved repos, or something,
@@ -200,33 +178,21 @@ export default function* generateErrors(
                     continue;
                 }
 
-                const {commentStart, commentEnd} = sourceMarker;
-                const startOfComment =
-                    sourceRef.declaration.indexOf(commentStart);
-                const indent = sourceRef.declaration.substring(
-                    0,
-                    startOfComment,
-                );
-                const checksums = `${
-                    currentChecksum || NoChecksum
-                } != ${targetChecksum}`;
-                const fix = `${indent}${commentStart} sync-start:${markerID} ${targetChecksum} ${sourceRef.target}${commentEnd || ""}`;
-
-                yield {
+                yield Errors.mismatchedChecksumForRemoteTarget(
                     markerID,
-                    code: ErrorCode.mismatchedChecksum,
-                    reason: `Looks like you changed the content of sync-tag '${markerID}' or the path of the file that contains the tag. Make sure you've made corresponding changes at ${sourceRef.target}, if necessary (${checksums})`,
-                    location: {line: sourceLine},
-                    fix: {
-                        type: "replace",
-                        line: sourceLine,
-                        text: fix,
-                        declaration: sourceRef.declaration,
-                        description: `Updated checksum for sync-tag '${markerID}' referencing '${sourceRef.target}' from ${
-                            currentChecksum || NoChecksum.toLowerCase()
-                        } to ${targetChecksum}.`,
-                    },
-                };
+                    sourceRef.declaration,
+                    sourceRef.target,
+                    sourceLine,
+                    currentChecksum || NoChecksum,
+                    targetChecksum,
+                    `${indent}${formatSyncTagStart(
+                        markerID,
+                        sourceMarker.commentStart,
+                        sourceMarker.commentEnd,
+                        targetChecksum,
+                        sourceRef.target,
+                    )}`,
+                );
             } else {
                 throw new Error(`Unknown target type: ${sourceRef.type}`);
             }

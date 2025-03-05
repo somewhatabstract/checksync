@@ -143,7 +143,7 @@ describe("#generateMarkerEdges", () => {
                     text: "// sync-start:marker 1234 filea",
                     declaration: "// sync-start:marker WRONG filea",
                     description:
-                        "Updated checksum for sync-tag 'marker' referencing 'filea:1' from WRONG to 1234.",
+                        "Updated checksum for sync-tag 'marker' referencing 'filea:1' from wrong to 1234.",
                 },
             },
         ]);
@@ -715,7 +715,7 @@ describe("#generateMarkerEdges", () => {
                     text: "// sync-start:marker 1234 https://fileb",
                     declaration: "// sync-start:marker WRONG https://fileb",
                     description:
-                        "Updated checksum for sync-tag 'marker' referencing 'https://fileb' from WRONG to 1234.",
+                        "Updated checksum for sync-tag 'marker' referencing 'https://fileb' from wrong to 1234.",
                 },
             },
         ]);

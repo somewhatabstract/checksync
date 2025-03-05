@@ -5,7 +5,7 @@ import fs from "fs";
 import parseFile from "./parse-file";
 
 import {FileInfo, MarkerCache, Options} from "./types";
-import {ErrorCode} from "./error-codes";
+import * as Errors from "./errors";
 
 /**
  * Generate a marker cache from the given files.
@@ -79,13 +79,7 @@ export default async function getMarkersFromFiles(
                     readOnly,
                     markers: {},
                     aliases: [],
-                    errors: [
-                        {
-                            markerID: "MARKER_ID",
-                            code: ErrorCode.couldNotParse,
-                            reason: `Could not parse ${file}: ${e.message}`,
-                        },
-                    ],
+                    errors: [Errors.couldNotParse(file, e.message)],
                 });
             }
         }
