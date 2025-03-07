@@ -1,5 +1,3 @@
-// eslint-disable-next-line import/no-unassigned-import
-import "./polyfills";
 import path from "path";
 import fs from "fs";
 import ancesdir from "ancesdir";
@@ -49,6 +47,9 @@ export const runChecksync = async (
     example: string,
     scenario?: Scenario,
 ): Promise<string> => {
+    // Migrate all example is a special case where we want to run it with an
+    // additional option.
+    const migrate = example.includes("migrate-all") ? "all" : undefined;
     const stringLogger = new StringLogger(true);
 
     // This has to be an actual glob, or it won't work.
@@ -57,11 +58,11 @@ export const runChecksync = async (
     // Depending on the scenario, let's set up the args object.
     const scenarioArgs =
         scenario == null || scenario === Scenario.CheckOnly
-            ? {}
+            ? {migrate}
             : scenario === Scenario.JsonCheckOnly
-              ? {json: true}
+              ? {json: true, migrate}
               : scenario === Scenario.Autofix
-                ? {updateTags: true, dryRun: true}
+                ? {updateTags: true, dryRun: true, migrate}
                 : null;
 
     if (scenarioArgs == null) {

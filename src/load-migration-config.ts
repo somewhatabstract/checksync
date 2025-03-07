@@ -69,7 +69,8 @@ export const loadMigrationConfig = (
     }
 
     return {
-        mode: migrationConfig.mode,
-        mappings,
+        // Make sure to provide our default value if one wasn't given.
+        mode: migrationConfig.mode ?? "missing",
+        mappings: Object.fromEntries(mappings),
     };
 };

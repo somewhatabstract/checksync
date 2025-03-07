@@ -36,7 +36,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -63,7 +68,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     DRY-RUN: Files will not be modified
@@ -124,7 +134,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -151,7 +166,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/checksums_need_updating.json
@@ -209,7 +229,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -236,7 +261,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/checksums_need_updating.json
@@ -348,7 +378,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -375,7 +410,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Ignore files: [
@@ -432,7 +472,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -459,7 +504,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     DRY-RUN: Files will not be modified
@@ -523,7 +573,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -550,7 +605,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/content_after_start.json
@@ -616,7 +676,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -643,7 +708,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/content_after_start.json
@@ -772,7 +842,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -799,7 +874,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Ignore files: [
@@ -856,7 +936,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -883,7 +968,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     DRY-RUN: Files will not be modified
@@ -925,7 +1015,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -952,7 +1047,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/correct_checksums.json
@@ -994,7 +1094,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -1021,7 +1126,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/correct_checksums.json
@@ -1066,7 +1176,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -1093,7 +1208,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Ignore files: [
@@ -1150,7 +1270,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -1177,7 +1302,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     DRY-RUN: Files will not be modified
@@ -1226,7 +1356,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -1253,7 +1388,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/directory_target.json
@@ -1302,7 +1442,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -1329,7 +1474,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/directory_target.json
@@ -1394,7 +1544,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -1421,7 +1576,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Ignore files: [
@@ -1477,7 +1637,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -1504,7 +1669,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     DRY-RUN: Files will not be modified
@@ -1561,7 +1731,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -1588,7 +1763,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/duplicate_target.json
@@ -1645,7 +1825,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -1672,7 +1857,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/duplicate_target.json
@@ -1781,7 +1971,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -1808,7 +2003,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Ignore files: [
@@ -1864,7 +2064,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -1891,7 +2096,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     DRY-RUN: Files will not be modified
@@ -1938,7 +2148,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -1965,7 +2180,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/empty_tag.json
@@ -2012,7 +2232,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -2039,7 +2264,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/empty_tag.json
@@ -2096,7 +2326,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -2123,7 +2358,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Ignore files: [
@@ -2179,7 +2419,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -2206,7 +2451,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     DRY-RUN: Files will not be modified
@@ -2253,7 +2503,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -2280,7 +2535,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/end_with_no_start.json
@@ -2327,7 +2587,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -2354,7 +2619,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/end_with_no_start.json
@@ -2411,7 +2681,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -2438,7 +2713,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Ignore files: [
@@ -2493,7 +2773,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -2520,7 +2805,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     DRY-RUN: Files will not be modified
@@ -2562,7 +2852,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -2589,7 +2884,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/excluded.json
@@ -2631,7 +2931,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -2658,7 +2963,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/excluded.json
@@ -2699,7 +3009,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -2726,7 +3041,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Ignore files: [
@@ -2779,7 +3099,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -2806,7 +3131,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     DRY-RUN: Files will not be modified
@@ -2853,7 +3183,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -2880,7 +3215,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/ignore_files_at_different_depths.json
@@ -2927,7 +3267,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -2954,7 +3299,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/ignore_files_at_different_depths.json
@@ -3011,7 +3361,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -3038,7 +3393,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Ignore files: [
@@ -3100,7 +3460,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -3127,7 +3492,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     DRY-RUN: Files will not be modified
@@ -3181,7 +3551,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -3208,7 +3583,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/malformed_end.json
@@ -3262,7 +3642,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -3289,7 +3674,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/malformed_end.json
@@ -3372,7 +3762,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -3399,7 +3794,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Ignore files: [
@@ -3455,7 +3855,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -3482,7 +3887,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     DRY-RUN: Files will not be modified
@@ -3541,7 +3951,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -3568,7 +3983,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/malformed_start.json
@@ -3627,7 +4047,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -3654,7 +4079,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/malformed_start.json
@@ -3755,7 +4185,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -3782,7 +4217,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Ignore files: [
@@ -3801,6 +4241,397 @@ Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/malformed_start/malformed_onlytagid.js"
 ]
 Info     Cache written to ROOT_DIR/.integrationtests/malformed_start.json"
+`;
+
+exports[`Integration Tests (see __examples__ folder) Example migrate_all should report example migrate_all to match snapshot for scenario autofix 1`] = `
+"Verbose  Options from arguments: {
+  "includeGlobs": [
+    "**/migrate_all/**"
+  ],
+  "autoFix": true,
+  "dryRun": true,
+  "cachePath": "ROOT_DIR/.integrationtests/migrate_all.json",
+  "cacheMode": "read"
+}
+Verbose  Looking for configuration file based on root marker...
+Verbose  Checking ROOT_DIR/.checksyncrc...
+Verbose  Checking ROOT_DIR/.checksyncrc.json...
+Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
+Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
+Verbose  Validating configuration
+Verbose  Configuration is valid
+Verbose  Options from config: {
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "autoFix": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "dryRun": false,
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "json": false,
+  "migration": {
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
+  }
+}
+Verbose  Combined options with defaults: {
+  "autoFix": true,
+  "json": false,
+  "allowEmptyTags": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "dryRun": true,
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "includeGlobs": [
+    "**/migrate_all/**"
+  ],
+  "cachePath": "ROOT_DIR/.integrationtests/migrate_all.json",
+  "cacheMode": "read",
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
+  }
+}
+Info     DRY-RUN: Files will not be modified
+Info     Loading cache from ROOT_DIR/.integrationtests/migrate_all.json
+Verbose  __examples__/migrate_all/example-1.js
+File has errors; skipping auto-fix
+Fix      __examples__/migrate_all/example-1.js:3
+Updated checksum for sync-tag 'migrate_all' referencing '__examples__/migrate_all/example-2.js:3' from 12345 to 770446101.
+Verbose  __examples__/migrate_all/example-2.js
+File has errors; skipping auto-fix
+Fix      __examples__/migrate_all/example-2.js:3
+Updated checksum for sync-tag 'migrate_all' referencing '__examples__/migrate_all/example-1.js:3' from 12345 to 770446101.
+
+<group 2 file(s) would have been fixed.
+To fix, run: >
+  checksync -u __examples__/migrate_all/example-1.js __examples__/migrate_all/example-2.js
+<end_group>
+🎉  Everything is in sync!"
+`;
+
+exports[`Integration Tests (see __examples__ folder) Example migrate_all should report example migrate_all to match snapshot for scenario check-only 1`] = `
+"Verbose  Options from arguments: {
+  "includeGlobs": [
+    "**/migrate_all/**"
+  ],
+  "cachePath": "ROOT_DIR/.integrationtests/migrate_all.json",
+  "cacheMode": "read"
+}
+Verbose  Looking for configuration file based on root marker...
+Verbose  Checking ROOT_DIR/.checksyncrc...
+Verbose  Checking ROOT_DIR/.checksyncrc.json...
+Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
+Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
+Verbose  Validating configuration
+Verbose  Configuration is valid
+Verbose  Options from config: {
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "autoFix": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "dryRun": false,
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "json": false,
+  "migration": {
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
+  }
+}
+Verbose  Combined options with defaults: {
+  "autoFix": false,
+  "json": false,
+  "allowEmptyTags": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "dryRun": false,
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "includeGlobs": [
+    "**/migrate_all/**"
+  ],
+  "cachePath": "ROOT_DIR/.integrationtests/migrate_all.json",
+  "cacheMode": "read",
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
+  }
+}
+Info     Loading cache from ROOT_DIR/.integrationtests/migrate_all.json
+Mismatch __examples__/migrate_all/example-1.js:3
+Looks like you changed the target content for sync-tag 'migrate_all' in '__examples__/migrate_all/example-2.js:3'
+Make sure you've made corresponding changes in the source file, if necessary (12345 != 770446101)
+Mismatch __examples__/migrate_all/example-2.js:3
+Looks like you changed the target content for sync-tag 'migrate_all' in '__examples__/migrate_all/example-1.js:3'
+Make sure you've made corresponding changes in the source file, if necessary (12345 != 770446101)
+
+<group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
+
+  checksync -u __examples__/migrate_all/example-1.js __examples__/migrate_all/example-2.js
+<end_group>"
+`;
+
+exports[`Integration Tests (see __examples__ folder) Example migrate_all should report example migrate_all to match snapshot for scenario json-check-only 1`] = `
+"Verbose  Options from arguments: {
+  "includeGlobs": [
+    "**/migrate_all/**"
+  ],
+  "json": true,
+  "cachePath": "ROOT_DIR/.integrationtests/migrate_all.json",
+  "cacheMode": "read"
+}
+Verbose  Looking for configuration file based on root marker...
+Verbose  Checking ROOT_DIR/.checksyncrc...
+Verbose  Checking ROOT_DIR/.checksyncrc.json...
+Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
+Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
+Verbose  Validating configuration
+Verbose  Configuration is valid
+Verbose  Options from config: {
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "autoFix": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "dryRun": false,
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "json": false,
+  "migration": {
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
+  }
+}
+Verbose  Combined options with defaults: {
+  "autoFix": false,
+  "json": true,
+  "allowEmptyTags": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "dryRun": false,
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "includeGlobs": [
+    "**/migrate_all/**"
+  ],
+  "cachePath": "ROOT_DIR/.integrationtests/migrate_all.json",
+  "cacheMode": "read",
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
+  }
+}
+Info     Loading cache from ROOT_DIR/.integrationtests/migrate_all.json
+{
+    "version": "0.0.0",
+    "launchString": "checksync -u __examples__/migrate_all/example-1.js __examples__/migrate_all/example-2.js",
+    "files": {
+        "__examples__/migrate_all/example-1.js": [
+            {
+                "markerID": "migrate_all",
+                "code": "mismatched-checksum",
+                "reason": "Looks like you changed the target content for sync-tag 'migrate_all' in '__examples__/migrate_all/example-2.js:3'. Make sure you've made corresponding changes in the source file, if necessary (12345 != 770446101)",
+                "location": {
+                    "line": 3
+                },
+                "fix": {
+                    "type": "replace",
+                    "line": 3,
+                    "text": "// sync-start:migrate_all 770446101 __examples__/migrate_all/example-2.js",
+                    "declaration": "// sync-start:migrate_all 12345 __examples__/migrate_all/example-2.js",
+                    "description": "Updated checksum for sync-tag 'migrate_all' referencing '__examples__/migrate_all/example-2.js:3' from 12345 to 770446101."
+                }
+            }
+        ],
+        "__examples__/migrate_all/example-2.js": [
+            {
+                "markerID": "migrate_all",
+                "code": "mismatched-checksum",
+                "reason": "Looks like you changed the target content for sync-tag 'migrate_all' in '__examples__/migrate_all/example-1.js:3'. Make sure you've made corresponding changes in the source file, if necessary (12345 != 770446101)",
+                "location": {
+                    "line": 3
+                },
+                "fix": {
+                    "type": "replace",
+                    "line": 3,
+                    "text": "// sync-start:migrate_all 770446101 __examples__/migrate_all/example-1.js",
+                    "declaration": "// sync-start:migrate_all 12345 __examples__/migrate_all/example-1.js",
+                    "description": "Updated checksum for sync-tag 'migrate_all' referencing '__examples__/migrate_all/example-1.js:3' from 12345 to 770446101."
+                }
+            }
+        ]
+    }
+}"
+`;
+
+exports[`Integration Tests (see __examples__ folder) Example migrate_all should report example migrate_all to match snapshot for scenario undefined 1`] = `
+"Verbose  Options from arguments: {
+  "includeGlobs": [
+    "**/migrate_all/**"
+  ],
+  "cachePath": "ROOT_DIR/.integrationtests/migrate_all.json",
+  "cacheMode": "write"
+}
+Verbose  Looking for configuration file based on root marker...
+Verbose  Checking ROOT_DIR/.checksyncrc...
+Verbose  Checking ROOT_DIR/.checksyncrc.json...
+Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
+Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
+Verbose  Validating configuration
+Verbose  Configuration is valid
+Verbose  Options from config: {
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "autoFix": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "dryRun": false,
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "json": false,
+  "migration": {
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
+  }
+}
+Verbose  Combined options with defaults: {
+  "autoFix": false,
+  "json": false,
+  "allowEmptyTags": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "dryRun": false,
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "includeGlobs": [
+    "**/migrate_all/**"
+  ],
+  "cachePath": "ROOT_DIR/.integrationtests/migrate_all.json",
+  "cacheMode": "write",
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
+  }
+}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
+Verbose  Include globs: [
+    "**/migrate_all/**"
+]
+Verbose  Exclude globs: [
+    "**/excluded/**"
+]
+Verbose  Discovered paths: [
+    "ROOT_DIR/__examples__/migrate_all/example-1.js",
+    "ROOT_DIR/__examples__/migrate_all/example-2.js"
+]
+Info     Cache written to ROOT_DIR/.integrationtests/migrate_all.json"
 `;
 
 exports[`Integration Tests (see __examples__ folder) Example migrate_missing_target should report example migrate_missing_target to match snapshot for scenario autofix 1`] = `
@@ -3839,7 +4670,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -3866,7 +4702,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     DRY-RUN: Files will not be modified
@@ -3923,7 +4764,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -3950,7 +4796,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/migrate_missing_target.json
@@ -4002,7 +4853,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -4029,7 +4885,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/migrate_missing_target.json
@@ -4107,7 +4968,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -4134,7 +5000,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Ignore files: [
@@ -4189,7 +5060,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -4216,7 +5092,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     DRY-RUN: Files will not be modified
@@ -4265,7 +5146,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -4292,7 +5178,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/missing_target.json
@@ -4341,7 +5232,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -4368,7 +5264,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/missing_target.json
@@ -4433,7 +5334,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -4460,7 +5366,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Ignore files: [
@@ -4515,7 +5426,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -4542,7 +5458,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     DRY-RUN: Files will not be modified
@@ -4589,7 +5510,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -4616,7 +5542,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/no_back_reference.json
@@ -4663,7 +5594,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -4690,7 +5626,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/no_back_reference.json
@@ -4747,7 +5688,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -4774,7 +5720,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Ignore files: [
@@ -4830,7 +5781,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -4857,7 +5813,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     DRY-RUN: Files will not be modified
@@ -4912,7 +5873,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -4939,7 +5905,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/no_checksums.json
@@ -4991,7 +5962,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -5018,7 +5994,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/no_checksums.json
@@ -5098,7 +6079,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -5125,7 +6111,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Ignore files: [
@@ -5181,7 +6172,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -5208,7 +6204,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     DRY-RUN: Files will not be modified
@@ -5260,7 +6261,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -5287,7 +6293,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/no_self_reference.json
@@ -5342,7 +6353,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -5369,7 +6385,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/no_self_reference.json
@@ -5441,7 +6462,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -5468,7 +6494,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Ignore files: [
@@ -5523,7 +6554,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -5550,7 +6586,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     DRY-RUN: Files will not be modified
@@ -5601,7 +6642,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -5628,7 +6674,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/remote_tags_broken.json
@@ -5677,7 +6728,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -5704,7 +6760,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/remote_tags_broken.json
@@ -5767,7 +6828,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -5794,7 +6860,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Ignore files: [
@@ -5849,7 +6920,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -5876,7 +6952,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     DRY-RUN: Files will not be modified
@@ -5918,7 +6999,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -5945,7 +7031,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/remote_tags_match.json
@@ -5987,7 +7078,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -6014,7 +7110,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/remote_tags_match.json
@@ -6059,7 +7160,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -6086,7 +7192,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Ignore files: [
@@ -6141,7 +7252,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -6168,7 +7284,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     DRY-RUN: Files will not be modified
@@ -6218,7 +7339,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -6245,7 +7371,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/unterminated_marker.json
@@ -6295,7 +7426,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -6322,7 +7458,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/unterminated_marker.json
@@ -6389,7 +7530,12 @@ Verbose  Options from config: {
   ],
   "json": false,
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Combined options with defaults: {
@@ -6416,7 +7562,12 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mappings": {}
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
   }
 }
 Verbose  Ignore files: [
