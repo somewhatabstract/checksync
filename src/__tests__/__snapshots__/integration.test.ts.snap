@@ -4251,7 +4251,11 @@ exports[`Integration Tests (see __examples__ folder) Example migrate_all should 
   "autoFix": true,
   "dryRun": true,
   "cachePath": "ROOT_DIR/.integrationtests/migrate_all.json",
-  "cacheMode": "read"
+  "cacheMode": "read",
+  "migration": {
+    "mode": "all",
+    "mappings": {}
+  }
 }
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
@@ -4311,7 +4315,7 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mode": "missing",
+    "mode": "all",
     "mappings": {
       "__examples__/migrate_missing_target/": "https://example.com/1/",
       "__examples__/migrate_all/": "https://example.com/2/",
@@ -4324,11 +4328,15 @@ Info     Loading cache from ROOT_DIR/.integrationtests/migrate_all.json
 Verbose  __examples__/migrate_all/example-1.js
 File has errors; skipping auto-fix
 Fix      __examples__/migrate_all/example-1.js:3
-Updated checksum for sync-tag 'migrate_all' referencing '__examples__/migrate_all/example-2.js:3' from 12345 to 770446101.
+Migrated sync-tag 'migrate_all'
+Target changed from '__examples__/migrate_all/example-2.js' to 'https://example.com/2/example-2.js'
+Checksum updated from 12345 to 60104996
 Verbose  __examples__/migrate_all/example-2.js
 File has errors; skipping auto-fix
 Fix      __examples__/migrate_all/example-2.js:3
-Updated checksum for sync-tag 'migrate_all' referencing '__examples__/migrate_all/example-1.js:3' from 12345 to 770446101.
+Migrated sync-tag 'migrate_all'
+Target changed from '__examples__/migrate_all/example-1.js' to 'https://example.com/2/example-1.js'
+Checksum updated from 12345 to 60367141
 
 <group 2 file(s) would have been fixed.
 To fix, run: >
@@ -4343,7 +4351,11 @@ exports[`Integration Tests (see __examples__ folder) Example migrate_all should 
     "**/migrate_all/**"
   ],
   "cachePath": "ROOT_DIR/.integrationtests/migrate_all.json",
-  "cacheMode": "read"
+  "cacheMode": "read",
+  "migration": {
+    "mode": "all",
+    "mappings": {}
+  }
 }
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
@@ -4403,7 +4415,7 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mode": "missing",
+    "mode": "all",
     "mappings": {
       "__examples__/migrate_missing_target/": "https://example.com/1/",
       "__examples__/migrate_all/": "https://example.com/2/",
@@ -4412,12 +4424,10 @@ Verbose  Combined options with defaults: {
   }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/migrate_all.json
-Mismatch __examples__/migrate_all/example-1.js:3
-Looks like you changed the target content for sync-tag 'migrate_all' in '__examples__/migrate_all/example-2.js:3'
-Make sure you've made corresponding changes in the source file, if necessary (12345 != 770446101)
-Mismatch __examples__/migrate_all/example-2.js:3
-Looks like you changed the target content for sync-tag 'migrate_all' in '__examples__/migrate_all/example-1.js:3'
-Make sure you've made corresponding changes in the source file, if necessary (12345 != 770446101)
+Migrate  __examples__/migrate_all/example-1.js:3
+Recommended migration to remote target 'https://example.com/2/example-2.js' and update checksum to 60104996.
+Migrate  __examples__/migrate_all/example-2.js:3
+Recommended migration to remote target 'https://example.com/2/example-1.js' and update checksum to 60367141.
 
 <group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
 
@@ -4432,7 +4442,11 @@ exports[`Integration Tests (see __examples__ folder) Example migrate_all should 
   ],
   "json": true,
   "cachePath": "ROOT_DIR/.integrationtests/migrate_all.json",
-  "cacheMode": "read"
+  "cacheMode": "read",
+  "migration": {
+    "mode": "all",
+    "mappings": {}
+  }
 }
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
@@ -4492,7 +4506,7 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mode": "missing",
+    "mode": "all",
     "mappings": {
       "__examples__/migrate_missing_target/": "https://example.com/1/",
       "__examples__/migrate_all/": "https://example.com/2/",
@@ -4508,34 +4522,34 @@ Info     Loading cache from ROOT_DIR/.integrationtests/migrate_all.json
         "__examples__/migrate_all/example-1.js": [
             {
                 "markerID": "migrate_all",
-                "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'migrate_all' in '__examples__/migrate_all/example-2.js:3'. Make sure you've made corresponding changes in the source file, if necessary (12345 != 770446101)",
+                "reason": "Recommended migration to remote target 'https://example.com/2/example-2.js' and update checksum to 60104996.",
+                "code": "pending-migration",
                 "location": {
                     "line": 3
                 },
                 "fix": {
                     "type": "replace",
                     "line": 3,
-                    "text": "// sync-start:migrate_all 770446101 __examples__/migrate_all/example-2.js",
+                    "text": "// sync-start:migrate_all 60104996 https://example.com/2/example-2.js",
                     "declaration": "// sync-start:migrate_all 12345 __examples__/migrate_all/example-2.js",
-                    "description": "Updated checksum for sync-tag 'migrate_all' referencing '__examples__/migrate_all/example-2.js:3' from 12345 to 770446101."
+                    "description": "Migrated sync-tag 'migrate_all'. Target changed from '__examples__/migrate_all/example-2.js' to 'https://example.com/2/example-2.js'. Checksum updated from 12345 to 60104996"
                 }
             }
         ],
         "__examples__/migrate_all/example-2.js": [
             {
                 "markerID": "migrate_all",
-                "code": "mismatched-checksum",
-                "reason": "Looks like you changed the target content for sync-tag 'migrate_all' in '__examples__/migrate_all/example-1.js:3'. Make sure you've made corresponding changes in the source file, if necessary (12345 != 770446101)",
+                "reason": "Recommended migration to remote target 'https://example.com/2/example-1.js' and update checksum to 60367141.",
+                "code": "pending-migration",
                 "location": {
                     "line": 3
                 },
                 "fix": {
                     "type": "replace",
                     "line": 3,
-                    "text": "// sync-start:migrate_all 770446101 __examples__/migrate_all/example-1.js",
+                    "text": "// sync-start:migrate_all 60367141 https://example.com/2/example-1.js",
                     "declaration": "// sync-start:migrate_all 12345 __examples__/migrate_all/example-1.js",
-                    "description": "Updated checksum for sync-tag 'migrate_all' referencing '__examples__/migrate_all/example-1.js:3' from 12345 to 770446101."
+                    "description": "Migrated sync-tag 'migrate_all'. Target changed from '__examples__/migrate_all/example-1.js' to 'https://example.com/2/example-1.js'. Checksum updated from 12345 to 60367141"
                 }
             }
         ]
@@ -4549,7 +4563,11 @@ exports[`Integration Tests (see __examples__ folder) Example migrate_all should 
     "**/migrate_all/**"
   ],
   "cachePath": "ROOT_DIR/.integrationtests/migrate_all.json",
-  "cacheMode": "write"
+  "cacheMode": "write",
+  "migration": {
+    "mode": "all",
+    "mappings": {}
+  }
 }
 Verbose  Looking for configuration file based on root marker...
 Verbose  Checking ROOT_DIR/.checksyncrc...
@@ -4609,7 +4627,7 @@ Verbose  Combined options with defaults: {
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
-    "mode": "missing",
+    "mode": "all",
     "mappings": {
       "__examples__/migrate_missing_target/": "https://example.com/1/",
       "__examples__/migrate_all/": "https://example.com/2/",

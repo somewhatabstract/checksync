@@ -49,7 +49,7 @@ export const runChecksync = async (
 ): Promise<string> => {
     // Migrate all example is a special case where we want to run it with an
     // additional option.
-    const migrate = example.includes("migrate-all") ? "all" : undefined;
+    const migrate = example.includes("migrate_all") ? "all" : undefined;
     const stringLogger = new StringLogger(true);
 
     // This has to be an actual glob, or it won't work.
