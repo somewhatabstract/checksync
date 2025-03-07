@@ -186,6 +186,26 @@ describe("integration-test-support", () => {
                 expect.any(StringLogger),
             );
         });
+
+        it("should run checkSync with migration mode all when example is `migrate_all` example", async () => {
+            // Arrange
+            const checkSyncSpy = jest
+                .spyOn(Checksync, "default")
+                .mockResolvedValueOnce(ExitCode.SUCCESS);
+
+            // Act
+            await runChecksync("migrate_all", Scenario.CheckOnly);
+
+            // Assert
+            expect(checkSyncSpy).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    migration: expect.objectContaining({
+                        mode: "all",
+                    }),
+                }),
+                expect.any(StringLogger),
+            );
+        });
     });
 
     describe("writeLog", () => {
