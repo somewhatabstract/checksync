@@ -63,6 +63,7 @@ describe("MarkerParser", () => {
 
             // Assert
             expect(recordError).toHaveBeenCalledWith({
+                markerID: "tag2",
                 code: "start-tag-witout-end-tag",
                 location: {line: 2},
                 reason: "Sync-start 'tag2' has no corresponding sync-end",
@@ -87,6 +88,7 @@ describe("MarkerParser", () => {
 
             // Assert
             expect(recordError).toHaveBeenCalledWith({
+                markerID: null,
                 code: "malformed-start-tag",
                 location: {line: 1},
                 reason: "Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'",
@@ -109,6 +111,7 @@ describe("MarkerParser", () => {
 
             // Assert
             expect(recordError).toHaveBeenCalledWith({
+                markerID: null,
                 code: "malformed-end-tag",
                 location: {line: 1},
                 reason: "Malformed sync-end: format should be 'sync-end:<label>'",
@@ -131,6 +134,7 @@ describe("MarkerParser", () => {
 
             // Assert
             expect(recordError).toHaveBeenCalledWith({
+                markerID: "notstarted",
                 code: "end-tag-without-start-tag",
                 location: {line: 1},
                 reason: "Sync-end for 'notstarted' found, but there was no corresponding sync-start",
@@ -153,6 +157,7 @@ describe("MarkerParser", () => {
 
             // Assert
             expect(recordError).toHaveBeenCalledWith({
+                markerID: "markerid",
                 code: "file-does-not-exist",
                 location: {line: 1},
                 reason: "Sync-start for 'markerid' points to 'target1', which does not exist or is a directory",
@@ -177,6 +182,7 @@ describe("MarkerParser", () => {
 
             // Assert
             expect(recordError).toHaveBeenCalledWith({
+                markerID: "markerid",
                 code: "start-tag-after-content",
                 location: {line: 3},
                 reason: "Sync-start for 'markerid' found after content started",
@@ -200,6 +206,7 @@ describe("MarkerParser", () => {
 
             // Assert
             expect(recordError).toHaveBeenCalledWith({
+                markerID: "markerid",
                 code: "duplicate-target",
                 location: {line: 2},
                 reason: "Duplicate target for sync-tag 'markerid'",
@@ -232,6 +239,7 @@ describe("MarkerParser", () => {
 
             // Assert
             expect(recordError).toHaveBeenCalledWith({
+                markerID: "markerid2",
                 code: "different-comment-syntax",
                 location: {line: 2},
                 reason: "Sync-start tags for 'markerid2' given in different comment styles. Please use the same style for all sync-start tags that have identical identifiers.",

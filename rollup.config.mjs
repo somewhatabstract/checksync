@@ -4,7 +4,7 @@ import json from "@rollup/plugin-json";
 import resolve from "@rollup/plugin-node-resolve";
 
 import filesize from "rollup-plugin-filesize";
-import {terser} from "rollup-plugin-terser";
+import terser from "@rollup/plugin-terser";
 import copy from "rollup-plugin-copy";
 
 export default {

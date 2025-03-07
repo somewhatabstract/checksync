@@ -59,6 +59,7 @@ export default function parseFile(
             const lineNumber = parseInt(line);
             if ((content?.length ?? 0) === 0 && !options.allowEmptyTags) {
                 recordError({
+                    markerID: id,
                     reason: `Sync-tag '${id}' has no content`,
                     location: {line: lineNumber},
                     code: ErrorCode.emptyMarker,
@@ -67,6 +68,7 @@ export default function parseFile(
 
             if (markers[id]) {
                 recordError({
+                    markerID: id,
                     reason: `Sync-tag '${id}' declared multiple times`,
                     location: {
                         line: lineNumber,
@@ -78,6 +80,7 @@ export default function parseFile(
             const target = targets[lineNumber];
             if (target.target === file) {
                 recordError({
+                    markerID: id,
                     reason: `Sync-tag '${id}' cannot target itself`,
                     location: {
                         line: lineNumber,
@@ -169,6 +172,7 @@ export default function parseFile(
         (res) => res,
         (reason: Error) => {
             recordError({
+                markerID: null,
                 code: ErrorCode.couldNotParse,
                 reason: `Could not parse file: ${reason.message}`,
             });

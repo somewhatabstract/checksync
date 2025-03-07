@@ -34,7 +34,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": true,
@@ -58,7 +61,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/checksums_need_updating.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     DRY-RUN: Files will not be modified
 Info     Loading cache from ROOT_DIR/.integrationtests/checksums_need_updating.json
@@ -116,7 +122,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -140,7 +149,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/checksums_need_updating.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/checksums_need_updating.json
 Mismatch __examples__/checksums_need_updating/a.js:4
@@ -195,7 +207,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -219,7 +234,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/checksums_need_updating.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/checksums_need_updating.json
 {
@@ -228,6 +246,7 @@ Info     Loading cache from ROOT_DIR/.integrationtests/checksums_need_updating.j
     "files": {
         "__examples__/checksums_need_updating/a.js": [
             {
+                "markerID": "update_me",
                 "code": "mismatched-checksum",
                 "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/b.py:3'. Make sure you've made corresponding changes in the source file, if necessary (45678 != 249234014)",
                 "location": {
@@ -242,6 +261,7 @@ Info     Loading cache from ROOT_DIR/.integrationtests/checksums_need_updating.j
                 }
             },
             {
+                "markerID": "update_me",
                 "code": "mismatched-checksum",
                 "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/c.jsx:3'. Make sure you've made corresponding changes in the source file, if necessary (1234 != 1992689801)",
                 "location": {
@@ -258,6 +278,7 @@ Info     Loading cache from ROOT_DIR/.integrationtests/checksums_need_updating.j
         ],
         "__examples__/checksums_need_updating/b.py": [
             {
+                "markerID": "update_me",
                 "code": "mismatched-checksum",
                 "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/a.js:4'. Make sure you've made corresponding changes in the source file, if necessary (4567 != 2050223083)",
                 "location": {
@@ -274,6 +295,7 @@ Info     Loading cache from ROOT_DIR/.integrationtests/checksums_need_updating.j
         ],
         "__examples__/checksums_need_updating/c.jsx": [
             {
+                "markerID": "update_me",
                 "code": "mismatched-checksum",
                 "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/a.js:5'. Make sure you've made corresponding changes in the source file, if necessary (123 != 2050223083)",
                 "location": {
@@ -324,7 +346,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -348,7 +373,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/checksums_need_updating.json",
   "cacheMode": "write",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
@@ -402,7 +430,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": true,
@@ -426,7 +457,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/content_after_start.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     DRY-RUN: Files will not be modified
 Info     Loading cache from ROOT_DIR/.integrationtests/content_after_start.json
@@ -487,7 +521,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -511,7 +548,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/content_after_start.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/content_after_start.json
 Mismatch __examples__/content_after_start/a.js:3
@@ -574,7 +614,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -598,7 +641,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/content_after_start.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/content_after_start.json
 Error    🛑  Unfixable errors found. Fix the errors and try again.
@@ -608,6 +654,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
     "files": {
         "__examples__/content_after_start/a.js": [
             {
+                "markerID": "content_after_start",
                 "code": "mismatched-checksum",
                 "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/b.py:3'. Make sure you've made corresponding changes in the source file, if necessary (No checksum != 249234014)",
                 "location": {
@@ -624,6 +671,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
         ],
         "__examples__/content_after_start/b.py": [
             {
+                "markerID": "content_after_start",
                 "code": "mismatched-checksum",
                 "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/a.js:3'. Make sure you've made corresponding changes in the source file, if necessary (No checksum != 770446101)",
                 "location": {
@@ -638,6 +686,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
                 }
             },
             {
+                "markerID": "content_after_start",
                 "code": "mismatched-checksum",
                 "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/c.js:3'. Make sure you've made corresponding changes in the source file, if necessary (No checksum != 770446101)",
                 "location": {
@@ -654,6 +703,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
         ],
         "__examples__/content_after_start/c.js": [
             {
+                "markerID": "content_after_start",
                 "reason": "Sync-start for 'content_after_start' found after content started",
                 "location": {
                     "line": 5
@@ -661,6 +711,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
                 "code": "start-tag-after-content"
             },
             {
+                "markerID": "content_after_start",
                 "code": "mismatched-checksum",
                 "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/b.py:4'. Make sure you've made corresponding changes in the source file, if necessary (No checksum != 249234014)",
                 "location": {
@@ -675,6 +726,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
                 }
             },
             {
+                "markerID": "content_after_start",
                 "reason": "No return tag named 'content_after_start' in '__examples__/content_after_start/a.js'",
                 "code": "no-return-tag",
                 "location": {
@@ -718,7 +770,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -742,7 +797,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/content_after_start.json",
   "cacheMode": "write",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
@@ -796,7 +854,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": true,
@@ -820,7 +881,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/correct_checksums.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     DRY-RUN: Files will not be modified
 Info     Loading cache from ROOT_DIR/.integrationtests/correct_checksums.json
@@ -859,7 +923,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -883,7 +950,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/correct_checksums.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/correct_checksums.json
 🎉  Everything is in sync!"
@@ -922,7 +992,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -946,7 +1019,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/correct_checksums.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/correct_checksums.json
 {
@@ -988,7 +1064,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -1012,7 +1091,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/correct_checksums.json",
   "cacheMode": "write",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
@@ -1066,7 +1148,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": true,
@@ -1090,7 +1175,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/directory_target.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     DRY-RUN: Files will not be modified
 Info     Loading cache from ROOT_DIR/.integrationtests/directory_target.json
@@ -1136,7 +1224,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -1160,7 +1251,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/directory_target.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/directory_target.json
 Error    __examples__/directory_target/example.js:3
@@ -1206,7 +1300,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -1230,7 +1327,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/directory_target.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/directory_target.json
 Error    🛑  Unfixable errors found. Fix the errors and try again.
@@ -1240,6 +1340,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
     "files": {
         "__examples__/directory_target/example.js": [
             {
+                "markerID": "directory_target",
                 "reason": "Sync-start for 'directory_target' points to '__examples__/directory_target/a_directory', which does not exist or is a directory",
                 "location": {
                     "line": 3
@@ -1247,6 +1348,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
                 "code": "file-does-not-exist"
             },
             {
+                "markerID": "directory_target",
                 "reason": "No return tag named 'directory_target' in '__examples__/directory_target/a_directory'",
                 "code": "no-return-tag",
                 "location": {
@@ -1290,7 +1392,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -1314,7 +1419,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/directory_target.json",
   "cacheMode": "write",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
@@ -1367,7 +1475,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": true,
@@ -1391,7 +1502,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/duplicate_target.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     DRY-RUN: Files will not be modified
 Info     Loading cache from ROOT_DIR/.integrationtests/duplicate_target.json
@@ -1445,7 +1559,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -1469,7 +1586,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/duplicate_target.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/duplicate_target.json
 Warning  __examples__/duplicate-target/a.js:5
@@ -1523,7 +1643,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -1547,7 +1670,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/duplicate_target.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/duplicate_target.json
 {
@@ -1556,6 +1682,7 @@ Info     Loading cache from ROOT_DIR/.integrationtests/duplicate_target.json
     "files": {
         "__examples__/duplicate-target/a.js": [
             {
+                "markerID": "update_me",
                 "reason": "Duplicate target for sync-tag 'update_me'",
                 "location": {
                     "line": 5
@@ -1569,6 +1696,7 @@ Info     Loading cache from ROOT_DIR/.integrationtests/duplicate_target.json
                 }
             },
             {
+                "markerID": "update_me",
                 "code": "mismatched-checksum",
                 "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/b.py:3'. Make sure you've made corresponding changes in the source file, if necessary (12352 != 249234014)",
                 "location": {
@@ -1583,6 +1711,7 @@ Info     Loading cache from ROOT_DIR/.integrationtests/duplicate_target.json
                 }
             },
             {
+                "markerID": "update_me",
                 "code": "mismatched-checksum",
                 "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/b.py:3'. Make sure you've made corresponding changes in the source file, if necessary (12345 != 249234014)",
                 "location": {
@@ -1599,6 +1728,7 @@ Info     Loading cache from ROOT_DIR/.integrationtests/duplicate_target.json
         ],
         "__examples__/duplicate-target/b.py": [
             {
+                "markerID": "update_me",
                 "code": "mismatched-checksum",
                 "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/a.js:4'. Make sure you've made corresponding changes in the source file, if necessary (4567 != 2050223083)",
                 "location": {
@@ -1649,7 +1779,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -1673,7 +1806,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/duplicate_target.json",
   "cacheMode": "write",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
@@ -1726,7 +1862,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": true,
@@ -1750,7 +1889,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/empty_tag.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     DRY-RUN: Files will not be modified
 Info     Loading cache from ROOT_DIR/.integrationtests/empty_tag.json
@@ -1794,7 +1936,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -1818,7 +1963,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/empty_tag.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/empty_tag.json
 Error    __examples__/empty_tag/a.js:2
@@ -1862,7 +2010,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -1886,7 +2037,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/empty_tag.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/empty_tag.json
 Error    🛑  Unfixable errors found. Fix the errors and try again.
@@ -1896,6 +2050,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
     "files": {
         "__examples__/empty_tag/a.js": [
             {
+                "markerID": "no_content",
                 "reason": "Sync-tag 'no_content' has no content",
                 "location": {
                     "line": 2
@@ -1939,7 +2094,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -1963,7 +2121,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/empty_tag.json",
   "cacheMode": "write",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
@@ -2016,7 +2177,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": true,
@@ -2040,7 +2204,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/end_with_no_start.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     DRY-RUN: Files will not be modified
 Info     Loading cache from ROOT_DIR/.integrationtests/end_with_no_start.json
@@ -2084,7 +2251,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -2108,7 +2278,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/end_with_no_start.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/end_with_no_start.json
 Error    __examples__/end_with_no_start/example.js:5
@@ -2152,7 +2325,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -2176,7 +2352,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/end_with_no_start.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/end_with_no_start.json
 Error    🛑  Unfixable errors found. Fix the errors and try again.
@@ -2186,6 +2365,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
     "files": {
         "__examples__/end_with_no_start/example.js": [
             {
+                "markerID": "end_with_no_start",
                 "reason": "Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start",
                 "location": {
                     "line": 5
@@ -2229,7 +2409,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -2253,7 +2436,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/end_with_no_start.json",
   "cacheMode": "write",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
@@ -2305,7 +2491,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": true,
@@ -2329,7 +2518,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/excluded.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     DRY-RUN: Files will not be modified
 Info     Loading cache from ROOT_DIR/.integrationtests/excluded.json
@@ -2368,7 +2560,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -2392,7 +2587,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/excluded.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/excluded.json
 Error    Unable to load cache"
@@ -2431,7 +2629,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -2455,7 +2656,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/excluded.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/excluded.json
 Error    Unable to load cache"
@@ -2493,7 +2697,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -2517,7 +2724,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/excluded.json",
   "cacheMode": "write",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
@@ -2567,7 +2777,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": true,
@@ -2591,7 +2804,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/ignore_files_at_different_depths.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     DRY-RUN: Files will not be modified
 Info     Loading cache from ROOT_DIR/.integrationtests/ignore_files_at_different_depths.json
@@ -2635,7 +2851,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -2659,7 +2878,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/ignore_files_at_different_depths.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/ignore_files_at_different_depths.json
 Error    __examples__/ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js:5
@@ -2703,7 +2925,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -2727,7 +2952,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/ignore_files_at_different_depths.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/ignore_files_at_different_depths.json
 Error    🛑  Unfixable errors found. Fix the errors and try again.
@@ -2737,6 +2965,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
     "files": {
         "__examples__/ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js": [
             {
+                "markerID": "end_with_no_start",
                 "reason": "Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start",
                 "location": {
                     "line": 5
@@ -2780,7 +3009,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -2804,7 +3036,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/ignore_files_at_different_depths.json",
   "cacheMode": "write",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
@@ -2863,7 +3098,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": true,
@@ -2887,7 +3125,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/malformed_end.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     DRY-RUN: Files will not be modified
 Info     Loading cache from ROOT_DIR/.integrationtests/malformed_end.json
@@ -2938,7 +3179,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -2962,7 +3206,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/malformed_end.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/malformed_end.json
 Error    __examples__/malformed_end/malformed_badid.js:7
@@ -3013,7 +3260,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -3037,7 +3287,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/malformed_end.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/malformed_end.json
 Error    🛑  Unfixable errors found. Fix the errors and try again.
@@ -3047,6 +3300,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
     "files": {
         "__examples__/malformed_end/malformed_badid.js": [
             {
+                "markerID": null,
                 "reason": "Malformed sync-end: format should be 'sync-end:<label>'",
                 "location": {
                     "line": 7
@@ -3054,6 +3308,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
                 "code": "malformed-end-tag"
             },
             {
+                "markerID": "tagid",
                 "reason": "Sync-start 'tagid' has no corresponding sync-end",
                 "location": {
                     "line": 4
@@ -3063,6 +3318,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
         ],
         "__examples__/malformed_end/malformed_noid.js": [
             {
+                "markerID": null,
                 "reason": "Malformed sync-end: format should be 'sync-end:<label>'",
                 "location": {
                     "line": 7
@@ -3070,6 +3326,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
                 "code": "malformed-end-tag"
             },
             {
+                "markerID": "tagid",
                 "reason": "Sync-start 'tagid' has no corresponding sync-end",
                 "location": {
                     "line": 4
@@ -3113,7 +3370,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -3137,7 +3397,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/malformed_end.json",
   "cacheMode": "write",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
@@ -3190,7 +3453,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": true,
@@ -3214,7 +3480,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/malformed_start.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     DRY-RUN: Files will not be modified
 Info     Loading cache from ROOT_DIR/.integrationtests/malformed_start.json
@@ -3270,7 +3539,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -3294,7 +3566,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/malformed_start.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/malformed_start.json
 Error    __examples__/malformed_start/malformed_badchecksum.js:4
@@ -3350,7 +3625,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -3374,7 +3652,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/malformed_start.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/malformed_start.json
 Error    🛑  Unfixable errors found. Fix the errors and try again.
@@ -3384,6 +3665,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
     "files": {
         "__examples__/malformed_start/malformed_badchecksum.js": [
             {
+                "markerID": null,
                 "reason": "Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'",
                 "location": {
                     "line": 4
@@ -3391,6 +3673,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
                 "code": "malformed-start-tag"
             },
             {
+                "markerID": "tagid",
                 "reason": "Sync-end for 'tagid' found, but there was no corresponding sync-start",
                 "location": {
                     "line": 7
@@ -3400,6 +3683,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
         ],
         "__examples__/malformed_start/malformed_badid.js": [
             {
+                "markerID": null,
                 "reason": "Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'",
                 "location": {
                     "line": 4
@@ -3407,6 +3691,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
                 "code": "malformed-start-tag"
             },
             {
+                "markerID": "tagid",
                 "reason": "Sync-end for 'tagid' found, but there was no corresponding sync-start",
                 "location": {
                     "line": 7
@@ -3416,6 +3701,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
         ],
         "__examples__/malformed_start/malformed_onlytagid.js": [
             {
+                "markerID": null,
                 "reason": "Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'",
                 "location": {
                     "line": 4
@@ -3423,6 +3709,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
                 "code": "malformed-start-tag"
             },
             {
+                "markerID": "tagid",
                 "reason": "Sync-end for 'tagid' found, but there was no corresponding sync-start",
                 "location": {
                     "line": 7
@@ -3466,7 +3753,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -3490,7 +3780,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/malformed_start.json",
   "cacheMode": "write",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
@@ -3508,6 +3801,356 @@ Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/malformed_start/malformed_onlytagid.js"
 ]
 Info     Cache written to ROOT_DIR/.integrationtests/malformed_start.json"
+`;
+
+exports[`Integration Tests (see __examples__ folder) Example migrate_missing_target should report example migrate_missing_target to match snapshot for scenario autofix 1`] = `
+"Verbose  Options from arguments: {
+  "includeGlobs": [
+    "**/migrate_missing_target/**"
+  ],
+  "autoFix": true,
+  "dryRun": true,
+  "cachePath": "ROOT_DIR/.integrationtests/migrate_missing_target.json",
+  "cacheMode": "read"
+}
+Verbose  Looking for configuration file based on root marker...
+Verbose  Checking ROOT_DIR/.checksyncrc...
+Verbose  Checking ROOT_DIR/.checksyncrc.json...
+Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
+Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
+Verbose  Validating configuration
+Verbose  Configuration is valid
+Verbose  Options from config: {
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "autoFix": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "dryRun": false,
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
+}
+Verbose  Combined options with defaults: {
+  "autoFix": true,
+  "json": false,
+  "allowEmptyTags": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "dryRun": true,
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "includeGlobs": [
+    "**/migrate_missing_target/**"
+  ],
+  "cachePath": "ROOT_DIR/.integrationtests/migrate_missing_target.json",
+  "cacheMode": "read",
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
+}
+Info     DRY-RUN: Files will not be modified
+Info     Loading cache from ROOT_DIR/.integrationtests/migrate_missing_target.json
+Verbose  __examples__/migrate_missing_target/example.js
+File has errors; skipping auto-fix
+Fix      __examples__/migrate_missing_target/example.js:3
+Migrated sync-tag 'migrate_missing_target'
+Target changed from '__examples__/migrate_missing_target/missing_target.py' to 'https://example.com/1/missing_target.py'
+Checksum updated from 12345 to 1291658605
+Fix      __examples__/migrate_missing_target/example.js:4
+Migrated sync-tag 'migrate_missing_target2'
+Target changed from '__examples__/migrate_missing_target/subfolder/missing_target.py' to 'https://example.com/2/missing_target.py'
+Checksum updated from no checksum to 1291658605
+
+<group 1 file(s) would have been fixed.
+To fix, run: >
+  checksync -u __examples__/migrate_missing_target/example.js
+<end_group>
+🎉  Everything is in sync!"
+`;
+
+exports[`Integration Tests (see __examples__ folder) Example migrate_missing_target should report example migrate_missing_target to match snapshot for scenario check-only 1`] = `
+"Verbose  Options from arguments: {
+  "includeGlobs": [
+    "**/migrate_missing_target/**"
+  ],
+  "cachePath": "ROOT_DIR/.integrationtests/migrate_missing_target.json",
+  "cacheMode": "read"
+}
+Verbose  Looking for configuration file based on root marker...
+Verbose  Checking ROOT_DIR/.checksyncrc...
+Verbose  Checking ROOT_DIR/.checksyncrc.json...
+Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
+Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
+Verbose  Validating configuration
+Verbose  Configuration is valid
+Verbose  Options from config: {
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "autoFix": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "dryRun": false,
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
+}
+Verbose  Combined options with defaults: {
+  "autoFix": false,
+  "json": false,
+  "allowEmptyTags": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "dryRun": false,
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "includeGlobs": [
+    "**/migrate_missing_target/**"
+  ],
+  "cachePath": "ROOT_DIR/.integrationtests/migrate_missing_target.json",
+  "cacheMode": "read",
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
+}
+Info     Loading cache from ROOT_DIR/.integrationtests/migrate_missing_target.json
+Migrate  __examples__/migrate_missing_target/example.js:3
+No return tag named 'migrate_missing_target' in '__examples__/migrate_missing_target/missing_target.py'
+Recommend migration to remote target 'https://example.com/1/missing_target.py' and update checksum to 1291658605.
+Migrate  __examples__/migrate_missing_target/example.js:4
+No return tag named 'migrate_missing_target2' in '__examples__/migrate_missing_target/subfolder/missing_target.py'
+Recommend migration to remote target 'https://example.com/2/missing_target.py' and update checksum to 1291658605.
+
+<group 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing: >
+
+  checksync -u __examples__/migrate_missing_target/example.js
+<end_group>"
+`;
+
+exports[`Integration Tests (see __examples__ folder) Example migrate_missing_target should report example migrate_missing_target to match snapshot for scenario json-check-only 1`] = `
+"Verbose  Options from arguments: {
+  "includeGlobs": [
+    "**/migrate_missing_target/**"
+  ],
+  "json": true,
+  "cachePath": "ROOT_DIR/.integrationtests/migrate_missing_target.json",
+  "cacheMode": "read"
+}
+Verbose  Looking for configuration file based on root marker...
+Verbose  Checking ROOT_DIR/.checksyncrc...
+Verbose  Checking ROOT_DIR/.checksyncrc.json...
+Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
+Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
+Verbose  Validating configuration
+Verbose  Configuration is valid
+Verbose  Options from config: {
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "autoFix": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "dryRun": false,
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
+}
+Verbose  Combined options with defaults: {
+  "autoFix": false,
+  "json": true,
+  "allowEmptyTags": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "dryRun": false,
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "includeGlobs": [
+    "**/migrate_missing_target/**"
+  ],
+  "cachePath": "ROOT_DIR/.integrationtests/migrate_missing_target.json",
+  "cacheMode": "read",
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
+}
+Info     Loading cache from ROOT_DIR/.integrationtests/migrate_missing_target.json
+{
+    "version": "0.0.0",
+    "launchString": "checksync -u __examples__/migrate_missing_target/example.js",
+    "files": {
+        "__examples__/migrate_missing_target/example.js": [
+            {
+                "markerID": "migrate_missing_target",
+                "reason": "No return tag named 'migrate_missing_target' in '__examples__/migrate_missing_target/missing_target.py'. Recommend migration to remote target 'https://example.com/1/missing_target.py' and update checksum to 1291658605.",
+                "code": "pending-migration",
+                "location": {
+                    "line": 3
+                },
+                "fix": {
+                    "type": "replace",
+                    "line": 3,
+                    "text": "// sync-start:migrate_missing_target 1291658605 https://example.com/1/missing_target.py",
+                    "declaration": "// sync-start:migrate_missing_target 12345 __examples__/migrate_missing_target/missing_target.py",
+                    "description": "Migrated sync-tag 'migrate_missing_target'. Target changed from '__examples__/migrate_missing_target/missing_target.py' to 'https://example.com/1/missing_target.py'. Checksum updated from 12345 to 1291658605"
+                }
+            },
+            {
+                "markerID": "migrate_missing_target2",
+                "reason": "No return tag named 'migrate_missing_target2' in '__examples__/migrate_missing_target/subfolder/missing_target.py'. Recommend migration to remote target 'https://example.com/2/missing_target.py' and update checksum to 1291658605.",
+                "code": "pending-migration",
+                "location": {
+                    "line": 4
+                },
+                "fix": {
+                    "type": "replace",
+                    "line": 4,
+                    "text": "// sync-start:migrate_missing_target2 1291658605 https://example.com/2/missing_target.py",
+                    "declaration": "// sync-start:migrate_missing_target2 __examples__/migrate_missing_target/subfolder/missing_target.py",
+                    "description": "Migrated sync-tag 'migrate_missing_target2'. Target changed from '__examples__/migrate_missing_target/subfolder/missing_target.py' to 'https://example.com/2/missing_target.py'. Checksum updated from no checksum to 1291658605"
+                }
+            }
+        ]
+    }
+}"
+`;
+
+exports[`Integration Tests (see __examples__ folder) Example migrate_missing_target should report example migrate_missing_target to match snapshot for scenario undefined 1`] = `
+"Verbose  Options from arguments: {
+  "includeGlobs": [
+    "**/migrate_missing_target/**"
+  ],
+  "cachePath": "ROOT_DIR/.integrationtests/migrate_missing_target.json",
+  "cacheMode": "write"
+}
+Verbose  Looking for configuration file based on root marker...
+Verbose  Checking ROOT_DIR/.checksyncrc...
+Verbose  Checking ROOT_DIR/.checksyncrc.json...
+Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
+Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
+Verbose  Validating configuration
+Verbose  Configuration is valid
+Verbose  Options from config: {
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "autoFix": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "dryRun": false,
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
+}
+Verbose  Combined options with defaults: {
+  "autoFix": false,
+  "json": false,
+  "allowEmptyTags": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "dryRun": false,
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "includeGlobs": [
+    "**/migrate_missing_target/**"
+  ],
+  "cachePath": "ROOT_DIR/.integrationtests/migrate_missing_target.json",
+  "cacheMode": "write",
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
+}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
+Verbose  Include globs: [
+    "**/migrate_missing_target/**"
+]
+Verbose  Exclude globs: [
+    "**/excluded/**"
+]
+Verbose  Discovered paths: [
+    "ROOT_DIR/__examples__/migrate_missing_target/example.js"
+]
+Info     Cache written to ROOT_DIR/.integrationtests/migrate_missing_target.json"
 `;
 
 exports[`Integration Tests (see __examples__ folder) Example missing_target should report example missing_target to match snapshot for scenario autofix 1`] = `
@@ -3544,7 +4187,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": true,
@@ -3568,7 +4214,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/missing_target.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     DRY-RUN: Files will not be modified
 Info     Loading cache from ROOT_DIR/.integrationtests/missing_target.json
@@ -3614,7 +4263,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -3638,7 +4290,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/missing_target.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/missing_target.json
 Error    __examples__/missing_target/example.js:3
@@ -3684,7 +4339,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -3708,7 +4366,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/missing_target.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/missing_target.json
 Error    🛑  Unfixable errors found. Fix the errors and try again.
@@ -3718,6 +4379,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
     "files": {
         "__examples__/missing_target/example.js": [
             {
+                "markerID": "missing_target",
                 "reason": "Sync-start for 'missing_target' points to '__examples__/missing_target/missing_target.py', which does not exist or is a directory",
                 "location": {
                     "line": 3
@@ -3725,6 +4387,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
                 "code": "file-does-not-exist"
             },
             {
+                "markerID": "missing_target",
                 "reason": "No return tag named 'missing_target' in '__examples__/missing_target/missing_target.py'",
                 "code": "no-return-tag",
                 "location": {
@@ -3768,7 +4431,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -3792,7 +4458,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/missing_target.json",
   "cacheMode": "write",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
@@ -3844,7 +4513,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": true,
@@ -3868,7 +4540,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/no_back_reference.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     DRY-RUN: Files will not be modified
 Info     Loading cache from ROOT_DIR/.integrationtests/no_back_reference.json
@@ -3912,7 +4587,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -3936,7 +4614,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/no_back_reference.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/no_back_reference.json
 Error    __examples__/no_back_reference/file1.js:1
@@ -3980,7 +4661,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -4004,7 +4688,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/no_back_reference.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/no_back_reference.json
 Error    🛑  Unfixable errors found. Fix the errors and try again.
@@ -4014,6 +4701,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
     "files": {
         "__examples__/no_back_reference/file1.js": [
             {
+                "markerID": "markerID",
                 "reason": "No return tag named 'markerID' in '__examples__/no_back_reference/file2.js'",
                 "code": "no-return-tag",
                 "location": {
@@ -4057,7 +4745,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -4081,7 +4772,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/no_back_reference.json",
   "cacheMode": "write",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
@@ -4134,7 +4828,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": true,
@@ -4158,7 +4855,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/no_checksums.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     DRY-RUN: Files will not be modified
 Info     Loading cache from ROOT_DIR/.integrationtests/no_checksums.json
@@ -4210,7 +4910,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -4234,7 +4937,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/no_checksums.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/no_checksums.json
 Mismatch __examples__/no_checksums/example_one-a.js:3
@@ -4283,7 +4989,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -4307,7 +5016,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/no_checksums.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/no_checksums.json
 {
@@ -4316,6 +5028,7 @@ Info     Loading cache from ROOT_DIR/.integrationtests/no_checksums.json
     "files": {
         "__examples__/no_checksums/example_one-a.js": [
             {
+                "markerID": "example_one",
                 "code": "mismatched-checksum",
                 "reason": "Looks like you changed the target content for sync-tag 'example_one' in '__examples__/no_checksums/example_one-b.py:3'. Make sure you've made corresponding changes in the source file, if necessary (No checksum != 249234014)",
                 "location": {
@@ -4332,6 +5045,7 @@ Info     Loading cache from ROOT_DIR/.integrationtests/no_checksums.json
         ],
         "__examples__/no_checksums/example_one-b.py": [
             {
+                "markerID": "example_one",
                 "code": "mismatched-checksum",
                 "reason": "Looks like you changed the target content for sync-tag 'example_one' in '__examples__/no_checksums/example_one-a.js:3'. Make sure you've made corresponding changes in the source file, if necessary (No checksum != 770446101)",
                 "location": {
@@ -4382,7 +5096,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -4406,7 +5123,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/no_checksums.json",
   "cacheMode": "write",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
@@ -4459,7 +5179,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": true,
@@ -4483,7 +5206,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/no_self_reference.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     DRY-RUN: Files will not be modified
 Info     Loading cache from ROOT_DIR/.integrationtests/no_self_reference.json
@@ -4532,7 +5258,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -4556,7 +5285,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/no_self_reference.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/no_self_reference.json
 Error    __examples__/no_self_reference/example.js:3
@@ -4608,7 +5340,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -4632,7 +5367,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/no_self_reference.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/no_self_reference.json
 Error    🛑  Unfixable errors found. Fix the errors and try again.
@@ -4642,6 +5380,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
     "files": {
         "__examples__/no_self_reference/example.js": [
             {
+                "markerID": "example_three",
                 "reason": "Sync-tag 'example_three' cannot target itself",
                 "location": {
                     "line": 3
@@ -4649,6 +5388,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
                 "code": "self-targeting"
             },
             {
+                "markerID": "example_three",
                 "code": "mismatched-checksum",
                 "reason": "Looks like you changed the target content for sync-tag 'example_three' in '__examples__/no_self_reference/example.js:3'. Make sure you've made corresponding changes in the source file, if necessary (No checksum != 770446101)",
                 "location": {
@@ -4699,7 +5439,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -4723,7 +5466,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/no_self_reference.json",
   "cacheMode": "write",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
@@ -4775,7 +5521,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": true,
@@ -4799,7 +5548,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/remote_tags_broken.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     DRY-RUN: Files will not be modified
 Info     Loading cache from ROOT_DIR/.integrationtests/remote_tags_broken.json
@@ -4847,7 +5599,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -4871,7 +5626,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/remote_tags_broken.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/remote_tags_broken.json
 Mismatch __examples__/remote_tags_broken/example.jsx:3
@@ -4917,7 +5675,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -4941,7 +5702,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/remote_tags_broken.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/remote_tags_broken.json
 {
@@ -4950,6 +5714,7 @@ Info     Loading cache from ROOT_DIR/.integrationtests/remote_tags_broken.json
     "files": {
         "__examples__/remote_tags_broken/example.jsx": [
             {
+                "markerID": "remote_target_self_hash",
                 "code": "mismatched-checksum",
                 "reason": "Looks like you changed the content of sync-tag 'remote_target_self_hash' or the path of the file that contains the tag. Make sure you've made corresponding changes at https://github.com/somewhatabstract/checksync/blob/b9433f22ed9cfdf6c79edfd7254670ff53f82f7c/__examples__/remote_tags_match/example.jsx#L3, if necessary (840225308 != 1603869099)",
                 "location": {
@@ -5000,7 +5765,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -5024,7 +5792,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/remote_tags_broken.json",
   "cacheMode": "write",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
@@ -5076,7 +5847,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": true,
@@ -5100,7 +5874,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/remote_tags_match.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     DRY-RUN: Files will not be modified
 Info     Loading cache from ROOT_DIR/.integrationtests/remote_tags_match.json
@@ -5139,7 +5916,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -5163,7 +5943,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/remote_tags_match.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/remote_tags_match.json
 🎉  Everything is in sync!"
@@ -5202,7 +5985,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -5226,7 +6012,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/remote_tags_match.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/remote_tags_match.json
 {
@@ -5268,7 +6057,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -5292,7 +6084,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/remote_tags_match.json",
   "cacheMode": "write",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
@@ -5344,7 +6139,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": true,
@@ -5368,7 +6166,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/unterminated_marker.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     DRY-RUN: Files will not be modified
 Info     Loading cache from ROOT_DIR/.integrationtests/unterminated_marker.json
@@ -5415,7 +6216,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -5439,7 +6243,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/unterminated_marker.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/unterminated_marker.json
 Error    __examples__/unterminated_marker/example_two-a.js:3
@@ -5486,7 +6293,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -5510,7 +6320,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/unterminated_marker.json",
   "cacheMode": "read",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Info     Loading cache from ROOT_DIR/.integrationtests/unterminated_marker.json
 Error    🛑  Unfixable errors found. Fix the errors and try again.
@@ -5520,6 +6333,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
     "files": {
         "__examples__/unterminated_marker/example_two-a.js": [
             {
+                "markerID": "example_two",
                 "reason": "No return tag named 'example_two' in '__examples__/unterminated_marker/example_two-b.py'",
                 "code": "no-return-tag",
                 "location": {
@@ -5529,6 +6343,7 @@ Error    🛑  Unfixable errors found. Fix the errors and try again.
         ],
         "__examples__/unterminated_marker/example_two-b.py": [
             {
+                "markerID": "example_two",
                 "reason": "Sync-start 'example_two' has no corresponding sync-end",
                 "location": {
                     "line": 3
@@ -5572,7 +6387,10 @@ Verbose  Options from config: {
   "ignoreFiles": [
     "**/ignore-file.txt"
   ],
-  "json": false
+  "json": false,
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Combined options with defaults: {
   "autoFix": false,
@@ -5596,7 +6414,10 @@ Verbose  Combined options with defaults: {
   "cachePath": "ROOT_DIR/.integrationtests/unterminated_marker.json",
   "cacheMode": "write",
   "$schema": "./src/checksync.schema.json",
-  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery."
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mappings": {}
+  }
 }
 Verbose  Ignore files: [
     "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",

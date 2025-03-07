@@ -87,7 +87,7 @@ describe("FileReferenceLogger", () => {
         });
     });
 
-    describe.each(["Mismatch", "Fix"])("#%s", (testCase) => {
+    describe.each(["Mismatch", "Fix", "Migrate"])("#%s", (testCase) => {
         it("should prefix with default file reference and message type", () => {
             // Arrange
             const NullLogger = new Logger();

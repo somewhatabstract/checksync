@@ -7,6 +7,7 @@ enum Label {
     Info = "Info",
     Warning = "Warning",
     Mismatch = "Mismatch",
+    Migrate = "Migrate",
     Fix = "Fix",
 }
 
@@ -29,6 +30,8 @@ const Format = {
         `${chalk.yellow(asLabel(Label.Warning))} ${text}`,
     mismatch: (text: string): string =>
         `${chalk.bold.yellowBright(asLabel(Label.Mismatch))} ${text}`,
+    migrate: (text: string): string =>
+        `${chalk.bold.yellowBright(asLabel(Label.Migrate))} ${text}`,
     fix: (text: string): string =>
         `${chalk.bold.greenBright(asLabel(Label.Fix))} ${text}`,
 

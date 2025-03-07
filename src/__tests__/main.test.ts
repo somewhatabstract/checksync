@@ -45,7 +45,9 @@ describe("main.js", () => {
             // Arrange
             const loadConfigurationFileSpy = jest
                 .spyOn(LoadConfigurationFile, "default")
-                .mockImplementation(() => Promise.resolve(undefined));
+                .mockImplementation((..._) =>
+                    Promise.resolve(undefined as any),
+                );
             const logger: any = {
                 fake: "logger",
             };

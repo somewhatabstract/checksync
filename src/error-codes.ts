@@ -15,4 +15,5 @@ export enum ErrorCode {
     noReturnTag = "no-return-tag",
     selfTargeting = "self-targeting",
     differentCommentSyntax = "different-comment-syntax",
+    pendingMigration = "pending-migration",
 }

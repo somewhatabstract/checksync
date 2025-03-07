@@ -96,6 +96,7 @@ describe("#parseFile", () => {
         // Assert
         expect(result.errors).toContainAllValues([
             {
+                markerID: null,
                 code: "could-not-parse",
                 reason: "Could not parse file: ERROR_STRING",
             },
@@ -168,6 +169,7 @@ describe("#parseFile", () => {
         expect(result).toStrictEqual({
             errors: [
                 {
+                    markerID: null,
                     code: "could-not-parse",
                     reason: "Could not parse file: ERROR_STRING",
                 },
@@ -317,6 +319,7 @@ describe("#parseFile", () => {
         expect(result).toStrictEqual({
             errors: [
                 {
+                    markerID: "MARKER_ID1",
                     code: "self-targeting",
                     location: {line: 1},
                     reason: "Sync-tag 'MARKER_ID1' cannot target itself",
@@ -398,6 +401,7 @@ describe("#parseFile", () => {
         expect(result).toStrictEqual({
             errors: [
                 {
+                    markerID: "MARKER_ID1",
                     code: ErrorCode.emptyMarker,
                     location: {line: 1},
                     reason: "Sync-tag 'MARKER_ID1' has no content",
@@ -1058,6 +1062,7 @@ describe("#parseFile", () => {
         expect(result).toStrictEqual({
             errors: [
                 {
+                    markerID: "MARKER_ID1",
                     code: "duplicate-marker",
                     location: {line: 1},
                     reason: "Sync-tag 'MARKER_ID1' declared multiple times",
