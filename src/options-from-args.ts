@@ -71,5 +71,12 @@ export const optionsFromArgs = (args: Arguments<any>): Partial<Options> => {
         options.cacheMode = "read";
     }
 
+    if (args.migrate != null) {
+        options.migration = {
+            mode: args.migrate,
+            mappings: {},
+        };
+    }
+
     return options;
 };

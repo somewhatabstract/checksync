@@ -77,12 +77,41 @@ export default function* generateErrors(
             );
             const indent = sourceRef.declaration.substring(0, startOfComment);
 
-            // TODO: Migrations
-            // 1. If mode is "all", then just determine if this should
-            //    be migrated and output that, then continue.
-            // 2. If mode is "missing", then we'll just do a migration for
-            //    local targets when the target line is missing or the target
-            //    checksum isn't available.
+            // If migration mode is "all", then the first thing we do is
+            // see if this is a matching migration. If it is, we don't care
+            // about mismatched checksums or missing return tags, we just
+            // report the pending migration.
+            if (options.migration?.mode === "all") {
+                const migratedTarget = determineMigration(options, sourceRef);
+                if (migratedTarget != null) {
+                    const oldTarget =
+                        sourceRef.type === "local"
+                            ? normalizeSeparators(
+                                  rootRelativePath(
+                                      sourceRef.target,
+                                      options.rootMarker,
+                                  ),
+                              )
+                            : sourceRef.target;
+                    yield Errors.pendingMigrationForMatchingTag(
+                        markerID,
+                        sourceRef.declaration,
+                        sourceLine,
+                        oldTarget,
+                        migratedTarget,
+                        sourceRef.checksum,
+                        sourceMarker.selfChecksum,
+                        `${indent}${formatSyncTagStart(
+                            markerID,
+                            sourceMarker.commentStart,
+                            sourceMarker.commentEnd,
+                            sourceMarker.selfChecksum,
+                            migratedTarget,
+                        )}`,
+                    );
+                }
+                continue;
+            }
 
             if (sourceRef.type === "local") {
                 const targetInfo: FileInfo | null | undefined =
@@ -165,9 +194,6 @@ export default function* generateErrors(
                     )}`,
                 );
             } else if (sourceRef.type === "remote") {
-                // TODO: We don't currently support migrating remote tags, but we
-                // could. Might be useful if code moved repos, or something,
-                // I suppose.
                 const currentChecksum = sourceRef.checksum;
                 const targetChecksum = sourceMarker.selfChecksum;
                 if (currentChecksum === targetChecksum) {

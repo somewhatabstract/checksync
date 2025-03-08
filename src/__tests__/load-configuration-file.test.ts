@@ -306,7 +306,7 @@ describe("#loadConfigurationFile", () => {
             "loadMigrationConfig",
         ).mockReturnValueOnce({
             mode: "all",
-            mappings: new Map([["a", "https://example.com"]]),
+            mappings: {a: "https://example.com"},
         });
 
         // Act
@@ -316,7 +316,7 @@ describe("#loadConfigurationFile", () => {
         expect(result).toEqual({
             migration: {
                 mode: "all",
-                mappings: new Map([["a", "https://example.com"]]),
+                mappings: {a: "https://example.com"},
             },
         });
     });

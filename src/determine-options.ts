@@ -3,7 +3,7 @@ import loadConfigurationFile from "./load-configuration-file";
 import defaultOptions from "./default-options";
 import {optionsFromArgs} from "./options-from-args";
 
-import {ILog, Options} from "./types";
+import {ILog, MigrationOptions, Options} from "./types";
 import {Arguments} from "yargs";
 import path from "path";
 import setCwd from "./set-cwd";
@@ -74,7 +74,21 @@ export default async function determineOptions(
         ...defaultOptions,
         ...configFromFile,
         ...argsOptions,
-    } as const;
+    };
+    // We have to build the combined migrations.
+    // Since this is a nested configuration, it's a little different.
+    // We only allow the mode to be overridden by args, the mappings always
+    // come from config.
+    const migrationMode =
+        argsOptions?.migration?.mode ?? configFromFile?.migration?.mode;
+    const combinedMigrations: MigrationOptions | undefined =
+        migrationMode == null || configFromFile?.migration?.mappings == null
+            ? undefined
+            : {
+                  mode: migrationMode,
+                  mappings: configFromFile?.migration?.mappings,
+              };
+    combinedOptions.migration = combinedMigrations;
     log.verbose(
         () =>
             `Combined options with defaults: ${JSON.stringify(

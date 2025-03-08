@@ -28,6 +28,7 @@ export const parseArgs = (log: ILog) =>
             "config",
             "outputCache",
             "fromCache",
+            "migrate",
         ])
         .option("outputCache", {
             type: "string",
@@ -43,7 +44,15 @@ export const parseArgs = (log: ILog) =>
                 "ignoreFiles",
                 "config",
                 "outputCache",
+                "help",
+                "version",
             ],
+        })
+        .option("migrate", {
+            type: "string",
+            choices: ["all", "missing"],
+            description: "Migrate all or only unreturned tags",
+            conflicts: ["help", "version"],
         })
         .alias("comments", ["c"])
         .alias("dryRun", ["n", "dry-run"])

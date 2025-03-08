@@ -25,9 +25,5 @@ module.exports = {
 
     prettierPath: null,
 
-    setupFilesAfterEnv: [
-        "jest-extended/all",
-        "./jest.setup.js",
-        "./src/polyfills.ts",
-    ],
+    setupFilesAfterEnv: ["jest-extended/all", "./jest.setup.js"],
 };

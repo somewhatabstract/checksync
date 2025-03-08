@@ -370,4 +370,33 @@ describe("#optionsFromArgs", () => {
         // Assert
         expect(result.cachePath).not.toBeDefined();
     });
+
+    it("should not add migration if args.migrate is not provided", () => {
+        // Arrange
+        const args: any = {
+            migrate: null,
+        };
+
+        // Act
+        const result = optionsFromArgs(args);
+
+        // Assert
+        expect(result.migration).not.toBeDefined();
+    });
+
+    it("should add migration if args.migrate is provided", () => {
+        // Arrange
+        const args: any = {
+            migrate: "SHENANIGANS",
+        };
+
+        // Act
+        const result = optionsFromArgs(args);
+
+        // Assert
+        expect(result.migration).toEqual({
+            mode: "SHENANIGANS",
+            mappings: {},
+        });
+    });
 });

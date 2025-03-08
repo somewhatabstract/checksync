@@ -90,10 +90,10 @@ describe("loadMigrationConfig", () => {
         // Assert
         expect(result).toEqual({
             mode: "all",
-            mappings: new Map([
-                ["a", "b"],
-                ["c", "d"],
-            ]),
+            mappings: {
+                a: "b",
+                c: "d",
+            },
         });
     });
 });
