@@ -9,7 +9,6 @@ import {
 } from "./types";
 
 const reportFix = (
-    sourceFile: string,
     fix: FixAction | null | undefined,
     log: IPositionLog,
 ): void => {
@@ -92,7 +91,7 @@ export default function fixFile(
                 lineNumber++;
 
                 // Report the fix.
-                reportFix(file, fix, log);
+                reportFix(fix, log);
 
                 // TODO: Determine actual file line-ending and use that rather
                 // than assuming \n like we do here.

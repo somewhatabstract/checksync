@@ -375,7 +375,7 @@ describe("#fromFiles", () => {
                 aliases: ["a.js"],
                 errors: [
                     {
-                        markerID: "MARKER_ID",
+                        markerID: null,
                         code: "could-not-parse",
                         reason: "Could not parse a.js: This isn't a file!",
                     },
@@ -387,7 +387,7 @@ describe("#fromFiles", () => {
                 aliases: ["b.js"],
                 errors: [
                     {
-                        markerID: "MARKER_ID",
+                        markerID: null,
                         code: "could-not-parse",
                         reason: "Could not parse b.js: This isn't a file!",
                     },
