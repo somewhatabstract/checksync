@@ -1,5 +1,21 @@
 # checksync
 
+## 8.0.0
+
+### Major Changes
+
+- 4b044fb: Add support for self-hashed tags with remote targets
+- 2e87ab4: Add support for migrating any tag that matches a migration rule
+- f8fd741: Add support for migrations and migrating tags that don't have return tags pointing to them
+
+### Patch Changes
+
+- 23439ea: Update to TypeScript 5.7.3
+- f8fd741: Add support for iterator helpers per the proposal
+- ecd9da4: Moving to pnpm instead of yarn
+- e2f8b09: Add ability to parse markers to a JSON file and then use that file as input to future runs
+- d784980: Rework error generation to make code a little more manageable
+
 ## 7.0.1
 
 ### Patch Changes
