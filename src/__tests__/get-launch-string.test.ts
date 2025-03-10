@@ -73,7 +73,7 @@ describe("#getLaunchString", () => {
             expect(result).toBe("pnpm checksync");
         });
 
-        it("and npm_execpath is not yarn, should return `npx checksync`", () => {
+        it("and npm_execpath is not yarn nor pnpm, should return `npx checksync`", () => {
             // Arrange
             jest.spyOn(path, "join").mockReturnValueOnce(".bin/checksync");
             jest.spyOn(CwdRelativePath, "default").mockReturnValueOnce(

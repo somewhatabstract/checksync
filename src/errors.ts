@@ -243,6 +243,45 @@ export const noReturnTag = (
 });
 
 /**
+ * Create an error indicating a pending migration for a matching tag.
+ *
+ * @param markerID The ID of the marker that is affected.
+ * @param declaration The original declaration of the marker exhibiting the
+ * mismatch.
+ * @param line The line number where the marker is located.
+ * @param oldTargetRootRelativeOrRemote The old target path.
+ * @param migratedTarget The target to which the marker should be migrated.
+ * @param incorrectChecksum The incorrect checksum.
+ * @param correctChecksum The correct checksum.
+ * @param fixedTag The fixed tag that should replace the mismatched one.
+ * @returns The error details.
+ */
+export const pendingMigrationForMatchingTag = (
+    markerID: string,
+    declaration: string,
+    line: number,
+    oldTargetRootRelativeOrRemote: string,
+    migratedTarget: string,
+    incorrectChecksum: string,
+    correctChecksum: string,
+    fixedTag: string,
+): ErrorDetails => {
+    return {
+        markerID,
+        reason: `Recommended migration to remote target '${migratedTarget}' and update checksum to ${correctChecksum}.`,
+        code: ErrorCode.pendingMigration,
+        location: {line},
+        fix: {
+            type: "replace",
+            line,
+            text: fixedTag,
+            declaration,
+            description: `Migrated sync-tag '${markerID}'. Target changed from '${oldTargetRootRelativeOrRemote}' to '${migratedTarget}'. Checksum updated from ${incorrectChecksum.toLowerCase()} to ${correctChecksum}`,
+        },
+    };
+};
+
+/**
  * Create an error indicating a pending migration for missing local return tag.
  *
  * @param options The options for the current run.

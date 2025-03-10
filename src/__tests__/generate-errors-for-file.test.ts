@@ -485,6 +485,142 @@ describe("#generateMarkerEdges", () => {
         ]);
     });
 
+    it("should yield a pending migration error when there is a matching migration and migration mode is 'all' for local target tag", () => {
+        // Arrange
+        jest.spyOn(DetermineMigration, "determineMigration").mockReturnValue(
+            "MIGRATED_TARGET",
+        );
+        const options: Options = {
+            migration: {
+                mode: "all",
+            },
+        } as any;
+        const markerCache: MarkerCache = {
+            filea: {
+                readOnly: false,
+                errors: [],
+                aliases: ["filea"],
+                markers: {
+                    marker: {
+                        commentStart: "//",
+                        commentEnd: undefined,
+                        contentChecksum: "",
+                        selfChecksum: "",
+                        targets: {
+                            [1]: {
+                                checksum: "5678",
+                                target: "fileb",
+                                declaration: "// sync-start:marker 5678 fileb",
+                                type: "local",
+                            },
+                        },
+                    },
+                },
+            },
+            fileb: {
+                readOnly: false,
+                errors: [],
+                aliases: ["fileb"],
+                markers: {
+                    marker: {
+                        commentStart: "//",
+                        commentEnd: undefined,
+                        contentChecksum: "",
+                        selfChecksum: "",
+                        targets: {},
+                    },
+                },
+            },
+        };
+
+        // Act
+        const result = Array.from(
+            generateErrorsForFile(options, "filea", markerCache),
+        );
+
+        // Assert
+        expect(result).toEqual([
+            {
+                code: "pending-migration",
+                fix: {
+                    declaration: "// sync-start:marker 5678 fileb",
+                    description:
+                        "Migrated sync-tag 'marker'. Target changed from 'fileb' to 'MIGRATED_TARGET'. Checksum updated from 5678 to ",
+                    line: 1,
+                    text: "// sync-start:marker  MIGRATED_TARGET",
+                    type: "replace",
+                },
+                location: {
+                    line: 1,
+                },
+                markerID: "marker",
+                reason: "Recommended migration to remote target 'MIGRATED_TARGET' and update checksum to .",
+            },
+        ]);
+    });
+
+    it("should yield a pending migration error when there is a matching migration and migration mode is 'all' for remote target tag", () => {
+        // Arrange
+        jest.spyOn(DetermineMigration, "determineMigration").mockReturnValue(
+            "MIGRATED_TARGET",
+        );
+        const options: Options = {
+            migration: {
+                mode: "all",
+            },
+        } as any;
+        const markerCache: MarkerCache = {
+            filea: {
+                readOnly: false,
+                errors: [],
+                aliases: ["filea"],
+                markers: {
+                    marker: {
+                        commentStart: "//",
+                        commentEnd: undefined,
+                        contentChecksum: "",
+                        selfChecksum: "",
+                        targets: {
+                            [1]: {
+                                checksum: "5678",
+                                target: "https://example.com/b",
+                                declaration:
+                                    "// sync-start:marker 5678 https://example.com/b",
+                                type: "remote",
+                            },
+                        },
+                    },
+                },
+            },
+        };
+
+        // Act
+        const result = Array.from(
+            generateErrorsForFile(options, "filea", markerCache),
+        );
+
+        // Assert
+        expect(result).toEqual([
+            {
+                code: "pending-migration",
+                fix: {
+                    declaration:
+                        "// sync-start:marker 5678 https://example.com/b",
+                    description:
+                        "Migrated sync-tag 'marker'. Target changed from 'https://example.com/b' to 'MIGRATED_TARGET'. Checksum updated from 5678 to ",
+                    line: 1,
+                    text: "// sync-start:marker  MIGRATED_TARGET",
+                    type: "replace",
+                },
+                location: {
+                    line: 1,
+                },
+                markerID: "marker",
+                reason: "Recommended migration to remote target 'MIGRATED_TARGET' and update checksum to .",
+            },
+        ]);
+    });
+
     it("should yield an error when the marker in the target file does not reference source file and there is no matching migration", () => {
         // Arrange
         const options: Options = {} as any;

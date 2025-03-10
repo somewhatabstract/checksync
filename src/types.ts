@@ -207,7 +207,7 @@ export type normalizeTargetFn = (
 
 export type MigrationOptions = {
     mode: "all" | "missing";
-    mappings: ReadonlyMap<string, string>;
+    mappings: Record<string, string>;
 };
 
 export type Options = {
