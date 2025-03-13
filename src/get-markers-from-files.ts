@@ -59,7 +59,7 @@ export default async function getMarkersFromFiles(
             } catch (e: any) {
                 // If we got an issue, then we need to store this as could
                 // not parse (as well as record the unfixable alias)
-                setCacheData(file, {
+                setCacheData(realFilePath ?? file, {
                     readOnly,
                     markers: {},
                     aliases: [],
