@@ -172,12 +172,12 @@ describe("#fromFiles", () => {
         });
     });
 
-    it("should cache real files of already parsed symlinks as read only", async () => {
+    it("should always parse real file path, not symlink path", async () => {
         // Arrange
         const parseSpy = jest
             .spyOn(ParseFile, "default")
             .mockImplementation((options, file, readOnly) => {
-                if (file === "a.js") {
+                if (file === "b_real.js") {
                     return Promise.resolve({
                         markers: {},
                         referencedFiles: ["c.js"],
@@ -185,9 +185,9 @@ describe("#fromFiles", () => {
                 }
                 return Promise.resolve({markers: {}, referencedFiles: []});
             });
-        jest.spyOn(fs, "realpathSync").mockImplementation((a) => "b.js");
+        jest.spyOn(fs, "realpathSync").mockImplementation((a) => "b_real.js");
         const options: Options = {
-            includeGlobs: ["a.js"],
+            includeGlobs: ["a_symlink.js"],
             comments: ["//"],
             autoFix: true,
             rootMarker: null,
@@ -201,28 +201,35 @@ describe("#fromFiles", () => {
         };
 
         // Act
-        const result = await getMarkersFromFiles(options, ["a.js", "b.js"]);
+        const result = await getMarkersFromFiles(options, [
+            "a_symlink.js",
+            "b_real.js",
+        ]);
 
         // Assert
-        expect(parseSpy).toHaveBeenCalledWith(options, "a.js", false);
-        expect(parseSpy).not.toHaveBeenCalledWith(options, "b.js", false);
+        expect(parseSpy).toHaveBeenCalledWith(options, "b_real.js", false);
+        expect(parseSpy).not.toHaveBeenCalledWith(
+            options,
+            "a_symlink.js",
+            false,
+        );
         expect(result).toStrictEqual({
-            "a.js": {
-                aliases: ["a.js", "b.js", "c.js"],
-                errors: undefined,
-                lineCount: undefined,
-                markers: {},
-                readOnly: false,
-            },
-            "b.js": {
-                aliases: ["a.js", "b.js", "c.js"],
+            "a_symlink.js": {
+                aliases: ["b_real.js", "a_symlink.js", "c.js"],
                 errors: undefined,
                 lineCount: undefined,
                 markers: {},
                 readOnly: true,
             },
+            "b_real.js": {
+                aliases: ["b_real.js", "a_symlink.js", "c.js"],
+                errors: undefined,
+                lineCount: undefined,
+                markers: {},
+                readOnly: false,
+            },
             "c.js": {
-                aliases: ["a.js", "b.js", "c.js"],
+                aliases: ["b_real.js", "a_symlink.js", "c.js"],
                 errors: undefined,
                 lineCount: undefined,
                 markers: {},

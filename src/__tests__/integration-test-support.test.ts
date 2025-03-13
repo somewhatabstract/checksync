@@ -60,28 +60,6 @@ describe("integration-test-support", () => {
             // Assert
             expect(examples).toEqual(["b_dir"]);
         });
-
-        it("should filter out the symlink examples when on Windows", () => {
-            // Arrange
-            Object.defineProperty(process, "platform", {
-                value: "win32",
-            });
-            jest.spyOn(fs, "readdirSync").mockReturnValueOnce([
-                "a",
-                "b",
-                "symlink1",
-                "another_symlink_example",
-            ] as any);
-            jest.spyOn(fs, "lstatSync").mockReturnValue({
-                isDirectory: () => true,
-            } as any);
-
-            // Act
-            const examples = getExamples();
-
-            // Assert
-            expect(examples).toEqual(["a", "b"]);
-        });
     });
 
     describe("runChecksync", () => {
