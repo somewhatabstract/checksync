@@ -7,6 +7,14 @@ import parseFile from "./parse-file";
 import {FileInfo, MarkerCache, Options} from "./types";
 import * as Errors from "./errors";
 
+const getRealPath = (file: string) => {
+    try {
+        return fs.realpathSync(file);
+    } catch {
+        return file;
+    }
+};
+
 /**
  * Generate a marker cache from the given files.
  *
@@ -32,54 +40,48 @@ export default async function getMarkersFromFiles(
         readOnly: boolean,
     ) => {
         for (const file of files) {
-            if (cacheData[file] !== undefined) {
-                continue;
+            // This could be a symlink.
+            // We want to treat it as the canonical real file.
+            const realFilePath = getRealPath(file);
+
+            // We don't need to parse things twice.
+            if (cacheData[realFilePath] === undefined) {
+                // OK, it hasn't been parsed yet. We need to parse it so we
+                // can store a copy for our symlink.
+                try {
+                    const parseResult = await parseFile(
+                        options,
+                        realFilePath,
+                        readOnly,
+                    );
+                    setCacheData(realFilePath, {
+                        readOnly,
+                        markers: parseResult.markers || {},
+                        aliases: [],
+                        errors: parseResult.errors,
+                        lineCount: parseResult.lineCount,
+                    });
+                    referencedFiles.push(...parseResult.referencedFiles);
+                } catch (e: any) {
+                    // If we got an issue, then we need to store this as could
+                    // not parse (as well as record the unfixable alias)
+                    setCacheData(realFilePath, {
+                        readOnly,
+                        markers: {},
+                        aliases: [],
+                        errors: [Errors.couldNotParse(file, e.message)],
+                    });
+                }
             }
 
-            // This file might be a symlink source or target, so before we parse it,
-            // let's see if we already did.
-            try {
-                const realFilePath = fs.realpathSync(file);
-                if (
-                    realFilePath !== file &&
-                    cacheData[realFilePath] !== undefined
-                ) {
-                    // Clone as unfixable, since this file already exists in
-                    // a fixable version, and we don't need to fix it twice.
-                    setCacheData(file, {
-                        ...cacheData[realFilePath],
-                        readOnly: true,
-                    });
-                    continue;
-                }
-
-                const parseResult = await parseFile(options, file, readOnly);
+            // If the original file was a symlink, let's make sure we
+            // store the markers under its target filepath too.
+            if (realFilePath !== file) {
+                // Close as unfixable, since this file already exists in
+                // a fixable version, and we don't need to fix it twice.
                 setCacheData(file, {
-                    readOnly,
-                    markers: parseResult.markers || {},
-                    aliases: [],
-                    errors: parseResult.errors,
-                    lineCount: parseResult.lineCount,
-                });
-                referencedFiles.push(...parseResult.referencedFiles);
-
-                // Since this might be a symlink source, let's make sure we
-                // store the markers under its target filepath too.
-                if (realFilePath !== file) {
-                    const dataForFile: FileInfo = cacheData[file] ?? {};
-                    // Close as unfixable, since this file already exists in
-                    // a fixable version, and we don't need to fix it twice.
-                    setCacheData(realFilePath, {
-                        ...dataForFile,
-                        readOnly: true,
-                    });
-                }
-            } catch (e: any) {
-                setCacheData(file, {
-                    readOnly,
-                    markers: {},
-                    aliases: [],
-                    errors: [Errors.couldNotParse(file, e.message)],
+                    ...(cacheData[realFilePath] ?? {}),
+                    readOnly: true,
                 });
             }
         }
