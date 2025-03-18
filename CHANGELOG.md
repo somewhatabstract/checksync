@@ -1,5 +1,11 @@
 # checksync
 
+## 8.0.1
+
+### Patch Changes
+
+- 2d2a9ad: Handle symlinks in a deterministic manner so that remote tag checksums are stable
+
 ## 8.0.0
 
 ### Major Changes
