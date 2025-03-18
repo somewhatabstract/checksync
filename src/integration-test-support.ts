@@ -27,13 +27,11 @@ export const getExamples = () =>
         // Iterate over the __examples__ folders and filter out anything we don't
         // want.
         .readdirSync(EXAMPLES_DIR)
-        // The whole symlink test is not going to work right on windows
-        // so let's just skip it.
-        .filter((p) => !(process.platform === "win32" && p.includes("symlink")))
         // We only want directories.
         .filter((name) =>
             fs.lstatSync(path.join(EXAMPLES_DIR, name)).isDirectory(),
         )
+        // Sort them so that we're consistent.
         .sort();
 
 /**
