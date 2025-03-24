@@ -57,7 +57,7 @@ importers:
         version: 29.7.0
       '@khanacademy/eslint-config':
         specifier: ^5.2.0
-        version: 5.2.0(@khanacademy/eslint-plugin@3.1.1(eslint@9.23.0)(typescript@5.8.2))(@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@9.23.0)(typescript@5.8.2))(eslint@9.23.0)(typescript@5.8.2))(@typescript-eslint/parser@7.18.0(eslint@9.23.0)(typescript@5.8.2))(eslint-config-prettier@10.1.1(eslint@9.23.0))(eslint-import-resolver-typescript@3.8.7)(eslint-plugin-import@2.31.0)(eslint-plugin-jsx-a11y@6.10.2(eslint@9.23.0))(eslint-plugin-prettier@5.2.4(eslint-config-prettier@10.1.1(eslint@9.23.0))(eslint@9.23.0)(prettier@3.5.3))(eslint-plugin-react@7.37.4(eslint@9.23.0))(eslint@9.23.0)
+        version: 5.2.1(@khanacademy/eslint-plugin@3.1.1(eslint@9.23.0)(typescript@5.8.2))(@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@9.23.0)(typescript@5.8.2))(eslint@9.23.0)(typescript@5.8.2))(@typescript-eslint/parser@7.18.0(eslint@9.23.0)(typescript@5.8.2))(eslint-config-prettier@10.1.1(eslint@9.23.0))(eslint-import-resolver-typescript@3.8.7)(eslint-plugin-import@2.31.0)(eslint-plugin-jsx-a11y@6.10.2(eslint@9.23.0))(eslint-plugin-prettier@5.2.4(eslint-config-prettier@10.1.1(eslint@9.23.0))(eslint@9.23.0)(prettier@3.5.3))(eslint-plugin-react@7.37.4(eslint@9.23.0))(eslint@9.23.0)
       '@khanacademy/eslint-plugin':
         specifier: ^3.0.0
         version: 3.1.1(eslint@9.23.0)(typescript@5.8.2)
@@ -1053,10 +1053,10 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
-  '@khanacademy/eslint-config@5.2.0':
-    resolution: {integrity: sha512-fTlATb2MmPeEudBRSGTpydliukkBZ9/H/zXEdM1xau9+XbZ73RCMFOFdYSD9r9XhwyM5EcfSIO/V3kYnbx5cWg==}
+  '@khanacademy/eslint-config@5.2.1':
+    resolution: {integrity: sha512-2OuMYsE4LTFVOCLR0Os89UG3X5atbE9roA/1qzUJWxxLUMOMGSFiFA1b6oRPmjJxFOiC6vR7g0Q5HGNFy5e7lg==}
     peerDependencies:
-      '@khanacademy/eslint-plugin': ^3.1.1
+      '@khanacademy/eslint-plugin': 3.1.2
       '@typescript-eslint/eslint-plugin': 8.17.0
       '@typescript-eslint/parser': 8.17.0
       eslint: ^8.55.0
@@ -5456,7 +5456,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@khanacademy/eslint-config@5.2.0(@khanacademy/eslint-plugin@3.1.1(eslint@9.23.0)(typescript@5.8.2))(@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@9.23.0)(typescript@5.8.2))(eslint@9.23.0)(typescript@5.8.2))(@typescript-eslint/parser@7.18.0(eslint@9.23.0)(typescript@5.8.2))(eslint-config-prettier@10.1.1(eslint@9.23.0))(eslint-import-resolver-typescript@3.8.7)(eslint-plugin-import@2.31.0)(eslint-plugin-jsx-a11y@6.10.2(eslint@9.23.0))(eslint-plugin-prettier@5.2.4(eslint-config-prettier@10.1.1(eslint@9.23.0))(eslint@9.23.0)(prettier@3.5.3))(eslint-plugin-react@7.37.4(eslint@9.23.0))(eslint@9.23.0)':
+  '@khanacademy/eslint-config@5.2.1(@khanacademy/eslint-plugin@3.1.1(eslint@9.23.0)(typescript@5.8.2))(@typescript-eslint/eslint-plugin@7.18.0(@typescript-eslint/parser@7.18.0(eslint@9.23.0)(typescript@5.8.2))(eslint@9.23.0)(typescript@5.8.2))(@typescript-eslint/parser@7.18.0(eslint@9.23.0)(typescript@5.8.2))(eslint-config-prettier@10.1.1(eslint@9.23.0))(eslint-import-resolver-typescript@3.8.7)(eslint-plugin-import@2.31.0)(eslint-plugin-jsx-a11y@6.10.2(eslint@9.23.0))(eslint-plugin-prettier@5.2.4(eslint-config-prettier@10.1.1(eslint@9.23.0))(eslint@9.23.0)(prettier@3.5.3))(eslint-plugin-react@7.37.4(eslint@9.23.0))(eslint@9.23.0)':
     dependencies:
       '@khanacademy/eslint-plugin': 3.1.1(eslint@9.23.0)(typescript@5.8.2)
       '@typescript-eslint/eslint-plugin': 7.18.0(@typescript-eslint/parser@7.18.0(eslint@9.23.0)(typescript@5.8.2))(eslint@9.23.0)(typescript@5.8.2)
