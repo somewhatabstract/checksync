@@ -110,7 +110,6 @@
         "coverage:unit": "jest --colors --config jest.config.js --coverage --testPathIgnorePatterns integration.test.ts",
         "coverage:integration": "jest --colors --config jest.config.js --coverage integration.test.ts",
         "coverage": "jest --colors --config jest.config.js --coverage",
-        "lint": "eslint --config eslint.config.mjs '{src,bin,__{tests,mocks}__}/**/*.ts'",
         "publish:ci": "git diff --stat --exit-code HEAD && pnpm build && changeset publish",
         "env": "node"
     },

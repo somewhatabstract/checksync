@@ -40,7 +40,7 @@ jobs:
       run: pnpm install --frozen-lockfile
 
     - name: Lint
-      run: pnpm lint
+      run: pnpm eslint
 
     - name: Static Types
       run: pnpm typecheck
