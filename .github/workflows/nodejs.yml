@@ -2,8 +2,9 @@ name: Node CI
 
 on:
   pull_request:
-    branches:
-    - main
+    # ready_for_review is useful for when a PR is converted from "draft" to "not
+    # draft".
+    types: [edited, opened, synchronize, ready_for_review, reopened]
 
   push:
     branches:
