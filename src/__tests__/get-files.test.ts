@@ -30,7 +30,14 @@ describe("#getFiles", () => {
             .mockImplementation((p) => Promise.resolve([...p]));
 
         // Act
-        await getFiles(["pattern1", "pattern2"], [], [], NullLogger);
+        await getFiles(
+            {
+                includeGlobs: ["pattern1", "pattern2"],
+                excludeGlobs: [],
+                ignoreFiles: [],
+            } as any,
+            NullLogger,
+        );
 
         // Assert
         expect(globSpy).toHaveBeenCalledWith(
@@ -53,7 +60,14 @@ describe("#getFiles", () => {
         );
 
         // Act
-        await getFiles(["pattern1/*", "pattern2/*"], [], [], NullLogger);
+        await getFiles(
+            {
+                includeGlobs: ["pattern1/*", "pattern2/*"],
+                excludeGlobs: [],
+                ignoreFiles: [],
+            } as any,
+            NullLogger,
+        );
 
         // Assert
         expect(lstatSyncSpy).not.toHaveBeenCalled();
@@ -74,9 +88,11 @@ describe("#getFiles", () => {
 
         // Act
         const result = await getFiles(
-            ["pattern1", "pattern2"],
-            [],
-            [],
+            {
+                includeGlobs: ["pattern1", "pattern2"],
+                excludeGlobs: [],
+                ignoreFiles: [],
+            } as any,
             NullLogger,
         );
 
@@ -99,7 +115,14 @@ describe("#getFiles", () => {
             );
 
         // Act
-        await getFiles([], ["a", "c"], ["ignore-file"], NullLogger);
+        await getFiles(
+            {
+                includeGlobs: [],
+                excludeGlobs: ["a", "c"],
+                ignoreFiles: ["ignore-file"],
+            } as any,
+            NullLogger,
+        );
 
         // Assert
         expect(globSpy).toHaveBeenCalledWith(
@@ -121,9 +144,11 @@ describe("#getFiles", () => {
 
         // Act
         const files = await getFiles(
-            [],
-            ["a", "c"],
-            ["ignore-file"],
+            {
+                includeGlobs: [],
+                excludeGlobs: ["a", "c"],
+                ignoreFiles: ["ignore-file"],
+            } as any,
             NullLogger,
         );
 
@@ -144,7 +169,14 @@ describe("#getFiles", () => {
         const verboseSpy = jest.spyOn(NullLogger, "verbose");
 
         // Act
-        await getFiles([], ["a", "c"], [], NullLogger);
+        await getFiles(
+            {
+                includeGlobs: [],
+                excludeGlobs: ["a", "c"],
+                ignoreFiles: [],
+            } as any,
+            NullLogger,
+        );
 
         // Assert
         expect(verboseSpy).toHaveBeenCalledTimes(3);
@@ -162,7 +194,14 @@ describe("#getFiles", () => {
         );
 
         // Act
-        await getFiles(["b", "d"], ["a", "c"], [], logger);
+        await getFiles(
+            {
+                includeGlobs: ["b", "d"],
+                excludeGlobs: ["a", "c"],
+                ignoreFiles: [],
+            } as any,
+            logger,
+        );
         const log = logger.getLog();
 
         // Assert
