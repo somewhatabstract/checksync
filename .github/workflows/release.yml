@@ -64,4 +64,7 @@ jobs:
           # the account of someone with appropriate access levels and given the
           # repo scope.
           GITHUB_TOKEN: ${{ secrets.BOT_PA_TOKEN }}
+          # This is the token used to publish to npm
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # This is for the upload of bundle analysis
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

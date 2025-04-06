@@ -24,6 +24,8 @@ export default [
             "flow-typed/**/*.js",
             "**/coverage",
             "**/dist",
+            "**/__examples__/**",
+            ".prettierrc.js",
         ],
     },
     ...compat.extends("@khanacademy"),
@@ -41,6 +43,14 @@ export default [
                 ...globals.node,
             },
         },
+    },
+    {
+        files: [
+            "**/src/**",
+            "**/bin/**",
+            "**/__tests__/**/*.ts",
+            "**/__mocks__/**/*.ts",
+        ],
 
         rules: {
             "constructor-super": "error",
@@ -156,6 +166,15 @@ export default [
         rules: {
             "@typescript-eslint/no-empty-function": "off",
             "max-lines": "off",
+        },
+    },
+
+    {
+        files: ["**/bin/**"],
+
+        rules: {
+            "import/extensions": "off",
+            "@typescript-eslint/no-require-imports": "off",
         },
     },
 ];

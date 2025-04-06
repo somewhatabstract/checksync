@@ -48,7 +48,7 @@ To ensure code quality, we use prettier, TypeScript, eslint, and jest. These are
 To execute these operations outside of a pull request, you can use `pnpm`.
 
 - `pnpm typecheck`
-- `pnpm lint`
+- `pnpm eslint`
 - `pnpm test` (or `pnpm test:integration` and `pnpm test:unit` to run test categories separately)
 
 If you make changes that change snapshots, you may need to run tests with the `-u` jest option and commit the updated snapshot files along with the rest of your contribution.
