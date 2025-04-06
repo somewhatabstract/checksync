@@ -263,9 +263,8 @@ describe("#run", () => {
 
     it("should log error on rejection of checkSync method", async () => {
         // Arrange
-        jest.spyOn(CheckSync, "default").mockRejectedValue(
-            new Error("Oh no, booms!"),
-        );
+        const error = new Error("Oh no, booms!");
+        jest.spyOn(CheckSync, "default").mockRejectedValue(error);
         jest.spyOn(DetermineOptions, "default").mockResolvedValue(
             defaultOptions,
         );
@@ -278,9 +277,7 @@ describe("#run", () => {
         await run(__filename);
 
         // Assert
-        expect(logSpy).toHaveBeenCalledWith(
-            "Unexpected error: Error: Oh no, booms!",
-        );
+        expect(logSpy).toHaveBeenCalledWith(error.stack);
     });
 
     it("should exit with CATASTROPHIC code on rejection of checkSync method", async () => {

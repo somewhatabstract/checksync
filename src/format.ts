@@ -22,8 +22,12 @@ const asLabel = (label: Label): string =>
 const Format = {
     verbose: (text: string): string =>
         `${chalk.grey(asLabel(Label.Verbose))} ${chalk.dim(text)}`,
-    error: (text: string): string =>
-        `${chalk.red(asLabel(Label.Error))} ${text}`,
+    error: (text: string): string => {
+        if (text.startsWith("Error: ")) {
+            text = text.substring("Error: ".length);
+        }
+        return `${chalk.red(asLabel(Label.Error))} ${text}`;
+    },
     info: (text: string): string =>
         `${chalk.blue(asLabel(Label.Info))} ${text}`,
     warn: (text: string): string =>

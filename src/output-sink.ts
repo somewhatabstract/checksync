@@ -29,19 +29,24 @@ export default class OutputSink {
         this._options = options;
     }
 
+    _getKeyForFile(file: string): string {
+        try {
+            return rootRelativePath(file, this._options.rootMarker);
+        } catch (e) {
+            return file;
+        }
+    }
+
     _getErrorsForFile(file: string): Array<ErrorDetails> {
-        return this._errorsByFile[
-            rootRelativePath(file, this._options.rootMarker)
-        ];
+        return this._errorsByFile[this._getKeyForFile(file)];
     }
 
     _initErrorsForFile(file: string): void {
-        this._errorsByFile[rootRelativePath(file, this._options.rootMarker)] =
-            [];
+        this._errorsByFile[this._getKeyForFile(file)] = [];
     }
 
     _cleanUpErrorlessFile(file: string): boolean {
-        const relativePath = rootRelativePath(file, this._options.rootMarker);
+        const relativePath = this._getKeyForFile(file);
         if (this._errorsByFile[relativePath].length === 0) {
             delete this._errorsByFile[relativePath];
             return true;
