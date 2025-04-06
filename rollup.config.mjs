@@ -40,16 +40,16 @@ export default {
                 },
             ],
         }),
-        process.env.CODECOV_TOKEN == null
-            ? // This plugin outputs size info to the console when local.
-              filesize()
-            : // This plugin provides bundle analysis from codecov, but does
+        process.env.CODECOV_TOKEN
+            ? // This plugin provides bundle analysis from codecov, but does
               // not work locally without additional config, and it does not
               // output size info to the console.
               codecovRollupPlugin({
-                  enableBundleAnalysis: process.env.CODECOV_TOKEN !== undefined,
+                  enableBundleAnalysis: true, // true when CODECOV_TOKEN set
                   bundleName: "checksync",
                   uploadToken: process.env.CODECOV_TOKEN,
-              }),
+              })
+            : // This plugin outputs size info to the console when local.
+              filesize(),
     ],
 };

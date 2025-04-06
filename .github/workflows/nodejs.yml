@@ -161,5 +161,5 @@ jobs:
       env:
         # We only want to upload bundle analysis for a PR once,
         # so we only provide a token for the ubuntu-latest job.
-        CODECOV_TOKEN: ${{ matrix.os == 'ubuntu-latest' && secrets.CODECOV_TOKEN || '' }}
+        CODECOV_TOKEN: ${{ matrix.os == 'ubuntu-latest' && secrets.CODECOV_TOKEN }}
       run: pnpm build
