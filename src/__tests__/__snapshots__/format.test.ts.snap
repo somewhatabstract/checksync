@@ -6,6 +6,8 @@ exports[`Format #cwdFilePath should render with chalk colors 1`] = `"[90mTest[
 
 exports[`Format #error should prefix with _ERROR__ 1`] = `"Error    Test"`;
 
+exports[`Format #error should remove 'Error: ' prefix from message if there is one 1`] = `"Error    Test"`;
+
 exports[`Format #error should render with chalk colors 1`] = `"[31mError   [39m Test"`;
 
 exports[`Format #fix should prefix with _FIX_ 1`] = `"Fix      Test"`;
@@ -17,6 +19,10 @@ exports[`Format #heading should render with chalk colors 1`] = `"[1m[32mTest[
 exports[`Format #info should prefix with _INFO__ 1`] = `"Info     Test"`;
 
 exports[`Format #info should render with chalk colors 1`] = `"[34mInfo    [39m Test"`;
+
+exports[`Format #migrate should prefix with _MIGRATE__ 1`] = `"Migrate  Test"`;
+
+exports[`Format #migrate should render with chalk colors 1`] = `"[1m[93mMigrate [39m[22m Test"`;
 
 exports[`Format #mismatch should prefix with _MISMATCH__ 1`] = `"Mismatch Test"`;
 

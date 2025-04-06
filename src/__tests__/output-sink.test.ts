@@ -8,6 +8,7 @@ import * as MaybeReportError from "../maybe-report-error";
 import * as FileReferenceLogger from "../file-reference-logger";
 import * as FixFile from "../fix-file";
 import * as GetLaunchString from "../get-launch-string";
+import * as RootRelativePath from "../root-relative-path";
 
 import {ErrorDetails} from "../types";
 
@@ -23,6 +24,21 @@ const errorsNotLoggedWithWarn = [
 
 describe("OutputSink", () => {
     describe("#startFile", () => {
+        it("should not throw if the root marker is not found", () => {
+            // Arrange
+            const NullLogger = new Logger();
+            const outputSink = new OutputSink(defaultOptions, NullLogger);
+            jest.spyOn(RootRelativePath, "default").mockImplementation(() => {
+                throw new Error("Root marker not found");
+            });
+
+            // Act
+            const underTest = () => outputSink.startFile("foo.js");
+
+            // Assert
+            expect(underTest).not.toThrow();
+        });
+
         it("should not throw if a file has not been started and it has not already been drained", () => {
             // Arrange
             const NullLogger = new Logger();
@@ -129,6 +145,39 @@ describe("OutputSink", () => {
                     dummyFileLogger,
                     errorDetails,
                 );
+            });
+
+            it("should not throw if the root marker is not found", () => {
+                // Arrange
+                const NullLogger = new Logger();
+                const options = {
+                    ...defaultOptions,
+                    json: false,
+                } as const;
+                const dummyFileLogger: any = {
+                    file: "foo.js",
+                } as const;
+                jest.spyOn(FileReferenceLogger, "default").mockImplementation(
+                    () => dummyFileLogger,
+                );
+                jest.spyOn(RootRelativePath, "default").mockImplementation(
+                    () => {
+                        throw new Error("Root marker not found");
+                    },
+                );
+                const outputSink = new OutputSink(options, NullLogger);
+                const errorDetails: ErrorDetails = {
+                    markerID: "MARKER_ID",
+                    reason: "REASON",
+                    code: ErrorCode.couldNotParse,
+                };
+                outputSink.startFile("foo.js");
+
+                // Act
+                const underTest = () => outputSink.processError(errorDetails);
+
+                // Assert
+                expect(underTest).not.toThrow();
             });
 
             describe("when error has a fix", () => {
@@ -385,6 +434,39 @@ describe("OutputSink", () => {
                 expect(reportSpy).not.toHaveBeenCalled();
             });
 
+            it("should not throw if the root marker is not found", () => {
+                // Arrange
+                const NullLogger = new Logger();
+                const options = {
+                    ...defaultOptions,
+                    json: true,
+                } as const;
+                const dummyFileLogger: any = {
+                    file: "foo.js",
+                } as const;
+                jest.spyOn(FileReferenceLogger, "default").mockImplementation(
+                    () => dummyFileLogger,
+                );
+                jest.spyOn(RootRelativePath, "default").mockImplementation(
+                    () => {
+                        throw new Error("Root marker not found");
+                    },
+                );
+                const outputSink = new OutputSink(options, NullLogger);
+                const errorDetails: ErrorDetails = {
+                    markerID: "MARKER_ID",
+                    reason: "REASON",
+                    code: ErrorCode.couldNotParse,
+                };
+                outputSink.startFile("foo.js");
+
+                // Act
+                const underTest = () => outputSink.processError(errorDetails);
+
+                // Assert
+                expect(underTest).not.toThrow();
+            });
+
             it.each(Object.values(ErrorCode))(
                 "should not log %s errors with log.mismatch",
                 (code) => {
@@ -480,6 +562,32 @@ describe("OutputSink", () => {
             await expect(underTest).rejects.toThrowErrorMatchingInlineSnapshot(
                 `"Cannot end processing a file before file processing has started"`,
             );
+        });
+
+        it("should not throw if the root marker is not found", async () => {
+            // Arrange
+            const NullLogger = new Logger();
+            const outputSink = new OutputSink(
+                {...defaultOptions, json: true},
+                NullLogger,
+            );
+            const dummyFileLogger: any = {
+                file: "foo.js",
+            } as const;
+            jest.spyOn(FileReferenceLogger, "default").mockImplementation(
+                () => dummyFileLogger,
+            );
+            jest.spyOn(RootRelativePath, "default").mockImplementation(() => {
+                throw new Error("Root marker not found");
+            });
+            outputSink.startFile("foo.js");
+
+            // Act
+            await outputSink.endFile();
+            const underTest = () => outputSink.end();
+
+            // Assert
+            expect(underTest).not.toThrow();
         });
 
         it("should remove errorless files from results", async () => {

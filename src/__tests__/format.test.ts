@@ -71,6 +71,16 @@ describe("Format", () => {
             // Assert
             expect(result).toMatchSnapshot();
         });
+
+        it("should remove 'Error: ' prefix from message if there is one", () => {
+            // Arrange
+
+            // Act
+            const result = Format.error("Error: Test");
+
+            // Assert
+            expect(result).toMatchSnapshot();
+        });
     });
 
     describe("#warn", () => {
@@ -113,6 +123,29 @@ describe("Format", () => {
 
             // Act
             const result = Format.mismatch("Test");
+
+            // Assert
+            expect(result).toMatchSnapshot();
+        });
+    });
+
+    describe("#migrate", () => {
+        it("should prefix with _MIGRATE__", () => {
+            // Arrange
+
+            // Act
+            const result = Format.migrate("Test");
+
+            // Assert
+            expect(result).toMatchSnapshot();
+        });
+
+        it("should render with chalk colors", () => {
+            // Arrange
+            chalk.level = 1;
+
+            // Act
+            const result = Format.migrate("Test");
 
             // Assert
             expect(result).toMatchSnapshot();
