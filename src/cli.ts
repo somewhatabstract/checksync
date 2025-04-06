@@ -19,9 +19,14 @@ import {parseArgs} from "./parse-args";
  * @param {string} launchFilePath
  */
 export const run = async (launchFilePath: string): Promise<void> => {
-    // Configure our logging output and argument parsing.
-    chalk.level = 3;
+    if (process.env.NO_COLOR) {
+        // Disable color output if NO_COLOR is set.
+        // FORCE_COLOR=0 also works, but we want to support the NO_COLOR
+        // environment variable as well.
+        chalk.level = 0;
+    }
 
+    // Configure our logging output and argument parsing.
     const log = new Logger(console);
     const args = await parseArgs(log);
 
