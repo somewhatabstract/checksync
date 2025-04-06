@@ -21,4 +21,19 @@ describe("ancesdirOrCurrentDir", () => {
             "MARKER",
         );
     });
+
+    it("should throw a useful error if ancesdir fails", () => {
+        // Arrange
+        jest.spyOn(Ancesdir, "default").mockImplementation(() => {
+            throw new Error("Fake error");
+        });
+
+        // Act
+        const underTest = () => ancesdirOrCurrentDir("FILE", "MARKER");
+
+        // Assert
+        expect(underTest).toThrowErrorMatchingInlineSnapshot(
+            `"Unable to locate directory containing marker file "MARKER" from starting location "FILE""`,
+        );
+    });
 });
