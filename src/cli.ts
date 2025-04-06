@@ -94,7 +94,7 @@ export const run = async (launchFilePath: string): Promise<void> => {
                 exit(log, exitCode);
             },
             (e) => {
-                log.error(`Unexpected error: ${e}`);
+                log.error(e.stack);
                 exit(log, ExitCode.CATASTROPHIC);
             },
         );
