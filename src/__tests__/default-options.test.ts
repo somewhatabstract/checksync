@@ -42,6 +42,7 @@ describe("defaultOptions", () => {
   "ignoreFiles": [
     ".gitignore",
   ],
+  "includeDotPaths": true,
   "includeGlobs": [
     "/**",
   ],

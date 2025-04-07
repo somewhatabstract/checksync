@@ -65,6 +65,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/checksums_need_updating.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -163,6 +164,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/checksums_need_updating.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -258,6 +260,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/checksums_need_updating.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -407,6 +410,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/checksums_need_updating.json",
   "cacheMode": "write",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -504,6 +508,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/content_after_start.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -605,6 +610,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/content_after_start.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -708,6 +714,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/content_after_start.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -874,6 +881,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/content_after_start.json",
   "cacheMode": "write",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -968,6 +976,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/correct_checksums.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -1047,6 +1056,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/correct_checksums.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -1126,6 +1136,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/correct_checksums.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -1208,6 +1219,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/correct_checksums.json",
   "cacheMode": "write",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -1302,6 +1314,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/directory_target.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -1388,6 +1401,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/directory_target.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -1474,6 +1488,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/directory_target.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -1576,6 +1591,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/directory_target.json",
   "cacheMode": "write",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -1602,6 +1618,343 @@ Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/directory_target/example.js"
 ]
 Info     Cache written to ROOT_DIR/.integrationtests/directory_target.json"
+`;
+
+exports[`Integration Tests (see __examples__ folder) Example dot_paths_with_correct_checksum should report example dot_paths_with_correct_checksum to match snapshot for scenario autofix 1`] = `
+"Verbose  Options from arguments: {
+  "includeGlobs": [
+    "**/dot_paths_with_correct_checksum/**"
+  ],
+  "autoFix": true,
+  "dryRun": true,
+  "cachePath": "ROOT_DIR/.integrationtests/dot_paths_with_correct_checksum.json",
+  "cacheMode": "read"
+}
+Verbose  Looking for configuration file based on root marker...
+Verbose  Checking ROOT_DIR/.checksyncrc...
+Verbose  Checking ROOT_DIR/.checksyncrc.json...
+Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
+Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
+Verbose  Validating configuration
+Verbose  Configuration is valid
+Verbose  Options from config: {
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "autoFix": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "dryRun": false,
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "json": false,
+  "migration": {
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
+  }
+}
+Verbose  Combined options with defaults: {
+  "autoFix": true,
+  "json": false,
+  "allowEmptyTags": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "dryRun": true,
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "includeGlobs": [
+    "**/dot_paths_with_correct_checksum/**"
+  ],
+  "cachePath": "ROOT_DIR/.integrationtests/dot_paths_with_correct_checksum.json",
+  "cacheMode": "read",
+  "includeDotPaths": true,
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
+  }
+}
+Info     DRY-RUN: Files will not be modified
+Info     Loading cache from ROOT_DIR/.integrationtests/dot_paths_with_correct_checksum.json
+🎉  Everything is in sync!"
+`;
+
+exports[`Integration Tests (see __examples__ folder) Example dot_paths_with_correct_checksum should report example dot_paths_with_correct_checksum to match snapshot for scenario check-only 1`] = `
+"Verbose  Options from arguments: {
+  "includeGlobs": [
+    "**/dot_paths_with_correct_checksum/**"
+  ],
+  "cachePath": "ROOT_DIR/.integrationtests/dot_paths_with_correct_checksum.json",
+  "cacheMode": "read"
+}
+Verbose  Looking for configuration file based on root marker...
+Verbose  Checking ROOT_DIR/.checksyncrc...
+Verbose  Checking ROOT_DIR/.checksyncrc.json...
+Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
+Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
+Verbose  Validating configuration
+Verbose  Configuration is valid
+Verbose  Options from config: {
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "autoFix": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "dryRun": false,
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "json": false,
+  "migration": {
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
+  }
+}
+Verbose  Combined options with defaults: {
+  "autoFix": false,
+  "json": false,
+  "allowEmptyTags": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "dryRun": false,
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "includeGlobs": [
+    "**/dot_paths_with_correct_checksum/**"
+  ],
+  "cachePath": "ROOT_DIR/.integrationtests/dot_paths_with_correct_checksum.json",
+  "cacheMode": "read",
+  "includeDotPaths": true,
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
+  }
+}
+Info     Loading cache from ROOT_DIR/.integrationtests/dot_paths_with_correct_checksum.json
+🎉  Everything is in sync!"
+`;
+
+exports[`Integration Tests (see __examples__ folder) Example dot_paths_with_correct_checksum should report example dot_paths_with_correct_checksum to match snapshot for scenario json-check-only 1`] = `
+"Verbose  Options from arguments: {
+  "includeGlobs": [
+    "**/dot_paths_with_correct_checksum/**"
+  ],
+  "json": true,
+  "cachePath": "ROOT_DIR/.integrationtests/dot_paths_with_correct_checksum.json",
+  "cacheMode": "read"
+}
+Verbose  Looking for configuration file based on root marker...
+Verbose  Checking ROOT_DIR/.checksyncrc...
+Verbose  Checking ROOT_DIR/.checksyncrc.json...
+Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
+Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
+Verbose  Validating configuration
+Verbose  Configuration is valid
+Verbose  Options from config: {
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "autoFix": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "dryRun": false,
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "json": false,
+  "migration": {
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
+  }
+}
+Verbose  Combined options with defaults: {
+  "autoFix": false,
+  "json": true,
+  "allowEmptyTags": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "dryRun": false,
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "includeGlobs": [
+    "**/dot_paths_with_correct_checksum/**"
+  ],
+  "cachePath": "ROOT_DIR/.integrationtests/dot_paths_with_correct_checksum.json",
+  "cacheMode": "read",
+  "includeDotPaths": true,
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
+  }
+}
+Info     Loading cache from ROOT_DIR/.integrationtests/dot_paths_with_correct_checksum.json
+{
+    "version": "0.0.0",
+    "launchString": "checksync -u ",
+    "files": {}
+}"
+`;
+
+exports[`Integration Tests (see __examples__ folder) Example dot_paths_with_correct_checksum should report example dot_paths_with_correct_checksum to match snapshot for scenario undefined 1`] = `
+"Verbose  Options from arguments: {
+  "includeGlobs": [
+    "**/dot_paths_with_correct_checksum/**"
+  ],
+  "cachePath": "ROOT_DIR/.integrationtests/dot_paths_with_correct_checksum.json",
+  "cacheMode": "write"
+}
+Verbose  Looking for configuration file based on root marker...
+Verbose  Checking ROOT_DIR/.checksyncrc...
+Verbose  Checking ROOT_DIR/.checksyncrc.json...
+Verbose  Found configuration file: ROOT_DIR/.checksyncrc.json
+Verbose  Changing working directory to ROOT_DIR
+Verbose  Loading configuration from ROOT_DIR/.checksyncrc.json
+Verbose  Validating configuration
+Verbose  Configuration is valid
+Verbose  Options from config: {
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "autoFix": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "dryRun": false,
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "json": false,
+  "migration": {
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
+  }
+}
+Verbose  Combined options with defaults: {
+  "autoFix": false,
+  "json": false,
+  "allowEmptyTags": false,
+  "comments": [
+    "//",
+    "#",
+    "{/*"
+  ],
+  "excludeGlobs": [
+    "**/excluded/**"
+  ],
+  "dryRun": false,
+  "ignoreFiles": [
+    "**/ignore-file.txt"
+  ],
+  "includeGlobs": [
+    "**/dot_paths_with_correct_checksum/**"
+  ],
+  "cachePath": "ROOT_DIR/.integrationtests/dot_paths_with_correct_checksum.json",
+  "cacheMode": "write",
+  "includeDotPaths": true,
+  "$schema": "./src/checksync.schema.json",
+  "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
+  "migration": {
+    "mode": "missing",
+    "mappings": {
+      "__examples__/migrate_missing_target/": "https://example.com/1/",
+      "__examples__/migrate_all/": "https://example.com/2/",
+      "__examples__/migrate_missing_target/subfolder/": "https://example.com/2/"
+    }
+  }
+}
+Verbose  Ignore files: [
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/ignore-file.txt",
+    "ROOT_DIR/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+]
+Verbose  Include globs: [
+    "**/dot_paths_with_correct_checksum/**"
+]
+Verbose  Exclude globs: [
+    "**/excluded/**"
+]
+Verbose  Discovered paths: [
+    "ROOT_DIR/__examples__/dot_paths_with_correct_checksum/.checkme1",
+    "ROOT_DIR/__examples__/dot_paths_with_correct_checksum/.checkme2"
+]
+Info     Cache written to ROOT_DIR/.integrationtests/dot_paths_with_correct_checksum.json"
 `;
 
 exports[`Integration Tests (see __examples__ folder) Example duplicate-target should report example duplicate-target to match snapshot for scenario autofix 1`] = `
@@ -1669,6 +2022,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/duplicate_target.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -1763,6 +2117,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/duplicate_target.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -1857,6 +2212,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/duplicate_target.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -2003,6 +2359,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/duplicate_target.json",
   "cacheMode": "write",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -2096,6 +2453,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/empty_tag.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -2180,6 +2538,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/empty_tag.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -2264,6 +2623,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/empty_tag.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -2358,6 +2718,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/empty_tag.json",
   "cacheMode": "write",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -2451,6 +2812,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/end_with_no_start.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -2535,6 +2897,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/end_with_no_start.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -2619,6 +2982,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/end_with_no_start.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -2713,6 +3077,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/end_with_no_start.json",
   "cacheMode": "write",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -2805,6 +3170,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/excluded.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -2884,6 +3250,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/excluded.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -2963,6 +3330,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/excluded.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -3041,6 +3409,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/excluded.json",
   "cacheMode": "write",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -3131,6 +3500,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/ignore_files_at_different_depths.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -3215,6 +3585,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/ignore_files_at_different_depths.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -3299,6 +3670,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/ignore_files_at_different_depths.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -3393,6 +3765,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/ignore_files_at_different_depths.json",
   "cacheMode": "write",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -3492,6 +3865,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/malformed_end.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -3583,6 +3957,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/malformed_end.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -3674,6 +4049,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/malformed_end.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -3794,6 +4170,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/malformed_end.json",
   "cacheMode": "write",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -3887,6 +4264,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/malformed_start.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -3983,6 +4361,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/malformed_start.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -4079,6 +4458,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/malformed_start.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -4217,6 +4597,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/malformed_start.json",
   "cacheMode": "write",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -4315,6 +4696,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/migrate_all.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -4415,6 +4797,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/migrate_all.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -4506,6 +4889,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/migrate_all.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -4627,6 +5011,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/migrate_all.json",
   "cacheMode": "write",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -4720,6 +5105,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/migrate_missing_target.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -4814,6 +5200,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/migrate_missing_target.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -4903,6 +5290,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/migrate_missing_target.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -5018,6 +5406,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/migrate_missing_target.json",
   "cacheMode": "write",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -5110,6 +5499,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/missing_target.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -5196,6 +5586,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/missing_target.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -5282,6 +5673,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/missing_target.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -5384,6 +5776,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/missing_target.json",
   "cacheMode": "write",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -5476,6 +5869,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/no_back_reference.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -5560,6 +5954,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/no_back_reference.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -5644,6 +6039,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/no_back_reference.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -5738,6 +6134,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/no_back_reference.json",
   "cacheMode": "write",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -5831,6 +6228,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/no_checksums.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -5923,6 +6321,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/no_checksums.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -6012,6 +6411,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/no_checksums.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -6129,6 +6529,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/no_checksums.json",
   "cacheMode": "write",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -6222,6 +6623,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/no_self_reference.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -6311,6 +6713,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/no_self_reference.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -6403,6 +6806,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/no_self_reference.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -6512,6 +6916,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/no_self_reference.json",
   "cacheMode": "write",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -6604,6 +7009,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/remote_tags_broken.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -6692,6 +7098,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/remote_tags_broken.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -6778,6 +7185,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/remote_tags_broken.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -6878,6 +7286,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/remote_tags_broken.json",
   "cacheMode": "write",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -6970,6 +7379,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/remote_tags_match.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -7049,6 +7459,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/remote_tags_match.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -7128,6 +7539,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/remote_tags_match.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -7210,6 +7622,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/remote_tags_match.json",
   "cacheMode": "write",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -7303,6 +7716,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/unterminated_marker.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -7390,6 +7804,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/unterminated_marker.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -7477,6 +7892,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/unterminated_marker.json",
   "cacheMode": "read",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {
@@ -7581,6 +7997,7 @@ Verbose  Combined options with defaults: {
   ],
   "cachePath": "ROOT_DIR/.integrationtests/unterminated_marker.json",
   "cacheMode": "write",
+  "includeDotPaths": true,
   "$schema": "./src/checksync.schema.json",
   "$comment": "This is the config file for our integration tests. By not specifying it directly, we also test configuration file discovery.",
   "migration": {

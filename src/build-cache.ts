@@ -18,8 +18,7 @@ export default async function buildCache(
     options: Options,
     log: ILog,
 ): Promise<MarkerCache> {
-    const {includeGlobs, excludeGlobs, ignoreFiles} = options;
-    const files = await getFiles(includeGlobs, excludeGlobs, ignoreFiles, log);
+    const files = await getFiles(options, log);
 
     if (files.length === 0) {
         throw new ExitError("No matching files", ExitCode.NO_FILES);

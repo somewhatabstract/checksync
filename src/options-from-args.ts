@@ -53,6 +53,10 @@ export const optionsFromArgs = (args: Arguments<any>): Partial<Options> => {
         options.allowEmptyTags = !!args.allowEmptyTags;
     }
 
+    if (args.includeDotPaths != null) {
+        options.includeDotPaths = !!args.includeDotPaths;
+    }
+
     if (args.outputCache != null) {
         // Only overwrite the path if one was given, otherwise we'll let
         // defaults handle that.

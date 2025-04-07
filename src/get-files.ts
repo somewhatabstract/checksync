@@ -3,7 +3,7 @@ import path from "path";
 import fs from "fs";
 import ignoreFileGlobsToAllowPredicate from "./ignore-file-globs-to-allow-predicate";
 
-import {ILog} from "./types";
+import {ILog, Options} from "./types";
 
 /**
  * Expand the given globs and ignore files into a list of files.
@@ -14,15 +14,13 @@ import {ILog} from "./types";
  * @param {ILog} log A log to record things
  */
 export default async function getFiles(
-    includeGlobs: ReadonlyArray<string>,
-    excludeGlobs: ReadonlyArray<string>,
-    ignoreFileGlobs: ReadonlyArray<string>,
+    {includeGlobs, excludeGlobs, ignoreFiles, includeDotPaths}: Options,
     log: ILog,
 ): Promise<Array<string>> {
     // We turn all the ignore files we're using into a single predicate that
     // returns true if a file is allowed, or false if it is ignored.
     const allowPredicate = await ignoreFileGlobsToAllowPredicate(
-        ignoreFileGlobs,
+        ignoreFiles,
         log,
     );
 
@@ -55,6 +53,7 @@ export default async function getFiles(
     const paths = await glob([...includeGlobs], {
         onlyFiles: true,
         absolute: true,
+        dot: includeDotPaths,
         ignore: excludeGlobs as Array<string>, // remove readonly-ness
     });
     const sortedPaths = paths

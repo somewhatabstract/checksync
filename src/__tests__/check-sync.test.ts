@@ -39,6 +39,7 @@ describe("#checkSync", () => {
                     allowEmptyTags: false,
                     cachePath: "",
                     cacheMode: "ignore",
+                    includeDotPaths: false,
                 },
                 NullLogger,
             );
@@ -55,31 +56,25 @@ describe("#checkSync", () => {
             const getFilesSpy = jest
                 .spyOn(GetFiles, "default")
                 .mockResolvedValue([]);
+            const options: Options = {
+                includeGlobs: ["glob1", "glob2"],
+                excludeGlobs: [],
+                ignoreFiles: [],
+                dryRun: false,
+                autoFix: true,
+                comments: ["//"],
+                json: false,
+                allowEmptyTags: false,
+                cachePath: "",
+                cacheMode: "ignore",
+                includeDotPaths: false,
+            };
 
             // Act
-            await checkSync(
-                {
-                    includeGlobs: ["glob1", "glob2"],
-                    excludeGlobs: [],
-                    ignoreFiles: [],
-                    dryRun: false,
-                    autoFix: true,
-                    comments: ["//"],
-                    json: false,
-                    allowEmptyTags: false,
-                    cachePath: "",
-                    cacheMode: "ignore",
-                },
-                NullLogger,
-            );
+            await checkSync(options, NullLogger);
 
             // Assert
-            expect(getFilesSpy).toHaveBeenCalledWith(
-                ["glob1", "glob2"],
-                [],
-                [],
-                NullLogger,
-            );
+            expect(getFilesSpy).toHaveBeenCalledWith(options, NullLogger);
         });
 
         it("should log error when there are no matching files", async () => {
@@ -98,6 +93,7 @@ describe("#checkSync", () => {
                 allowEmptyTags: false,
                 cachePath: "",
                 cacheMode: "ignore",
+                includeDotPaths: false,
             };
 
             // Act
@@ -122,6 +118,7 @@ describe("#checkSync", () => {
                 allowEmptyTags: false,
                 cachePath: "",
                 cacheMode: "ignore",
+                includeDotPaths: false,
             };
 
             // Act
@@ -149,6 +146,7 @@ describe("#checkSync", () => {
                 allowEmptyTags: false,
                 cachePath: "",
                 cacheMode: "ignore",
+                includeDotPaths: false,
             };
 
             // Act
@@ -177,6 +175,7 @@ describe("#checkSync", () => {
                 allowEmptyTags: false,
                 cachePath: "",
                 cacheMode: "ignore",
+                includeDotPaths: false,
             };
 
             // Act
@@ -210,6 +209,7 @@ describe("#checkSync", () => {
                 allowEmptyTags: false,
                 cachePath: "",
                 cacheMode: "ignore",
+                includeDotPaths: false,
             };
 
             // Act
@@ -248,6 +248,7 @@ describe("#checkSync", () => {
                 allowEmptyTags: false,
                 cachePath: "",
                 cacheMode: "ignore",
+                includeDotPaths: false,
             };
 
             // Act
@@ -289,6 +290,7 @@ describe("#checkSync", () => {
                     allowEmptyTags: false,
                     cachePath: "",
                     cacheMode: "ignore",
+                    includeDotPaths: false,
                 },
                 NullLogger,
             );
@@ -318,6 +320,7 @@ describe("#checkSync", () => {
                     allowEmptyTags: false,
                     cachePath: "",
                     cacheMode: "read",
+                    includeDotPaths: false,
                 },
                 NullLogger,
             );
@@ -347,6 +350,7 @@ describe("#checkSync", () => {
                 allowEmptyTags: false,
                 cachePath: "",
                 cacheMode: "read",
+                includeDotPaths: false,
             };
 
             // Act
@@ -374,6 +378,7 @@ describe("#checkSync", () => {
                 allowEmptyTags: false,
                 cachePath: "",
                 cacheMode: "read",
+                includeDotPaths: false,
             };
 
             // Act
@@ -401,6 +406,7 @@ describe("#checkSync", () => {
                 allowEmptyTags: false,
                 cachePath: "",
                 cacheMode: "ignore",
+                includeDotPaths: false,
             };
 
             // Act
@@ -429,6 +435,7 @@ describe("#checkSync", () => {
                 allowEmptyTags: false,
                 cachePath: "",
                 cacheMode: "ignore",
+                includeDotPaths: false,
             };
 
             // Act
@@ -462,6 +469,7 @@ describe("#checkSync", () => {
                 allowEmptyTags: false,
                 cachePath: "CACHE_FILE_PATH",
                 cacheMode: "read",
+                includeDotPaths: false,
             };
 
             // Act
@@ -498,6 +506,7 @@ describe("#checkSync", () => {
                 allowEmptyTags: false,
                 cachePath: "",
                 cacheMode: "read",
+                includeDotPaths: false,
             };
 
             // Act
@@ -536,6 +545,7 @@ describe("#checkSync", () => {
                     allowEmptyTags: false,
                     cachePath: "",
                     cacheMode: "read",
+                    includeDotPaths: false,
                 },
                 NullLogger,
             );
@@ -565,6 +575,7 @@ describe("#checkSync", () => {
                     allowEmptyTags: false,
                     cachePath: "",
                     cacheMode: "write",
+                    includeDotPaths: false,
                 },
                 NullLogger,
             );
@@ -579,31 +590,25 @@ describe("#checkSync", () => {
             const getFilesSpy = jest
                 .spyOn(GetFiles, "default")
                 .mockResolvedValue([]);
+            const options: Options = {
+                includeGlobs: ["glob1", "glob2"],
+                excludeGlobs: [],
+                ignoreFiles: [],
+                dryRun: false,
+                autoFix: true,
+                comments: ["//"],
+                json: false,
+                allowEmptyTags: false,
+                cachePath: "",
+                cacheMode: "write",
+                includeDotPaths: false,
+            };
 
             // Act
-            await checkSync(
-                {
-                    includeGlobs: ["glob1", "glob2"],
-                    excludeGlobs: [],
-                    ignoreFiles: [],
-                    dryRun: false,
-                    autoFix: true,
-                    comments: ["//"],
-                    json: false,
-                    allowEmptyTags: false,
-                    cachePath: "",
-                    cacheMode: "write",
-                },
-                NullLogger,
-            );
+            await checkSync(options, NullLogger);
 
             // Assert
-            expect(getFilesSpy).toHaveBeenCalledWith(
-                ["glob1", "glob2"],
-                [],
-                [],
-                NullLogger,
-            );
+            expect(getFilesSpy).toHaveBeenCalledWith(options, NullLogger);
         });
 
         it("should log error when there are no matching files", async () => {
@@ -622,6 +627,7 @@ describe("#checkSync", () => {
                 allowEmptyTags: false,
                 cachePath: "",
                 cacheMode: "write",
+                includeDotPaths: false,
             };
 
             // Act
@@ -646,6 +652,7 @@ describe("#checkSync", () => {
                 allowEmptyTags: false,
                 cachePath: "",
                 cacheMode: "write",
+                includeDotPaths: false,
             };
 
             // Act
@@ -673,6 +680,7 @@ describe("#checkSync", () => {
                 allowEmptyTags: false,
                 cachePath: "",
                 cacheMode: "write",
+                includeDotPaths: false,
             };
 
             // Act
@@ -701,6 +709,7 @@ describe("#checkSync", () => {
                 allowEmptyTags: false,
                 cachePath: "",
                 cacheMode: "write",
+                includeDotPaths: false,
             };
 
             // Act
@@ -734,6 +743,7 @@ describe("#checkSync", () => {
                 allowEmptyTags: false,
                 cachePath: "",
                 cacheMode: "write",
+                includeDotPaths: false,
             };
 
             // Act
@@ -772,6 +782,7 @@ describe("#checkSync", () => {
                 allowEmptyTags: false,
                 cachePath: "",
                 cacheMode: "write",
+                includeDotPaths: false,
             };
 
             // Act
@@ -810,6 +821,7 @@ describe("#checkSync", () => {
                     allowEmptyTags: false,
                     cachePath: "",
                     cacheMode: "write",
+                    includeDotPaths: false,
                 },
                 NullLogger,
             );
