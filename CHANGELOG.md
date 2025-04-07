@@ -1,5 +1,11 @@
 # checksync
 
+## 9.0.1
+
+### Patch Changes
+
+- aa181d4: Fix --help
+
 ## 9.0.0
 
 ### Major Changes
