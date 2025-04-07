@@ -1,5 +1,0 @@
----
-"checksync": patch
----
-
-Fix --help
