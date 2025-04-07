@@ -399,4 +399,17 @@ describe("#optionsFromArgs", () => {
             mappings: {},
         });
     });
+
+    it("should set includeDotPaths if args.includeDotPaths is provided", () => {
+        // Arrange
+        const args: any = {
+            includeDotPaths: true,
+        };
+
+        // Act
+        const result = optionsFromArgs(args);
+
+        // Assert
+        expect(result.includeDotPaths).toBe(true);
+    });
 });
