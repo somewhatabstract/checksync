@@ -1,172 +1,172 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`#run should log help info if help arg present 1`] = `
-"[1m[32mchecksync 0.0.0 ✅ 🔗[39m[22m
+"checksync 0.0.0 ✅ 🔗
 
 Checksync uses tags in your files to identify blocks that need to remain
 synchronised. It works on any text file as long as it can find the tags.
 
-[1m[32mTag Format[39m[22m
+Tag Format
 
 Each tagged block is identified by one or more sync-start tags and a single
 sync-end tag.
 
 The sync-start tags take the form:
 
-    [1m[33m<comment> sync-start:<marker_id> <?checksum> <target_file>[39m[22m
+    <comment> sync-start:<marker_id> <?checksum> <target_file>
 
 The sync-end tags take the form:
 
-    [1m[33m<comment> sync-end:<marker_id>[39m[22m
+    <comment> sync-end:<marker_id>
 
-Each [1m[33mmarker_id[39m[22m can have multiple [1m[33msync-start[39m[22m tags, each with a different
-target file, but there must be only one corresponding [1m[33msync-end[39m[22m tag.
+Each marker_id can have multiple sync-start tags, each with a different
+target file, but there must be only one corresponding sync-end tag.
 
 Where:
 
-    [1m[33m<comment>[39m[22m       is one of the comment tokens provided by the [1m[33m--comment[39m[22m
+    <comment>       is one of the comment tokens provided by the --comment
                     argument
 
-    [1m[33m<marker_id>[39m[22m     is the unique identifier for this marker
+    <marker_id>     is the unique identifier for this marker
 
-    [1m[33m<checksum>[39m[22m      is the expected checksum of the corresponding block in
+    <checksum>      is the expected checksum of the corresponding block in
                     the target file
 
-    [1m[33m<target_file>[39m[22m   is the path from your package root to the target file
-                    with a corresponding sync block with the same [1m[33mmarker_id[39m[22m
+    <target_file>   is the path from your package root to the target file
+                    with a corresponding sync block with the same marker_id
 
-[1m[32mUsage[39m[22m
+Usage
 
-[1m[33mchecksync <arguments> <include_paths>[39m[22m
+checksync <arguments> <include_paths>
 
 Where:
 
-    [1m[33m<arguments>[39m[22m        are the arguments you provide (see below).
+    <arguments>        are the arguments you provide (see below).
 
-    [1m[33m<include_paths>[39m[22m    are space-separated paths and glob patterns
+    <include_paths>    are space-separated paths and glob patterns
                        for identifying files to check.
                        Defaults to all files below the current working
                        directory.
 
-[1m[32mArguments[39m[22m
+Arguments
 
-    [1m[33m--allowEmptyTags,-a[39m[22mBy default, empty tags are not allowed. Use this
+    --allowEmptyTags,-aBy default, empty tags are not allowed. Use this
                        to allow empty tags.
 
-    [1m[33m--comments,-c[39m[22m      A string containing space-separated tokens that
+    --comments,-c      A string containing space-separated tokens that
                        indicate the start of lines where tags appear.
-                       Defaults to [1m[33m"// #"[39m[22m.
+                       Defaults to "// #".
 
-    [1m[33m--config[39m[22m           Path to a JSON file containing configuration options.
+    --config           Path to a JSON file containing configuration options.
                        When not specified, checksync will look for a config
-                       file; use [1m[33m--no-config[39m[22m to disable this search.
+                       file; use --no-config to disable this search.
 
                        The search starts relative to the current working
                        directory, first by looking adjacent to a marker file
                        match, otherwise, by looking for a configuration file in
                        or above the current working directory. Filenames that
                        are considered:
-                           [1m[33m.checksyncrc[39m[22m
-                           [1m[33m.checksyncrc.json[39m[22m
+                           .checksyncrc
+                           .checksyncrc.json
 
                        Paths within the config file are resolved relative to
                        the location of the config file.
 
-    [1m[33m--cwd[39m[22m              The current working directory to use when searching
+    --cwd              The current working directory to use when searching
                        for a configuration file, and resolving relative paths
                        and globs.
 
-                       The [1m[33m--config[39m[22m path takes precedence over this
-                       argument. If there is no [1m[33m--config[39m[22m argument, this
+                       The --config path takes precedence over this
+                       argument. If there is no --config argument, this
                        location is used to find a config file. If a config file
                        is found, the working directory will then change to
                        the location of that file, otherwise this argument's
                        value is used when resolve the remainder of the given
                        arguments.
 
-    [1m[33m--dry-run,-n[39m[22m       Ignored unless supplied with [1m[33m--update-tags[39m[22m.
+    --dry-run,-n       Ignored unless supplied with --update-tags.
 
-    [1m[33m--help,-h[39m[22m          Outputs this help text.
+    --help,-h          Outputs this help text.
 
-    [1m[33m--ignore,-i[39m[22m        A string containing semi-colon-separated globs that
+    --ignore,-i        A string containing semi-colon-separated globs that
                        identify files that should not be checked.
 
-    [1m[33m--ignore-files[39m[22m     A semi-colon-separated list of paths and globs that
+    --ignore-files     A semi-colon-separated list of paths and globs that
                        identify .gitignore-format files defining patterns for
                        paths to be ignored. These will be combined with the
-                       explicit [1m[33m--ignore[39m[22m globs.
-                       Ignored if [1m[33m--no-ignore-file[39m[22m is present.
-                       Defaults to [1m[33m.gitignore[39m[22m.
+                       explicit --ignore globs.
+                       Ignored if --no-ignore-file is present.
+                       Defaults to .gitignore.
 
-    [1m[33m--json,-j[39m[22m          Output errors and violations as JSON.
+    --json,-j          Output errors and violations as JSON.
 
-    [1m[33m--no-config[39m[22m        Prevents searching for a configuration file.
-                       Ignored if [1m[33m--config[39m[22m is supplied.
+    --no-config        Prevents searching for a configuration file.
+                       Ignored if --config is supplied.
 
-    [1m[33m--no-ignore-files[39m[22m  When [1m[33mtrue[39m[22m, does not use any ignore file. This is
-                       useful when the default value for [1m[33m--ignore-file[39m[22m is
+    --no-ignore-files  When true, does not use any ignore file. This is
+                       useful when the default value for --ignore-file is
                        not wanted.
 
-    [1m[33m--root-marker,-m[39m[22m   By default, the root directory (used to generate
+    --root-marker,-m   By default, the root directory (used to generate
                        interpret and generate target paths for sync-start
                        tags) for your project is determined by the nearest
                        ancestor directory to the processed files that
-                       contains a [1m[33mpackage.json[39m[22m file. If you want to
+                       contains a package.json file. If you want to
                        use a different file or directory to identify your
                        root directory, specify that using this argument.
-                       For example, [1m[33m--root-marker .gitignore[39m[22m would mean
+                       For example, --root-marker .gitignore would mean
                        the first ancestor directory containing a
-                       [1m[33m.gitignore[39m[22m file.
+                       .gitignore file.
 
-    [1m[33m--update-tags,-u[39m[22m   Updates tags with incorrect target checksums. This
-                       modifies files in place; run with [1m[33m--dry-run[39m[22m to see
+    --update-tags,-u   Updates tags with incorrect target checksums. This
+                       modifies files in place; run with --dry-run to see
                        what files will change without modifying them.
 
-    [1m[33m--verbose[39m[22m          More details will be added to the output when this
+    --verbose          More details will be added to the output when this
                        option is provided. This is useful when determining if
                        provided glob patterns are applying as expected, for
                        example.
 
-    [1m[33m--version[39m[22m          Outputs the version and exits.
+    --version          Outputs the version and exits.
 
-[1m[32mConfiguration Format[39m[22m
+Configuration Format
 A configuration file is a JSON file containing configuration options. All
 of the values are optional (defaults apply per the corresponding CLI arguments).
 Arguments supplied along with a configuration file will override the
 configuration file.
 
-    [1m[33mallowEmptyTags[39m[22m      Equivalent to using the [1m[33m--allow-empty-tags[39m[22m option.
+    allowEmptyTags      Equivalent to using the --allow-empty-tags option.
 
-    [1m[33mautoFix[39m[22m             Equivalent to using the [1m[33m--update-tags[39m[22m option.
+    autoFix             Equivalent to using the --update-tags option.
 
-    [1m[33mdryRun[39m[22m              Equivalent to using the [1m[33m--dry-run[39m[22m option.
+    dryRun              Equivalent to using the --dry-run option.
 
-    [1m[33mcomments[39m[22m            Equivalent to using the [1m[33m--comments[39m[22m option,
+    comments            Equivalent to using the --comments option,
                         except an array instead of space-separated string.
 
-    [1m[33mignoreFiles[39m[22m         Equivalent to using the [1m[33m--ignore-files[39m[22m option,
+    ignoreFiles         Equivalent to using the --ignore-files option,
                         except an array instead of semi-colon-separated string.
-                        An empty array is equivalent to [1m[33m--no-ignore-files[39m[22m.
+                        An empty array is equivalent to --no-ignore-files.
 
-    [1m[33mexcludeGlobs[39m[22m        Equivalent to using the [1m[33m--ignore[39m[22m option, except
+    excludeGlobs        Equivalent to using the --ignore option, except
                         an array instead of semi-colon-separated string.
 
-    [1m[33mincludeGlobs[39m[22m        Equivalent to the [1m[33minclude_paths[39m[22m passed at the
+    includeGlobs        Equivalent to the include_paths passed at the
                         end of the command line.
 
-    [1m[33mrootMarker[39m[22m          Equivalent to using the [1m[33m--root-marker[39m[22m option.
+    rootMarker          Equivalent to using the --root-marker option.
 
 Example:
-    [1m[33m{[39m[22m
-[1m[33m        "autoFix": true,[39m[22m
-[1m[33m        "dryRun": false,[39m[22m
-[1m[33m        "comments": ["//", "#"],[39m[22m
-[1m[33m        "ignoreFiles": [".gitignore"],[39m[22m
-[1m[33m        "includeGlobs": ["**/*.js"],[39m[22m
-[1m[33m        "excludeGlobs": ["**/node_modules/**"],[39m[22m
-[1m[33m        "rootMarker": ".gitignore",[39m[22m
-[1m[33m        "json": false,[39m[22m
-[1m[33m        "allowEmptyTags", false[39m[22m
-[1m[33m    }[39m[22m
+    {
+        "autoFix": true,
+        "dryRun": false,
+        "comments": ["//", "#"],
+        "ignoreFiles": [".gitignore"],
+        "includeGlobs": ["**/*.js"],
+        "excludeGlobs": ["**/node_modules/**"],
+        "rootMarker": ".gitignore",
+        "json": false,
+        "allowEmptyTags", false
+    }
 "
 `;
