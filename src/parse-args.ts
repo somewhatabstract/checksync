@@ -34,8 +34,7 @@ export const parseArgs = (log: ILog) =>
         .option("includeDotPaths", {
             type: "boolean",
             description:
-                "Include paths that begin with a dot, e.g. '.gitignore' when parsing `includeGlobs`.",
-            default: true,
+                "Include paths that begin with a dot, e.g. '.gitignore' when parsing `includeGlobs`. This is default behavior.",
             conflicts: ["help", "version", "fromCache"],
         })
         .option("outputCache", {
