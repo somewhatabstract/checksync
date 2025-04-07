@@ -1,5 +1,19 @@
 # checksync
 
+## 9.0.0
+
+### Major Changes
+
+- 4066145: Include dot paths when parsing include globs. This is a breaking change as this is turned on by default. To turn off, use the `--includeDotPaths=false` or explicitly set `includeDotPaths` in your config file.
+
+### Minor Changes
+
+- 38b0cbe: Fix bug with output sink and improve error messaging when root marker cannot be found
+
+### Patch Changes
+
+- c243766: Allow color output to be disabled using NO_COLOR=1 or FORCE_COLOR=0
+
 ## 8.0.1
 
 ### Patch Changes
