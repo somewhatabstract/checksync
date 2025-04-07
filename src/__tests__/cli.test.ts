@@ -11,6 +11,7 @@ import defaultOptions from "../default-options";
 import * as Exit from "../exit";
 import * as SetCwd from "../set-cwd";
 import * as ParseArgs from "../parse-args";
+import chalk from "chalk";
 
 jest.mock("../set-cwd");
 jest.mock("../parse-args");
@@ -33,6 +34,52 @@ jest.mock("../../package.json", () => ({
 }));
 
 describe("#run", () => {
+    const origChalkLevel = chalk.level;
+    const origNOCOLOR = process.env.NO_COLOR;
+
+    afterEach(() => {
+        if (origNOCOLOR) {
+            process.env.NO_COLOR = origNOCOLOR;
+        } else {
+            delete process.env.NO_COLOR;
+        }
+        chalk.level = origChalkLevel;
+    });
+
+    it("should disable color output if NO_COLOR is set", async () => {
+        // Arrange
+        process.env.NO_COLOR = "true";
+        jest.spyOn(CheckSync, "default").mockResolvedValue(0);
+        // @ts-expect-error this is typed to never, but we want to mock it
+        jest.spyOn(Exit, "default").mockImplementation(() => {});
+        jest.spyOn(ParseArgs, "parseArgs").mockResolvedValue({} as any);
+        chalk.level = 3;
+
+        // Act
+        await run(__filename);
+        const result = chalk.level;
+
+        // Assert
+        expect(result).toBe(0);
+    });
+
+    it("should not disable color output if NO_COLOR is not set", async () => {
+        // Arrange
+        delete process.env.NO_COLOR;
+        jest.spyOn(CheckSync, "default").mockResolvedValue(0);
+        // @ts-expect-error this is typed to never, but we want to mock it
+        jest.spyOn(Exit, "default").mockImplementation(() => {});
+        jest.spyOn(ParseArgs, "parseArgs").mockResolvedValue({} as any);
+        chalk.level = 3;
+
+        // Act
+        await run(__filename);
+        const result = chalk.level;
+
+        // Assert
+        expect(result).toBe(3);
+    });
+
     it("should parse args", async () => {
         // Arrange
         const fakeParsedArgs: any = {
