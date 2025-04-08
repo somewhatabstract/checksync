@@ -27,7 +27,6 @@ describe("#fromFiles", () => {
             allowEmptyTags: false,
             cachePath: "",
             cacheMode: "ignore",
-            includeDotPaths: false,
         };
 
         // Act
@@ -67,7 +66,6 @@ describe("#fromFiles", () => {
             allowEmptyTags: false,
             cachePath: "",
             cacheMode: "ignore",
-            includeDotPaths: false,
         };
 
         // Act
@@ -103,7 +101,6 @@ describe("#fromFiles", () => {
             allowEmptyTags: false,
             cachePath: "",
             cacheMode: "ignore",
-            includeDotPaths: false,
         };
 
         // Act
@@ -142,7 +139,6 @@ describe("#fromFiles", () => {
             allowEmptyTags: false,
             cachePath: "",
             cacheMode: "ignore",
-            includeDotPaths: false,
         };
 
         // Act
@@ -202,7 +198,6 @@ describe("#fromFiles", () => {
             allowEmptyTags: false,
             cachePath: "",
             cacheMode: "ignore",
-            includeDotPaths: false,
         };
 
         // Act
@@ -268,7 +263,6 @@ describe("#fromFiles", () => {
             allowEmptyTags: false,
             cachePath: "",
             cacheMode: "ignore",
-            includeDotPaths: false,
         };
 
         // Act
@@ -328,7 +322,6 @@ describe("#fromFiles", () => {
             allowEmptyTags: false,
             cachePath: "",
             cacheMode: "ignore",
-            includeDotPaths: false,
         };
 
         // Act
@@ -378,7 +371,6 @@ describe("#fromFiles", () => {
             allowEmptyTags: false,
             cachePath: "",
             cacheMode: "ignore",
-            includeDotPaths: false,
         };
 
         // Act

@@ -18,7 +18,6 @@ export const parseArgs = (log: ILog) =>
             "version",
             "json",
             "allowEmptyTags",
-            "includeDotPaths",
         ])
         .string([
             "cwd",
@@ -31,13 +30,6 @@ export const parseArgs = (log: ILog) =>
             "fromCache",
             "migrate",
         ])
-        .option("includeDotPaths", {
-            type: "boolean",
-            description:
-                "Include paths that begin with a dot, e.g. '.gitignore' when parsing `includeGlobs`.",
-            default: true,
-            conflicts: ["help", "version", "fromCache"],
-        })
         .option("outputCache", {
             type: "string",
             description: "Path to the output cache file.",
@@ -54,7 +46,6 @@ export const parseArgs = (log: ILog) =>
                 "outputCache",
                 "help",
                 "version",
-                "includeDotPaths",
             ],
         })
         .option("migrate", {
@@ -74,7 +65,6 @@ export const parseArgs = (log: ILog) =>
         .alias("allowEmptyTags", ["a", "allow-empty-tags"])
         .alias("outputCache", ["o", "output-cache"])
         .alias("fromCache", ["f", "use-cache"])
-        .alias("includeDotPaths", ["d", "include-dot-paths"])
         .strictOptions()
         .fail((msg, err, yargs) => {
             log.error(msg);
