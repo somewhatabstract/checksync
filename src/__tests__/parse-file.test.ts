@@ -62,7 +62,6 @@ describe("#parseFile", () => {
             allowEmptyTags: false,
             cachePath: "",
             cacheMode: "ignore",
-            includeDotPaths: false,
         };
 
         // Act
@@ -89,7 +88,6 @@ describe("#parseFile", () => {
             allowEmptyTags: false,
             cachePath: "",
             cacheMode: "ignore",
-            includeDotPaths: false,
         };
 
         // Act
@@ -128,7 +126,6 @@ describe("#parseFile", () => {
             allowEmptyTags: false,
             cachePath: "",
             cacheMode: "ignore",
-            includeDotPaths: false,
         };
 
         // Act
@@ -163,7 +160,6 @@ describe("#parseFile", () => {
             allowEmptyTags: false,
             cachePath: "",
             cacheMode: "ignore",
-            includeDotPaths: false,
         };
 
         // Act
@@ -209,7 +205,6 @@ describe("#parseFile", () => {
             allowEmptyTags: false,
             cachePath: "",
             cacheMode: "ignore",
-            includeDotPaths: false,
         };
 
         // Act
@@ -251,7 +246,6 @@ describe("#parseFile", () => {
             allowEmptyTags: false,
             cachePath: "",
             cacheMode: "ignore",
-            includeDotPaths: false,
         };
 
         // Act
@@ -299,7 +293,6 @@ describe("#parseFile", () => {
             allowEmptyTags: false,
             cachePath: "",
             cacheMode: "ignore",
-            includeDotPaths: false,
         };
 
         // Act
@@ -382,7 +375,6 @@ describe("#parseFile", () => {
             allowEmptyTags: false,
             cachePath: "",
             cacheMode: "ignore",
-            includeDotPaths: false,
         };
 
         // Act
@@ -450,7 +442,6 @@ describe("#parseFile", () => {
             allowEmptyTags: true,
             cachePath: "",
             cacheMode: "ignore",
-            includeDotPaths: false,
         };
 
         // Act
@@ -514,7 +505,6 @@ describe("#parseFile", () => {
             allowEmptyTags: false,
             cachePath: "",
             cacheMode: "ignore",
-            includeDotPaths: false,
         };
 
         // Act
@@ -570,7 +560,6 @@ describe("#parseFile", () => {
             allowEmptyTags: false,
             cachePath: "",
             cacheMode: "ignore",
-            includeDotPaths: false,
         };
 
         // Act
@@ -624,7 +613,6 @@ describe("#parseFile", () => {
             allowEmptyTags: false,
             cachePath: "",
             cacheMode: "ignore",
-            includeDotPaths: false,
         };
 
         // Act
@@ -671,7 +659,6 @@ describe("#parseFile", () => {
             allowEmptyTags: false,
             cachePath: "",
             cacheMode: "ignore",
-            includeDotPaths: false,
         };
         const promise = parseFile(options, "root.path/file.js", false);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
@@ -729,7 +716,6 @@ describe("#parseFile", () => {
             allowEmptyTags: true,
             cachePath: "",
             cacheMode: "ignore",
-            includeDotPaths: false,
         };
         const promise = parseFile(options, "root.path/file.js", false);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
@@ -809,7 +795,6 @@ describe("#parseFile", () => {
             allowEmptyTags: false,
             cachePath: "",
             cacheMode: "ignore",
-            includeDotPaths: false,
         };
         const promise = parseFile(options, "root.path/file.js", false);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
@@ -870,7 +855,6 @@ describe("#parseFile", () => {
             allowEmptyTags: false,
             cachePath: "",
             cacheMode: "ignore",
-            includeDotPaths: false,
         };
         const promise = parseFile(options, "root.path/file.js", false);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
@@ -930,7 +914,6 @@ describe("#parseFile", () => {
             allowEmptyTags: false,
             cachePath: "",
             cacheMode: "ignore",
-            includeDotPaths: false,
         };
         const promise = parseFile(options, "root.path/file.js", false);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];
@@ -1039,7 +1022,6 @@ describe("#parseFile", () => {
             allowEmptyTags: false,
             cachePath: "",
             cacheMode: "ignore",
-            includeDotPaths: false,
         };
         const promise = parseFile(options, "root.path/file.js", false);
         const addMarkerCb = markerParserSpy.mock.calls[0][1];

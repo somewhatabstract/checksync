@@ -51,11 +51,6 @@
             "uniqueItems": true,
             "minLength": 0
         },
-        "includeDotPaths": {
-            "description": "When true, checksync will include paths that start with a dot when parsing includeGlobs, e.g. .gitignore",
-            "type": "boolean",
-            "default": true
-        },
         "includeGlobs": {
             "description": "An array of globs that identify files to include in the checks",
             "type": "array",

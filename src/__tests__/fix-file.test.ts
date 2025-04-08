@@ -41,7 +41,6 @@ describe("#fixFile", () => {
         allowEmptyTags: false,
         cachePath: "",
         cacheMode: "ignore",
-        includeDotPaths: false,
     };
 
     it("should resolve if there are no mismatches for file", async () => {

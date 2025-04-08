@@ -216,11 +216,6 @@ export type Options = {
      */
     includeGlobs: ReadonlyArray<string>;
     /**
-     * Include paths that begin with a dot, e.g. ".gitignore" when parsing
-     * `includeGlobs`.
-     */
-    includeDotPaths: boolean;
-    /**
      * The globs for files that are to be ignored.
      */
     excludeGlobs: ReadonlyArray<string>;

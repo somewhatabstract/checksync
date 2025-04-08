@@ -12,7 +12,6 @@ const defaultOptions: Options = {
     includeGlobs: [`${process.cwd()}**`],
     cachePath: "cache.json",
     cacheMode: "ignore",
-    includeDotPaths: true,
 };
 
 export default defaultOptions;
