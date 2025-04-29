@@ -146,7 +146,7 @@ importers:
         specifier: ^7.34.2
         version: 7.37.5(eslint@9.25.1)
       fast-glob:
-        specifier: ^3.3.2
+        specifier: ^3.3.3
         version: 3.3.3
       globals:
         specifier: ^16.0.0
