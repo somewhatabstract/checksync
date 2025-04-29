@@ -36,10 +36,7 @@ export default async function getFiles(
     // files below that directory and that directory's children.
     includeGlobs = includeGlobs.map((pattern: string) =>
         !pattern.includes("*") &&
-        // TODO: Use throwIfNoEntry in lstatSync/lstat to replace need to do
-        // the existence check, once we are on versions of Node that support it.
-        fs.existsSync(pattern) &&
-        fs.lstatSync(pattern).isDirectory()
+        fs.lstatSync(pattern, {throwIfNoEntry: false})?.isDirectory()
             ? `${pattern}/**`
             : pattern,
     );
@@ -55,6 +52,7 @@ export default async function getFiles(
     const paths = await glob([...includeGlobs], {
         onlyFiles: true,
         absolute: true,
+        followSymbolicLinks: false,
         ignore: excludeGlobs as Array<string>, // remove readonly-ness
     });
     const sortedPaths = paths

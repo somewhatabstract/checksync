@@ -16,7 +16,6 @@
             "cwd": "${workspaceFolder}",
             "console": "integratedTerminal",
             "internalConsoleOptions": "neverOpen",
-            "disableOptimisticBPs": true,
             "program": "${workspaceFolder}/node_modules/jest/bin/jest"
         },
         {
@@ -25,9 +24,8 @@
             "name": "Launch Program",
             "program": "${workspaceFolder}/bin/checksync.dev.js",
             "args": [
-                "-m",
-                ".ka_root",
-                "/Users/jeffyates/khan/webapp/Makefile"
+                "--config",
+                "/Users/jeffyates/khan/webapp/.checksyncrc.json"
             ],
         }
     ]
