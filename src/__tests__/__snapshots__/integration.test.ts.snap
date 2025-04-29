@@ -430,8 +430,6 @@ Verbose  Exclude globs: [
 ]
 Verbose  Discovered paths: [
     "ROOT_DIR/__examples__/checksums_need_updating/README.md",
-    "ROOT_DIR/__examples__/checksums_need_updating/symlinked/a.js",
-    "ROOT_DIR/__examples__/checksums_need_updating/symlinked/b.py",
     "ROOT_DIR/__examples__/checksums_need_updating/unsymlinked/a.js",
     "ROOT_DIR/__examples__/checksums_need_updating/unsymlinked/b.py",
     "ROOT_DIR/__examples__/checksums_need_updating/unsymlinked/c.jsx"
@@ -7232,7 +7230,6 @@ Verbose  Exclude globs: [
     "**/excluded/**"
 ]
 Verbose  Discovered paths: [
-    "ROOT_DIR/__examples__/remote_tags_match/symlinked/example.jsx",
     "ROOT_DIR/__examples__/remote_tags_match/unsymlinked/example.jsx"
 ]
 Info     Cache written to ROOT_DIR/.integrationtests/remote_tags_match.json"
