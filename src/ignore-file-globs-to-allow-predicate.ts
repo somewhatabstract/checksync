@@ -42,6 +42,7 @@ export default async (
                   await glob([...ignoreFileGlobs], {
                       onlyFiles: true,
                       absolute: true,
+                      followSymbolicLinks: false,
                   })
               )
                   // We need to make sure that we apply our ignore files in

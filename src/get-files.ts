@@ -52,6 +52,7 @@ export default async function getFiles(
     const paths = await glob([...includeGlobs], {
         onlyFiles: true,
         absolute: true,
+        followSymbolicLinks: false,
         ignore: excludeGlobs as Array<string>, // remove readonly-ness
     });
     const sortedPaths = paths
