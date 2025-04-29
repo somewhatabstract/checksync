@@ -1,5 +1,11 @@
 # checksync
 
+## 10.0.1
+
+### Patch Changes
+
+- 6d5e95b: Checksync no longer follows symlinks when doing glob searches
+
 ## 10.0.0
 
 ### Major Changes
