@@ -58,7 +58,7 @@
         "@types/jest": "^29.5.12",
         "@types/lodash": "^4.17.5",
         "@types/micromatch": "^4.0.7",
-        "@types/node": "^20.14.2",
+        "@types/node": "^24.0.3",
         "@types/parse-gitignore": "^1.0.2",
         "@types/yargs": "^17.0.33",
         "@typescript-eslint/eslint-plugin": "^8.29.0",
