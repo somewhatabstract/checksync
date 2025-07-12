@@ -158,8 +158,8 @@ importers:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@20.19.0)
       jest-extended:
-        specifier: ^4.0.2
-        version: 4.0.2(jest@29.7.0(@types/node@20.19.0))
+        specifier: ^6.0.0
+        version: 6.0.0(jest@29.7.0(@types/node@20.19.0))(typescript@5.8.3)
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -3245,11 +3245,12 @@ packages:
     resolution: {integrity: sha512-DOSwCRqXirTOyheM+4d5YZOrWcdu0LNZ87ewUoywbcb2XR4wKgqiG8vNeYwhjFMbEkfju7wx2GYH0P2gevGvFw==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
 
-  jest-extended@4.0.2:
-    resolution: {integrity: sha512-FH7aaPgtGYHc9mRjriS0ZEHYM5/W69tLrFTIdzm+yJgeoCmmrSB/luSfMSqWP9O29QWHPEmJ4qmU6EwsZideog==}
-    engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
+  jest-extended@6.0.0:
+    resolution: {integrity: sha512-SM249N/q33YQ9XE8E06qZSnFuuV4GQFx7WrrmIj4wQUAP43jAo6budLT482jdBhf8ASwUiEEfJNjej0UusYs5A==}
+    engines: {node: ^18.12.0 || ^20.9.0 || ^22.11.0 || >=23.0.0}
     peerDependencies:
       jest: '>=27.2.5'
+      typescript: '>=5.0.0'
     peerDependenciesMeta:
       jest:
         optional: true
@@ -8309,10 +8310,10 @@ snapshots:
       jest-mock: 29.7.0
       jest-util: 29.7.0
 
-  jest-extended@4.0.2(jest@29.7.0(@types/node@20.19.0)):
+  jest-extended@6.0.0(jest@29.7.0(@types/node@20.19.0))(typescript@5.8.3):
     dependencies:
       jest-diff: 29.7.0
-      jest-get-type: 29.6.3
+      typescript: 5.8.3
     optionalDependencies:
       jest: 29.7.0(@types/node@20.19.0)
 
