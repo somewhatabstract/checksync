@@ -1,4 +1,4 @@
-import * as AncesdirOrCurrentDir from "../ancesdir-or-currentdir";
+import * as Ancesdir from "ancesdir";
 import * as FS from "fs";
 import path from "path";
 import normalizeSeparators from "../normalize-separators";
@@ -9,7 +9,7 @@ import findConfigurationFile, {
 } from "../find-configuration-file";
 
 jest.mock("fs");
-jest.mock("../ancesdir-or-currentdir");
+jest.mock("ancesdir");
 
 describe("#findConfigurationFile", () => {
     it("should look relative to the root based on the current directory", async () => {
@@ -17,7 +17,7 @@ describe("#findConfigurationFile", () => {
         const NullLogger = new Logger(null, true);
         jest.spyOn(process, "cwd").mockReturnValue("/");
         const ancesdirSpy = jest
-            .spyOn(AncesdirOrCurrentDir, "ancesdirOrCurrentDir")
+            .spyOn(Ancesdir, "closesdir")
             .mockReturnValue("/");
 
         // Act
@@ -34,10 +34,7 @@ describe("#findConfigurationFile", () => {
             const NullLogger = new Logger(null, true);
             jest.spyOn(process, "cwd").mockReturnValue("/");
             const existsSpy = jest.spyOn(FS, "existsSync");
-            jest.spyOn(
-                AncesdirOrCurrentDir,
-                "ancesdirOrCurrentDir",
-            ).mockReturnValue("/");
+            jest.spyOn(Ancesdir, "closesdir").mockReturnValue("/");
 
             // Act
             await findConfigurationFile("root", NullLogger);
@@ -52,10 +49,7 @@ describe("#findConfigurationFile", () => {
         const NullLogger = new Logger(null, true);
         jest.spyOn(process, "cwd").mockReturnValue("/");
         jest.spyOn(FS, "existsSync").mockReturnValue(true);
-        jest.spyOn(
-            AncesdirOrCurrentDir,
-            "ancesdirOrCurrentDir",
-        ).mockReturnValue("/");
+        jest.spyOn(Ancesdir, "closesdir").mockReturnValue("/");
 
         // Act
         const result = normalizeSeparators(
@@ -71,7 +65,7 @@ describe("#findConfigurationFile", () => {
             // Arrange
             const NullLogger = new Logger(null, true);
             jest.spyOn(process, "cwd").mockReturnValue("/gramps/parent/cwd");
-            jest.spyOn(AncesdirOrCurrentDir, "ancesdirOrCurrentDir")
+            jest.spyOn(Ancesdir, "closesdir")
                 .mockImplementationOnce(() => {
                     throw new Error(
                         "First call is the root marker search, and we want that to fail in this test case",
@@ -93,10 +87,7 @@ describe("#findConfigurationFile", () => {
             // Arrange
             const NullLogger = new Logger(null, true);
             jest.spyOn(process, "cwd").mockReturnValue("/gramps/parent/cwd");
-            jest.spyOn(
-                AncesdirOrCurrentDir,
-                "ancesdirOrCurrentDir",
-            ).mockImplementation(() => {
+            jest.spyOn(Ancesdir, "closesdir").mockImplementation(() => {
                 throw new Error("We never want this to find anything");
             });
 
