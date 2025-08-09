@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-import {ancesdirOrCurrentDir} from "./ancesdir-or-currentdir";
+import {closesdir} from "ancesdir";
 
 import {ILog} from "./types";
 
@@ -13,7 +13,7 @@ type RCPathWithDistance = {
 };
 
 export default function findConfigurationFile(
-    rootMarker: string | null | undefined,
+    rootMarker: string | undefined,
     log: ILog,
 ): string | null | undefined {
     log.verbose(() => `Looking for configuration file based on root marker...`);
@@ -21,7 +21,7 @@ export default function findConfigurationFile(
     // Let's look for the root marker relative to our current working directory
     // and see if there's one adjacent to it.
     try {
-        const rootPath = ancesdirOrCurrentDir(process.cwd(), rootMarker);
+        const rootPath = closesdir(process.cwd(), rootMarker);
         for (const rcPath of checkSyncRcNames.map((rc) =>
             path.join(rootPath, rc),
         )) {
@@ -50,7 +50,7 @@ export default function findConfigurationFile(
                 // Could be in the working directory too, so we add a fake child
                 // to the path that ancesdir will cut off to start the search
                 // in parent locations, which will then be the cwd.
-                return path.join(ancesdirOrCurrentDir(process.cwd(), rc), rc);
+                return path.join(closesdir(process.cwd(), rc), rc);
             } catch (e: any) {
                 return "";
             }

@@ -15,7 +15,7 @@ describe("defaultOptions", () => {
         } = await importDefaultOptions();
 
         // Assert
-        expect(result).toContainAllValues(["/**"]);
+        expect(result).toEqual(["/**"]);
     });
 
     it("should provide expected defaults", async () => {
