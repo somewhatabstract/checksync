@@ -1,6 +1,6 @@
 # checksync
 
-[![Node CI](https://github.com/somewhatabstract/checksync/workflows/Node%20CI/badge.svg)](https://github.com/somewhatabstract/checksync/actions) [![codecov](https://codecov.io/gh/somewhatabstract/checksync/branch/main/graph/badge.svg)](https://codecov.io/gh/somewhatabstract/checksync) [![npm (tag)](https://img.shields.io/npm/v/checksync/latest)](https://www.npmjs.com/package/checksync) [![Required Node Version](https://img.shields.io/node/v/checksync/latest)](https://www.npmjs.com/package/checksync)
+[![Node CI](https://github.com/somewhatabstract/checksync/actions/workflows/nodejs.yml/badge.svg?branch=main)](https://github.com/somewhatabstract/checksync/actions/workflows/nodejs.yml) [![codecov](https://codecov.io/gh/somewhatabstract/checksync/branch/main/graph/badge.svg)](https://codecov.io/gh/somewhatabstract/checksync) [![npm (tag)](https://img.shields.io/npm/v/checksync/latest)](https://www.npmjs.com/package/checksync) [![Required Node Version](https://img.shields.io/node/v/checksync/latest)](https://www.npmjs.com/package/checksync)
 
 ## Usage
 
