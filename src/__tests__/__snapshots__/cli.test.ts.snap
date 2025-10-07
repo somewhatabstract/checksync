@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`#run should log help info if help arg present 1`] = `
 "checksync 0.0.0 ✅ 🔗

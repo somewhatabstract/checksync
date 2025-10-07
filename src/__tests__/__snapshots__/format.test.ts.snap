@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`Format #code should render with chalk colors 1`] = `"[1m[33mTest[39m[22m"`;
 
