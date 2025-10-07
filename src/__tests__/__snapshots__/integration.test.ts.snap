@@ -1,4 +1,4 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
 
 exports[`Integration Tests (see __examples__ folder) Example checksums_need_updating should report example checksums_need_updating to match snapshot for scenario autofix 1`] = `
 "Verbose  Options from arguments: {
