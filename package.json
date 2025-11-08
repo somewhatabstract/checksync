@@ -80,7 +80,7 @@
         "globals": "^16.0.0",
         "ignore": "^7.0.3",
         "jest": "^30.0.5",
-        "jest-extended": "^6.0.0",
+        "jest-extended": "^7.0.0",
         "lodash": "^4.17.21",
         "micromatch": "^4.0.7",
         "prettier": "^3.3.2",
