@@ -44,8 +44,8 @@ importers:
         specifier: ^1.9.0
         version: 1.9.1(rollup@4.55.1)
       '@eslint/compat':
-        specifier: ^1.1.0
-        version: 1.4.1(eslint@9.39.2)
+        specifier: ^2.0.1
+        version: 2.0.1(eslint@9.39.2)
       '@eslint/eslintrc':
         specifier: ^3.1.0
         version: 3.3.3
@@ -927,9 +927,9 @@ packages:
     resolution: {integrity: sha512-EriSTlt5OC9/7SXkRSCAhfSxxoSUgBm33OH+IkwbdpgoqsSsUg7y3uh+IICI/Qg4BBWr3U2i39RpmycbxMq4ew==}
     engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
 
-  '@eslint/compat@1.4.1':
-    resolution: {integrity: sha512-cfO82V9zxxGBxcQDr1lfaYB7wykTa0b00mGa36FrJl7iTFd0Z2cHfEYuxcBRP/iNijCsWsEkA+jzT8hGYmv33w==}
-    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+  '@eslint/compat@2.0.1':
+    resolution: {integrity: sha512-yl/JsgplclzuvGFNqwNYV4XNPhP3l62ZOP9w/47atNAdmDtIFCx6X7CSk/SlWUuBGkT4Et/5+UD+WyvX2iiIWA==}
+    engines: {node: ^20.19.0 || ^22.13.0 || >=24}
     peerDependencies:
       eslint: ^8.40 || 9
     peerDependenciesMeta:
@@ -947,6 +947,10 @@ packages:
   '@eslint/core@0.17.0':
     resolution: {integrity: sha512-yL/sLrpmtDaFEiUj1osRP4TI2MDz1AddJL+jZ7KSqvBuliN4xqYY54IfdN8qD8Toa6g1iloph1fxQNkjOxrrpQ==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+
+  '@eslint/core@1.0.1':
+    resolution: {integrity: sha512-r18fEAj9uCk+VjzGt2thsbOmychS+4kxI14spVNibUO2vqKX7obOG+ymZljAwuPZl+S3clPGwCwTDtrdqTiY6Q==}
+    engines: {node: ^20.19.0 || ^22.13.0 || >=24}
 
   '@eslint/eslintrc@3.3.3':
     resolution: {integrity: sha512-Kr+LPIUVKz2qkx1HAMH8q1q6azbqBAsXJUxBl/ODDuVPX45Z9DfwB8tPjTi6nNZ8BuM3nbJxC5zCAg5elnBUTQ==}
@@ -5695,9 +5699,9 @@ snapshots:
 
   '@eslint-community/regexpp@4.12.2': {}
 
-  '@eslint/compat@1.4.1(eslint@9.39.2)':
+  '@eslint/compat@2.0.1(eslint@9.39.2)':
     dependencies:
-      '@eslint/core': 0.17.0
+      '@eslint/core': 1.0.1
     optionalDependencies:
       eslint: 9.39.2
 
@@ -5714,6 +5718,10 @@ snapshots:
       '@eslint/core': 0.17.0
 
   '@eslint/core@0.17.0':
+    dependencies:
+      '@types/json-schema': 7.0.15
+
+  '@eslint/core@1.0.1':
     dependencies:
       '@types/json-schema': 7.0.15
 
