@@ -17,82 +17,82 @@ importers:
   .:
     devDependencies:
       '@babel/cli':
-        specifier: ^7.24.7
+        specifier: ^7.28.6
         version: 7.28.6(@babel/core@7.29.0)
       '@babel/core':
-        specifier: ^7.24.7
+        specifier: ^7.29.0
         version: 7.29.0
       '@babel/eslint-parser':
-        specifier: ^7.24.7
+        specifier: ^7.28.6
         version: 7.28.6(@babel/core@7.29.0)(eslint@9.39.2)
       '@babel/eslint-plugin':
-        specifier: ^7.24.7
+        specifier: ^7.27.1
         version: 7.27.1(@babel/eslint-parser@7.28.6(@babel/core@7.29.0)(eslint@9.39.2))(eslint@9.39.2)
       '@babel/preset-env':
-        specifier: ^7.24.7
+        specifier: ^7.29.5
         version: 7.29.5(@babel/core@7.29.0)
       '@babel/preset-typescript':
-        specifier: ^7.24.7
+        specifier: ^7.28.5
         version: 7.28.5(@babel/core@7.29.0)
       '@babel/register':
-        specifier: ^7.21.0
+        specifier: ^7.29.3
         version: 7.29.3(@babel/core@7.29.0)
       '@changesets/cli':
-        specifier: ^2.27.5
+        specifier: ^2.31.0
         version: 2.31.0(@types/node@20.19.41)
       '@codecov/rollup-plugin':
-        specifier: ^1.9.0
+        specifier: ^1.9.1
         version: 1.9.1(rollup@4.60.4)
       '@eslint/compat':
-        specifier: ^2.0.1
+        specifier: ^2.1.0
         version: 2.1.0(eslint@9.39.2)
       '@eslint/eslintrc':
-        specifier: ^3.1.0
+        specifier: ^3.3.5
         version: 3.3.5
       '@eslint/js':
-        specifier: ^9.5.0
+        specifier: ^9.39.4
         version: 9.39.4
       '@hyperjump/json-schema':
         specifier: ^0.23.5
         version: 0.23.5(encoding@0.1.13)
       '@jest/globals':
-        specifier: ^30.0.5
+        specifier: ^30.4.1
         version: 30.4.1
       '@khanacademy/eslint-config':
         specifier: ^5.2.1
         version: 5.2.1(@khanacademy/eslint-plugin@3.2.2(eslint@9.39.2)(typescript@5.9.3))(@typescript-eslint/eslint-plugin@8.59.3(@typescript-eslint/parser@8.59.3(eslint@9.39.2)(typescript@5.9.3))(eslint@9.39.2)(typescript@5.9.3))(@typescript-eslint/parser@8.59.3(eslint@9.39.2)(typescript@5.9.3))(eslint-config-prettier@10.1.8(eslint@9.39.2))(eslint-import-resolver-typescript@4.4.4)(eslint-plugin-import@2.32.0)(eslint-plugin-jsx-a11y@6.10.2(eslint@9.39.2))(eslint-plugin-prettier@5.5.5(eslint-config-prettier@10.1.8(eslint@9.39.2))(eslint@9.39.2)(prettier@3.8.3))(eslint-plugin-react@7.37.5(eslint@9.39.2))(eslint@9.39.2)
       '@khanacademy/eslint-plugin':
-        specifier: ^3.1.2
+        specifier: ^3.2.2
         version: 3.2.2(eslint@9.39.2)(typescript@5.9.3)
       '@rollup/plugin-babel':
-        specifier: ^6.0.4
+        specifier: ^6.1.0
         version: 6.1.0(@babel/core@7.29.0)(@types/babel__core@7.20.5)(rollup@4.60.4)
       '@rollup/plugin-commonjs':
-        specifier: ^29.0.0
+        specifier: ^29.0.2
         version: 29.0.2(rollup@4.60.4)
       '@rollup/plugin-json':
         specifier: ^6.1.0
         version: 6.1.0(rollup@4.60.4)
       '@rollup/plugin-node-resolve':
-        specifier: ^16.0.0
+        specifier: ^16.0.3
         version: 16.0.3(rollup@4.60.4)
       '@rollup/plugin-terser':
         specifier: ^1.0.0
         version: 1.0.0(rollup@4.60.4)
       '@swc-node/register':
-        specifier: ^1.10.9
+        specifier: ^1.11.1
         version: 1.11.1(@swc/core@1.10.18)(@swc/types@0.1.17)(typescript@5.9.3)
       '@types/jest':
         specifier: ^30.0.0
         version: 30.0.0
       '@types/lodash':
-        specifier: ^4.17.5
+        specifier: ^4.17.24
         version: 4.17.24
       '@types/micromatch':
-        specifier: ^4.0.7
+        specifier: ^4.0.10
         version: 4.0.10
       '@types/node':
-        specifier: ^20.14.2
+        specifier: ^20.19.41
         version: 20.19.41
       '@types/parse-gitignore':
         specifier: ^1.0.2
@@ -101,76 +101,76 @@ importers:
         specifier: ^17.0.33
         version: 17.0.33
       '@typescript-eslint/eslint-plugin':
-        specifier: ^8.29.0
+        specifier: ^8.59.3
         version: 8.59.3(@typescript-eslint/parser@8.59.3(eslint@9.39.2)(typescript@5.9.3))(eslint@9.39.2)(typescript@5.9.3)
       '@typescript-eslint/parser':
-        specifier: ^8.29.0
+        specifier: ^8.59.3
         version: 8.59.3(eslint@9.39.2)(typescript@5.9.3)
       adler-32:
         specifier: ^1.3.1
         version: 1.3.1
       ancesdir:
-        specifier: ^7.1.1
+        specifier: ^7.2.0
         version: 7.2.0
       babel-jest:
-        specifier: ^30.0.5
+        specifier: ^30.4.1
         version: 30.4.1(@babel/core@7.29.0)
       chalk:
-        specifier: ^4.0.0
+        specifier: ^4.1.2
         version: 4.1.2
       eslint:
-        specifier: ^9.5.0
+        specifier: ^9.39.2
         version: 9.39.2
       eslint-config-prettier:
-        specifier: ^10.0.1
+        specifier: ^10.1.8
         version: 10.1.8(eslint@9.39.2)
       eslint-import-resolver-typescript:
-        specifier: ^4.3.1
+        specifier: ^4.4.4
         version: 4.4.4(eslint-plugin-import@2.32.0)(eslint@9.39.2)
       eslint-plugin-eslint-comments:
         specifier: ^3.2.0
         version: 3.2.0(eslint@9.39.2)
       eslint-plugin-import:
-        specifier: ^2.29.1
+        specifier: ^2.32.0
         version: 2.32.0(@typescript-eslint/parser@8.59.3(eslint@9.39.2)(typescript@5.9.3))(eslint-import-resolver-typescript@4.4.4)(eslint@9.39.2)
       eslint-plugin-jest:
-        specifier: ^29.0.1
+        specifier: ^29.15.2
         version: 29.15.2(@typescript-eslint/eslint-plugin@8.59.3(@typescript-eslint/parser@8.59.3(eslint@9.39.2)(typescript@5.9.3))(eslint@9.39.2)(typescript@5.9.3))(eslint@9.39.2)(jest@30.4.2(@types/node@20.19.41))(typescript@5.9.3)
       eslint-plugin-jsx-a11y:
-        specifier: ^6.8.0
+        specifier: ^6.10.2
         version: 6.10.2(eslint@9.39.2)
       eslint-plugin-prettier:
-        specifier: ^5.1.3
+        specifier: ^5.5.5
         version: 5.5.5(eslint-config-prettier@10.1.8(eslint@9.39.2))(eslint@9.39.2)(prettier@3.8.3)
       eslint-plugin-react:
-        specifier: ^7.34.2
+        specifier: ^7.37.5
         version: 7.37.5(eslint@9.39.2)
       fast-glob:
         specifier: ^3.3.3
         version: 3.3.3
       globals:
-        specifier: ^17.3.0
+        specifier: ^17.6.0
         version: 17.6.0
       ignore:
-        specifier: ^7.0.3
+        specifier: ^7.0.5
         version: 7.0.5
       jest:
-        specifier: ^30.0.5
+        specifier: ^30.4.2
         version: 30.4.2(@types/node@20.19.41)
       jest-extended:
         specifier: ^7.0.0
         version: 7.0.0(jest@30.4.2(@types/node@20.19.41))(typescript@5.9.3)
       lodash:
-        specifier: ^4.17.21
+        specifier: ^4.18.1
         version: 4.18.1
       micromatch:
-        specifier: ^4.0.7
+        specifier: ^4.0.8
         version: 4.0.8
       prettier:
-        specifier: ^3.3.2
+        specifier: ^3.8.3
         version: 3.8.3
       rollup:
-        specifier: ^4.39.0
+        specifier: ^4.60.4
         version: 4.60.4
       rollup-plugin-copy:
         specifier: ^3.5.0
@@ -179,7 +179,7 @@ importers:
         specifier: ^10.0.0
         version: 10.0.0
       typescript:
-        specifier: ^5.9.2
+        specifier: ^5.9.3
         version: 5.9.3
       yargs:
         specifier: ^17.7.2
@@ -1762,8 +1762,8 @@ packages:
   '@swc/types@0.1.17':
     resolution: {integrity: sha512-V5gRru+aD8YVyCOMAjMpWR1Ui577DD5KSJsHP8RAxopAH22jFz6GZd/qxqjO6MJHQhcsjvjOFXyDhyLQUnMveQ==}
 
-  '@tootallnate/once@2.0.0':
-    resolution: {integrity: sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A==}
+  '@tootallnate/once@2.0.1':
+    resolution: {integrity: sha512-HqmEUIGRJ5fSXchkVgR5F7qn48bDBzv0kWj/Kfu5e6uci4UlEeng4331LnBkWffb++Ei3FOVLxo8JJWMFBDMeQ==}
     engines: {node: '>= 10'}
 
   '@tufjs/canonical-json@1.0.0':
@@ -6806,7 +6806,7 @@ snapshots:
     dependencies:
       '@swc/counter': 0.1.3
 
-  '@tootallnate/once@2.0.0': {}
+  '@tootallnate/once@2.0.1': {}
 
   '@tufjs/canonical-json@1.0.0': {}
 
@@ -8496,7 +8496,7 @@ snapshots:
 
   http-proxy-agent@5.0.0:
     dependencies:
-      '@tootallnate/once': 2.0.0
+      '@tootallnate/once': 2.0.1
       agent-base: 6.0.2
       debug: 4.4.3
     transitivePeerDependencies:
