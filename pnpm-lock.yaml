@@ -36,7 +36,7 @@ importers:
         version: 7.29.7(@babel/core@7.29.0)
       '@babel/register':
         specifier: ^7.21.0
-        version: 7.29.3(@babel/core@7.29.0)
+        version: 7.29.7(@babel/core@7.29.0)
       '@changesets/cli':
         specifier: ^2.27.5
         version: 2.31.0(@types/node@20.19.41)
@@ -853,8 +853,8 @@ packages:
     peerDependencies:
       '@babel/core': ^7.0.0-0
 
-  '@babel/register@7.29.3':
-    resolution: {integrity: sha512-F6C1KpIdoImKQfsD6HSxZ+mS4YY/2Q+JsqrmTC5ApVkTR2rG+nnbpjhWwzA5bDNu8mJjB3AryqDaWFLd4gCbJQ==}
+  '@babel/register@7.29.7':
+    resolution: {integrity: sha512-AMGJoWuES861riy6pcB0fphE1YXybtQnBYQMuIyPv6mKLiosfa79BKTnAOyx215c/3RJPJpdQwoHZ3earVH7AA==}
     engines: {node: '>=6.9.0'}
     peerDependencies:
       '@babel/core': ^7.0.0-0
@@ -5733,7 +5733,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@babel/register@7.29.3(@babel/core@7.29.0)':
+  '@babel/register@7.29.7(@babel/core@7.29.0)':
     dependencies:
       '@babel/core': 7.29.0
       clone-deep: 4.0.1
