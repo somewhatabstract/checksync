@@ -24,10 +24,10 @@ importers:
         version: 7.29.7
       '@babel/eslint-parser':
         specifier: ^7.24.7
-        version: 7.28.6(@babel/core@7.29.7)(eslint@9.39.2)
+        version: 7.29.7(@babel/core@7.29.7)(eslint@9.39.2)
       '@babel/eslint-plugin':
         specifier: ^7.24.7
-        version: 7.29.7(@babel/eslint-parser@7.28.6(@babel/core@7.29.7)(eslint@9.39.2))(eslint@9.39.2)
+        version: 7.29.7(@babel/eslint-parser@7.29.7(@babel/core@7.29.7)(eslint@9.39.2))(eslint@9.39.2)
       '@babel/preset-env':
         specifier: ^7.24.7
         version: 7.29.7(@babel/core@7.29.7)
@@ -221,8 +221,8 @@ packages:
     resolution: {integrity: sha512-RgHBCvtjbOK2gXSNBNIkNoEc9qoVEtau3hj8gEqKQuL3HZAibKarWFEI3Lfm6EYKkLalOh8eSrj9b+ch9H/VBA==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/eslint-parser@7.28.6':
-    resolution: {integrity: sha512-QGmsKi2PBO/MHSQk+AAgA9R6OHQr+VqnniFE0eMWZcVcfBZoA2dKn2hUsl3Csg/Plt9opRUWdY7//VXsrIlEiA==}
+  '@babel/eslint-parser@7.29.7':
+    resolution: {integrity: sha512-zxt+UJTOMKvUt3yOg+D58MLuz334pHp93qifMFcjIIO+9hN6t+ufw2gi7vDPMpxvfnHRR+3VVXvIjineCcgyXw==}
     engines: {node: ^10.13.0 || ^12.13.0 || >=14.0.0}
     peerDependencies:
       '@babel/core': ^7.11.0
@@ -4817,7 +4817,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@babel/eslint-parser@7.28.6(@babel/core@7.29.7)(eslint@9.39.2)':
+  '@babel/eslint-parser@7.29.7(@babel/core@7.29.7)(eslint@9.39.2)':
     dependencies:
       '@babel/core': 7.29.7
       '@nicolo-ribaudo/eslint-scope-5-internals': 5.1.1-v1
@@ -4825,9 +4825,9 @@ snapshots:
       eslint-visitor-keys: 2.1.0
       semver: 6.3.1
 
-  '@babel/eslint-plugin@7.29.7(@babel/eslint-parser@7.28.6(@babel/core@7.29.7)(eslint@9.39.2))(eslint@9.39.2)':
+  '@babel/eslint-plugin@7.29.7(@babel/eslint-parser@7.29.7(@babel/core@7.29.7)(eslint@9.39.2))(eslint@9.39.2)':
     dependencies:
-      '@babel/eslint-parser': 7.28.6(@babel/core@7.29.7)(eslint@9.39.2)
+      '@babel/eslint-parser': 7.29.7(@babel/core@7.29.7)(eslint@9.39.2)
       eslint: 9.39.2
       eslint-rule-composer: 0.3.0
 
