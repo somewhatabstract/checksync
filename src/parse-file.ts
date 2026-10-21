@@ -7,7 +7,7 @@ import fs from "fs";
 import MarkerParser from "./marker-parser";
 import getNormalizedPathInfo from "./get-normalized-path-info";
 import * as Errors from "./errors";
-import {closesdir} from "ancesdir";
+import closestRootDir from "./closest-root-dir";
 import calcChecksum from "./checksum";
 
 import {
@@ -37,9 +37,9 @@ export default function parseFile(
     file: string,
     readOnly: boolean,
 ): Promise<FileParseResult> {
-    // We want ancesdir to start the search inside the same folder as the file
-    // we're parsing, so we add a fake child onto it that ancesdir will strip.
-    const rootPath = closesdir(file, options.rootMarker ?? undefined);
+    // The search starts from the folder containing the file, since the file
+    // itself can't contain the root marker.
+    const rootPath = closestRootDir(path.dirname(file), options.rootMarker);
     const markers: Markers = {};
     const errors: Array<ErrorDetails> = [];
 

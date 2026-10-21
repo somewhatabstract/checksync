@@ -1,7 +1,7 @@
 import fs from "fs";
 import readline from "readline";
 
-import * as Ancesdir from "ancesdir";
+import * as ClosestRootDir from "../closest-root-dir";
 import * as MarkerParser from "../marker-parser";
 import * as GetNormalizedPathInfo from "../get-normalized-path-info";
 import * as Checksum from "../checksum";
@@ -13,7 +13,7 @@ import {ErrorCode} from "../error-codes";
 
 jest.mock("fs");
 jest.mock("../get-normalized-path-info");
-jest.mock("ancesdir");
+jest.mock("../closest-root-dir");
 
 const invokeEvent = (
     mocked: ReturnType<jest.MockedFunction<any>>,
@@ -43,12 +43,12 @@ describe("#parseFile", () => {
         return mockParser;
     };
 
-    it("should get the rootPath for the file being processes", async () => {
+    it("should look for the rootPath from the folder containing the file being processed", async () => {
         // Arrange
         setupMarkerParser();
 
-        const ancesdirSpy = jest
-            .spyOn(Ancesdir, "closesdir")
+        const closestRootDirSpy = jest
+            .spyOn(ClosestRootDir, "default")
             .mockReturnValue("root.path");
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
@@ -65,10 +65,10 @@ describe("#parseFile", () => {
         };
 
         // Act
-        await parseFile(options, "file", false);
+        await parseFile(options, "/dir/file", false);
 
         // Assert
-        expect(ancesdirSpy).toHaveBeenCalledWith("file", "rootmarker");
+        expect(closestRootDirSpy).toHaveBeenCalledWith("/dir", "rootmarker");
     });
 
     it("should record parse error on failure", async () => {
@@ -271,7 +271,7 @@ describe("#parseFile", () => {
         jest.spyOn(readline, "createInterface").mockReturnValueOnce(
             fakeInterface,
         );
-        jest.spyOn(Ancesdir, "closesdir").mockReturnValue("root.path");
+        jest.spyOn(ClosestRootDir, "default").mockReturnValue("root.path");
         jest.spyOn(Checksum, "default")
             .mockReturnValueOnce("ID1_CONTENT_CHECKSUM")
             .mockReturnValueOnce("ID1_SELF_CHECKSUM");
@@ -353,7 +353,7 @@ describe("#parseFile", () => {
         jest.spyOn(readline, "createInterface").mockReturnValueOnce(
             fakeInterface,
         );
-        jest.spyOn(Ancesdir, "closesdir").mockReturnValue("root.path");
+        jest.spyOn(ClosestRootDir, "default").mockReturnValue("root.path");
         const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
@@ -417,7 +417,7 @@ describe("#parseFile", () => {
         jest.spyOn(readline, "createInterface").mockReturnValueOnce(
             fakeInterface,
         );
-        jest.spyOn(Ancesdir, "closesdir").mockReturnValue("root.path");
+        jest.spyOn(ClosestRootDir, "default").mockReturnValue("root.path");
         const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
@@ -469,7 +469,7 @@ describe("#parseFile", () => {
         // Arrange
         const fakeInterface: any = {on: jest.fn<any, any>()} as const;
         fakeInterface.on.mockReturnValue(fakeInterface);
-        jest.spyOn(Ancesdir, "closesdir").mockReturnValue("root.path");
+        jest.spyOn(ClosestRootDir, "default").mockReturnValue("root.path");
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null as any);
         jest.spyOn(readline, "createInterface").mockReturnValueOnce(
@@ -513,7 +513,7 @@ describe("#parseFile", () => {
         // Arrange
         const fakeInterface: any = {on: jest.fn<any, any>()} as const;
         fakeInterface.on.mockReturnValue(fakeInterface);
-        jest.spyOn(Ancesdir, "closesdir").mockReturnValue("root.path");
+        jest.spyOn(ClosestRootDir, "default").mockReturnValue("root.path");
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null as any);
         jest.spyOn(readline, "createInterface").mockReturnValueOnce(
@@ -563,7 +563,7 @@ describe("#parseFile", () => {
         // Arrange
         const fakeInterface: any = {on: jest.fn<any, any>()} as const;
         fakeInterface.on.mockReturnValue(fakeInterface);
-        jest.spyOn(Ancesdir, "closesdir").mockReturnValue("root.path");
+        jest.spyOn(ClosestRootDir, "default").mockReturnValue("root.path");
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null as any);
         jest.spyOn(readline, "createInterface").mockReturnValueOnce(
@@ -620,7 +620,7 @@ describe("#parseFile", () => {
         jest.spyOn(readline, "createInterface").mockReturnValueOnce(
             fakeInterface,
         );
-        jest.spyOn(Ancesdir, "closesdir").mockReturnValue("root.path");
+        jest.spyOn(ClosestRootDir, "default").mockReturnValue("root.path");
         const checksumSpy = jest
             .spyOn(Checksum, "default")
             .mockReturnValueOnce("ID1_CONTENT_CHECKSUM")
@@ -675,7 +675,7 @@ describe("#parseFile", () => {
         jest.spyOn(readline, "createInterface").mockReturnValueOnce(
             fakeInterface,
         );
-        jest.spyOn(Ancesdir, "closesdir").mockReturnValue("root.path");
+        jest.spyOn(ClosestRootDir, "default").mockReturnValue("root.path");
         jest.spyOn(Checksum, "default").mockReturnValueOnce(
             "ID1_SELF_CHECKSUM",
         );
@@ -750,7 +750,7 @@ describe("#parseFile", () => {
         jest.spyOn(readline, "createInterface").mockReturnValueOnce(
             fakeInterface,
         );
-        jest.spyOn(Ancesdir, "closesdir").mockReturnValue("root.path");
+        jest.spyOn(ClosestRootDir, "default").mockReturnValue("root.path");
         const checksumSpy = jest
             .spyOn(Checksum, "default")
             .mockReturnValueOnce("ID1_CONTENT_CHECKSUM")
@@ -808,7 +808,7 @@ describe("#parseFile", () => {
         jest.spyOn(readline, "createInterface").mockReturnValueOnce(
             fakeInterface,
         );
-        jest.spyOn(Ancesdir, "closesdir").mockReturnValue("root.path");
+        jest.spyOn(ClosestRootDir, "default").mockReturnValue("root.path");
         const checksumSpy = jest
             .spyOn(Checksum, "default")
             .mockReturnValueOnce("ID1_SELF_CHECKSUM");
@@ -862,7 +862,7 @@ describe("#parseFile", () => {
         jest.spyOn(readline, "createInterface").mockReturnValueOnce(
             fakeInterface,
         );
-        jest.spyOn(Ancesdir, "closesdir").mockReturnValue("root.path");
+        jest.spyOn(ClosestRootDir, "default").mockReturnValue("root.path");
         jest.spyOn(Checksum, "default")
             .mockReturnValueOnce("ID1_CONTENT_CHECKSUM")
             .mockReturnValueOnce("ID1_SELF_CHECKSUM")
@@ -967,7 +967,7 @@ describe("#parseFile", () => {
         jest.spyOn(readline, "createInterface").mockReturnValueOnce(
             fakeInterface,
         );
-        jest.spyOn(Ancesdir, "closesdir").mockReturnValue("root.path");
+        jest.spyOn(ClosestRootDir, "default").mockReturnValue("root.path");
         jest.spyOn(Checksum, "default")
             .mockReturnValueOnce("ID1_CONTENT_CHECKSUM")
             .mockReturnValueOnce("ID1_SELF_CHECKSUM")
