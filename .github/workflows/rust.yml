@@ -1,5 +1,7 @@
 name: Rust CI
 
+# Only run when the Rust code or this workflow changes, so pull requests that
+# only touch the TypeScript implementation don't pay for a Rust build.
 on:
   pull_request:
     types: [edited, opened, synchronize, ready_for_review, reopened]
@@ -14,32 +16,46 @@ on:
     - 'rust/**'
     - '.github/workflows/rust.yml'
 
+# Every `run` step executes inside the Cargo workspace.
 defaults:
   run:
     working-directory: rust
 
 jobs:
+  # Formatting and lints don't depend on the OS, so one runner is enough.
   lint:
     name: Format and lint
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v7
 
-    # The toolchain version and components come from rust-toolchain.toml.
+    # Installs the Rust version and components (rustfmt, clippy) pinned in
+    # rust-toolchain.toml, so CI uses the same compiler as everyone else.
     - name: Install Rust toolchain
       run: rustup toolchain install
 
+    # Caches downloaded crates and compiled dependencies between runs, which
+    # makes repeat builds much faster.
     - uses: Swatinem/rust-cache@v2
       with:
         workspaces: rust
 
+    # rustfmt is Rust's standard formatter, like Prettier. `--check` fails if
+    # any file isn't formatted instead of rewriting it. Fix locally with
+    # `cargo fmt`.
     - name: Check formatting
       run: cargo fmt --all --check
 
+    # Clippy is Rust's standard linter, like ESLint. `-D warnings` turns every
+    # warning into an error so lint problems can't merge. `--locked` fails if
+    # Cargo.lock would need to change, so CI builds exactly the committed
+    # dependency versions.
     - name: Clippy
       run: cargo clippy --workspace --all-targets --locked -- -D warnings
 
 
+  # Tests run on every OS we ship a binary for, since paths, line endings and
+  # file system behavior differ between them.
   test:
     name: Test
     runs-on: ${{ matrix.os }}
@@ -49,6 +65,7 @@ jobs:
     steps:
     - uses: actions/checkout@v7
 
+    # See the lint job for what these two steps do.
     - name: Install Rust toolchain
       run: rustup toolchain install
 
@@ -56,5 +73,7 @@ jobs:
       with:
         workspaces: rust
 
+    # Builds every crate in debug mode and runs all of its tests: the unit
+    # tests in each module plus doc examples.
     - name: Test
       run: cargo test --workspace --locked
