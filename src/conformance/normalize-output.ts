@@ -6,9 +6,10 @@ import {NormalizeOptions} from "./types";
  * Replace machine- and release-specific values in checksync output.
  *
  * This makes output comparable across machines, operating systems, releases,
- * and implementations. The repository root becomes `<ROOT>` (with either
- * separator style), the launch string becomes `checksync`, and the version
- * reported in JSON output becomes `0.0.0`.
+ * and implementations. On platforms that separate paths with a backslash,
+ * backslashes (including JSON-escaped ones) become forward slashes. Then the
+ * repository root becomes `<ROOT>`, the launch string becomes `checksync`, and
+ * the version reported in JSON output becomes `0.0.0`.
  *
  * @param output The output to normalize.
  * @param options The values to replace.
@@ -16,17 +17,18 @@ import {NormalizeOptions} from "./types";
  */
 export default function normalizeOutput(
     output: string,
-    {rootDir, launchString}: NormalizeOptions,
+    {rootDir, launchString, pathSeparator}: NormalizeOptions,
 ): string {
-    const rootDirs = new Set([rootDir, rootDir.replaceAll("\\", "/")]);
-    let normalized = output;
-    for (const dir of rootDirs) {
-        normalized = normalized.replace(
-            new RegExp(escapeRegExp(dir), "g"),
+    const toForwardSlashes = (text: string): string =>
+        pathSeparator === "\\" ? text.replace(/\\\\|\\/g, "/") : text;
+    return toForwardSlashes(output)
+        .replace(
+            new RegExp(escapeRegExp(toForwardSlashes(rootDir)), "g"),
             "<ROOT>",
-        );
-    }
-    return normalized
-        .replace(new RegExp(escapeRegExp(launchString), "g"), "checksync")
+        )
+        .replace(
+            new RegExp(escapeRegExp(toForwardSlashes(launchString)), "g"),
+            "checksync",
+        )
         .replace(/"version": "\d+\.\d+\.\d+[^"]*"/g, `"version": "0.0.0"`);
 }

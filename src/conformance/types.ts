@@ -52,6 +52,12 @@ export type NormalizeOptions = {
      * with `checksync`.
      */
     launchString: string;
+
+    /**
+     * The platform's path separator. When it is a backslash, backslashes in
+     * the output are treated as path separators.
+     */
+    pathSeparator: string;
 };
 
 /**

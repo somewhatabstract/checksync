@@ -13,6 +13,7 @@
  */
 
 import path from "path";
+import {spawnSync} from "child_process";
 
 import {getExamples} from "../src/integration-test-support";
 import getConformanceCases from "../src/conformance/get-conformance-cases";
@@ -41,7 +42,11 @@ const main = (argv: ReadonlyArray<string>): number => {
     let failures = 0;
     for (const testCase of getConformanceCases(getExamples())) {
         const result = runChecksync(launcher, testCase.args, ROOT_DIR);
-        const normalizeOptions = {rootDir: ROOT_DIR, launchString};
+        const normalizeOptions = {
+            rootDir: ROOT_DIR,
+            launchString,
+            pathSeparator: path.sep,
+        };
         const transcript = formatTranscript(testCase, {
             exitCode: result.exitCode,
             stdout: normalizeOutput(result.stdout, normalizeOptions),
@@ -52,6 +57,20 @@ const main = (argv: ReadonlyArray<string>): number => {
         if (outcome === "mismatch" || outcome === "missing") {
             failures++;
             console.error(`${outcome}: ${path.relative(ROOT_DIR, goldenPath)}`);
+        }
+        if (outcome === "mismatch") {
+            // Show the difference, since CI logs are all we see there.
+            spawnSync(
+                "git",
+                [
+                    "diff",
+                    "--no-index",
+                    "--",
+                    goldenPath,
+                    goldenPath.replace(/\.txt$/, ".actual.txt"),
+                ],
+                {stdio: "inherit"},
+            );
         }
     }
 
