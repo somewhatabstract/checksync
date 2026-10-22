@@ -1,5 +1,15 @@
 # checksync
 
+## 11.0.0
+
+### Major Changes
+
+- 7d72f72: Require Node.js 24 or later; Node.js 20 and 22 are no longer supported. Also update to ancesdir 8, which caches root marker lookups far better and speeds up runs over large repositories.
+
+### Patch Changes
+
+- 04ef5b3: Speed up parsing by compiling the sync-tag regular expressions once per parser instead of on every line
+
 ## 10.0.2
 
 ### Patch Changes
