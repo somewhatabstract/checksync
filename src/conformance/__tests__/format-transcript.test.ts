@@ -1,7 +1,7 @@
 import formatTranscript from "../format-transcript";
 
 describe("#formatTranscript", () => {
-    const testCase = {id: "example/json", args: ["--json", "a/**"]};
+    const testCase = {id: "example.json", args: ["--json", "a/**"]};
 
     it("should include the args, exit code, stdout, and stderr", () => {
         // Arrange

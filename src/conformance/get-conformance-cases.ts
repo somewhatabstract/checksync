@@ -25,7 +25,7 @@ export default function getConformanceCases(
         const migrateArgs =
             example === "migrate_all" ? ["--migrate", "all"] : [];
         return Object.entries(SCENARIOS).map(([scenario, scenarioArgs]) => ({
-            id: `${example}/${scenario}`,
+            id: `${example}.${scenario}`,
             args: [
                 ...scenarioArgs,
                 ...migrateArgs,

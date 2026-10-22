@@ -11,15 +11,15 @@ describe("#getConformanceCases", () => {
         // Assert
         expect(result).toEqual([
             {
-                id: "an_example/check-only",
+                id: "an_example.check-only",
                 args: ["__examples__/an_example/**"],
             },
             {
-                id: "an_example/json",
+                id: "an_example.json",
                 args: ["--json", "__examples__/an_example/**"],
             },
             {
-                id: "an_example/autofix-dry-run",
+                id: "an_example.autofix-dry-run",
                 args: [
                     "--update-tags",
                     "--dry-run",
@@ -39,12 +39,12 @@ describe("#getConformanceCases", () => {
 
         // Assert
         expect(ids).toEqual([
-            "b/check-only",
-            "b/json",
-            "b/autofix-dry-run",
-            "a/check-only",
-            "a/json",
-            "a/autofix-dry-run",
+            "b.check-only",
+            "b.json",
+            "b.autofix-dry-run",
+            "a.check-only",
+            "a.json",
+            "a.autofix-dry-run",
         ]);
     });
 
