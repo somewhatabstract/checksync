@@ -1,0 +1,13 @@
+args: ["__examples__/missing_target/**"]
+exit code: 2
+--- stdout ---
+
+🛑  Unfixable errors found. Fix the errors in these files and try again.
+  __examples__/missing_target/example.js
+--- stderr ---
+Error    __examples__/missing_target/example.js:3
+Sync-start for 'missing_target' points to '__examples__/missing_target/missing_target.py', which does not exist or is a directory
+
+Error    __examples__/missing_target/example.js:3
+No return tag named 'missing_target' in '__examples__/missing_target/missing_target.py'
+

@@ -1,0 +1,44 @@
+args: ["--json","--migrate","all","__examples__/migrate_all/**"]
+exit code: 3
+--- stdout ---
+{
+    "version": "0.0.0",
+    "launchString": "checksync -u __examples__/migrate_all/example-1.js __examples__/migrate_all/example-2.js",
+    "files": {
+        "__examples__/migrate_all/example-1.js": [
+            {
+                "markerID": "migrate_all",
+                "code": "mismatched-checksum",
+                "reason": "Looks like you changed the target content for sync-tag 'migrate_all' in '__examples__/migrate_all/example-2.js:3'. Make sure you've made corresponding changes in the source file, if necessary (12345 != 770446101)",
+                "location": {
+                    "line": 3
+                },
+                "fix": {
+                    "type": "replace",
+                    "line": 3,
+                    "text": "// sync-start:migrate_all 770446101 __examples__/migrate_all/example-2.js",
+                    "declaration": "// sync-start:migrate_all 12345 __examples__/migrate_all/example-2.js",
+                    "description": "Updated checksum for sync-tag 'migrate_all' referencing '__examples__/migrate_all/example-2.js:3' from 12345 to 770446101."
+                }
+            }
+        ],
+        "__examples__/migrate_all/example-2.js": [
+            {
+                "markerID": "migrate_all",
+                "code": "mismatched-checksum",
+                "reason": "Looks like you changed the target content for sync-tag 'migrate_all' in '__examples__/migrate_all/example-1.js:3'. Make sure you've made corresponding changes in the source file, if necessary (12345 != 770446101)",
+                "location": {
+                    "line": 3
+                },
+                "fix": {
+                    "type": "replace",
+                    "line": 3,
+                    "text": "// sync-start:migrate_all 770446101 __examples__/migrate_all/example-1.js",
+                    "declaration": "// sync-start:migrate_all 12345 __examples__/migrate_all/example-1.js",
+                    "description": "Updated checksum for sync-tag 'migrate_all' referencing '__examples__/migrate_all/example-1.js:3' from 12345 to 770446101."
+                }
+            }
+        ]
+    }
+}
+--- stderr ---

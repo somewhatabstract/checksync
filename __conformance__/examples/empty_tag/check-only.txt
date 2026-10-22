@@ -1,0 +1,10 @@
+args: ["__examples__/empty_tag/**"]
+exit code: 2
+--- stdout ---
+
+🛑  Unfixable errors found. Fix the errors in these files and try again.
+  __examples__/empty_tag/a.js
+--- stderr ---
+Error    __examples__/empty_tag/a.js:2
+Sync-tag 'no_content' has no content
+

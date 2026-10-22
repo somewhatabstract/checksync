@@ -1,0 +1,15 @@
+args: ["--update-tags","--dry-run","__examples__/no_self_reference/**"]
+exit code: 2
+--- stdout ---
+Info     DRY-RUN: Files will not be modified
+
+1 file(s) would have been fixed.
+To fix, run:
+  checksync -u __examples__/no_self_reference/example.js
+
+🛑  Could not update all tags due to unfixable errors. Fix the errors in these files and try again.
+  __examples__/no_self_reference/example.js
+--- stderr ---
+Error    __examples__/no_self_reference/example.js:3
+Sync-tag 'example_three' cannot target itself
+

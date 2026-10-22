@@ -1,0 +1,24 @@
+args: ["__examples__/checksums_need_updating/**"]
+exit code: 3
+--- stdout ---
+Mismatch __examples__/checksums_need_updating/unsymlinked/a.js:4
+Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/unsymlinked/b.py:3'
+Make sure you've made corresponding changes in the source file, if necessary (45678 != 249234014)
+
+Mismatch __examples__/checksums_need_updating/unsymlinked/a.js:5
+Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/unsymlinked/c.jsx:3'
+Make sure you've made corresponding changes in the source file, if necessary (1234 != 1992689801)
+
+Mismatch __examples__/checksums_need_updating/unsymlinked/b.py:3
+Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/unsymlinked/a.js:4'
+Make sure you've made corresponding changes in the source file, if necessary (4567 != 2050223083)
+
+Mismatch __examples__/checksums_need_updating/unsymlinked/c.jsx:3
+Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/unsymlinked/a.js:5'
+Make sure you've made corresponding changes in the source file, if necessary (123 != 2050223083)
+
+
+🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing:
+  
+  checksync -u __examples__/checksums_need_updating/unsymlinked/a.js __examples__/checksums_need_updating/unsymlinked/b.py __examples__/checksums_need_updating/unsymlinked/c.jsx
+--- stderr ---

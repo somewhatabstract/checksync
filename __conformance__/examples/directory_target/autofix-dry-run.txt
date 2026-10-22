@@ -1,0 +1,14 @@
+args: ["--update-tags","--dry-run","__examples__/directory_target/**"]
+exit code: 2
+--- stdout ---
+Info     DRY-RUN: Files will not be modified
+
+🛑  Could not update all tags due to unfixable errors. Fix the errors in these files and try again.
+  __examples__/directory_target/example.js
+--- stderr ---
+Error    __examples__/directory_target/example.js:3
+Sync-start for 'directory_target' points to '__examples__/directory_target/a_directory', which does not exist or is a directory
+
+Error    __examples__/directory_target/example.js:3
+No return tag named 'directory_target' in '__examples__/directory_target/a_directory'
+

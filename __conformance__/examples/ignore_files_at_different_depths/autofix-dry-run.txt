@@ -1,0 +1,15 @@
+args: ["--update-tags","--dry-run","__examples__/ignore_files_at_different_depths/**"]
+exit code: 2
+--- stdout ---
+Info     DRY-RUN: Files will not be modified
+
+🛑  Could not update all tags due to unfixable errors. Fix the errors in these files and try again.
+  __examples__/ignore_files_at_different_depths/ignorethesewhennotinsome/bad-sync-tags-never-parsed.js
+  __examples__/ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js
+--- stderr ---
+Error    __examples__/ignore_files_at_different_depths/ignorethesewhennotinsome/bad-sync-tags-never-parsed.js:5
+Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start
+
+Error    __examples__/ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js:5
+Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start
+

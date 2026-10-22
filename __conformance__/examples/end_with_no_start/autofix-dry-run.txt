@@ -1,0 +1,11 @@
+args: ["--update-tags","--dry-run","__examples__/end_with_no_start/**"]
+exit code: 2
+--- stdout ---
+Info     DRY-RUN: Files will not be modified
+
+🛑  Could not update all tags due to unfixable errors. Fix the errors in these files and try again.
+  __examples__/end_with_no_start/example.js
+--- stderr ---
+Error    __examples__/end_with_no_start/example.js:5
+Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start
+

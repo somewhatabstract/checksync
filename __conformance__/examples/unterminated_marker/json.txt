@@ -1,0 +1,31 @@
+args: ["--json","__examples__/unterminated_marker/**"]
+exit code: 2
+--- stdout ---
+{
+    "version": "0.0.0",
+    "launchString": "checksync -u ",
+    "files": {
+        "__examples__/unterminated_marker/example_two-a.js": [
+            {
+                "markerID": "example_two",
+                "reason": "No return tag named 'example_two' in '__examples__/unterminated_marker/example_two-b.py'",
+                "code": "no-return-tag",
+                "location": {
+                    "line": 3
+                }
+            }
+        ],
+        "__examples__/unterminated_marker/example_two-b.py": [
+            {
+                "markerID": "example_two",
+                "reason": "Sync-start 'example_two' has no corresponding sync-end",
+                "location": {
+                    "line": 3
+                },
+                "code": "start-tag-witout-end-tag"
+            }
+        ]
+    }
+}
+--- stderr ---
+Error    🛑  Unfixable errors found. Fix the errors and try again.

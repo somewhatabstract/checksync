@@ -1,0 +1,13 @@
+args: ["--update-tags","--dry-run","__examples__/remote_tags_broken/**"]
+exit code: 0
+--- stdout ---
+Info     DRY-RUN: Files will not be modified
+Fix      __examples__/remote_tags_broken/example.jsx:3
+Updated checksum for sync-tag 'remote_target_self_hash' referencing 'https://github.com/somewhatabstract/checksync/blob/b9433f22ed9cfdf6c79edfd7254670ff53f82f7c/__examples__/remote_tags_match/example.jsx#L3' from 840225308 to 1603869099.
+
+
+1 file(s) would have been fixed.
+To fix, run:
+  checksync -u __examples__/remote_tags_broken/example.jsx
+🎉  Everything is in sync!
+--- stderr ---

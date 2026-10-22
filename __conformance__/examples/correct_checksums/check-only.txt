@@ -1,0 +1,5 @@
+args: ["__examples__/correct_checksums/**"]
+exit code: 0
+--- stdout ---
+🎉  Everything is in sync!
+--- stderr ---

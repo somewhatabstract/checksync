@@ -1,0 +1,11 @@
+args: ["--update-tags","--dry-run","__examples__/excluded/**"]
+exit code: 2
+--- stdout ---
+Info     DRY-RUN: Files will not be modified
+
+🛑  Could not update all tags due to unfixable errors. Fix the errors in these files and try again.
+  __examples__/excluded/exclude_me.js
+--- stderr ---
+Error    __examples__/excluded/exclude_me.js:1
+Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
+

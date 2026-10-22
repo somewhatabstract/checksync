@@ -1,0 +1,93 @@
+args: ["--json","__examples__/content_after_start/**"]
+exit code: 2
+--- stdout ---
+{
+    "version": "0.0.0",
+    "launchString": "checksync -u __examples__/content_after_start/a.js __examples__/content_after_start/b.py __examples__/content_after_start/c.js",
+    "files": {
+        "__examples__/content_after_start/a.js": [
+            {
+                "markerID": "content_after_start",
+                "code": "mismatched-checksum",
+                "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/b.py:3'. Make sure you've made corresponding changes in the source file, if necessary (No checksum != 249234014)",
+                "location": {
+                    "line": 3
+                },
+                "fix": {
+                    "type": "replace",
+                    "line": 3,
+                    "text": "// sync-start:content_after_start 249234014 __examples__/content_after_start/b.py",
+                    "declaration": "// sync-start:content_after_start __examples__/content_after_start/b.py",
+                    "description": "Updated checksum for sync-tag 'content_after_start' referencing '__examples__/content_after_start/b.py:3' from no checksum to 249234014."
+                }
+            }
+        ],
+        "__examples__/content_after_start/b.py": [
+            {
+                "markerID": "content_after_start",
+                "code": "mismatched-checksum",
+                "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/a.js:3'. Make sure you've made corresponding changes in the source file, if necessary (No checksum != 770446101)",
+                "location": {
+                    "line": 3
+                },
+                "fix": {
+                    "type": "replace",
+                    "line": 3,
+                    "text": "# sync-start:content_after_start 770446101 __examples__/content_after_start/a.js",
+                    "declaration": "# sync-start:content_after_start __examples__/content_after_start/a.js",
+                    "description": "Updated checksum for sync-tag 'content_after_start' referencing '__examples__/content_after_start/a.js:3' from no checksum to 770446101."
+                }
+            },
+            {
+                "markerID": "content_after_start",
+                "code": "mismatched-checksum",
+                "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/c.js:3'. Make sure you've made corresponding changes in the source file, if necessary (No checksum != 770446101)",
+                "location": {
+                    "line": 3
+                },
+                "fix": {
+                    "type": "replace",
+                    "line": 4,
+                    "text": "# sync-start:content_after_start 770446101 __examples__/content_after_start/c.js",
+                    "declaration": "# sync-start:content_after_start __examples__/content_after_start/c.js",
+                    "description": "Updated checksum for sync-tag 'content_after_start' referencing '__examples__/content_after_start/c.js:3' from no checksum to 770446101."
+                }
+            }
+        ],
+        "__examples__/content_after_start/c.js": [
+            {
+                "markerID": "content_after_start",
+                "reason": "Sync-start for 'content_after_start' found after content started",
+                "location": {
+                    "line": 5
+                },
+                "code": "start-tag-after-content"
+            },
+            {
+                "markerID": "content_after_start",
+                "code": "mismatched-checksum",
+                "reason": "Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/b.py:4'. Make sure you've made corresponding changes in the source file, if necessary (No checksum != 249234014)",
+                "location": {
+                    "line": 4
+                },
+                "fix": {
+                    "type": "replace",
+                    "line": 3,
+                    "text": "// sync-start:content_after_start 249234014 __examples__/content_after_start/b.py",
+                    "declaration": "// sync-start:content_after_start __examples__/content_after_start/b.py",
+                    "description": "Updated checksum for sync-tag 'content_after_start' referencing '__examples__/content_after_start/b.py:4' from no checksum to 249234014."
+                }
+            },
+            {
+                "markerID": "content_after_start",
+                "reason": "No return tag named 'content_after_start' in '__examples__/content_after_start/a.js'",
+                "code": "no-return-tag",
+                "location": {
+                    "line": 5
+                }
+            }
+        ]
+    }
+}
+--- stderr ---
+Error    🛑  Unfixable errors found. Fix the errors and try again.

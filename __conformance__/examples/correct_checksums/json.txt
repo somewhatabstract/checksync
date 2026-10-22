@@ -1,0 +1,9 @@
+args: ["--json","__examples__/correct_checksums/**"]
+exit code: 0
+--- stdout ---
+{
+    "version": "0.0.0",
+    "launchString": "checksync -u ",
+    "files": {}
+}
+--- stderr ---
