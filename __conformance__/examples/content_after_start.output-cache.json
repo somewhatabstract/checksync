@@ -1,0 +1,95 @@
+{
+    "<ROOT>/__examples__/content_after_start/a.js": {
+        "aliases": [
+            "<ROOT>/__examples__/content_after_start/a.js"
+        ],
+        "errors": [],
+        "lineCount": 6,
+        "markers": {
+            "content_after_start": {
+                "commentEnd": "",
+                "commentStart": "//",
+                "contentChecksum": "770446101",
+                "selfChecksum": "151331251",
+                "targets": {
+                    "3": {
+                        "checksum": "",
+                        "declaration": "// sync-start:content_after_start __examples__/content_after_start/b.py",
+                        "target": "<ROOT>/__examples__/content_after_start/b.py",
+                        "type": "local"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    },
+    "<ROOT>/__examples__/content_after_start/b.py": {
+        "aliases": [
+            "<ROOT>/__examples__/content_after_start/b.py"
+        ],
+        "errors": [],
+        "lineCount": 6,
+        "markers": {
+            "content_after_start": {
+                "commentEnd": "",
+                "commentStart": "#",
+                "contentChecksum": "249234014",
+                "selfChecksum": "2137657609",
+                "targets": {
+                    "3": {
+                        "checksum": "",
+                        "declaration": "# sync-start:content_after_start __examples__/content_after_start/a.js",
+                        "target": "<ROOT>/__examples__/content_after_start/a.js",
+                        "type": "local"
+                    },
+                    "4": {
+                        "checksum": "",
+                        "declaration": "# sync-start:content_after_start __examples__/content_after_start/c.js",
+                        "target": "<ROOT>/__examples__/content_after_start/c.js",
+                        "type": "local"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    },
+    "<ROOT>/__examples__/content_after_start/c.js": {
+        "aliases": [
+            "<ROOT>/__examples__/content_after_start/c.js"
+        ],
+        "errors": [
+            {
+                "code": "start-tag-after-content",
+                "location": {
+                    "line": 5
+                },
+                "markerID": "content_after_start",
+                "reason": "Sync-start for 'content_after_start' found after content started"
+            }
+        ],
+        "lineCount": 7,
+        "markers": {
+            "content_after_start": {
+                "commentEnd": "",
+                "commentStart": "//",
+                "contentChecksum": "770446101",
+                "selfChecksum": "151855541",
+                "targets": {
+                    "3": {
+                        "checksum": "",
+                        "declaration": "// sync-start:content_after_start __examples__/content_after_start/b.py",
+                        "target": "<ROOT>/__examples__/content_after_start/b.py",
+                        "type": "local"
+                    },
+                    "5": {
+                        "checksum": "",
+                        "declaration": "// sync-start:content_after_start __examples__/content_after_start/a.js",
+                        "target": "<ROOT>/__examples__/content_after_start/a.js",
+                        "type": "local"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    }
+}

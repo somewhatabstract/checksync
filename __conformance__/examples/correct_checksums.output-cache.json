@@ -1,0 +1,108 @@
+{
+    "<ROOT>/__examples__/correct_checksums/a.js": {
+        "aliases": [
+            "<ROOT>/__examples__/correct_checksums/a.js"
+        ],
+        "errors": [],
+        "lineCount": 22,
+        "markers": {
+            "correct": {
+                "commentEnd": "",
+                "commentStart": "//",
+                "contentChecksum": "770446101",
+                "selfChecksum": "1001381679",
+                "targets": {
+                    "3": {
+                        "checksum": "249234014",
+                        "declaration": "// sync-start:correct 249234014 __examples__/correct_checksums/b.py",
+                        "target": "<ROOT>/__examples__/correct_checksums/b.py",
+                        "type": "local"
+                    }
+                }
+            },
+            "correct2": {
+                "commentEnd": "",
+                "commentStart": "//",
+                "contentChecksum": "322927876",
+                "selfChecksum": "794193736",
+                "targets": {
+                    "8": {
+                        "checksum": "279463297",
+                        "declaration": "// sync-start:correct2 279463297 __examples__/correct_checksums/b.py",
+                        "target": "<ROOT>/__examples__/correct_checksums/b.py",
+                        "type": "local"
+                    },
+                    "9": {
+                        "checksum": "1992689801",
+                        "declaration": "// sync-start:correct2 1992689801 __examples__/correct_checksums/c.jsx",
+                        "target": "<ROOT>/__examples__/correct_checksums/c.jsx",
+                        "type": "local"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    },
+    "<ROOT>/__examples__/correct_checksums/b.py": {
+        "aliases": [
+            "<ROOT>/__examples__/correct_checksums/b.py"
+        ],
+        "errors": [],
+        "lineCount": 11,
+        "markers": {
+            "correct": {
+                "commentEnd": "",
+                "commentStart": "#",
+                "contentChecksum": "249234014",
+                "selfChecksum": "1546784807",
+                "targets": {
+                    "3": {
+                        "checksum": "770446101",
+                        "declaration": "# sync-start:correct 770446101 __examples__/correct_checksums/a.js",
+                        "target": "<ROOT>/__examples__/correct_checksums/a.js",
+                        "type": "local"
+                    }
+                }
+            },
+            "correct2": {
+                "commentEnd": "",
+                "commentStart": "#",
+                "contentChecksum": "279463297",
+                "selfChecksum": "1940958390",
+                "targets": {
+                    "7": {
+                        "checksum": "322927876",
+                        "declaration": "# sync-start:correct2 322927876 __examples__/correct_checksums/a.js",
+                        "target": "<ROOT>/__examples__/correct_checksums/a.js",
+                        "type": "local"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    },
+    "<ROOT>/__examples__/correct_checksums/c.jsx": {
+        "aliases": [
+            "<ROOT>/__examples__/correct_checksums/c.jsx"
+        ],
+        "errors": [],
+        "lineCount": 9,
+        "markers": {
+            "correct2": {
+                "commentEnd": " */}",
+                "commentStart": "{/*",
+                "contentChecksum": "1992689801",
+                "selfChecksum": "1296165185",
+                "targets": {
+                    "3": {
+                        "checksum": "322927876",
+                        "declaration": "        {/* sync-start:correct2 322927876 __examples__/correct_checksums/a.js */}",
+                        "target": "<ROOT>/__examples__/correct_checksums/a.js",
+                        "type": "local"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    }
+}

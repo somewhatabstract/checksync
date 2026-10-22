@@ -1,0 +1,57 @@
+{
+    "<ROOT>/__examples__/migrate_missing_target/example.js": {
+        "aliases": [
+            "<ROOT>/__examples__/migrate_missing_target/example.js"
+        ],
+        "errors": [
+            {
+                "code": "file-does-not-exist",
+                "location": {
+                    "line": 3
+                },
+                "markerID": "migrate_missing_target",
+                "reason": "Sync-start for 'migrate_missing_target' points to '__examples__/migrate_missing_target/missing_target.py', which does not exist or is a directory"
+            },
+            {
+                "code": "file-does-not-exist",
+                "location": {
+                    "line": 4
+                },
+                "markerID": "migrate_missing_target2",
+                "reason": "Sync-start for 'migrate_missing_target2' points to '__examples__/migrate_missing_target/subfolder/missing_target.py', which does not exist or is a directory"
+            }
+        ],
+        "lineCount": 8,
+        "markers": {
+            "migrate_missing_target": {
+                "commentEnd": "",
+                "commentStart": "//",
+                "contentChecksum": "770446101",
+                "selfChecksum": "1291658605",
+                "targets": {
+                    "3": {
+                        "checksum": "12345",
+                        "declaration": "// sync-start:migrate_missing_target 12345 __examples__/migrate_missing_target/missing_target.py",
+                        "target": "<ROOT>/__examples__/migrate_missing_target/missing_target.py",
+                        "type": "local"
+                    }
+                }
+            },
+            "migrate_missing_target2": {
+                "commentEnd": "",
+                "commentStart": "//",
+                "contentChecksum": "770446101",
+                "selfChecksum": "1291658605",
+                "targets": {
+                    "4": {
+                        "checksum": "",
+                        "declaration": "// sync-start:migrate_missing_target2 __examples__/migrate_missing_target/subfolder/missing_target.py",
+                        "target": "<ROOT>/__examples__/migrate_missing_target/subfolder/missing_target.py",
+                        "type": "local"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    }
+}

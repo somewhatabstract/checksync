@@ -1,0 +1,5 @@
+args: ["--output-cache",".conformance-output/missing_target.cache.json","__examples__/missing_target/**"]
+exit code: 0
+--- stdout ---
+Info     Cache written to <ROOT>/.conformance-output/missing_target.cache.json
+--- stderr ---

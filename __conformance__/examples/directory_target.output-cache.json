@@ -1,0 +1,44 @@
+{
+    "<ROOT>/__examples__/directory_target/a_directory/somefile.js": {
+        "aliases": [
+            "<ROOT>/__examples__/directory_target/a_directory/somefile.js"
+        ],
+        "errors": [],
+        "lineCount": 1,
+        "markers": {},
+        "readOnly": false
+    },
+    "<ROOT>/__examples__/directory_target/example.js": {
+        "aliases": [
+            "<ROOT>/__examples__/directory_target/example.js"
+        ],
+        "errors": [
+            {
+                "code": "file-does-not-exist",
+                "location": {
+                    "line": 3
+                },
+                "markerID": "directory_target",
+                "reason": "Sync-start for 'directory_target' points to '__examples__/directory_target/a_directory', which does not exist or is a directory"
+            }
+        ],
+        "lineCount": 6,
+        "markers": {
+            "directory_target": {
+                "commentEnd": "",
+                "commentStart": "//",
+                "contentChecksum": "770446101",
+                "selfChecksum": "1901404928",
+                "targets": {
+                    "3": {
+                        "checksum": "",
+                        "declaration": "// sync-start:directory_target __examples__/directory_target/a_directory",
+                        "target": "<ROOT>/__examples__/directory_target/a_directory",
+                        "type": "local"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    }
+}

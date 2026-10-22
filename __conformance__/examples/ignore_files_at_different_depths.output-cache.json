@@ -1,0 +1,77 @@
+{
+    "<ROOT>/__examples__/ignore_files_at_different_depths/ignore-file.txt": {
+        "aliases": [
+            "<ROOT>/__examples__/ignore_files_at_different_depths/ignore-file.txt"
+        ],
+        "errors": [],
+        "lineCount": 3,
+        "markers": {},
+        "readOnly": false
+    },
+    "<ROOT>/__examples__/ignore_files_at_different_depths/ignorethesewhennotinsome/bad-sync-tags-never-parsed.js": {
+        "aliases": [
+            "<ROOT>/__examples__/ignore_files_at_different_depths/ignorethesewhennotinsome/bad-sync-tags-never-parsed.js"
+        ],
+        "errors": [
+            {
+                "code": "end-tag-without-start-tag",
+                "location": {
+                    "line": 5
+                },
+                "markerID": "end_with_no_start",
+                "reason": "Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start"
+            }
+        ],
+        "lineCount": 5,
+        "markers": {
+            "end_with_no_start": {
+                "contentChecksum": "No checksum",
+                "selfChecksum": "312334410",
+                "targets": {}
+            }
+        },
+        "readOnly": false
+    },
+    "<ROOT>/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt": {
+        "aliases": [
+            "<ROOT>/__examples__/ignore_files_at_different_depths/some/alsoignorethis.txt"
+        ],
+        "errors": [],
+        "lineCount": 0,
+        "markers": {},
+        "readOnly": false
+    },
+    "<ROOT>/__examples__/ignore_files_at_different_depths/some/ignore-file.txt": {
+        "aliases": [
+            "<ROOT>/__examples__/ignore_files_at_different_depths/some/ignore-file.txt"
+        ],
+        "errors": [],
+        "lineCount": 3,
+        "markers": {},
+        "readOnly": false
+    },
+    "<ROOT>/__examples__/ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js": {
+        "aliases": [
+            "<ROOT>/__examples__/ignore_files_at_different_depths/some/ignorethesewhennotinsome/bad-sync-tags-that-get-parsed.js"
+        ],
+        "errors": [
+            {
+                "code": "end-tag-without-start-tag",
+                "location": {
+                    "line": 5
+                },
+                "markerID": "end_with_no_start",
+                "reason": "Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start"
+            }
+        ],
+        "lineCount": 5,
+        "markers": {
+            "end_with_no_start": {
+                "contentChecksum": "No checksum",
+                "selfChecksum": "850864791",
+                "targets": {}
+            }
+        },
+        "readOnly": false
+    }
+}

@@ -8,4 +8,5 @@ _quokka.js
 *.tsbuildinfo
 .integrationtests/
 cache.json
-__conformance__/**/*.actual.txt
+__conformance__/**/*.actual.*
+.conformance-output/

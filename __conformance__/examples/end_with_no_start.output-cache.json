@@ -1,0 +1,26 @@
+{
+    "<ROOT>/__examples__/end_with_no_start/example.js": {
+        "aliases": [
+            "<ROOT>/__examples__/end_with_no_start/example.js"
+        ],
+        "errors": [
+            {
+                "code": "end-tag-without-start-tag",
+                "location": {
+                    "line": 5
+                },
+                "markerID": "end_with_no_start",
+                "reason": "Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start"
+            }
+        ],
+        "lineCount": 5,
+        "markers": {
+            "end_with_no_start": {
+                "contentChecksum": "No checksum",
+                "selfChecksum": "1496387670",
+                "targets": {}
+            }
+        },
+        "readOnly": false
+    }
+}

@@ -1,0 +1,71 @@
+{
+    "<ROOT>/__examples__/duplicate-target/a.js": {
+        "aliases": [
+            "<ROOT>/__examples__/duplicate-target/a.js"
+        ],
+        "errors": [
+            {
+                "code": "duplicate-target",
+                "fix": {
+                    "declaration": "    // sync-start:update_me 12345 __examples__/duplicate-target/b.py",
+                    "description": "Removed duplicate target for sync-tag 'update_me'",
+                    "line": 5,
+                    "type": "delete"
+                },
+                "location": {
+                    "line": 5
+                },
+                "markerID": "update_me",
+                "reason": "Duplicate target for sync-tag 'update_me'"
+            }
+        ],
+        "lineCount": 9,
+        "markers": {
+            "update_me": {
+                "commentEnd": "",
+                "commentStart": "//",
+                "contentChecksum": "2050223083",
+                "selfChecksum": "445784361",
+                "targets": {
+                    "4": {
+                        "checksum": "12352",
+                        "declaration": "    // sync-start:update_me 12352 __examples__/duplicate-target/b.py",
+                        "target": "<ROOT>/__examples__/duplicate-target/b.py",
+                        "type": "local"
+                    },
+                    "5": {
+                        "checksum": "12345",
+                        "declaration": "    // sync-start:update_me 12345 __examples__/duplicate-target/b.py",
+                        "target": "<ROOT>/__examples__/duplicate-target/b.py",
+                        "type": "local"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    },
+    "<ROOT>/__examples__/duplicate-target/b.py": {
+        "aliases": [
+            "<ROOT>/__examples__/duplicate-target/b.py"
+        ],
+        "errors": [],
+        "lineCount": 5,
+        "markers": {
+            "update_me": {
+                "commentEnd": "",
+                "commentStart": "#",
+                "contentChecksum": "249234014",
+                "selfChecksum": "1228672895",
+                "targets": {
+                    "3": {
+                        "checksum": "4567",
+                        "declaration": "# sync-start:update_me 4567 __examples__/duplicate-target/a.js",
+                        "target": "<ROOT>/__examples__/duplicate-target/a.js",
+                        "type": "local"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    }
+}

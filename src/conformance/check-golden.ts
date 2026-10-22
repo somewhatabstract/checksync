@@ -1,13 +1,14 @@
 import fs from "fs";
 import path from "path";
 
+import getActualPath from "./get-actual-path";
 import {GoldenOutcome} from "./types";
 
 /**
  * Compare a transcript with its golden file, or record it as the new golden.
  *
  * When the transcript doesn't match, it is written alongside the golden file
- * with an `.actual.txt` extension so that the two can be diffed.
+ * with `.actual` before its extension so that the two can be diffed.
  *
  * @param goldenPath The path of the golden file.
  * @param transcript The transcript to check or record.
@@ -34,10 +35,6 @@ export default function checkGolden(
         return "match";
     }
 
-    fs.writeFileSync(
-        goldenPath.replace(/\.txt$/, ".actual.txt"),
-        transcript,
-        "utf8",
-    );
+    fs.writeFileSync(getActualPath(goldenPath), transcript, "utf8");
     return "mismatch";
 }

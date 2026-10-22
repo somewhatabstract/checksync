@@ -11,6 +11,12 @@ export type ConformanceCase = {
      * The arguments passed to checksync.
      */
     args: ReadonlyArray<string>;
+
+    /**
+     * The path, relative to the repository root, of the marker cache file the
+     * case writes, if it writes one.
+     */
+    cacheFile?: string;
 };
 
 /**

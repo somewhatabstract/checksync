@@ -1,0 +1,35 @@
+{
+    "<ROOT>/__examples__/no_back_reference/file1.js": {
+        "aliases": [
+            "<ROOT>/__examples__/no_back_reference/file1.js"
+        ],
+        "errors": [],
+        "lineCount": 3,
+        "markers": {
+            "markerID": {
+                "commentEnd": "",
+                "commentStart": "//",
+                "contentChecksum": "1583019529",
+                "selfChecksum": "1478236391",
+                "targets": {
+                    "1": {
+                        "checksum": "",
+                        "declaration": "// sync-start:markerID __examples__/no_back_reference/file2.js",
+                        "target": "<ROOT>/__examples__/no_back_reference/file2.js",
+                        "type": "local"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    },
+    "<ROOT>/__examples__/no_back_reference/file2.js": {
+        "aliases": [
+            "<ROOT>/__examples__/no_back_reference/file2.js"
+        ],
+        "errors": [],
+        "lineCount": 1,
+        "markers": {},
+        "readOnly": false
+    }
+}

@@ -1,0 +1,98 @@
+{
+    "<ROOT>/__examples__/malformed_start/malformed_badchecksum.js": {
+        "aliases": [
+            "<ROOT>/__examples__/malformed_start/malformed_badchecksum.js"
+        ],
+        "errors": [
+            {
+                "code": "malformed-start-tag",
+                "location": {
+                    "line": 4
+                },
+                "markerID": null,
+                "reason": "Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'"
+            },
+            {
+                "code": "end-tag-without-start-tag",
+                "location": {
+                    "line": 7
+                },
+                "markerID": "tagid",
+                "reason": "Sync-end for 'tagid' found, but there was no corresponding sync-start"
+            }
+        ],
+        "lineCount": 7,
+        "markers": {
+            "tagid": {
+                "contentChecksum": "No checksum",
+                "selfChecksum": "1018107171",
+                "targets": {}
+            }
+        },
+        "readOnly": false
+    },
+    "<ROOT>/__examples__/malformed_start/malformed_badid.js": {
+        "aliases": [
+            "<ROOT>/__examples__/malformed_start/malformed_badid.js"
+        ],
+        "errors": [
+            {
+                "code": "malformed-start-tag",
+                "location": {
+                    "line": 4
+                },
+                "markerID": null,
+                "reason": "Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'"
+            },
+            {
+                "code": "end-tag-without-start-tag",
+                "location": {
+                    "line": 7
+                },
+                "markerID": "tagid",
+                "reason": "Sync-end for 'tagid' found, but there was no corresponding sync-start"
+            }
+        ],
+        "lineCount": 7,
+        "markers": {
+            "tagid": {
+                "contentChecksum": "No checksum",
+                "selfChecksum": "1022553443",
+                "targets": {}
+            }
+        },
+        "readOnly": false
+    },
+    "<ROOT>/__examples__/malformed_start/malformed_onlytagid.js": {
+        "aliases": [
+            "<ROOT>/__examples__/malformed_start/malformed_onlytagid.js"
+        ],
+        "errors": [
+            {
+                "code": "malformed-start-tag",
+                "location": {
+                    "line": 4
+                },
+                "markerID": null,
+                "reason": "Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'"
+            },
+            {
+                "code": "end-tag-without-start-tag",
+                "location": {
+                    "line": 7
+                },
+                "markerID": "tagid",
+                "reason": "Sync-end for 'tagid' found, but there was no corresponding sync-start"
+            }
+        ],
+        "lineCount": 7,
+        "markers": {
+            "tagid": {
+                "contentChecksum": "No checksum",
+                "selfChecksum": "345838708",
+                "targets": {}
+            }
+        },
+        "readOnly": false
+    }
+}

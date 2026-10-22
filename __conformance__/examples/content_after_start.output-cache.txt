@@ -1,0 +1,5 @@
+args: ["--output-cache",".conformance-output/content_after_start.cache.json","__examples__/content_after_start/**"]
+exit code: 0
+--- stdout ---
+Info     Cache written to <ROOT>/.conformance-output/content_after_start.cache.json
+--- stderr ---

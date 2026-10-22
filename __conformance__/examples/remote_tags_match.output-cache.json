@@ -1,0 +1,26 @@
+{
+    "<ROOT>/__examples__/remote_tags_match/unsymlinked/example.jsx": {
+        "aliases": [
+            "<ROOT>/__examples__/remote_tags_match/unsymlinked/example.jsx"
+        ],
+        "errors": [],
+        "lineCount": 9,
+        "markers": {
+            "remote_target_self_hash": {
+                "commentEnd": " */}",
+                "commentStart": "{/*",
+                "contentChecksum": "1992689801",
+                "selfChecksum": "1779098087",
+                "targets": {
+                    "3": {
+                        "checksum": "1779098087",
+                        "declaration": "        {/* sync-start:remote_target_self_hash 1779098087 https://github.com/somewhatabstract/checksync/blob/b9433f22ed9cfdf6c79edfd7254670ff53f82f7c/__examples__/remote_tags_broken/example.jsx#L3 */}",
+                        "target": "https://github.com/somewhatabstract/checksync/blob/b9433f22ed9cfdf6c79edfd7254670ff53f82f7c/__examples__/remote_tags_broken/example.jsx#L3",
+                        "type": "remote"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    }
+}

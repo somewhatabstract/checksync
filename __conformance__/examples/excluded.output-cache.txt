@@ -1,0 +1,5 @@
+args: ["--output-cache",".conformance-output/excluded.cache.json","__examples__/excluded/**"]
+exit code: 0
+--- stdout ---
+Info     Cache written to <ROOT>/.conformance-output/excluded.cache.json
+--- stderr ---

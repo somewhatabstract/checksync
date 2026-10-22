@@ -1,0 +1,44 @@
+{
+    "<ROOT>/__examples__/unterminated_marker/example_two-a.js": {
+        "aliases": [
+            "<ROOT>/__examples__/unterminated_marker/example_two-a.js"
+        ],
+        "errors": [],
+        "lineCount": 6,
+        "markers": {
+            "example_two": {
+                "commentEnd": "",
+                "commentStart": "//",
+                "contentChecksum": "770446101",
+                "selfChecksum": "1063770499",
+                "targets": {
+                    "3": {
+                        "checksum": "",
+                        "declaration": "// sync-start:example_two __examples__/unterminated_marker/example_two-b.py",
+                        "target": "<ROOT>/__examples__/unterminated_marker/example_two-b.py",
+                        "type": "local"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    },
+    "<ROOT>/__examples__/unterminated_marker/example_two-b.py": {
+        "aliases": [
+            "<ROOT>/__examples__/unterminated_marker/example_two-b.py"
+        ],
+        "errors": [
+            {
+                "code": "start-tag-witout-end-tag",
+                "location": {
+                    "line": 3
+                },
+                "markerID": "example_two",
+                "reason": "Sync-start 'example_two' has no corresponding sync-end"
+            }
+        ],
+        "lineCount": 4,
+        "markers": {},
+        "readOnly": false
+    }
+}

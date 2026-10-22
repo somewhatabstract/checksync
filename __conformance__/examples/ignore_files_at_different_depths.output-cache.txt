@@ -1,0 +1,5 @@
+args: ["--output-cache",".conformance-output/ignore_files_at_different_depths.cache.json","__examples__/ignore_files_at_different_depths/**"]
+exit code: 0
+--- stdout ---
+Info     Cache written to <ROOT>/.conformance-output/ignore_files_at_different_depths.cache.json
+--- stderr ---

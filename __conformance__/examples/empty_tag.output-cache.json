@@ -1,0 +1,59 @@
+{
+    "<ROOT>/__examples__/empty_tag/a.js": {
+        "aliases": [
+            "<ROOT>/__examples__/empty_tag/a.js"
+        ],
+        "errors": [
+            {
+                "code": "empty-marker",
+                "location": {
+                    "line": 2
+                },
+                "markerID": "no_content",
+                "reason": "Sync-tag 'no_content' has no content"
+            }
+        ],
+        "lineCount": 3,
+        "markers": {
+            "no_content": {
+                "commentEnd": "",
+                "commentStart": "//",
+                "contentChecksum": "720907",
+                "selfChecksum": "1768748422",
+                "targets": {
+                    "2": {
+                        "checksum": "1462105647",
+                        "declaration": "// sync-start:no_content 1462105647 __examples__/empty_tag/b.js",
+                        "target": "<ROOT>/__examples__/empty_tag/b.js",
+                        "type": "local"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    },
+    "<ROOT>/__examples__/empty_tag/b.js": {
+        "aliases": [
+            "<ROOT>/__examples__/empty_tag/b.js"
+        ],
+        "errors": [],
+        "lineCount": 4,
+        "markers": {
+            "no_content": {
+                "commentEnd": "",
+                "commentStart": "//",
+                "contentChecksum": "1462105647",
+                "selfChecksum": "1197872193",
+                "targets": {
+                    "2": {
+                        "checksum": "720907",
+                        "declaration": "// sync-start:no_content 720907 __examples__/empty_tag/a.js",
+                        "target": "<ROOT>/__examples__/empty_tag/a.js",
+                        "type": "local"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    }
+}
