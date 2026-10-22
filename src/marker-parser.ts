@@ -122,10 +122,10 @@ export default class MarkerParser {
     _recordError: recordErrorFn;
     _normalizePath: normalizeTargetFn;
 
-    _startTagRegExp: string;
-    _startTagDecodeRegExp: string;
-    _endTagRegExp: string;
-    _endTagDecodeRegExp: string;
+    _startTagRegExp: RegExp;
+    _startTagDecodeRegExp: RegExp;
+    _endTagRegExp: RegExp;
+    _endTagDecodeRegExp: RegExp;
 
     _lineNumber: number;
 
@@ -162,7 +162,9 @@ export default class MarkerParser {
          * Example:
          *   `// sync-start:tagname 1234567 target.js`
          */
-        this._startTagRegExp = `^(${commentsString})\\s*sync-start:(.*)$`;
+        this._startTagRegExp = new RegExp(
+            `^(${commentsString})\\s*sync-start:(.*)$`,
+        );
 
         /**
          * This regular expression decodes the start tag.
@@ -175,7 +177,8 @@ export default class MarkerParser {
          *
          * See `TagDecodeGroup` above.
          */
-        this._startTagDecodeRegExp = `^([^\\s]+)\\s+([0-9]*)?\\s*(\\S*)(\\s+[^\\s\\w]*)?$`;
+        this._startTagDecodeRegExp =
+            /^([^\s]+)\s+([0-9]*)?\s*(\S*)(\s+[^\s\w]*)?$/;
 
         /**
          * This is the regular expression that parses an end tag.
@@ -186,7 +189,9 @@ export default class MarkerParser {
          * Example:
          *   `// sync-end:tagname`
          */
-        this._endTagRegExp = `^(?:${commentsString})\\s*sync-end:(.*)$`;
+        this._endTagRegExp = new RegExp(
+            `^(?:${commentsString})\\s*sync-end:(.*)$`,
+        );
 
         /**
          * This is the regular expression that parses the end tag details.
@@ -194,7 +199,7 @@ export default class MarkerParser {
          * Groups:
          *     1: The tag id
          */
-        this._endTagDecodeRegExp = `^(\\S+)\\s*\\S*$`;
+        this._endTagDecodeRegExp = /^(\S+)\s*\S*$/;
     }
 
     _recordMarkerStart: (
@@ -303,11 +308,9 @@ export default class MarkerParser {
         const lineNumber = this._lineNumber++;
 
         const tagSearch = content.trim();
-        const startMatch = new RegExp(this._startTagRegExp).exec(tagSearch);
+        const startMatch = this._startTagRegExp.exec(tagSearch);
         if (startMatch != null) {
-            const startDecode = new RegExp(this._startTagDecodeRegExp).exec(
-                startMatch[2],
-            );
+            const startDecode = this._startTagDecodeRegExp.exec(startMatch[2]);
             if (startDecode == null) {
                 this._recordError(Errors.malformedStartTag(lineNumber));
             } else {
@@ -327,11 +330,9 @@ export default class MarkerParser {
             return;
         }
 
-        const endMatch = new RegExp(this._endTagRegExp).exec(tagSearch);
+        const endMatch = this._endTagRegExp.exec(tagSearch);
         if (endMatch != null) {
-            const endDecode = new RegExp(this._endTagDecodeRegExp).exec(
-                endMatch[1],
-            );
+            const endDecode = this._endTagDecodeRegExp.exec(endMatch[1]);
             if (endDecode == null) {
                 this._recordError(Errors.malformedEndTag(lineNumber));
             } else {
