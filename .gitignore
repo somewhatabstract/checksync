@@ -8,3 +8,4 @@ _quokka.js
 *.tsbuildinfo
 .integrationtests/
 cache.json
+/rust/target/

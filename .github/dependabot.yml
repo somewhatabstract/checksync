@@ -21,3 +21,14 @@ updates:
   open-pull-requests-limit: 10
   reviewers:
   - somewhatabstract
+
+- package-ecosystem: cargo
+  directory: "/rust"
+  schedule:
+    interval: weekly
+    day: saturday
+    time: "09:00"
+    timezone: America/Chicago
+  open-pull-requests-limit: 10
+  reviewers:
+  - somewhatabstract

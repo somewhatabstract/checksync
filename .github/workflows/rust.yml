@@ -1,0 +1,60 @@
+name: Rust CI
+
+on:
+  pull_request:
+    types: [edited, opened, synchronize, ready_for_review, reopened]
+    paths:
+    - 'rust/**'
+    - '.github/workflows/rust.yml'
+
+  push:
+    branches:
+    - main
+    paths:
+    - 'rust/**'
+    - '.github/workflows/rust.yml'
+
+defaults:
+  run:
+    working-directory: rust
+
+jobs:
+  lint:
+    name: Format and lint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+
+    # The toolchain version and components come from rust-toolchain.toml.
+    - name: Install Rust toolchain
+      run: rustup toolchain install
+
+    - uses: Swatinem/rust-cache@v2
+      with:
+        workspaces: rust
+
+    - name: Check formatting
+      run: cargo fmt --all --check
+
+    - name: Clippy
+      run: cargo clippy --workspace --all-targets --locked -- -D warnings
+
+
+  test:
+    name: Test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+    steps:
+    - uses: actions/checkout@v7
+
+    - name: Install Rust toolchain
+      run: rustup toolchain install
+
+    - uses: Swatinem/rust-cache@v2
+      with:
+        workspaces: rust
+
+    - name: Test
+      run: cargo test --workspace --locked
