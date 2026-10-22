@@ -311,5 +311,27 @@ describe("MarkerParser", () => {
                 " */}",
             );
         });
+
+        it("should record every marker when tags are on consecutive lines", () => {
+            // Arrange
+            const addMarker = jest.fn<any, any>();
+            const parser = new MarkerParser(
+                (target) => ({path: target, exists: true, type: "local"}),
+                addMarker,
+                jest.fn<any, any>(),
+                ["//"],
+            );
+
+            // Act
+            parser.parseLine("// sync-start:markerid1 target1");
+            parser.parseLine("// sync-start:markerid2 target2");
+            parser.parseLine("Some content");
+            parser.parseLine("// sync-end:markerid1");
+            parser.parseLine("// sync-end:markerid2");
+            const recordedIds = addMarker.mock.calls.map(([id]) => id);
+
+            // Assert
+            expect(recordedIds).toEqual(["markerid1", "markerid2"]);
+        });
     });
 });
