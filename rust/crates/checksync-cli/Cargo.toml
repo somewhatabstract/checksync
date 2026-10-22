@@ -1,0 +1,16 @@
+[package]
+name = "checksync-cli"
+description = "The checksync command-line tool."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+publish.workspace = true
+
+[[bin]]
+name = "checksync"
+path = "src/main.rs"
+
+[lints]
+workspace = true
