@@ -8,5 +8,6 @@ _quokka.js
 *.tsbuildinfo
 .integrationtests/
 cache.json
+/rust/target/
 __conformance__/**/*.actual.*
 .conformance-output/
