@@ -30,6 +30,10 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write # For provenance and trusted publishing
+      contents: write # For creating release PRs
+      pull-requests: write # For creating release PRs
     steps:
       - uses: actions/checkout@v7
         with:
@@ -40,18 +44,41 @@ jobs:
         name: Install pnpm
         with:
           run_install: false
-          package_json_file: 'package.json'
+          package_json_file: package.json
 
       - name: Use Node.js 24.x
         uses: actions/setup-node@v7
         with:
-          node-version: '24.x'
-          cache: 'pnpm'
-          cache-dependency-path: 'pnpm-lock.yaml'
+          node-version: 24.x
+          cache: pnpm
+          cache-dependency-path: pnpm-lock.yaml
 
       - name: Install Dependencies
         shell: bash
         run: pnpm install --frozen-lockfile
+
+      - name: ⬆️ Upgrade npm for OIDC support
+        shell: bash
+        run: |
+          # npm trusted publishing requires npm CLI v11.5.1+
+          # Node.js 20 shipped with npm 9.x, so we likely need to upgrade
+
+          # First, let's check the current npm version, and if it's already
+          # sufficient, we can skip the upgrade step.
+          CURRENT_NPM_VERSION=$(npm --version)
+          REQUIRED_NPM_VERSION="11.5.1"
+
+          # This sorts the version numbers using `sort -V` and then takes
+          # the lowest version.
+          LOWEST_NPM_VERSION=$(printf '%s\n' "$REQUIRED_NPM_VERSION" "$CURRENT_NPM_VERSION" | sort -V | head -n1)
+
+          # If the lowest version is the same as the required version, then we
+          # don't need to upgrade as that means our current version is newer.
+          if [ "$LOWEST_NPM_VERSION" = "$REQUIRED_NPM_VERSION" ]; then
+            echo "✅ npm is already at version $CURRENT_NPM_VERSION"
+          else
+            npm install -g npm@latest && echo "✅ npm upgraded to $(npm --version)"
+          fi
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
@@ -64,7 +91,5 @@ jobs:
           # the account of someone with appropriate access levels and given the
           # repo scope.
           GITHUB_TOKEN: ${{ secrets.BOT_PA_TOKEN }}
-          # This is the token used to publish to npm
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          # This is for the upload of bundle analysis
+          # This is used for the bundle analysis
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
