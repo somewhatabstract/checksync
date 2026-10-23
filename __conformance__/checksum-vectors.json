@@ -1,0 +1,115 @@
+[
+    {
+        "description": "Khan Academy compatibility vector",
+        "lines": [
+            "\n",
+            "\n",
+            "a test\n",
+            "more test\n",
+            "\n"
+        ],
+        "checksum": "1043727889"
+    },
+    {
+        "description": "Negative Adler-32 value has its leading minus stripped",
+        "lines": [
+            "Some super important content!"
+        ],
+        "checksum": "1472197848"
+    },
+    {
+        "description": "No lines",
+        "lines": [],
+        "checksum": "720907"
+    },
+    {
+        "description": "One empty line",
+        "lines": [
+            "\n"
+        ],
+        "checksum": "2097173"
+    },
+    {
+        "description": "ASCII lines",
+        "lines": [
+            "const a = 1;\n",
+            "const b = 2;\n"
+        ],
+        "checksum": "1836451651"
+    },
+    {
+        "description": "Whitespace-only lines",
+        "lines": [
+            "   \n",
+            "\t\n",
+            " \t \n"
+        ],
+        "checksum": "90964187"
+    },
+    {
+        "description": "Lines that keep a carriage return",
+        "lines": [
+            "line one\r\n",
+            "line two\r\n"
+        ],
+        "checksum": "1219495525"
+    },
+    {
+        "description": "Line without a trailing newline",
+        "lines": [
+            "no newline"
+        ],
+        "checksum": "361432058"
+    },
+    {
+        "description": "Self checksum: content then a root-relative path with no trailing newline",
+        "lines": [
+            "content line\n",
+            "src/path/to/file.js"
+        ],
+        "checksum": "934999064"
+    },
+    {
+        "description": "Latin-1 accented letters (2-byte UTF-8)",
+        "lines": [
+            "café\n",
+            "naïve résumé\n"
+        ],
+        "checksum": "2025392784"
+    },
+    {
+        "description": "CJK text (3-byte UTF-8)",
+        "lines": [
+            "日本語のテキスト\n"
+        ],
+        "checksum": "422702927"
+    },
+    {
+        "description": "Emoji outside the BMP (4-byte UTF-8, surrogate pair in JS)",
+        "lines": [
+            "🎉 party 🚀\n"
+        ],
+        "checksum": "1200883668"
+    },
+    {
+        "description": "Mixed scripts and symbols",
+        "lines": [
+            "Ελληνικά — Русский — עברית — ✓\n"
+        ],
+        "checksum": "1236064726"
+    },
+    {
+        "description": "Unicode replacement character, as produced for invalid UTF-8",
+        "lines": [
+            "bad � byte\n"
+        ],
+        "checksum": "703858075"
+    },
+    {
+        "description": "Long line, past the 5552-byte Adler-32 chunk boundary",
+        "lines": [
+            "line 0: the quick brown fox jumps over the lazy dog line 1: the quick brown fox jumps over the lazy dog line 2: the quick brown fox jumps over the lazy dog line 3: the quick brown fox jumps over the lazy dog line 4: the quick brown fox jumps over the lazy dog line 5: the quick brown fox jumps over the lazy dog line 6: the quick brown fox jumps over the lazy dog line 7: the quick brown fox jumps over the lazy dog line 8: the quick brown fox jumps over the lazy dog line 9: the quick brown fox jumps over the lazy dog line 10: the quick brown fox jumps over the lazy dog line 11: the quick brown fox jumps over the lazy dog line 12: the quick brown fox jumps over the lazy dog line 13: the quick brown fox jumps over the lazy dog line 14: the quick brown fox jumps over the lazy dog line 15: the quick brown fox jumps over the lazy dog line 16: the quick brown fox jumps over the lazy dog line 17: the quick brown fox jumps over the lazy dog line 18: the quick brown fox jumps over the lazy dog line 19: the quick brown fox jumps over the lazy dog line 20: the quick brown fox jumps over the lazy dog line 21: the quick brown fox jumps over the lazy dog line 22: the quick brown fox jumps over the lazy dog line 23: the quick brown fox jumps over the lazy dog line 24: the quick brown fox jumps over the lazy dog line 25: the quick brown fox jumps over the lazy dog line 26: the quick brown fox jumps over the lazy dog line 27: the quick brown fox jumps over the lazy dog line 28: the quick brown fox jumps over the lazy dog line 29: the quick brown fox jumps over the lazy dog line 30: the quick brown fox jumps over the lazy dog line 31: the quick brown fox jumps over the lazy dog line 32: the quick brown fox jumps over the lazy dog line 33: the quick brown fox jumps over the lazy dog line 34: the quick brown fox jumps over the lazy dog line 35: the quick brown fox jumps over the lazy dog line 36: the quick brown fox jumps over the lazy dog line 37: the quick brown fox jumps over the lazy dog line 38: the quick brown fox jumps over the lazy dog line 39: the quick brown fox jumps over the lazy dog line 40: the quick brown fox jumps over the lazy dog line 41: the quick brown fox jumps over the lazy dog line 42: the quick brown fox jumps over the lazy dog line 43: the quick brown fox jumps over the lazy dog line 44: the quick brown fox jumps over the lazy dog line 45: the quick brown fox jumps over the lazy dog line 46: the quick brown fox jumps over the lazy dog line 47: the quick brown fox jumps over the lazy dog line 48: the quick brown fox jumps over the lazy dog line 49: the quick brown fox jumps over the lazy dog line 50: the quick brown fox jumps over the lazy dog line 51: the quick brown fox jumps over the lazy dog line 52: the quick brown fox jumps over the lazy dog line 53: the quick brown fox jumps over the lazy dog line 54: the quick brown fox jumps over the lazy dog line 55: the quick brown fox jumps over the lazy dog line 56: the quick brown fox jumps over the lazy dog line 57: the quick brown fox jumps over the lazy dog line 58: the quick brown fox jumps over the lazy dog line 59: the quick brown fox jumps over the lazy dog line 60: the quick brown fox jumps over the lazy dog line 61: the quick brown fox jumps over the lazy dog line 62: the quick brown fox jumps over the lazy dog line 63: the quick brown fox jumps over the lazy dog line 64: the quick brown fox jumps over the lazy dog line 65: the quick brown fox jumps over the lazy dog line 66: the quick brown fox jumps over the lazy dog line 67: the quick brown fox jumps over the lazy dog line 68: the quick brown fox jumps over the lazy dog line 69: the quick brown fox jumps over the lazy dog line 70: the quick brown fox jumps over the lazy dog line 71: the quick brown fox jumps over the lazy dog line 72: the quick brown fox jumps over the lazy dog line 73: the quick brown fox jumps over the lazy dog line 74: the quick brown fox jumps over the lazy dog line 75: the quick brown fox jumps over the lazy dog line 76: the quick brown fox jumps over the lazy dog line 77: the quick brown fox jumps over the lazy dog line 78: the quick brown fox jumps over the lazy dog line 79: the quick brown fox jumps over the lazy dog line 80: the quick brown fox jumps over the lazy dog line 81: the quick brown fox jumps over the lazy dog line 82: the quick brown fox jumps over the lazy dog line 83: the quick brown fox jumps over the lazy dog line 84: the quick brown fox jumps over the lazy dog line 85: the quick brown fox jumps over the lazy dog line 86: the quick brown fox jumps over the lazy dog line 87: the quick brown fox jumps over the lazy dog line 88: the quick brown fox jumps over the lazy dog line 89: the quick brown fox jumps over the lazy dog line 90: the quick brown fox jumps over the lazy dog line 91: the quick brown fox jumps over the lazy dog line 92: the quick brown fox jumps over the lazy dog line 93: the quick brown fox jumps over the lazy dog line 94: the quick brown fox jumps over the lazy dog line 95: the quick brown fox jumps over the lazy dog line 96: the quick brown fox jumps over the lazy dog line 97: the quick brown fox jumps over the lazy dog line 98: the quick brown fox jumps over the lazy dog line 99: the quick brown fox jumps over the lazy dog line 100: the quick brown fox jumps over the lazy dog line 101: the quick brown fox jumps over the lazy dog line 102: the quick brown fox jumps over the lazy dog line 103: the quick brown fox jumps over the lazy dog line 104: the quick brown fox jumps over the lazy dog line 105: the quick brown fox jumps over the lazy dog line 106: the quick brown fox jumps over the lazy dog line 107: the quick brown fox jumps over the lazy dog line 108: the quick brown fox jumps over the lazy dog line 109: the quick brown fox jumps over the lazy dog line 110: the quick brown fox jumps over the lazy dog line 111: the quick brown fox jumps over the lazy dog line 112: the quick brown fox jumps over the lazy dog line 113: the quick brown fox jumps over the lazy dog line 114: the quick brown fox jumps over the lazy dog line 115: the quick brown fox jumps over the lazy dog line 116: the quick brown fox jumps over the lazy dog line 117: the quick brown fox jumps over the lazy dog line 118: the quick brown fox jumps over the lazy dog line 119: the quick brown fox jumps over the lazy dog\n"
+        ],
+        "checksum": "774225649"
+    }
+]

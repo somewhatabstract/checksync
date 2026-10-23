@@ -1,4 +1,22 @@
+import fs from "fs";
+import path from "path";
+
 import checksum from "../checksum";
+
+/**
+ * Checksum vectors shared with the Rust implementation, which tests against
+ * the same file so both produce identical checksums.
+ */
+const VECTORS: ReadonlyArray<{
+    description: string;
+    lines: ReadonlyArray<string>;
+    checksum: string;
+}> = JSON.parse(
+    fs.readFileSync(
+        path.join(__dirname, "../../__conformance__/checksum-vectors.json"),
+        "utf8",
+    ),
+);
 
 describe("#checksum", () => {
     /**
@@ -26,4 +44,17 @@ describe("#checksum", () => {
         // Assert
         expect(result).toBe("1472197848");
     });
+
+    it.each(VECTORS)(
+        "should match the shared checksum vector: $description",
+        ({lines, checksum: expected}) => {
+            // Arrange
+
+            // Act
+            const result = checksum(lines);
+
+            // Assert
+            expect(result).toBe(expected);
+        },
+    );
 });
