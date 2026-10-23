@@ -1,0 +1,5 @@
+args: ["--output-cache",".conformance-output/duplicate-target.cache.json","__examples__/duplicate-target/**"]
+exit code: 0
+--- stdout ---
+Info     Cache written to <ROOT>/.conformance-output/duplicate-target.cache.json
+--- stderr ---

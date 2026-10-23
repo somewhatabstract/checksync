@@ -1,0 +1,89 @@
+{
+    "<ROOT>/__examples__/checksums_need_updating/README.md": {
+        "aliases": [
+            "<ROOT>/__examples__/checksums_need_updating/README.md"
+        ],
+        "errors": [],
+        "lineCount": 5,
+        "markers": {},
+        "readOnly": false
+    },
+    "<ROOT>/__examples__/checksums_need_updating/unsymlinked/a.js": {
+        "aliases": [
+            "<ROOT>/__examples__/checksums_need_updating/unsymlinked/a.js"
+        ],
+        "errors": [],
+        "lineCount": 9,
+        "markers": {
+            "update_me": {
+                "commentEnd": "",
+                "commentStart": "//",
+                "contentChecksum": "2050223083",
+                "selfChecksum": "350476008",
+                "targets": {
+                    "4": {
+                        "checksum": "45678",
+                        "declaration": "    // sync-start:update_me 45678 __examples__/checksums_need_updating/unsymlinked/b.py",
+                        "target": "<ROOT>/__examples__/checksums_need_updating/unsymlinked/b.py",
+                        "type": "local"
+                    },
+                    "5": {
+                        "checksum": "1234",
+                        "declaration": "    // sync-start:update_me 1234 __examples__/checksums_need_updating/unsymlinked/c.jsx",
+                        "target": "<ROOT>/__examples__/checksums_need_updating/unsymlinked/c.jsx",
+                        "type": "local"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    },
+    "<ROOT>/__examples__/checksums_need_updating/unsymlinked/b.py": {
+        "aliases": [
+            "<ROOT>/__examples__/checksums_need_updating/unsymlinked/b.py"
+        ],
+        "errors": [],
+        "lineCount": 5,
+        "markers": {
+            "update_me": {
+                "commentEnd": "",
+                "commentStart": "#",
+                "contentChecksum": "249234014",
+                "selfChecksum": "920512658",
+                "targets": {
+                    "3": {
+                        "checksum": "4567",
+                        "declaration": "# sync-start:update_me 4567 __examples__/checksums_need_updating/unsymlinked/a.js",
+                        "target": "<ROOT>/__examples__/checksums_need_updating/unsymlinked/a.js",
+                        "type": "local"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    },
+    "<ROOT>/__examples__/checksums_need_updating/unsymlinked/c.jsx": {
+        "aliases": [
+            "<ROOT>/__examples__/checksums_need_updating/unsymlinked/c.jsx"
+        ],
+        "errors": [],
+        "lineCount": 9,
+        "markers": {
+            "update_me": {
+                "commentEnd": " */}",
+                "commentStart": "{/*",
+                "contentChecksum": "1992689801",
+                "selfChecksum": "1777721850",
+                "targets": {
+                    "3": {
+                        "checksum": "123",
+                        "declaration": "        {/* sync-start:update_me 123 __examples__/checksums_need_updating/unsymlinked/a.js */}",
+                        "target": "<ROOT>/__examples__/checksums_need_updating/unsymlinked/a.js",
+                        "type": "local"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    }
+}

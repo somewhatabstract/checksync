@@ -1,0 +1,5 @@
+args: ["--output-cache",".conformance-output/remote_tags_match.cache.json","__examples__/remote_tags_match/**"]
+exit code: 0
+--- stdout ---
+Info     Cache written to <ROOT>/.conformance-output/remote_tags_match.cache.json
+--- stderr ---

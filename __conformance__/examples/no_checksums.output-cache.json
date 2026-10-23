@@ -1,0 +1,50 @@
+{
+    "<ROOT>/__examples__/no_checksums/example_one-a.js": {
+        "aliases": [
+            "<ROOT>/__examples__/no_checksums/example_one-a.js"
+        ],
+        "errors": [],
+        "lineCount": 6,
+        "markers": {
+            "example_one": {
+                "commentEnd": "",
+                "commentStart": "//",
+                "contentChecksum": "770446101",
+                "selfChecksum": "1259396234",
+                "targets": {
+                    "3": {
+                        "checksum": "",
+                        "declaration": "// sync-start:example_one __examples__/no_checksums/example_one-b.py",
+                        "target": "<ROOT>/__examples__/no_checksums/example_one-b.py",
+                        "type": "local"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    },
+    "<ROOT>/__examples__/no_checksums/example_one-b.py": {
+        "aliases": [
+            "<ROOT>/__examples__/no_checksums/example_one-b.py"
+        ],
+        "errors": [],
+        "lineCount": 5,
+        "markers": {
+            "example_one": {
+                "commentEnd": "",
+                "commentStart": "#",
+                "contentChecksum": "249234014",
+                "selfChecksum": "675212596",
+                "targets": {
+                    "3": {
+                        "checksum": "",
+                        "declaration": "# sync-start:example_one __examples__/no_checksums/example_one-a.js",
+                        "target": "<ROOT>/__examples__/no_checksums/example_one-a.js",
+                        "type": "local"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    }
+}

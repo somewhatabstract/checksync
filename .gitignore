@@ -9,4 +9,5 @@ _quokka.js
 .integrationtests/
 cache.json
 /rust/target/
-__conformance__/**/*.actual.txt
+__conformance__/**/*.actual.*
+.conformance-output/

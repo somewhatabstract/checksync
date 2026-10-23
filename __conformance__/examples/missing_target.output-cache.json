@@ -1,0 +1,35 @@
+{
+    "<ROOT>/__examples__/missing_target/example.js": {
+        "aliases": [
+            "<ROOT>/__examples__/missing_target/example.js"
+        ],
+        "errors": [
+            {
+                "code": "file-does-not-exist",
+                "location": {
+                    "line": 3
+                },
+                "markerID": "missing_target",
+                "reason": "Sync-start for 'missing_target' points to '__examples__/missing_target/missing_target.py', which does not exist or is a directory"
+            }
+        ],
+        "lineCount": 6,
+        "markers": {
+            "missing_target": {
+                "commentEnd": "",
+                "commentStart": "//",
+                "contentChecksum": "770446101",
+                "selfChecksum": "721035813",
+                "targets": {
+                    "3": {
+                        "checksum": "",
+                        "declaration": "// sync-start:missing_target __examples__/missing_target/missing_target.py",
+                        "target": "<ROOT>/__examples__/missing_target/missing_target.py",
+                        "type": "local"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    }
+}

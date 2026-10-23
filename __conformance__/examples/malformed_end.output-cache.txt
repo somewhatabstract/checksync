@@ -1,0 +1,5 @@
+args: ["--output-cache",".conformance-output/malformed_end.cache.json","__examples__/malformed_end/**"]
+exit code: 0
+--- stdout ---
+Info     Cache written to <ROOT>/.conformance-output/malformed_end.cache.json
+--- stderr ---

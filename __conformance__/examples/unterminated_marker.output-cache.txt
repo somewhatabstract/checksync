@@ -1,0 +1,5 @@
+args: ["--output-cache",".conformance-output/unterminated_marker.cache.json","__examples__/unterminated_marker/**"]
+exit code: 0
+--- stdout ---
+Info     Cache written to <ROOT>/.conformance-output/unterminated_marker.cache.json
+--- stderr ---

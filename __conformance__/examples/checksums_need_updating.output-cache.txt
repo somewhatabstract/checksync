@@ -1,0 +1,5 @@
+args: ["--output-cache",".conformance-output/checksums_need_updating.cache.json","__examples__/checksums_need_updating/**"]
+exit code: 0
+--- stdout ---
+Info     Cache written to <ROOT>/.conformance-output/checksums_need_updating.cache.json
+--- stderr ---

@@ -1,0 +1,5 @@
+args: ["--output-cache",".conformance-output/directory_target.cache.json","__examples__/directory_target/**"]
+exit code: 0
+--- stdout ---
+Info     Cache written to <ROOT>/.conformance-output/directory_target.cache.json
+--- stderr ---

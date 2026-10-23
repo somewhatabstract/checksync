@@ -1,0 +1,54 @@
+{
+    "<ROOT>/__examples__/malformed_end/malformed_badid.js": {
+        "aliases": [
+            "<ROOT>/__examples__/malformed_end/malformed_badid.js"
+        ],
+        "errors": [
+            {
+                "code": "malformed-end-tag",
+                "location": {
+                    "line": 7
+                },
+                "markerID": null,
+                "reason": "Malformed sync-end: format should be 'sync-end:<label>'"
+            },
+            {
+                "code": "start-tag-witout-end-tag",
+                "location": {
+                    "line": 4
+                },
+                "markerID": "tagid",
+                "reason": "Sync-start 'tagid' has no corresponding sync-end"
+            }
+        ],
+        "lineCount": 7,
+        "markers": {},
+        "readOnly": false
+    },
+    "<ROOT>/__examples__/malformed_end/malformed_noid.js": {
+        "aliases": [
+            "<ROOT>/__examples__/malformed_end/malformed_noid.js"
+        ],
+        "errors": [
+            {
+                "code": "malformed-end-tag",
+                "location": {
+                    "line": 7
+                },
+                "markerID": null,
+                "reason": "Malformed sync-end: format should be 'sync-end:<label>'"
+            },
+            {
+                "code": "start-tag-witout-end-tag",
+                "location": {
+                    "line": 4
+                },
+                "markerID": "tagid",
+                "reason": "Sync-start 'tagid' has no corresponding sync-end"
+            }
+        ],
+        "lineCount": 7,
+        "markers": {},
+        "readOnly": false
+    }
+}

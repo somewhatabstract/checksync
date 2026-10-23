@@ -1,0 +1,50 @@
+{
+    "<ROOT>/__examples__/migrate_all/example-1.js": {
+        "aliases": [
+            "<ROOT>/__examples__/migrate_all/example-1.js"
+        ],
+        "errors": [],
+        "lineCount": 6,
+        "markers": {
+            "migrate_all": {
+                "commentEnd": "",
+                "commentStart": "//",
+                "contentChecksum": "770446101",
+                "selfChecksum": "60104996",
+                "targets": {
+                    "3": {
+                        "checksum": "12345",
+                        "declaration": "// sync-start:migrate_all 12345 __examples__/migrate_all/example-2.js",
+                        "target": "<ROOT>/__examples__/migrate_all/example-2.js",
+                        "type": "local"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    },
+    "<ROOT>/__examples__/migrate_all/example-2.js": {
+        "aliases": [
+            "<ROOT>/__examples__/migrate_all/example-2.js"
+        ],
+        "errors": [],
+        "lineCount": 6,
+        "markers": {
+            "migrate_all": {
+                "commentEnd": "",
+                "commentStart": "//",
+                "contentChecksum": "770446101",
+                "selfChecksum": "60367141",
+                "targets": {
+                    "3": {
+                        "checksum": "12345",
+                        "declaration": "// sync-start:migrate_all 12345 __examples__/migrate_all/example-1.js",
+                        "target": "<ROOT>/__examples__/migrate_all/example-1.js",
+                        "type": "local"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    }
+}

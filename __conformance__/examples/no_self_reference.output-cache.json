@@ -1,0 +1,35 @@
+{
+    "<ROOT>/__examples__/no_self_reference/example.js": {
+        "aliases": [
+            "<ROOT>/__examples__/no_self_reference/example.js"
+        ],
+        "errors": [
+            {
+                "code": "self-targeting",
+                "location": {
+                    "line": 3
+                },
+                "markerID": "example_three",
+                "reason": "Sync-tag 'example_three' cannot target itself"
+            }
+        ],
+        "lineCount": 6,
+        "markers": {
+            "example_three": {
+                "commentEnd": "",
+                "commentStart": "//",
+                "contentChecksum": "770446101",
+                "selfChecksum": "1846992071",
+                "targets": {
+                    "3": {
+                        "checksum": "",
+                        "declaration": "// sync-start:example_three __examples__/no_self_reference/example.js",
+                        "target": "<ROOT>/__examples__/no_self_reference/example.js",
+                        "type": "local"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "<ROOT>/__examples__/excluded/exclude_me.js": {
+        "aliases": [
+            "<ROOT>/__examples__/excluded/exclude_me.js"
+        ],
+        "errors": [
+            {
+                "code": "malformed-start-tag",
+                "location": {
+                    "line": 1
+                },
+                "markerID": null,
+                "reason": "Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'"
+            }
+        ],
+        "lineCount": 2,
+        "markers": {},
+        "readOnly": false
+    }
+}
