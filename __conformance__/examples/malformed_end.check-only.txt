@@ -1,0 +1,20 @@
+args: ["__examples__/malformed_end/**"]
+exit code: 2
+--- stdout ---
+
+🛑  Unfixable errors found. Fix the errors in these files and try again.
+  __examples__/malformed_end/malformed_badid.js
+  __examples__/malformed_end/malformed_noid.js
+--- stderr ---
+Error    __examples__/malformed_end/malformed_badid.js:7
+Malformed sync-end: format should be 'sync-end:<label>'
+
+Error    __examples__/malformed_end/malformed_badid.js:4
+Sync-start 'tagid' has no corresponding sync-end
+
+Error    __examples__/malformed_end/malformed_noid.js:7
+Malformed sync-end: format should be 'sync-end:<label>'
+
+Error    __examples__/malformed_end/malformed_noid.js:4
+Sync-start 'tagid' has no corresponding sync-end
+

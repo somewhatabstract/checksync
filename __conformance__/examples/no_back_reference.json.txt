@@ -1,0 +1,21 @@
+args: ["--json","__examples__/no_back_reference/**"]
+exit code: 2
+--- stdout ---
+{
+    "version": "0.0.0",
+    "launchString": "checksync -u ",
+    "files": {
+        "__examples__/no_back_reference/file1.js": [
+            {
+                "markerID": "markerID",
+                "reason": "No return tag named 'markerID' in '__examples__/no_back_reference/file2.js'",
+                "code": "no-return-tag",
+                "location": {
+                    "line": 1
+                }
+            }
+        ]
+    }
+}
+--- stderr ---
+Error    🛑  Unfixable errors found. Fix the errors and try again.

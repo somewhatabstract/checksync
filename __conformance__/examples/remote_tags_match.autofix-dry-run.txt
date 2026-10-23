@@ -1,0 +1,6 @@
+args: ["--update-tags","--dry-run","__examples__/remote_tags_match/**"]
+exit code: 0
+--- stdout ---
+Info     DRY-RUN: Files will not be modified
+🎉  Everything is in sync!
+--- stderr ---

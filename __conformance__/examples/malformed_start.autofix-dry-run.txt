@@ -1,0 +1,28 @@
+args: ["--update-tags","--dry-run","__examples__/malformed_start/**"]
+exit code: 2
+--- stdout ---
+Info     DRY-RUN: Files will not be modified
+
+🛑  Could not update all tags due to unfixable errors. Fix the errors in these files and try again.
+  __examples__/malformed_start/malformed_badchecksum.js
+  __examples__/malformed_start/malformed_badid.js
+  __examples__/malformed_start/malformed_onlytagid.js
+--- stderr ---
+Error    __examples__/malformed_start/malformed_badchecksum.js:4
+Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
+
+Error    __examples__/malformed_start/malformed_badchecksum.js:7
+Sync-end for 'tagid' found, but there was no corresponding sync-start
+
+Error    __examples__/malformed_start/malformed_badid.js:4
+Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
+
+Error    __examples__/malformed_start/malformed_badid.js:7
+Sync-end for 'tagid' found, but there was no corresponding sync-start
+
+Error    __examples__/malformed_start/malformed_onlytagid.js:4
+Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'
+
+Error    __examples__/malformed_start/malformed_onlytagid.js:7
+Sync-end for 'tagid' found, but there was no corresponding sync-start
+

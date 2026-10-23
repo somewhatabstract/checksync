@@ -1,0 +1,15 @@
+args: ["--update-tags","--dry-run","__examples__/unterminated_marker/**"]
+exit code: 2
+--- stdout ---
+Info     DRY-RUN: Files will not be modified
+
+🛑  Could not update all tags due to unfixable errors. Fix the errors in these files and try again.
+  __examples__/unterminated_marker/example_two-a.js
+  __examples__/unterminated_marker/example_two-b.py
+--- stderr ---
+Error    __examples__/unterminated_marker/example_two-a.js:3
+No return tag named 'example_two' in '__examples__/unterminated_marker/example_two-b.py'
+
+Error    __examples__/unterminated_marker/example_two-b.py:3
+Sync-start 'example_two' has no corresponding sync-end
+

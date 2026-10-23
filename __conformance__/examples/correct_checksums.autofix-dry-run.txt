@@ -1,0 +1,6 @@
+args: ["--update-tags","--dry-run","__examples__/correct_checksums/**"]
+exit code: 0
+--- stdout ---
+Info     DRY-RUN: Files will not be modified
+🎉  Everything is in sync!
+--- stderr ---

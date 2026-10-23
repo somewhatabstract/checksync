@@ -1,0 +1,76 @@
+args: ["--json","__examples__/checksums_need_updating/**"]
+exit code: 3
+--- stdout ---
+{
+    "version": "0.0.0",
+    "launchString": "checksync -u __examples__/checksums_need_updating/unsymlinked/a.js __examples__/checksums_need_updating/unsymlinked/b.py __examples__/checksums_need_updating/unsymlinked/c.jsx",
+    "files": {
+        "__examples__/checksums_need_updating/unsymlinked/a.js": [
+            {
+                "markerID": "update_me",
+                "code": "mismatched-checksum",
+                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/unsymlinked/b.py:3'. Make sure you've made corresponding changes in the source file, if necessary (45678 != 249234014)",
+                "location": {
+                    "line": 3
+                },
+                "fix": {
+                    "type": "replace",
+                    "line": 4,
+                    "text": "    // sync-start:update_me 249234014 __examples__/checksums_need_updating/unsymlinked/b.py",
+                    "declaration": "    // sync-start:update_me 45678 __examples__/checksums_need_updating/unsymlinked/b.py",
+                    "description": "Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/unsymlinked/b.py:3' from 45678 to 249234014."
+                }
+            },
+            {
+                "markerID": "update_me",
+                "code": "mismatched-checksum",
+                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/unsymlinked/c.jsx:3'. Make sure you've made corresponding changes in the source file, if necessary (1234 != 1992689801)",
+                "location": {
+                    "line": 3
+                },
+                "fix": {
+                    "type": "replace",
+                    "line": 5,
+                    "text": "    // sync-start:update_me 1992689801 __examples__/checksums_need_updating/unsymlinked/c.jsx",
+                    "declaration": "    // sync-start:update_me 1234 __examples__/checksums_need_updating/unsymlinked/c.jsx",
+                    "description": "Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/unsymlinked/c.jsx:3' from 1234 to 1992689801."
+                }
+            }
+        ],
+        "__examples__/checksums_need_updating/unsymlinked/b.py": [
+            {
+                "markerID": "update_me",
+                "code": "mismatched-checksum",
+                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/unsymlinked/a.js:4'. Make sure you've made corresponding changes in the source file, if necessary (4567 != 2050223083)",
+                "location": {
+                    "line": 4
+                },
+                "fix": {
+                    "type": "replace",
+                    "line": 3,
+                    "text": "# sync-start:update_me 2050223083 __examples__/checksums_need_updating/unsymlinked/a.js",
+                    "declaration": "# sync-start:update_me 4567 __examples__/checksums_need_updating/unsymlinked/a.js",
+                    "description": "Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/unsymlinked/a.js:4' from 4567 to 2050223083."
+                }
+            }
+        ],
+        "__examples__/checksums_need_updating/unsymlinked/c.jsx": [
+            {
+                "markerID": "update_me",
+                "code": "mismatched-checksum",
+                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/checksums_need_updating/unsymlinked/a.js:5'. Make sure you've made corresponding changes in the source file, if necessary (123 != 2050223083)",
+                "location": {
+                    "line": 5
+                },
+                "fix": {
+                    "type": "replace",
+                    "line": 3,
+                    "text": "        {/* sync-start:update_me 2050223083 __examples__/checksums_need_updating/unsymlinked/a.js */}",
+                    "declaration": "        {/* sync-start:update_me 123 __examples__/checksums_need_updating/unsymlinked/a.js */}",
+                    "description": "Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/unsymlinked/a.js:5' from 123 to 2050223083."
+                }
+            }
+        ]
+    }
+}
+--- stderr ---

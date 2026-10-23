@@ -1,0 +1,27 @@
+args: ["--update-tags","--dry-run","__examples__/content_after_start/**"]
+exit code: 2
+--- stdout ---
+Info     DRY-RUN: Files will not be modified
+Fix      __examples__/content_after_start/a.js:3
+Updated checksum for sync-tag 'content_after_start' referencing '__examples__/content_after_start/b.py:3' from no checksum to 249234014.
+
+Fix      __examples__/content_after_start/b.py:3
+Updated checksum for sync-tag 'content_after_start' referencing '__examples__/content_after_start/a.js:3' from no checksum to 770446101.
+
+Fix      __examples__/content_after_start/b.py:4
+Updated checksum for sync-tag 'content_after_start' referencing '__examples__/content_after_start/c.js:3' from no checksum to 770446101.
+
+
+3 file(s) would have been fixed.
+To fix, run:
+  checksync -u __examples__/content_after_start/a.js __examples__/content_after_start/b.py __examples__/content_after_start/c.js
+
+🛑  Could not update all tags due to unfixable errors. Fix the errors in these files and try again.
+  __examples__/content_after_start/c.js
+--- stderr ---
+Error    __examples__/content_after_start/c.js:5
+Sync-start for 'content_after_start' found after content started
+
+Error    __examples__/content_after_start/c.js:5
+No return tag named 'content_after_start' in '__examples__/content_after_start/a.js'
+

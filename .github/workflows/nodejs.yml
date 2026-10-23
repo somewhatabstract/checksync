@@ -126,6 +126,9 @@ jobs:
     - name: Run integration tests
       run: pnpm test:integration
 
+    - name: Run conformance tests
+      run: pnpm test:conformance
+
 
   test_and_build:
     needs: [coverage, lint]

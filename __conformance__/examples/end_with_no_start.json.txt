@@ -1,0 +1,21 @@
+args: ["--json","__examples__/end_with_no_start/**"]
+exit code: 2
+--- stdout ---
+{
+    "version": "0.0.0",
+    "launchString": "checksync -u ",
+    "files": {
+        "__examples__/end_with_no_start/example.js": [
+            {
+                "markerID": "end_with_no_start",
+                "reason": "Sync-end for 'end_with_no_start' found, but there was no corresponding sync-start",
+                "location": {
+                    "line": 5
+                },
+                "code": "end-tag-without-start-tag"
+            }
+        ]
+    }
+}
+--- stderr ---
+Error    🛑  Unfixable errors found. Fix the errors and try again.

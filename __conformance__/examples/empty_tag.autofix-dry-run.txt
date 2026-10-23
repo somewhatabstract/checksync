@@ -1,0 +1,11 @@
+args: ["--update-tags","--dry-run","__examples__/empty_tag/**"]
+exit code: 2
+--- stdout ---
+Info     DRY-RUN: Files will not be modified
+
+🛑  Could not update all tags due to unfixable errors. Fix the errors in these files and try again.
+  __examples__/empty_tag/a.js
+--- stderr ---
+Error    __examples__/empty_tag/a.js:2
+Sync-tag 'no_content' has no content
+

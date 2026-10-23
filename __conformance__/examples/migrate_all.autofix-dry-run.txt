@@ -1,0 +1,16 @@
+args: ["--update-tags","--dry-run","--migrate","all","__examples__/migrate_all/**"]
+exit code: 0
+--- stdout ---
+Info     DRY-RUN: Files will not be modified
+Fix      __examples__/migrate_all/example-1.js:3
+Updated checksum for sync-tag 'migrate_all' referencing '__examples__/migrate_all/example-2.js:3' from 12345 to 770446101.
+
+Fix      __examples__/migrate_all/example-2.js:3
+Updated checksum for sync-tag 'migrate_all' referencing '__examples__/migrate_all/example-1.js:3' from 12345 to 770446101.
+
+
+2 file(s) would have been fixed.
+To fix, run:
+  checksync -u __examples__/migrate_all/example-1.js __examples__/migrate_all/example-2.js
+🎉  Everything is in sync!
+--- stderr ---

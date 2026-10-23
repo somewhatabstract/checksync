@@ -1,0 +1,45 @@
+args: ["--json","__examples__/migrate_missing_target/**"]
+exit code: 2
+--- stdout ---
+{
+    "version": "0.0.0",
+    "launchString": "checksync -u ",
+    "files": {
+        "__examples__/migrate_missing_target/example.js": [
+            {
+                "markerID": "migrate_missing_target",
+                "reason": "Sync-start for 'migrate_missing_target' points to '__examples__/migrate_missing_target/missing_target.py', which does not exist or is a directory",
+                "location": {
+                    "line": 3
+                },
+                "code": "file-does-not-exist"
+            },
+            {
+                "markerID": "migrate_missing_target2",
+                "reason": "Sync-start for 'migrate_missing_target2' points to '__examples__/migrate_missing_target/subfolder/missing_target.py', which does not exist or is a directory",
+                "location": {
+                    "line": 4
+                },
+                "code": "file-does-not-exist"
+            },
+            {
+                "markerID": "migrate_missing_target",
+                "reason": "No return tag named 'migrate_missing_target' in '__examples__/migrate_missing_target/missing_target.py'",
+                "code": "no-return-tag",
+                "location": {
+                    "line": 3
+                }
+            },
+            {
+                "markerID": "migrate_missing_target2",
+                "reason": "No return tag named 'migrate_missing_target2' in '__examples__/migrate_missing_target/subfolder/missing_target.py'",
+                "code": "no-return-tag",
+                "location": {
+                    "line": 4
+                }
+            }
+        ]
+    }
+}
+--- stderr ---
+Error    🛑  Unfixable errors found. Fix the errors and try again.

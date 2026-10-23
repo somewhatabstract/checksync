@@ -1,0 +1,73 @@
+args: ["--json","__examples__/duplicate-target/**"]
+exit code: 3
+--- stdout ---
+{
+    "version": "0.0.0",
+    "launchString": "checksync -u __examples__/duplicate-target/a.js __examples__/duplicate-target/b.py",
+    "files": {
+        "__examples__/duplicate-target/a.js": [
+            {
+                "markerID": "update_me",
+                "reason": "Duplicate target for sync-tag 'update_me'",
+                "location": {
+                    "line": 5
+                },
+                "code": "duplicate-target",
+                "fix": {
+                    "type": "delete",
+                    "description": "Removed duplicate target for sync-tag 'update_me'",
+                    "declaration": "    // sync-start:update_me 12345 __examples__/duplicate-target/b.py",
+                    "line": 5
+                }
+            },
+            {
+                "markerID": "update_me",
+                "code": "mismatched-checksum",
+                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/b.py:3'. Make sure you've made corresponding changes in the source file, if necessary (12352 != 249234014)",
+                "location": {
+                    "line": 3
+                },
+                "fix": {
+                    "type": "replace",
+                    "line": 4,
+                    "text": "    // sync-start:update_me 249234014 __examples__/duplicate-target/b.py",
+                    "declaration": "    // sync-start:update_me 12352 __examples__/duplicate-target/b.py",
+                    "description": "Updated checksum for sync-tag 'update_me' referencing '__examples__/duplicate-target/b.py:3' from 12352 to 249234014."
+                }
+            },
+            {
+                "markerID": "update_me",
+                "code": "mismatched-checksum",
+                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/b.py:3'. Make sure you've made corresponding changes in the source file, if necessary (12345 != 249234014)",
+                "location": {
+                    "line": 3
+                },
+                "fix": {
+                    "type": "replace",
+                    "line": 5,
+                    "text": "    // sync-start:update_me 249234014 __examples__/duplicate-target/b.py",
+                    "declaration": "    // sync-start:update_me 12345 __examples__/duplicate-target/b.py",
+                    "description": "Updated checksum for sync-tag 'update_me' referencing '__examples__/duplicate-target/b.py:3' from 12345 to 249234014."
+                }
+            }
+        ],
+        "__examples__/duplicate-target/b.py": [
+            {
+                "markerID": "update_me",
+                "code": "mismatched-checksum",
+                "reason": "Looks like you changed the target content for sync-tag 'update_me' in '__examples__/duplicate-target/a.js:4'. Make sure you've made corresponding changes in the source file, if necessary (4567 != 2050223083)",
+                "location": {
+                    "line": 4
+                },
+                "fix": {
+                    "type": "replace",
+                    "line": 3,
+                    "text": "# sync-start:update_me 2050223083 __examples__/duplicate-target/a.js",
+                    "declaration": "# sync-start:update_me 4567 __examples__/duplicate-target/a.js",
+                    "description": "Updated checksum for sync-tag 'update_me' referencing '__examples__/duplicate-target/a.js:4' from 4567 to 2050223083."
+                }
+            }
+        ]
+    }
+}
+--- stderr ---

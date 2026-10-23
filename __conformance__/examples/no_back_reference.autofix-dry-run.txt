@@ -1,0 +1,11 @@
+args: ["--update-tags","--dry-run","__examples__/no_back_reference/**"]
+exit code: 2
+--- stdout ---
+Info     DRY-RUN: Files will not be modified
+
+🛑  Could not update all tags due to unfixable errors. Fix the errors in these files and try again.
+  __examples__/no_back_reference/file1.js
+--- stderr ---
+Error    __examples__/no_back_reference/file1.js:1
+No return tag named 'markerID' in '__examples__/no_back_reference/file2.js'
+

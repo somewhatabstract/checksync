@@ -1,0 +1,21 @@
+args: ["--json","__examples__/excluded/**"]
+exit code: 2
+--- stdout ---
+{
+    "version": "0.0.0",
+    "launchString": "checksync -u ",
+    "files": {
+        "__examples__/excluded/exclude_me.js": [
+            {
+                "markerID": null,
+                "reason": "Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'",
+                "location": {
+                    "line": 1
+                },
+                "code": "malformed-start-tag"
+            }
+        ]
+    }
+}
+--- stderr ---
+Error    🛑  Unfixable errors found. Fix the errors and try again.

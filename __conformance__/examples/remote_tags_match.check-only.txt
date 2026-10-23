@@ -1,0 +1,5 @@
+args: ["__examples__/remote_tags_match/**"]
+exit code: 0
+--- stdout ---
+🎉  Everything is in sync!
+--- stderr ---

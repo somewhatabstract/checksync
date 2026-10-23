@@ -1,0 +1,33 @@
+args: ["__examples__/content_after_start/**"]
+exit code: 2
+--- stdout ---
+Mismatch __examples__/content_after_start/a.js:3
+Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/b.py:3'
+Make sure you've made corresponding changes in the source file, if necessary (No checksum != 249234014)
+
+Mismatch __examples__/content_after_start/b.py:3
+Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/a.js:3'
+Make sure you've made corresponding changes in the source file, if necessary (No checksum != 770446101)
+
+Mismatch __examples__/content_after_start/b.py:4
+Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/c.js:3'
+Make sure you've made corresponding changes in the source file, if necessary (No checksum != 770446101)
+
+Mismatch __examples__/content_after_start/c.js:3
+Looks like you changed the target content for sync-tag 'content_after_start' in '__examples__/content_after_start/b.py:4'
+Make sure you've made corresponding changes in the source file, if necessary (No checksum != 249234014)
+
+
+🛑  Desynchronized blocks detected and parsing errors were found. Fix the errors, update the blocks, then update the sync-start tags using:
+  
+  checksync -u __examples__/content_after_start/a.js __examples__/content_after_start/b.py __examples__/content_after_start/c.js
+
+🛑  Unfixable errors found. Fix the errors in these files and try again.
+  __examples__/content_after_start/c.js
+--- stderr ---
+Error    __examples__/content_after_start/c.js:5
+Sync-start for 'content_after_start' found after content started
+
+Error    __examples__/content_after_start/c.js:5
+No return tag named 'content_after_start' in '__examples__/content_after_start/a.js'
+

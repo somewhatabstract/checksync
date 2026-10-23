@@ -1,0 +1,2 @@
+# Golden transcripts are compared byte-for-byte, so keep their line endings.
+__conformance__/** -text

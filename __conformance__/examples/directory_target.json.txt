@@ -1,0 +1,29 @@
+args: ["--json","__examples__/directory_target/**"]
+exit code: 2
+--- stdout ---
+{
+    "version": "0.0.0",
+    "launchString": "checksync -u ",
+    "files": {
+        "__examples__/directory_target/example.js": [
+            {
+                "markerID": "directory_target",
+                "reason": "Sync-start for 'directory_target' points to '__examples__/directory_target/a_directory', which does not exist or is a directory",
+                "location": {
+                    "line": 3
+                },
+                "code": "file-does-not-exist"
+            },
+            {
+                "markerID": "directory_target",
+                "reason": "No return tag named 'directory_target' in '__examples__/directory_target/a_directory'",
+                "code": "no-return-tag",
+                "location": {
+                    "line": 3
+                }
+            }
+        ]
+    }
+}
+--- stderr ---
+Error    🛑  Unfixable errors found. Fix the errors and try again.

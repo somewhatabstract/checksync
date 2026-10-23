@@ -1,0 +1,22 @@
+args: ["--update-tags","--dry-run","__examples__/checksums_need_updating/**"]
+exit code: 0
+--- stdout ---
+Info     DRY-RUN: Files will not be modified
+Fix      __examples__/checksums_need_updating/unsymlinked/a.js:4
+Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/unsymlinked/b.py:3' from 45678 to 249234014.
+
+Fix      __examples__/checksums_need_updating/unsymlinked/a.js:5
+Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/unsymlinked/c.jsx:3' from 1234 to 1992689801.
+
+Fix      __examples__/checksums_need_updating/unsymlinked/b.py:3
+Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/unsymlinked/a.js:4' from 4567 to 2050223083.
+
+Fix      __examples__/checksums_need_updating/unsymlinked/c.jsx:3
+Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/unsymlinked/a.js:5' from 123 to 2050223083.
+
+
+3 file(s) would have been fixed.
+To fix, run:
+  checksync -u __examples__/checksums_need_updating/unsymlinked/a.js __examples__/checksums_need_updating/unsymlinked/b.py __examples__/checksums_need_updating/unsymlinked/c.jsx
+🎉  Everything is in sync!
+--- stderr ---

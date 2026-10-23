@@ -1,0 +1,21 @@
+args: ["--json","__examples__/empty_tag/**"]
+exit code: 2
+--- stdout ---
+{
+    "version": "0.0.0",
+    "launchString": "checksync -u ",
+    "files": {
+        "__examples__/empty_tag/a.js": [
+            {
+                "markerID": "no_content",
+                "reason": "Sync-tag 'no_content' has no content",
+                "location": {
+                    "line": 2
+                },
+                "code": "empty-marker"
+            }
+        ]
+    }
+}
+--- stderr ---
+Error    🛑  Unfixable errors found. Fix the errors and try again.

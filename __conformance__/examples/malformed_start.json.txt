@@ -1,0 +1,65 @@
+args: ["--json","__examples__/malformed_start/**"]
+exit code: 2
+--- stdout ---
+{
+    "version": "0.0.0",
+    "launchString": "checksync -u ",
+    "files": {
+        "__examples__/malformed_start/malformed_badchecksum.js": [
+            {
+                "markerID": null,
+                "reason": "Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'",
+                "location": {
+                    "line": 4
+                },
+                "code": "malformed-start-tag"
+            },
+            {
+                "markerID": "tagid",
+                "reason": "Sync-end for 'tagid' found, but there was no corresponding sync-start",
+                "location": {
+                    "line": 7
+                },
+                "code": "end-tag-without-start-tag"
+            }
+        ],
+        "__examples__/malformed_start/malformed_badid.js": [
+            {
+                "markerID": null,
+                "reason": "Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'",
+                "location": {
+                    "line": 4
+                },
+                "code": "malformed-start-tag"
+            },
+            {
+                "markerID": "tagid",
+                "reason": "Sync-end for 'tagid' found, but there was no corresponding sync-start",
+                "location": {
+                    "line": 7
+                },
+                "code": "end-tag-without-start-tag"
+            }
+        ],
+        "__examples__/malformed_start/malformed_onlytagid.js": [
+            {
+                "markerID": null,
+                "reason": "Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'",
+                "location": {
+                    "line": 4
+                },
+                "code": "malformed-start-tag"
+            },
+            {
+                "markerID": "tagid",
+                "reason": "Sync-end for 'tagid' found, but there was no corresponding sync-start",
+                "location": {
+                    "line": 7
+                },
+                "code": "end-tag-without-start-tag"
+            }
+        ]
+    }
+}
+--- stderr ---
+Error    🛑  Unfixable errors found. Fix the errors and try again.
