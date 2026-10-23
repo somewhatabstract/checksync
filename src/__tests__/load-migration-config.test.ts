@@ -100,9 +100,10 @@ describe("loadMigrationConfig", () => {
     it("should default the mode to missing when the config doesn't set one", () => {
         // Arrange
         const NullLogger = new Logger(null, true);
+        // The type requires a mode, but a config file may omit it.
         const migrationConfig = {
             mappings: [{from: ["a"], to: "b"}],
-        };
+        } as any;
 
         // Act
         const result = loadMigrationConfig(migrationConfig, NullLogger);
