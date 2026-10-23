@@ -80,3 +80,45 @@ jobs:
     # tests in each module plus doc examples.
     - name: Test
       run: cargo test --workspace --locked
+
+
+  # Measures test coverage and uploads it to Codecov under the `rust` flag,
+  # separately from the TypeScript coverage. Coverage doesn't depend on the
+  # OS, so one runner is enough.
+  coverage:
+    name: Coverage
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v7
+
+    # See the lint job for what these two steps do. Coverage also needs the
+    # LLVM tools component, which only this job uses.
+    - name: Install Rust toolchain
+      run: |
+        rustup toolchain install
+        rustup component add llvm-tools-preview
+
+    - uses: Swatinem/rust-cache@v2
+      with:
+        workspaces: rust
+
+    # cargo-llvm-cov runs the tests with the compiler's built-in coverage
+    # instrumentation. It's a prebuilt binary, which is much faster than
+    # building it with `cargo install`.
+    - name: Install cargo-llvm-cov
+      uses: taiki-e/install-action@v2
+      with:
+        tool: cargo-llvm-cov
+
+    # Writes Codecov's own JSON format, which includes region (sub-line)
+    # coverage as well as lines.
+    - name: Measure coverage
+      run: cargo llvm-cov --workspace --locked --codecov --output-path codecov.json
+
+    - name: Upload coverage
+      uses: codecov/codecov-action@v7
+      with:
+        files: rust/codecov.json
+        flags: rust
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

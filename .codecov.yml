@@ -3,9 +3,16 @@ coverage:
   round: down
   range: "90...100"
 
+  # Each language has its own project status, so one can't hide a drop in
+  # the other.
   status:
     project:
-      default: true
+      typescript:
+        flags:
+          - typescript
+      rust:
+        flags:
+          - rust
     patch:
       default: off
     changes:
@@ -17,3 +24,16 @@ comment:
   require_changes: false
   require_base: false
   require_head: true
+
+# The Rust workflow only runs when Rust code changes, and the Node workflow
+# doesn't upload Rust coverage, so each flag carries its last report forward
+# on pull requests that don't upload it.
+flags:
+  typescript:
+    paths:
+      - src/
+    carryforward: true
+  rust:
+    paths:
+      - rust/
+    carryforward: true

@@ -89,6 +89,8 @@ jobs:
       run: pnpm coverage:unit
     - name: Upload coverage
       uses: codecov/codecov-action@v7
+      with:
+        flags: typescript
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
