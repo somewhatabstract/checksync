@@ -96,4 +96,18 @@ describe("loadMigrationConfig", () => {
             },
         });
     });
+
+    it("should default the mode to missing when the config doesn't set one", () => {
+        // Arrange
+        const NullLogger = new Logger(null, true);
+        const migrationConfig = {
+            mappings: [{from: ["a"], to: "b"}],
+        };
+
+        // Act
+        const result = loadMigrationConfig(migrationConfig, NullLogger);
+
+        // Assert
+        expect(result).toHaveProperty("mode", "missing");
+    });
 });

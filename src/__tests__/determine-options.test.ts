@@ -310,4 +310,29 @@ describe("#determineOptions", () => {
             });
         });
     });
+
+    describe("migration options", () => {
+        it("should combine the mode from the arguments with the mappings from the config file", async () => {
+            // Arrange
+            jest.spyOn(OptionsFromArgs, "optionsFromArgs").mockReturnValue({
+                migration: {mode: "all"},
+            } as any);
+            jest.spyOn(FindConfigurationFile, "default").mockReturnValue(
+                "/path/to/config/file",
+            );
+            jest.spyOn(LoadConfigurationFile, "default").mockResolvedValue({
+                migration: {mode: "missing", mappings: {a: "b"}},
+            } as any);
+            const NullLogger = new Logger(null, true);
+
+            // Act
+            const result = await determineOptions({_: []}, NullLogger);
+
+            // Assert
+            expect(result).toHaveProperty("migration", {
+                mode: "all",
+                mappings: {a: "b"},
+            });
+        });
+    });
 });
