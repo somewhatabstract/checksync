@@ -16,7 +16,7 @@ import fs from "fs";
 import path from "path";
 import {spawnSync} from "child_process";
 
-import {getExamples} from "../src/integration-test-support";
+import getExamples from "../src/conformance/get-examples";
 import getConformanceCases from "../src/conformance/get-conformance-cases";
 import runChecksync from "../src/conformance/run-checksync";
 import normalizeOutput from "../src/conformance/normalize-output";
@@ -73,7 +73,9 @@ const main = (argv: ReadonlyArray<string>): number => {
     };
 
     let failures = 0;
-    for (const testCase of getConformanceCases(getExamples())) {
+    for (const testCase of getConformanceCases(
+        getExamples(path.join(ROOT_DIR, "__examples__")),
+    )) {
         const cachePath =
             testCase.cacheFile == null
                 ? null
