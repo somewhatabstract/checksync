@@ -1,12 +1,14 @@
 name: Rust CI
 
-# Only run when the Rust code or this workflow changes, so pull requests that
-# only touch the TypeScript implementation don't pay for a Rust build.
+# Only run when the Rust code, the checksum vectors it tests against, or this
+# workflow changes, so pull requests that only touch the TypeScript
+# implementation don't pay for a Rust build.
 on:
   pull_request:
     types: [edited, opened, synchronize, ready_for_review, reopened]
     paths:
     - 'rust/**'
+    - '__conformance__/checksum-vectors.json'
     - '.github/workflows/rust.yml'
 
   push:
@@ -14,6 +16,7 @@ on:
     - main
     paths:
     - 'rust/**'
+    - '__conformance__/checksum-vectors.json'
     - '.github/workflows/rust.yml'
 
 # Every `run` step executes inside the Cargo workspace.
