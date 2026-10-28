@@ -1,15 +1,18 @@
 /// Calculate the checksum of a sync-tagged block's lines.
 ///
-/// The lines are joined as they are, so each one should keep its own line
-/// ending. A leading newline is added first, for backwards compatibility with
-/// the sync linter in Khan Academy's codebase. The checksum is the Adler-32
-/// of the result's UTF-8 bytes, read as a signed 32-bit integer and written
-/// without its sign, matching the original JavaScript implementation.
+/// The lines are joined as they are. Callers must normalize line endings
+/// first: strip each line's original ending (`\r\n`, `\n` or a lone `\r`)
+/// and end it with `\n`, as the original JavaScript implementation does.
+/// Passing a line that still holds a `\r` gives a different checksum. A
+/// leading newline is added first, for backwards compatibility with the sync
+/// linter in Khan Academy's codebase. The checksum is the Adler-32 of the
+/// result's UTF-8 bytes, read as a signed 32-bit integer and written without
+/// its sign, matching the original JavaScript implementation.
 ///
 /// # Arguments
 ///
-/// * `lines` - The lines to checksum, each including its line ending if it
-///   has one.
+/// * `lines` - The lines to checksum, each ending in `\n`, except that a
+///   self checksum ends with a file path that has no line ending.
 ///
 /// # Returns
 ///

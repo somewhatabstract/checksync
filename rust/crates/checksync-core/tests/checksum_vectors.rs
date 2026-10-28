@@ -21,6 +21,9 @@ const VECTORS: &str = include_str!(concat!(
 fn matches_every_shared_checksum_vector() {
     // Arrange
     let vectors: Vec<Vector> = serde_json::from_str(VECTORS).expect("valid vector table");
+    // Without this, an empty table would pass because there's nothing to
+    // mismatch.
+    assert!(!vectors.is_empty(), "the vector table has no vectors");
 
     // Act
     let mismatches: Vec<String> = vectors
