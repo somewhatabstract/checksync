@@ -33,7 +33,7 @@ jobs:
     name: Format and lint
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
     # Installs the Rust version and components (rustfmt, clippy) pinned in
     # rust-toolchain.toml, so CI uses the same compiler as everyone else.
@@ -42,7 +42,7 @@ jobs:
 
     # Caches downloaded crates and compiled dependencies between runs, which
     # makes repeat builds much faster.
-    - uses: Swatinem/rust-cache@v2
+    - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
       with:
         workspaces: rust
 
@@ -69,13 +69,13 @@ jobs:
       matrix:
         os: [ubuntu-latest, macOS-latest, windows-latest]
     steps:
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
     # See the lint job for what these two steps do.
     - name: Install Rust toolchain
       run: rustup toolchain install
 
-    - uses: Swatinem/rust-cache@v2
+    - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
       with:
         workspaces: rust
 
@@ -92,7 +92,7 @@ jobs:
     name: Coverage
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
     # See the lint job for what these two steps do. Coverage also needs the
     # LLVM tools component, which only this job uses.
@@ -101,7 +101,7 @@ jobs:
         rustup toolchain install
         rustup component add llvm-tools-preview
 
-    - uses: Swatinem/rust-cache@v2
+    - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
       with:
         workspaces: rust
 
@@ -109,7 +109,7 @@ jobs:
     # instrumentation. It's a prebuilt binary, which is much faster than
     # building it with `cargo install`.
     - name: Install cargo-llvm-cov
-      uses: taiki-e/install-action@v2
+      uses: taiki-e/install-action@86f7a0ffb25f40114606501a311ebcfaf882ea32 # v2.88.0
       with:
         tool: cargo-llvm-cov
 
@@ -119,7 +119,7 @@ jobs:
       run: cargo llvm-cov --workspace --locked --codecov --output-path codecov.json
 
     - name: Upload coverage
-      uses: codecov/codecov-action@v7
+      uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
       with:
         files: rust/codecov.json
         flags: rust
