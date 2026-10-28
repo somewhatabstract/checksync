@@ -1,6 +1,7 @@
 name: Rust CI
 
-# Only run when the Rust code, the checksum vectors it tests against, or this
+# Only run when the Rust code, the checksum vectors it tests against, the
+# .gitattributes that keeps those vectors byte-exact on Windows, or this
 # workflow changes, so pull requests that only touch the TypeScript
 # implementation don't pay for a Rust build.
 on:
@@ -9,6 +10,7 @@ on:
     paths:
     - 'rust/**'
     - '__conformance__/checksum-vectors.json'
+    - '.gitattributes'
     - '.github/workflows/rust.yml'
 
   push:
@@ -17,6 +19,7 @@ on:
     paths:
     - 'rust/**'
     - '__conformance__/checksum-vectors.json'
+    - '.gitattributes'
     - '.github/workflows/rust.yml'
 
 # Every `run` step executes inside the Cargo workspace.
