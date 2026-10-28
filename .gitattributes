@@ -1,2 +1,6 @@
 # Golden transcripts are compared byte-for-byte, so keep their line endings.
 __conformance__/** -text
+
+# This example tests that line endings don't change checksums, so git must
+# never convert them.
+__examples__/line_endings/** -text

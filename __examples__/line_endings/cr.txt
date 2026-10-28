@@ -1,0 +1,1 @@
+Carriage return (CR) line endings only.# sync-start:endings 1014363271 __examples__/line_endings/lf.txt# sync-start:endings 1014363271 __examples__/line_endings/crlf.txtshared line oneshared line two# sync-end:endings
