@@ -27,7 +27,7 @@ jobs:
     name: Format and lint
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
     # Installs the Rust version and components (rustfmt, clippy) pinned in
     # rust-toolchain.toml, so CI uses the same compiler as everyone else.
@@ -36,7 +36,7 @@ jobs:
 
     # Caches downloaded crates and compiled dependencies between runs, which
     # makes repeat builds much faster.
-    - uses: Swatinem/rust-cache@v2
+    - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
       with:
         workspaces: rust
 
@@ -63,13 +63,13 @@ jobs:
       matrix:
         os: [ubuntu-latest, macOS-latest, windows-latest]
     steps:
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
     # See the lint job for what these two steps do.
     - name: Install Rust toolchain
       run: rustup toolchain install
 
-    - uses: Swatinem/rust-cache@v2
+    - uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
       with:
         workspaces: rust
 
