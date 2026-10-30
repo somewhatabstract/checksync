@@ -1,0 +1,48 @@
+name: Workflow security
+
+# Audit the GitHub Actions workflows and Dependabot config with zizmor when
+# they change, and weekly. The weekly run matters because an action's
+# upstream tag can be moved without anything changing here, and zizmor checks
+# each pinned commit against the tag in its version comment.
+on:
+  pull_request:
+    paths:
+    - '.github/workflows/**'
+    - '.github/dependabot.yml'
+
+  push:
+    branches:
+    - main
+    paths:
+    - '.github/workflows/**'
+    - '.github/dependabot.yml'
+
+  schedule:
+    - cron: '41 7 * * 1'
+
+permissions:
+  contents: read
+
+jobs:
+  zizmor:
+    name: Audit workflows
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        persist-credentials: false
+
+    # Runs every zizmor audit and fails on any finding. Online audits use the
+    # job's read-only token to check, among other things, that each pinned
+    # commit matches the tag in its version comment and isn't an "impostor"
+    # commit that only exists in a fork. The action installs zizmor from
+    # wheels pinned by hash in its own repository, so pinning the action pins
+    # zizmor too; Dependabot's updates to the action bring newer zizmor
+    # releases.
+    - name: Run zizmor
+      uses: zizmorcore/zizmor-action@53290badfa369cb0bf7ad16342cb62c2fa47ac7b # v0.8.0
+      with:
+        # Report findings as annotations on the pull request and fail the job,
+        # rather than uploading them to the repository's Security tab.
+        advanced-security: false
+        annotations: true
