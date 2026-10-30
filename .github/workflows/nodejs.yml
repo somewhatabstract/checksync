@@ -21,16 +21,16 @@ jobs:
         os: [ubuntu-latest]
         node-version: [24.x]
     steps:
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-    - uses: pnpm/action-setup@v6
+    - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
       name: Install pnpm
       with:
         run_install: false
         package_json_file: 'package.json'
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v7
+      uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'pnpm'
@@ -47,7 +47,7 @@ jobs:
       run: pnpm typecheck
 
     - name: Changesets check
-      uses: Khan/actions@check-for-changeset-v1
+      uses: Khan/actions@b5bd2c3e8c628a482a197e96b988b2b39375677f # check-for-changeset-v1.0.7
       if: |
         github.actor != 'dependabot[bot]' &&
         github.actor != 'dependabot-preview[bot]' &&
@@ -66,16 +66,16 @@ jobs:
         os: [ubuntu-latest]
         node-version: [24.x]
     steps:
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-    - uses: pnpm/action-setup@v6
+    - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
       name: Install pnpm
       with:
         run_install: false
         package_json_file: 'package.json'
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v7
+      uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'pnpm'
@@ -88,7 +88,7 @@ jobs:
     - name: Run tests with coverage
       run: pnpm coverage:unit
     - name: Upload coverage
-      uses: codecov/codecov-action@v7
+      uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # v7.1.1
       with:
         flags: typescript
       env:
@@ -106,16 +106,16 @@ jobs:
         os: [ubuntu-latest, macOS-latest, windows-latest]
         node-version: [24.x]
     steps:
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-    - uses: pnpm/action-setup@v6
+    - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
       name: Install pnpm
       with:
         run_install: false
         package_json_file: 'package.json'
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v7
+      uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'pnpm'
@@ -140,16 +140,16 @@ jobs:
         os: [windows-latest, ubuntu-latest, macOS-latest]
         node-version: [24.x]
     steps:
-    - uses: actions/checkout@v7
+    - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-    - uses: pnpm/action-setup@v6
+    - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
       name: Install pnpm
       with:
         run_install: false
         package_json_file: 'package.json'
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v7
+      uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'pnpm'
