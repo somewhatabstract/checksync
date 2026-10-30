@@ -1,0 +1,120 @@
+{
+    "<ROOT>/__examples__/line_endings/cr.txt": {
+        "aliases": [
+            "<ROOT>/__examples__/line_endings/cr.txt"
+        ],
+        "errors": [],
+        "lineCount": 7,
+        "markers": {
+            "endings": {
+                "commentEnd": "",
+                "commentStart": "#",
+                "contentChecksum": "1014363271",
+                "selfChecksum": "47126532",
+                "targets": {
+                    "3": {
+                        "checksum": "1014363271",
+                        "declaration": "# sync-start:endings 1014363271 __examples__/line_endings/lf.txt",
+                        "target": "<ROOT>/__examples__/line_endings/lf.txt",
+                        "type": "local"
+                    },
+                    "4": {
+                        "checksum": "1014363271",
+                        "declaration": "# sync-start:endings 1014363271 __examples__/line_endings/crlf.txt",
+                        "target": "<ROOT>/__examples__/line_endings/crlf.txt",
+                        "type": "local"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    },
+    "<ROOT>/__examples__/line_endings/crlf.txt": {
+        "aliases": [
+            "<ROOT>/__examples__/line_endings/crlf.txt"
+        ],
+        "errors": [],
+        "lineCount": 12,
+        "markers": {
+            "endings": {
+                "commentEnd": "",
+                "commentStart": "#",
+                "contentChecksum": "1014363271",
+                "selfChecksum": "876681430",
+                "targets": {
+                    "3": {
+                        "checksum": "1014363271",
+                        "declaration": "# sync-start:endings 1014363271 __examples__/line_endings/lf.txt",
+                        "target": "<ROOT>/__examples__/line_endings/lf.txt",
+                        "type": "local"
+                    },
+                    "4": {
+                        "checksum": "1014363271",
+                        "declaration": "# sync-start:endings 1014363271 __examples__/line_endings/cr.txt",
+                        "target": "<ROOT>/__examples__/line_endings/cr.txt",
+                        "type": "local"
+                    }
+                }
+            },
+            "stale": {
+                "commentEnd": "",
+                "commentStart": "#",
+                "contentChecksum": "1404499267",
+                "selfChecksum": "67639322",
+                "targets": {
+                    "9": {
+                        "checksum": "1",
+                        "declaration": "# sync-start:stale 1 __examples__/line_endings/lf.txt",
+                        "target": "<ROOT>/__examples__/line_endings/lf.txt",
+                        "type": "local"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    },
+    "<ROOT>/__examples__/line_endings/lf.txt": {
+        "aliases": [
+            "<ROOT>/__examples__/line_endings/lf.txt"
+        ],
+        "errors": [],
+        "lineCount": 12,
+        "markers": {
+            "endings": {
+                "commentEnd": "",
+                "commentStart": "#",
+                "contentChecksum": "1014363271",
+                "selfChecksum": "46733313",
+                "targets": {
+                    "3": {
+                        "checksum": "1014363271",
+                        "declaration": "# sync-start:endings 1014363271 __examples__/line_endings/crlf.txt",
+                        "target": "<ROOT>/__examples__/line_endings/crlf.txt",
+                        "type": "local"
+                    },
+                    "4": {
+                        "checksum": "1014363271",
+                        "declaration": "# sync-start:endings 1014363271 __examples__/line_endings/cr.txt",
+                        "target": "<ROOT>/__examples__/line_endings/cr.txt",
+                        "type": "local"
+                    }
+                }
+            },
+            "stale": {
+                "commentEnd": "",
+                "commentStart": "#",
+                "contentChecksum": "1404499267",
+                "selfChecksum": "738650299",
+                "targets": {
+                    "9": {
+                        "checksum": "1404499267",
+                        "declaration": "# sync-start:stale 1404499267 __examples__/line_endings/crlf.txt",
+                        "target": "<ROOT>/__examples__/line_endings/crlf.txt",
+                        "type": "local"
+                    }
+                }
+            }
+        },
+        "readOnly": false
+    }
+}

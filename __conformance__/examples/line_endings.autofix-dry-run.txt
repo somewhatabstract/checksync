@@ -1,0 +1,13 @@
+args: ["--update-tags","--dry-run","__examples__/line_endings/**"]
+exit code: 0
+--- stdout ---
+Info     DRY-RUN: Files will not be modified
+Fix      __examples__/line_endings/crlf.txt:9
+Updated checksum for sync-tag 'stale' referencing '__examples__/line_endings/lf.txt:9' from 1 to 1404499267.
+
+
+1 file(s) would have been fixed.
+To fix, run:
+  checksync -u __examples__/line_endings/crlf.txt
+🎉  Everything is in sync!
+--- stderr ---
