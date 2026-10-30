@@ -16,6 +16,11 @@ on:
     - 'rust/**'
     - '.github/workflows/rust.yml'
 
+# Read-only by default. No job here needs to write to the repository; Codecov
+# uploads authenticate with their own token.
+permissions:
+  contents: read
+
 # Every `run` step executes inside the Cargo workspace.
 defaults:
   run:
@@ -28,6 +33,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        persist-credentials: false
 
     # Installs the Rust version and components (rustfmt, clippy) pinned in
     # rust-toolchain.toml, so CI uses the same compiler as everyone else.
@@ -64,6 +71,8 @@ jobs:
         os: [ubuntu-latest, macOS-latest, windows-latest]
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      with:
+        persist-credentials: false
 
     # See the lint job for what these two steps do.
     - name: Install Rust toolchain
