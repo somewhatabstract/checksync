@@ -10,3 +10,10 @@ publish.workspace = true
 
 [lints]
 workspace = true
+
+[dependencies]
+adler2 = "2"
+
+[dev-dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
