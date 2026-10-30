@@ -18,11 +18,9 @@ jobs:
     # pull request, not `github.actor`, which is whoever acted on it last and
     # can be made to read `dependabot[bot]` on someone else's pull request.
     # The repository check stops it running in forks that enable Dependabot.
-    if: >-
-      ${{
-        github.event.pull_request.user.login == 'dependabot[bot]' &&
-        github.repository == 'somewhatabstract/checksync'
-      }}
+    if: |
+      github.event.pull_request.user.login == 'dependabot[bot]' &&
+      github.repository == 'somewhatabstract/checksync'
     steps:
       # This fails, so nothing below runs, unless the pull request and its
       # first commit come from Dependabot and that commit's signature is
