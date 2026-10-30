@@ -8,6 +8,12 @@ updates:
     time: "09:00"
     timezone: America/Chicago
   open-pull-requests-limit: 10
+  # Wait before proposing a new version. Malicious releases are usually
+  # caught and pulled within days, so this keeps them from being merged
+  # (Dependabot PRs auto-merge). It applies to version updates.
+  cooldown:
+    default-days: 7
+    semver-major-days: 14
   reviewers:
   - somewhatabstract
 
@@ -19,6 +25,12 @@ updates:
     time: "09:00"
     timezone: America/Chicago
   open-pull-requests-limit: 10
+  # Wait before proposing a new version. Malicious releases are usually
+  # caught and pulled within days, so this keeps them from being merged
+  # (Dependabot PRs auto-merge). It applies to version updates.
+  cooldown:
+    default-days: 7
+    semver-major-days: 14
   reviewers:
   - somewhatabstract
 
@@ -30,5 +42,11 @@ updates:
     time: "09:00"
     timezone: America/Chicago
   open-pull-requests-limit: 10
+  # Wait before proposing a new version. Malicious releases are usually
+  # caught and pulled within days, so this keeps them from being merged
+  # (Dependabot PRs auto-merge). It applies to version updates.
+  cooldown:
+    default-days: 7
+    semver-major-days: 14
   reviewers:
   - somewhatabstract
