@@ -1,6 +1,11 @@
 name: Dependabot Pull Request Approve and Merge
 
-on: pull_request_target
+# `pull_request` rather than `pull_request_target`, as GitHub recommends for
+# Dependabot automation: `pull_request_target` runs with write access for
+# pull requests from anyone, including forks. Pull requests Dependabot opens
+# get the permissions below; pull requests from forks only ever get read
+# access.
+on: pull_request
 
 permissions:
   pull-requests: write
@@ -9,12 +14,19 @@ permissions:
 jobs:
   dependabot:
     runs-on: ubuntu-latest
-    # Checking the actor will prevent your Action run failing on non-Dependabot
-    # PRs but also ensures that it only does work for Dependabot PRs.
-    if: ${{ github.actor == 'dependabot[bot]' }}
+    # Only run for pull requests Dependabot opened. This checks who opened the
+    # pull request, not `github.actor`, which is whoever acted on it last and
+    # can be made to read `dependabot[bot]` on someone else's pull request.
+    # The repository check stops it running in forks that enable Dependabot.
+    if: >-
+      ${{
+        github.event.pull_request.user.login == 'dependabot[bot]' &&
+        github.repository == 'somewhatabstract/checksync'
+      }}
     steps:
-      # This first step will fail if there's no metadata and so the approval
-      # will not occur.
+      # This fails, so nothing below runs, unless the pull request and its
+      # first commit come from Dependabot and that commit's signature is
+      # verified.
       - name: Dependabot metadata
         id: dependabot-metadata
         uses: dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98 # v3.1.0
