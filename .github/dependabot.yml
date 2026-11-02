@@ -30,7 +30,7 @@ updates:
   # (Dependabot PRs auto-merge). It applies to version updates.
   cooldown:
     default-days: 7
-    semver-major-days: 14
+    # semver-major-days isn't supported for GitHub Actions.
   reviewers:
   - somewhatabstract
 
