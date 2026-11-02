@@ -161,11 +161,65 @@
         ]
     },
     {
-        "description": "Only LF, CRLF and CR break lines (not U+2028, vertical tab or form feed)",
-        "input": "a b\u000bc\fd\n",
+        "description": "U+2028 and U+2029 also end lines (Node.js 24 readline)",
+        "input": "a b c",
         "lines": [
             {
-                "text": "a b\u000bc\fd",
+                "text": "a",
+                "ending": " "
+            },
+            {
+                "text": "b",
+                "ending": " "
+            },
+            {
+                "text": "c",
+                "ending": ""
+            }
+        ]
+    },
+    {
+        "description": "U+2028 before LF is its own line ending",
+        "input": "a \nb",
+        "lines": [
+            {
+                "text": "a",
+                "ending": " "
+            },
+            {
+                "text": "",
+                "ending": "\n"
+            },
+            {
+                "text": "b",
+                "ending": ""
+            }
+        ]
+    },
+    {
+        "description": "CR before U+2028 is its own line ending",
+        "input": "a\r b",
+        "lines": [
+            {
+                "text": "a",
+                "ending": "\r"
+            },
+            {
+                "text": "",
+                "ending": " "
+            },
+            {
+                "text": "b",
+                "ending": ""
+            }
+        ]
+    },
+    {
+        "description": "Vertical tab, form feed and NEL don't end lines",
+        "input": "a\u000bb\fcd\n",
+        "lines": [
+            {
+                "text": "a\u000bb\fcd",
                 "ending": "\n"
             }
         ]
