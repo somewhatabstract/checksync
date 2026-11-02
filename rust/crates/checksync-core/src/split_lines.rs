@@ -2,10 +2,12 @@ use crate::types::{Line, LineEnding};
 
 /// Split text into lines the way the original JavaScript does.
 ///
-/// Matches Node.js `readline` with `crlfDelay: Infinity`: `\r\n`, `\n` and a
-/// lone `\r` each end a line, and nothing else does. A line break at the end
-/// of the text doesn't start an extra empty line, so empty text has no lines.
-/// Unlike `readline`, each line keeps a record of its original ending.
+/// Matches Node.js 24 `readline` with `crlfDelay: Infinity`: `\r\n`, `\n`, a
+/// lone `\r`, U+2028 LINE SEPARATOR and U+2029 PARAGRAPH SEPARATOR each end a
+/// line, and nothing else does. (Node.js 22 doesn't treat U+2028 and U+2029 as
+/// line breaks; checksync requires Node.js 24.) A line break at the end of the
+/// text doesn't start an extra empty line, so empty text has no lines. Unlike
+/// `readline`, each line keeps a record of its original ending.
 ///
 /// # Arguments
 ///
@@ -18,24 +20,21 @@ use crate::types::{Line, LineEnding};
 pub fn split_lines(text: &str) -> Vec<Line> {
     let mut lines = Vec::new();
     let mut start = 0;
-    let bytes = text.as_bytes();
-    let mut index = 0;
-    while index < bytes.len() {
-        let ending = match bytes[index] {
-            b'\n' => LineEnding::Lf,
-            b'\r' if bytes.get(index + 1) == Some(&b'\n') => LineEnding::CrLf,
-            b'\r' => LineEnding::Cr,
-            _ => {
-                index += 1;
-                continue;
-            }
+    let mut chars = text.char_indices().peekable();
+    while let Some((index, c)) = chars.next() {
+        let ending = match c {
+            '\n' => LineEnding::Lf,
+            '\r' if chars.next_if(|&(_, next)| next == '\n').is_some() => LineEnding::CrLf,
+            '\r' => LineEnding::Cr,
+            '\u{2028}' => LineEnding::LineSeparator,
+            '\u{2029}' => LineEnding::ParagraphSeparator,
+            _ => continue,
         };
         lines.push(Line {
             text: text[start..index].to_owned(),
             ending,
         });
-        index += ending.as_str().len();
-        start = index;
+        start = index + ending.as_str().len();
     }
     if start < text.len() {
         lines.push(Line {
@@ -73,7 +72,7 @@ mod tests {
     #[test]
     fn records_each_kind_of_line_ending() {
         // Arrange
-        let text = "a\nb\r\nc\rd";
+        let text = "a\nb\r\nc\rd\u{2028}e\u{2029}f";
 
         // Act
         let result = split_lines(text);
@@ -85,7 +84,9 @@ mod tests {
                 line("a", LineEnding::Lf),
                 line("b", LineEnding::CrLf),
                 line("c", LineEnding::Cr),
-                line("d", LineEnding::None),
+                line("d", LineEnding::LineSeparator),
+                line("e", LineEnding::ParagraphSeparator),
+                line("f", LineEnding::None),
             ]
         );
     }
@@ -118,9 +119,9 @@ mod tests {
     }
 
     #[test]
-    fn splits_only_on_cr_and_lf() {
+    fn does_not_split_on_other_control_or_separator_characters() {
         // Arrange
-        let text = "a\u{2028}b\u{b}c\u{c}d\u{85}e";
+        let text = "a\u{b}b\u{c}c\u{85}d";
 
         // Act
         let result = split_lines(text);

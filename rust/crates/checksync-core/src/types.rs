@@ -11,6 +11,10 @@ pub enum LineEnding {
     CrLf,
     /// A `\r` not followed by `\n`.
     Cr,
+    /// U+2028 LINE SEPARATOR.
+    LineSeparator,
+    /// U+2029 PARAGRAPH SEPARATOR.
+    ParagraphSeparator,
     /// No ending: the last line of a file that doesn't end with a line break.
     None,
 }
@@ -23,6 +27,8 @@ impl LineEnding {
             Self::Lf => "\n",
             Self::CrLf => "\r\n",
             Self::Cr => "\r",
+            Self::LineSeparator => "\u{2028}",
+            Self::ParagraphSeparator => "\u{2029}",
             Self::None => "",
         }
     }
