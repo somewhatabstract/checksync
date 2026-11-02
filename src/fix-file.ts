@@ -1,5 +1,6 @@
-import readline from "readline";
 import fs from "fs";
+
+import readLines from "./read-lines";
 
 import {
     IPositionLog,
@@ -37,13 +38,13 @@ export default function fixFile(
 
         // Okay, we have broken edges, so let's make our fix map.
 
-        // Open the file for read/write.
-        // We'll use this file descriptor to create our streams for reading
-        // and writing the file.
+        // Open the file for writing. Opening it synchronously gives a clear
+        // error straight away if the file can't be written.
         const fd = fs.openSync(file, "r+");
 
-        // Create a write stream starting at the beginning of the file,
-        // because we are going to overwrite as we read.
+        // Create a write stream starting at the beginning of the file. The
+        // whole file is read before anything is written, so overwriting it
+        // can't affect what we read.
         const ws = options.dryRun
             ? {
                   write: (content: string) => {
@@ -54,30 +55,12 @@ export default function fixFile(
               }
             : fs.createWriteStream(file, {fd, start: 0});
 
-        // Now, we'll read line by line and process what we get against
-        // our markers. We keep a line counter going so that we apply fixes to
-        // the correct lines. Line numbers on 1-based.
-        let lineNumber = 1;
+        // Read the file's lines and check each one against our fixes.
+        readLines(file).then((lines) => {
+            lines.forEach((lineText, index) => {
+                // Line numbers are 1-based.
+                const lineNumber = index + 1;
 
-        /**
-         * TODO(somewhatabstract): This is likely inefficient. We should look
-         * at using a pipe from read stream to transform stream to write
-         * so that node properly handles back pressure for us and keeps
-         * throughput optimal.
-         * However, that takes more effort since the transform stream has to be
-         * chunk aware to ensure we cope with partial line reads properly.
-         */
-        readline
-            .createInterface({
-                input: fs.createReadStream(file, {
-                    fd,
-                    start: 0,
-                    autoClose: false,
-                }),
-                crlfDelay: Infinity,
-                terminal: false,
-            })
-            .on("line", (lineText: string) => {
                 // There could be lines with the same text, so we make sure
                 // we're targetting the correct line number.
                 // Organizing fixes by line number has its own issues and would
@@ -86,9 +69,6 @@ export default function fixFile(
                 const fix = errorsByDeclaration[lineText]?.find(
                     (e) => e.fix?.line === lineNumber,
                 )?.fix;
-
-                // Make sure we update the line number for the next go around.
-                lineNumber++;
 
                 // Report the fix.
                 reportFix(fix, log);
@@ -102,18 +82,16 @@ export default function fixFile(
                     ws.write(`${fix.text}\n`);
                 } else {
                     // Otherwise, just output the line as it is (we have to add
-                    // the newline as readLine strips the line ending).
+                    // the newline as the line ending isn't kept).
                     ws.write(`${lineText}\n`);
                 }
-            })
-            .on("close", () => {
-                // We have finished reading, so let's tell the write stream
-                // to finish what it is doing. This will cause it to close.
-                ws.end(() => {
-                    // We truncate the file at the end in case we deleted some
-                    // things.
-                    fs.truncate(file, ws.bytesWritten, () => resolve());
-                });
             });
+
+            // We have finished reading, so let's tell the write stream
+            // we're done, and truncate the file to the size we wrote.
+            ws.end(() => {
+                fs.truncate(file, ws.bytesWritten, () => resolve());
+            });
+        }, reject);
     });
 }
