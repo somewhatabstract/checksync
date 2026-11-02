@@ -2,3 +2,7 @@
 //!
 //! This crate is pure: it performs no network access and writes nothing to
 //! stdout or stderr. Presentation and process concerns belong to the CLI.
+
+mod calc_checksum;
+
+pub use calc_checksum::calc_checksum;
