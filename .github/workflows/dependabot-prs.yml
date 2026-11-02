@@ -37,10 +37,16 @@ jobs:
           PR_URL: ${{ github.event.pull_request.html_url }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # Finally, this sets the PR to allow auto-merging for patch and minor
-      # updates if all checks pass
+      # updates if all checks pass.
+      #
+      # This uses a Personal Access Token rather than the GITHUB_TOKEN because
+      # GitHub merges as whoever enabled auto-merge, and merges made with the
+      # GITHUB_TOKEN don't trigger other workflows, so main would get no CI,
+      # coverage or CodeQL run for the merge. This workflow runs on
+      # `pull_request`, so BOT_PA_TOKEN must be a Dependabot secret.
       - name: Enable auto-merge for Dependabot PRs
         if: ${{ steps.dependabot-metadata.outputs.update-type != 'version-update:semver-major' }}
         run: gh pr merge --auto --squash "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.BOT_PA_TOKEN }}
