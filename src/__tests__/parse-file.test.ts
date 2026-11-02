@@ -1,7 +1,5 @@
-import fs from "fs";
-import readline from "readline";
-
 import * as Ancesdir from "ancesdir";
+import * as ReadLines from "../read-lines";
 import * as MarkerParser from "../marker-parser";
 import * as GetNormalizedPathInfo from "../get-normalized-path-info";
 import * as Checksum from "../checksum";
@@ -14,22 +12,6 @@ import {ErrorCode} from "../error-codes";
 jest.mock("fs");
 jest.mock("../get-normalized-path-info");
 jest.mock("ancesdir");
-
-const invokeEvent = (
-    mocked: ReturnType<jest.MockedFunction<any>>,
-    event: string,
-    ...args: Array<any>
-) => {
-    const eventHandlerCall = mocked.mock.calls.find(
-        (call: any) => call[0] === event,
-    );
-    if (eventHandlerCall == null) {
-        throw new Error(
-            "Event handler not found on our fake readline interface",
-        );
-    }
-    eventHandlerCall[1](...args);
-};
 
 describe("#parseFile", () => {
     const setupMarkerParser = function () {
@@ -73,9 +55,75 @@ describe("#parseFile", () => {
 
     it("should record parse error on failure", async () => {
         // Arrange
-        jest.spyOn(fs, "openSync").mockImplementationOnce(() => {
+        jest.spyOn(ReadLines, "default").mockRejectedValueOnce(
+            new Error("ERROR_STRING"),
+        );
+        const options: Options = {
+            includeGlobs: ["a.js", "b.js"],
+            comments: [],
+            autoFix: true,
+            rootMarker: null,
+            dryRun: false,
+            excludeGlobs: [],
+            ignoreFiles: [],
+            json: false,
+            allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
+        };
+
+        // Act
+        const result = await parseFile(options, "root.path/file.js", false);
+
+        // Assert
+        expect(result.errors).toEqual([
+            {
+                markerID: null,
+                code: "could-not-parse",
+                reason: "Could not parse root.path/file.js: ERROR_STRING",
+            },
+        ]);
+    });
+
+    it("should record parse error if the parser can't be created", async () => {
+        // Arrange
+        jest.spyOn(MarkerParser, "default").mockImplementationOnce(() => {
             throw new Error("ERROR_STRING");
         });
+        const options: Options = {
+            includeGlobs: ["a.js", "b.js"],
+            comments: [],
+            autoFix: true,
+            rootMarker: null,
+            dryRun: false,
+            excludeGlobs: [],
+            ignoreFiles: [],
+            json: false,
+            allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
+        };
+
+        // Act
+        const result = await parseFile(options, "root.path/file.js", false);
+
+        // Assert
+        expect(result.errors).toEqual([
+            {
+                markerID: null,
+                code: "could-not-parse",
+                reason: "Could not parse root.path/file.js: ERROR_STRING",
+            },
+        ]);
+    });
+
+    it("should record parse error if parsing a line fails", async () => {
+        // Arrange
+        const mockParser = setupMarkerParser();
+        mockParser.parseLine.mockImplementationOnce(() => {
+            throw new Error("ERROR_STRING");
+        });
+        jest.spyOn(ReadLines, "default").mockResolvedValueOnce(["Line1"]);
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
             comments: [],
@@ -106,14 +154,7 @@ describe("#parseFile", () => {
     it("should resolve with null if zero markers are found", async () => {
         // Arrange
         setupMarkerParser();
-        const fakeInterface: any = {on: jest.fn<any, any>()} as const;
-        fakeInterface.on.mockReturnValue(fakeInterface);
-        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
-        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null as any);
-        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
-            fakeInterface,
-        );
-        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
+        jest.spyOn(ReadLines, "default").mockResolvedValueOnce([]);
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
             comments: [],
@@ -130,7 +171,6 @@ describe("#parseFile", () => {
 
         // Act
         const promise = parseFile(options, "root.path/file.js", false);
-        finishReadingFile();
         const result = await promise;
 
         // Assert
@@ -145,9 +185,9 @@ describe("#parseFile", () => {
 
     it("should resolve with null on error", async () => {
         // Arrange
-        jest.spyOn(fs, "openSync").mockImplementationOnce(() => {
-            throw new Error("ERROR_STRING");
-        });
+        jest.spyOn(ReadLines, "default").mockRejectedValueOnce(
+            new Error("ERROR_STRING"),
+        );
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
             comments: [],
@@ -183,16 +223,10 @@ describe("#parseFile", () => {
     it("should invoke MarkerParser.parseLine for each line", async () => {
         // Arrange
         const mockMarkerParser = setupMarkerParser();
-        const fakeInterface: any = {on: jest.fn<any, any>()} as const;
-        fakeInterface.on.mockReturnValue(fakeInterface);
-        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
-        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null as any);
-        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
-            fakeInterface,
-        );
-        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
-        const readLine = (line: string) =>
-            invokeEvent(fakeInterface.on, "line", line);
+        jest.spyOn(ReadLines, "default").mockResolvedValueOnce([
+            "Line1",
+            "Line2",
+        ]);
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
             comments: [],
@@ -209,9 +243,6 @@ describe("#parseFile", () => {
 
         // Act
         const promise = parseFile(options, "root.path/file.js", true);
-        readLine("Line1");
-        readLine("Line2");
-        finishReadingFile();
         await promise;
 
         // Assert
@@ -222,15 +253,7 @@ describe("#parseFile", () => {
 
     it("should initialize MarkerParser with callbacks, comments, and log", async () => {
         // Arrange
-
-        const fakeInterface: any = {on: jest.fn<any, any>()} as const;
-        fakeInterface.on.mockReturnValue(fakeInterface);
-        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
-        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null as any);
-        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
-            fakeInterface,
-        );
-        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
+        jest.spyOn(ReadLines, "default").mockResolvedValueOnce([]);
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
         const commentsArray = ["COMMENT1", "COMMENT2"];
@@ -250,7 +273,6 @@ describe("#parseFile", () => {
 
         // Act
         const promise = parseFile(options, "root.path/file.js", true);
-        finishReadingFile();
         await promise;
 
         // Assert
@@ -264,18 +286,11 @@ describe("#parseFile", () => {
 
     it("should record error if a marker targets its containing file", async () => {
         // Arrange
-        const fakeInterface: any = {on: jest.fn<any, any>()} as const;
-        fakeInterface.on.mockReturnValue(fakeInterface);
-        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
-        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null as any);
-        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
-            fakeInterface,
-        );
+        jest.spyOn(ReadLines, "default").mockResolvedValueOnce([]);
         jest.spyOn(Ancesdir, "closesdir").mockReturnValue("root.path");
         jest.spyOn(Checksum, "default")
             .mockReturnValueOnce("ID1_CONTENT_CHECKSUM")
             .mockReturnValueOnce("ID1_SELF_CHECKSUM");
-        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
         const options: Options = {
@@ -309,7 +324,6 @@ describe("#parseFile", () => {
             "COMMENT_START",
             "COMMENT_END",
         );
-        finishReadingFile();
         const result = await promise;
 
         // Assert
@@ -346,15 +360,8 @@ describe("#parseFile", () => {
 
     it("should record empty marker error if allowEmptyTargets is false", async () => {
         // Arrange
-        const fakeInterface: any = {on: jest.fn<any, any>()} as const;
-        fakeInterface.on.mockReturnValue(fakeInterface);
-        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
-        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null as any);
-        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
-            fakeInterface,
-        );
+        jest.spyOn(ReadLines, "default").mockResolvedValueOnce([]);
         jest.spyOn(Ancesdir, "closesdir").mockReturnValue("root.path");
-        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
         const options: Options = {
@@ -388,7 +395,6 @@ describe("#parseFile", () => {
             "COMMENT_START",
             "COMMENT_END",
         );
-        finishReadingFile();
         const result = await promise;
 
         // Assert
@@ -410,15 +416,8 @@ describe("#parseFile", () => {
 
     it("should not record empty marker error if allowEmptyTargets is true", async () => {
         // Arrange
-        const fakeInterface: any = {on: jest.fn<any, any>()} as const;
-        fakeInterface.on.mockReturnValue(fakeInterface);
-        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
-        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null as any);
-        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
-            fakeInterface,
-        );
+        jest.spyOn(ReadLines, "default").mockResolvedValueOnce([]);
         jest.spyOn(Ancesdir, "closesdir").mockReturnValue("root.path");
-        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
         const options: Options = {
@@ -452,7 +451,6 @@ describe("#parseFile", () => {
             "COMMENT_START",
             "COMMENT_END",
         );
-        finishReadingFile();
         const result = await promise;
 
         // Assert
@@ -467,15 +465,8 @@ describe("#parseFile", () => {
 
     it("should normalize referenced files for marker parser", async () => {
         // Arrange
-        const fakeInterface: any = {on: jest.fn<any, any>()} as const;
-        fakeInterface.on.mockReturnValue(fakeInterface);
         jest.spyOn(Ancesdir, "closesdir").mockReturnValue("root.path");
-        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
-        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null as any);
-        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
-            fakeInterface,
-        );
-        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
+        jest.spyOn(ReadLines, "default").mockResolvedValueOnce([]);
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
         const getNormalizedTargetFileInfoSpy = jest
@@ -499,7 +490,6 @@ describe("#parseFile", () => {
         const promise = parseFile(options, "root.path/file.js", true);
         const normalizeFn = markerParserSpy.mock.calls[0][0];
         normalizeFn("FILE_REF");
-        finishReadingFile();
         await promise;
 
         // Assert
@@ -511,15 +501,8 @@ describe("#parseFile", () => {
 
     it("when not read-only, should return referenced files that exist", async () => {
         // Arrange
-        const fakeInterface: any = {on: jest.fn<any, any>()} as const;
-        fakeInterface.on.mockReturnValue(fakeInterface);
         jest.spyOn(Ancesdir, "closesdir").mockReturnValue("root.path");
-        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
-        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null as any);
-        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
-            fakeInterface,
-        );
-        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
+        jest.spyOn(ReadLines, "default").mockResolvedValueOnce([]);
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
         jest.spyOn(GetNormalizedPathInfo, "default")
@@ -552,7 +535,6 @@ describe("#parseFile", () => {
         const normalizeFn = markerParserSpy.mock.calls[0][0];
         normalizeFn("FILE_REF_A");
         normalizeFn("FILE_REF_B");
-        finishReadingFile();
         const result = await promise;
 
         // Assert
@@ -561,15 +543,8 @@ describe("#parseFile", () => {
 
     it("when read-only, should not return any referenced files", async () => {
         // Arrange
-        const fakeInterface: any = {on: jest.fn<any, any>()} as const;
-        fakeInterface.on.mockReturnValue(fakeInterface);
         jest.spyOn(Ancesdir, "closesdir").mockReturnValue("root.path");
-        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
-        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null as any);
-        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
-            fakeInterface,
-        );
-        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
+        jest.spyOn(ReadLines, "default").mockResolvedValueOnce([]);
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
         jest.spyOn(GetNormalizedPathInfo, "default")
@@ -602,7 +577,6 @@ describe("#parseFile", () => {
         const normalizeFn = markerParserSpy.mock.calls[0][0];
         normalizeFn("FILE_REF_A");
         normalizeFn("FILE_REF_B");
-        finishReadingFile();
         const result = await promise;
 
         // Assert
@@ -613,19 +587,12 @@ describe("#parseFile", () => {
         // Arrange
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
-        const fakeInterface: any = {on: jest.fn<any, any>()} as const;
-        fakeInterface.on.mockReturnValue(fakeInterface);
-        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
-        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null as any);
-        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
-            fakeInterface,
-        );
+        jest.spyOn(ReadLines, "default").mockResolvedValueOnce([]);
         jest.spyOn(Ancesdir, "closesdir").mockReturnValue("root.path");
         const checksumSpy = jest
             .spyOn(Checksum, "default")
             .mockReturnValueOnce("ID1_CONTENT_CHECKSUM")
             .mockReturnValueOnce("ID1_SELF_CHECKSUM");
-        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
             comments: [],
@@ -657,7 +624,6 @@ describe("#parseFile", () => {
             "COMMENT_START",
             "COMMENT_END",
         );
-        finishReadingFile();
         await promise;
 
         // Assert
@@ -668,18 +634,11 @@ describe("#parseFile", () => {
         // Arrange
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
-        const fakeInterface: any = {on: jest.fn<any, any>()} as const;
-        fakeInterface.on.mockReturnValue(fakeInterface);
-        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
-        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null as any);
-        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
-            fakeInterface,
-        );
+        jest.spyOn(ReadLines, "default").mockResolvedValueOnce([]);
         jest.spyOn(Ancesdir, "closesdir").mockReturnValue("root.path");
         jest.spyOn(Checksum, "default").mockReturnValueOnce(
             "ID1_SELF_CHECKSUM",
         );
-        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
             comments: [],
@@ -711,7 +670,6 @@ describe("#parseFile", () => {
             "COMMENT_START",
             "COMMENT_END",
         );
-        finishReadingFile();
         const result = await promise;
 
         // Assert
@@ -743,19 +701,12 @@ describe("#parseFile", () => {
         // Arrange
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
-        const fakeInterface: any = {on: jest.fn<any, any>()} as const;
-        fakeInterface.on.mockReturnValue(fakeInterface);
-        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
-        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null as any);
-        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
-            fakeInterface,
-        );
+        jest.spyOn(ReadLines, "default").mockResolvedValueOnce([]);
         jest.spyOn(Ancesdir, "closesdir").mockReturnValue("root.path");
         const checksumSpy = jest
             .spyOn(Checksum, "default")
             .mockReturnValueOnce("ID1_CONTENT_CHECKSUM")
             .mockReturnValueOnce("ID1_SELF_CHECKSUM");
-        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
             comments: [],
@@ -787,7 +738,6 @@ describe("#parseFile", () => {
             "COMMENT_START",
             "COMMENT_END",
         );
-        finishReadingFile();
         await promise;
 
         // Assert
@@ -801,18 +751,11 @@ describe("#parseFile", () => {
         // Arrange
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
-        const fakeInterface: any = {on: jest.fn<any, any>()} as const;
-        fakeInterface.on.mockReturnValue(fakeInterface);
-        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
-        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null as any);
-        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
-            fakeInterface,
-        );
+        jest.spyOn(ReadLines, "default").mockResolvedValueOnce([]);
         jest.spyOn(Ancesdir, "closesdir").mockReturnValue("root.path");
         const checksumSpy = jest
             .spyOn(Checksum, "default")
             .mockReturnValueOnce("ID1_SELF_CHECKSUM");
-        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
             comments: [],
@@ -844,7 +787,6 @@ describe("#parseFile", () => {
             "COMMENT_START",
             "COMMENT_END",
         );
-        finishReadingFile();
         await promise;
 
         // Assert
@@ -855,20 +797,13 @@ describe("#parseFile", () => {
         // Arrange
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
-        const fakeInterface: any = {on: jest.fn<any, any>()} as const;
-        fakeInterface.on.mockReturnValue(fakeInterface);
-        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
-        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null as any);
-        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
-            fakeInterface,
-        );
+        jest.spyOn(ReadLines, "default").mockResolvedValueOnce([]);
         jest.spyOn(Ancesdir, "closesdir").mockReturnValue("root.path");
         jest.spyOn(Checksum, "default")
             .mockReturnValueOnce("ID1_CONTENT_CHECKSUM")
             .mockReturnValueOnce("ID1_SELF_CHECKSUM")
             .mockReturnValueOnce("ID2_CONTENT_CHECKSUM")
             .mockReturnValueOnce("ID2_SELF_CHECKSUM");
-        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
             comments: [],
@@ -914,7 +849,6 @@ describe("#parseFile", () => {
             "COMMENT_START",
             "COMMENT_END",
         );
-        finishReadingFile();
         const result = await promise;
 
         // Assert
@@ -960,20 +894,13 @@ describe("#parseFile", () => {
         // Arrange
         const markerParserSpy = jest.spyOn(MarkerParser, "default");
         setupMarkerParser();
-        const fakeInterface: any = {on: jest.fn<any, any>()} as const;
-        fakeInterface.on.mockReturnValue(fakeInterface);
-        jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
-        jest.spyOn(fs, "createReadStream").mockReturnValueOnce(null as any);
-        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
-            fakeInterface,
-        );
+        jest.spyOn(ReadLines, "default").mockResolvedValueOnce([]);
         jest.spyOn(Ancesdir, "closesdir").mockReturnValue("root.path");
         jest.spyOn(Checksum, "default")
             .mockReturnValueOnce("ID1_CONTENT_CHECKSUM")
             .mockReturnValueOnce("ID1_SELF_CHECKSUM")
             .mockReturnValueOnce("ID2_CONTENT_CHECKSUM")
             .mockReturnValueOnce("ID2_SELF_CHECKSUM");
-        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
         const options: Options = {
             includeGlobs: ["a.js", "b.js"],
             comments: [],
@@ -1019,7 +946,6 @@ describe("#parseFile", () => {
             "COMMENT_START",
             "COMMENT_END",
         );
-        finishReadingFile();
         const result = await promise;
 
         // Assert

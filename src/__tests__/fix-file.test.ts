@@ -1,30 +1,14 @@
 import fs from "fs";
-import readline from "readline";
 
 import {ErrorCode} from "../error-codes";
 import Logger from "../logger";
 import FileReferenceLogger from "../file-reference-logger";
 import fixFile from "../fix-file";
 
+import * as ReadLines from "../read-lines";
 import * as RootRelativePath from "../root-relative-path";
 
 import {Options} from "../types";
-
-const invokeEvent = (
-    mocked: ReturnType<jest.MockedFunction<any>>,
-    event: string,
-    ...args: Array<any>
-) => {
-    const eventHandlerCall = mocked.mock.calls.find(
-        (call: any) => call[0] === event,
-    );
-    if (eventHandlerCall == null) {
-        throw new Error(
-            "Event handler not found on our fake readline interface",
-        );
-    }
-    eventHandlerCall[1](...args);
-};
 
 const _NullLogger = new Logger(null);
 
@@ -66,24 +50,18 @@ describe("#fixFile", () => {
         jest.spyOn(fs, "truncate").mockImplementation((_, __, cb) => cb());
         fakeWriteStream.once.mockReturnValue(fakeWriteStream);
         fakeWriteStream.end.mockImplementation((cb: () => void) => cb());
-        const fakeInterface: any = {on: jest.fn<any, any>()};
-        fakeInterface.on.mockReturnValue(fakeInterface);
 
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createWriteStream").mockReturnValueOnce(
             fakeWriteStream,
         );
-        jest.spyOn(fs, "createReadStream").mockReturnValueOnce({} as any);
-        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
-            fakeInterface,
-        );
+        jest.spyOn(ReadLines, "default").mockResolvedValueOnce([
+            "BROKEN_DECLARATION",
+        ]);
         jest.spyOn(RootRelativePath, "default").mockImplementation(
             (t) => `ROOT_REL:${t}`,
         );
         const logSpy = jest.spyOn(NullFileLogger, "fix");
-        const readLineFromFile = (line: string) =>
-            invokeEvent(fakeInterface.on, "line", line);
-        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
 
         // Act
         const promise = fixFile(options, "filea", NullFileLogger, {
@@ -102,8 +80,6 @@ describe("#fixFile", () => {
                 },
             ],
         });
-        readLineFromFile("BROKEN_DECLARATION");
-        finishReadingFile();
         await promise;
 
         // Assert
@@ -122,24 +98,18 @@ describe("#fixFile", () => {
         jest.spyOn(fs, "truncate").mockImplementation((_, __, cb) => cb());
         fakeWriteStream.once.mockReturnValue(fakeWriteStream);
         fakeWriteStream.end.mockImplementation((cb: () => void) => cb());
-        const fakeInterface: any = {on: jest.fn<any, any>()} as const;
-        fakeInterface.on.mockReturnValue(fakeInterface);
 
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createWriteStream").mockReturnValueOnce(
             fakeWriteStream,
         );
-        jest.spyOn(fs, "createReadStream").mockReturnValueOnce({} as any);
-        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
-            fakeInterface,
-        );
+        jest.spyOn(ReadLines, "default").mockResolvedValueOnce([
+            "REGULAR_LINE",
+        ]);
         jest.spyOn(RootRelativePath, "default").mockImplementation(
             (t) => `ROOT_REL:${t}`,
         );
         const logSpy = jest.spyOn(NullFileLogger, "fix");
-        const readLineFromFile = (line: string) =>
-            invokeEvent(fakeInterface.on, "line", line);
-        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
 
         // Act
         const promise = fixFile(options, "filea", NullFileLogger, {
@@ -158,8 +128,6 @@ describe("#fixFile", () => {
                 },
             ],
         });
-        readLineFromFile("REGULAR_LINE");
-        finishReadingFile();
         await promise;
 
         // Assert
@@ -179,23 +147,17 @@ describe("#fixFile", () => {
         jest.spyOn(fs, "truncate").mockImplementation((_, __, cb) => cb());
         fakeWriteStream.once.mockReturnValue(fakeWriteStream);
         fakeWriteStream.end.mockImplementation((cb: () => void) => cb());
-        const fakeInterface: any = {on: jest.fn<any, any>()} as const;
-        fakeInterface.on.mockReturnValue(fakeInterface);
 
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createWriteStream").mockReturnValueOnce(
             fakeWriteStream,
         );
-        jest.spyOn(fs, "createReadStream").mockReturnValueOnce({} as any);
-        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
-            fakeInterface,
-        );
+        jest.spyOn(ReadLines, "default").mockResolvedValueOnce([
+            "BROKEN_DECLARATION",
+        ]);
         jest.spyOn(RootRelativePath, "default").mockImplementation(
             (t) => `ROOT_REL:${t}`,
         );
-        const readLineFromFile = (line: string) =>
-            invokeEvent(fakeInterface.on, "line", line);
-        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
 
         // Act
         const promise = fixFile(options, "filea", NullFileLogger, {
@@ -214,8 +176,6 @@ describe("#fixFile", () => {
                 },
             ],
         });
-        readLineFromFile("BROKEN_DECLARATION");
-        finishReadingFile();
         await promise;
 
         // Assert
@@ -237,23 +197,17 @@ describe("#fixFile", () => {
         jest.spyOn(fs, "truncate").mockImplementation((_, __, cb) => cb());
         fakeWriteStream.once.mockReturnValue(fakeWriteStream);
         fakeWriteStream.end.mockImplementation((cb: () => void) => cb());
-        const fakeInterface: any = {on: jest.fn<any, any>()} as const;
-        fakeInterface.on.mockReturnValue(fakeInterface);
 
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createWriteStream").mockReturnValueOnce(
             fakeWriteStream,
         );
-        jest.spyOn(fs, "createReadStream").mockReturnValueOnce({} as any);
-        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
-            fakeInterface,
-        );
+        jest.spyOn(ReadLines, "default").mockResolvedValueOnce([
+            "BROKEN_DECLARATION",
+        ]);
         jest.spyOn(RootRelativePath, "default").mockImplementation(
             (t) => `ROOT_REL:${t}`,
         );
-        const readLineFromFile = (line: string) =>
-            invokeEvent(fakeInterface.on, "line", line);
-        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
 
         // Act
         const promise = fixFile(options, "filea", NullFileLogger, {
@@ -271,8 +225,6 @@ describe("#fixFile", () => {
                 },
             ],
         });
-        readLineFromFile("BROKEN_DECLARATION");
-        finishReadingFile();
         await promise;
 
         // Assert
@@ -291,23 +243,19 @@ describe("#fixFile", () => {
         jest.spyOn(fs, "truncate").mockImplementation((_, __, cb) => cb());
         fakeWriteStream.once.mockReturnValue(fakeWriteStream);
         fakeWriteStream.end.mockImplementation((cb: () => void) => cb());
-        const fakeInterface: any = {on: jest.fn<any, any>()} as const;
-        fakeInterface.on.mockReturnValue(fakeInterface);
 
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createWriteStream").mockReturnValueOnce(
             fakeWriteStream,
         );
-        jest.spyOn(fs, "createReadStream").mockReturnValueOnce({} as any);
-        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
-            fakeInterface,
-        );
+        jest.spyOn(ReadLines, "default").mockResolvedValueOnce([
+            "BROKEN_DECLARATION",
+            "BROKEN_DECLARATION",
+            "BROKEN_DECLARATION",
+        ]);
         jest.spyOn(RootRelativePath, "default").mockImplementation(
             (t) => `ROOT_REL:${t}`,
         );
-        const readLineFromFile = (line: string) =>
-            invokeEvent(fakeInterface.on, "line", line);
-        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
 
         // Act
         const promise = fixFile(options, "filea", NullFileLogger, {
@@ -338,10 +286,6 @@ describe("#fixFile", () => {
                 },
             ],
         });
-        readLineFromFile("BROKEN_DECLARATION"); // line 1
-        readLineFromFile("BROKEN_DECLARATION"); // line 2
-        readLineFromFile("BROKEN_DECLARATION"); // line 3
-        finishReadingFile();
         await promise;
 
         // Assert
@@ -367,23 +311,17 @@ describe("#fixFile", () => {
         jest.spyOn(fs, "truncate").mockImplementation((_, __, cb) => cb());
         fakeWriteStream.once.mockReturnValue(fakeWriteStream);
         fakeWriteStream.end.mockImplementation((cb: () => void) => cb());
-        const fakeInterface: any = {on: jest.fn<any, any>()} as const;
-        fakeInterface.on.mockReturnValue(fakeInterface);
 
         jest.spyOn(fs, "openSync").mockReturnValueOnce(0);
         jest.spyOn(fs, "createWriteStream").mockReturnValueOnce(
             fakeWriteStream,
         );
-        jest.spyOn(fs, "createReadStream").mockReturnValueOnce({} as any);
-        jest.spyOn(readline, "createInterface").mockReturnValueOnce(
-            fakeInterface,
-        );
+        jest.spyOn(ReadLines, "default").mockResolvedValueOnce([
+            "BROKEN_DECLARATION",
+        ]);
         jest.spyOn(RootRelativePath, "default").mockImplementation(
             (t) => `ROOT_REL:${t}`,
         );
-        const readLineFromFile = (line: string) =>
-            invokeEvent(fakeInterface.on, "line", line);
-        const finishReadingFile = () => invokeEvent(fakeInterface.on, "close");
         const testOptions: Options = {
             ...options,
             dryRun: true,
@@ -406,8 +344,6 @@ describe("#fixFile", () => {
                 },
             ],
         });
-        readLineFromFile("BROKEN_DECLARATION");
-        finishReadingFile();
 
         await promise;
 
