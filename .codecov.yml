@@ -4,9 +4,11 @@ coverage:
   range: "90...100"
 
   # Each language has its own project status, so one can't hide a drop in
-  # the other.
+  # the other. `default` keeps the combined codecov/project status as well;
+  # naming any status replaces it otherwise.
   status:
     project:
+      default: {}
       typescript:
         flags:
           - typescript
