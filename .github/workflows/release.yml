@@ -57,14 +57,13 @@ jobs:
         shell: bash
         run: pnpm install --frozen-lockfile
 
-      - name: ⬆️ Upgrade npm for OIDC support
+      - name: Check npm supports trusted publishing
         shell: bash
         run: |
-          # npm trusted publishing requires npm CLI v11.5.1+
-          # Node.js 20 shipped with npm 9.x, so we likely need to upgrade
-
-          # First, let's check the current npm version, and if it's already
-          # sufficient, we can skip the upgrade step.
+          # npm trusted publishing needs npm CLI v11.5.1 or later. Every
+          # Node.js 24 release since 24.5.0 bundles a new enough npm, so this
+          # only guards against an older Node.js. It fails rather than
+          # installing npm here, outside the lockfile.
           CURRENT_NPM_VERSION=$(npm --version)
           REQUIRED_NPM_VERSION="11.5.1"
 
@@ -72,12 +71,11 @@ jobs:
           # the lowest version.
           LOWEST_NPM_VERSION=$(printf '%s\n' "$REQUIRED_NPM_VERSION" "$CURRENT_NPM_VERSION" | sort -V | head -n1)
 
-          # If the lowest version is the same as the required version, then we
-          # don't need to upgrade as that means our current version is newer.
           if [ "$LOWEST_NPM_VERSION" = "$REQUIRED_NPM_VERSION" ]; then
-            echo "✅ npm is already at version $CURRENT_NPM_VERSION"
+            echo "✅ npm $CURRENT_NPM_VERSION supports trusted publishing"
           else
-            npm install -g npm@latest && echo "✅ npm upgraded to $(npm --version)"
+            echo "::error::npm $CURRENT_NPM_VERSION is older than $REQUIRED_NPM_VERSION, which trusted publishing needs. Use a newer Node.js."
+            exit 1
           fi
 
       - name: Create Release Pull Request or Publish to npm
