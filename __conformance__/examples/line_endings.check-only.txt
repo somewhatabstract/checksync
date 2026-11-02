@@ -1,0 +1,12 @@
+args: ["__examples__/line_endings/**"]
+exit code: 3
+--- stdout ---
+Mismatch __examples__/line_endings/crlf.txt:9
+Looks like you changed the target content for sync-tag 'stale' in '__examples__/line_endings/lf.txt:9'
+Make sure you've made corresponding changes in the source file, if necessary (1 != 1404499267)
+
+
+🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing:
+  
+  checksync -u __examples__/line_endings/crlf.txt
+--- stderr ---

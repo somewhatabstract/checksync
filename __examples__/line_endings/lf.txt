@@ -1,0 +1,12 @@
+Line feed (LF) line endings.
+
+# sync-start:endings 1014363271 __examples__/line_endings/crlf.txt
+# sync-start:endings 1014363271 __examples__/line_endings/cr.txt
+shared line one
+shared line two
+# sync-end:endings
+
+# sync-start:stale 1404499267 __examples__/line_endings/crlf.txt
+stale line one
+stale line two
+# sync-end:stale

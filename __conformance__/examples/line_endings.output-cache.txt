@@ -1,0 +1,5 @@
+args: ["--output-cache",".conformance-output/line_endings.cache.json","__examples__/line_endings/**"]
+exit code: 0
+--- stdout ---
+Info     Cache written to <ROOT>/.conformance-output/line_endings.cache.json
+--- stderr ---
