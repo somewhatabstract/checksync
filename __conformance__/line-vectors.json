@@ -161,43 +161,41 @@
         ]
     },
     {
-        "description": "U+2028 and U+2029 also end lines (Node.js 24 readline)",
+        "description": "U+2028 and U+2029 stay in the line, as in checksync before 11.0.0 and the Python sync linter's checksums (Node.js 24 readline differs)",
         "input": "a b c",
         "lines": [
             {
-                "text": "a",
-                "ending": " "
-            },
-            {
-                "text": "b",
-                "ending": " "
-            },
-            {
-                "text": "c",
+                "text": "a b c",
                 "ending": ""
             }
+        ],
+        "typescriptLines": [
+            "a",
+            "b",
+            "c"
         ]
     },
     {
-        "description": "U+2028 before LF is its own line ending",
+        "description": "U+2028 before LF stays in the line (Node.js 24 readline differs)",
         "input": "a \nb",
         "lines": [
             {
-                "text": "a",
-                "ending": " "
-            },
-            {
-                "text": "",
+                "text": "a ",
                 "ending": "\n"
             },
             {
                 "text": "b",
                 "ending": ""
             }
+        ],
+        "typescriptLines": [
+            "a",
+            "",
+            "b"
         ]
     },
     {
-        "description": "CR before U+2028 is its own line ending",
+        "description": "CR before U+2028 ends the line, and U+2028 starts the next (Node.js 24 readline differs)",
         "input": "a\r b",
         "lines": [
             {
@@ -205,13 +203,14 @@
                 "ending": "\r"
             },
             {
-                "text": "",
-                "ending": " "
-            },
-            {
-                "text": "b",
+                "text": " b",
                 "ending": ""
             }
+        ],
+        "typescriptLines": [
+            "a",
+            "",
+            "b"
         ]
     },
     {

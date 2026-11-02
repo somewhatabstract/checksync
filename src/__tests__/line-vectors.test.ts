@@ -17,11 +17,19 @@ type Parts = string | ReadonlyArray<Part>;
 /**
  * Line-splitting vectors shared with the Rust implementation, which tests
  * against the same file so both read files into identical lines.
+ *
+ * `lines` is the intended behavior, which the Rust implementation follows.
+ * Where Node.js 24's readline differs, `typescriptLines` records what this
+ * implementation actually reads. Node.js 24 also ends lines at U+2028 and
+ * U+2029, replacing them with "\n" in checksums; Node.js 22 and earlier, and
+ * so checksync before 11.0.0, kept them in the line, which is also what the
+ * original Python sync linter checksums.
  */
 const VECTORS: ReadonlyArray<{
     description: string;
     input: Parts;
     lines: ReadonlyArray<{text: Parts; ending: string}>;
+    typescriptLines?: ReadonlyArray<string>;
 }> = JSON.parse(
     fs.readFileSync(
         path.join(__dirname, "../../__conformance__/line-vectors.json"),
@@ -73,7 +81,7 @@ const readLines = async (bytes: Buffer): Promise<Array<string>> => {
 describe("line vectors", () => {
     it.each(VECTORS)(
         "should read the lines the vector expects: $description",
-        async ({input, lines}) => {
+        async ({input, lines, typescriptLines}) => {
             // Arrange
             const bytes = toBuffer(input);
 
@@ -84,8 +92,24 @@ describe("line vectors", () => {
             // readline drops line endings, so only the text can be checked
             // here; the Rust tests check each line's ending.
             expect(result).toEqual(
-                lines.map(({text}) => toBuffer(text).toString("utf8")),
+                typescriptLines ??
+                    lines.map(({text}) => toBuffer(text).toString("utf8")),
             );
+        },
+    );
+
+    it.each(VECTORS.filter((vector) => vector.typescriptLines))(
+        "should only record TypeScript lines that differ: $description",
+        ({lines, typescriptLines}) => {
+            // Arrange
+
+            // Act
+            const intended = lines.map(({text}) =>
+                toBuffer(text).toString("utf8"),
+            );
+
+            // Assert
+            expect(typescriptLines).not.toEqual(intended);
         },
     );
 });
