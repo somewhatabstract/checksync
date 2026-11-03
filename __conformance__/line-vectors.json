@@ -1,0 +1,508 @@
+[
+    {
+        "description": "Empty file",
+        "input": "",
+        "lines": []
+    },
+    {
+        "description": "LF line endings",
+        "input": "a\nb\n",
+        "lines": [
+            {
+                "text": "a",
+                "ending": "\n"
+            },
+            {
+                "text": "b",
+                "ending": "\n"
+            }
+        ]
+    },
+    {
+        "description": "CRLF line endings",
+        "input": "a\r\nb\r\n",
+        "lines": [
+            {
+                "text": "a",
+                "ending": "\r\n"
+            },
+            {
+                "text": "b",
+                "ending": "\r\n"
+            }
+        ]
+    },
+    {
+        "description": "Lone CR line endings",
+        "input": "a\rb\r",
+        "lines": [
+            {
+                "text": "a",
+                "ending": "\r"
+            },
+            {
+                "text": "b",
+                "ending": "\r"
+            }
+        ]
+    },
+    {
+        "description": "Mixed line endings",
+        "input": "a\nb\r\nc\rd",
+        "lines": [
+            {
+                "text": "a",
+                "ending": "\n"
+            },
+            {
+                "text": "b",
+                "ending": "\r\n"
+            },
+            {
+                "text": "c",
+                "ending": "\r"
+            },
+            {
+                "text": "d",
+                "ending": ""
+            }
+        ]
+    },
+    {
+        "description": "No final line ending",
+        "input": "a\nb",
+        "lines": [
+            {
+                "text": "a",
+                "ending": "\n"
+            },
+            {
+                "text": "b",
+                "ending": ""
+            }
+        ]
+    },
+    {
+        "description": "Only a line ending gives one empty line",
+        "input": "\n",
+        "lines": [
+            {
+                "text": "",
+                "ending": "\n"
+            }
+        ]
+    },
+    {
+        "description": "Blank lines",
+        "input": "\n\na\n\n",
+        "lines": [
+            {
+                "text": "",
+                "ending": "\n"
+            },
+            {
+                "text": "",
+                "ending": "\n"
+            },
+            {
+                "text": "a",
+                "ending": "\n"
+            },
+            {
+                "text": "",
+                "ending": "\n"
+            }
+        ]
+    },
+    {
+        "description": "Lone CR at end of file",
+        "input": "a\r",
+        "lines": [
+            {
+                "text": "a",
+                "ending": "\r"
+            }
+        ]
+    },
+    {
+        "description": "CR before CRLF is its own line ending",
+        "input": "a\r\r\nb",
+        "lines": [
+            {
+                "text": "a",
+                "ending": "\r"
+            },
+            {
+                "text": "",
+                "ending": "\r\n"
+            },
+            {
+                "text": "b",
+                "ending": ""
+            }
+        ]
+    },
+    {
+        "description": "CR after LF is its own line ending",
+        "input": "a\n\rb",
+        "lines": [
+            {
+                "text": "a",
+                "ending": "\n"
+            },
+            {
+                "text": "",
+                "ending": "\r"
+            },
+            {
+                "text": "b",
+                "ending": ""
+            }
+        ]
+    },
+    {
+        "description": "U+2028 and U+2029 stay in the line, as in checksync before 11.0.0 and the Python sync linter's checksums (Node.js 24 readline differs)",
+        "input": "a b c",
+        "lines": [
+            {
+                "text": "a b c",
+                "ending": ""
+            }
+        ],
+        "typescriptLines": [
+            "a",
+            "b",
+            "c"
+        ]
+    },
+    {
+        "description": "U+2028 before LF stays in the line (Node.js 24 readline differs)",
+        "input": "a \nb",
+        "lines": [
+            {
+                "text": "a ",
+                "ending": "\n"
+            },
+            {
+                "text": "b",
+                "ending": ""
+            }
+        ],
+        "typescriptLines": [
+            "a",
+            "",
+            "b"
+        ]
+    },
+    {
+        "description": "CR before U+2028 ends the line, and U+2028 starts the next (Node.js 24 readline differs)",
+        "input": "a\r b",
+        "lines": [
+            {
+                "text": "a",
+                "ending": "\r"
+            },
+            {
+                "text": " b",
+                "ending": ""
+            }
+        ],
+        "typescriptLines": [
+            "a",
+            "",
+            "b"
+        ]
+    },
+    {
+        "description": "Vertical tab, form feed and NEL don't end lines",
+        "input": "a\u000bb\fcd\n",
+        "lines": [
+            {
+                "text": "a\u000bb\fcd",
+                "ending": "\n"
+            }
+        ]
+    },
+    {
+        "description": "NUL is kept",
+        "input": "a\u0000b\n",
+        "lines": [
+            {
+                "text": "a\u0000b",
+                "ending": "\n"
+            }
+        ]
+    },
+    {
+        "description": "A byte order mark stays at the start of the first line",
+        "input": [
+            {
+                "hex": "efbbbf"
+            },
+            {
+                "text": "a\n"
+            }
+        ],
+        "lines": [
+            {
+                "text": "﻿a",
+                "ending": "\n"
+            }
+        ]
+    },
+    {
+        "description": "Multi-byte UTF-8 (2, 3 and 4 bytes)",
+        "input": "é\n世界\n😀\n",
+        "lines": [
+            {
+                "text": "é",
+                "ending": "\n"
+            },
+            {
+                "text": "世界",
+                "ending": "\n"
+            },
+            {
+                "text": "😀",
+                "ending": "\n"
+            }
+        ]
+    },
+    {
+        "description": "An invalid byte becomes U+FFFD",
+        "input": [
+            {
+                "text": "a"
+            },
+            {
+                "hex": "ff"
+            },
+            {
+                "text": "b\n"
+            }
+        ],
+        "lines": [
+            {
+                "text": "a�b",
+                "ending": "\n"
+            }
+        ]
+    },
+    {
+        "description": "Each maximal invalid subpart becomes one U+FFFD (an encoded surrogate)",
+        "input": [
+            {
+                "text": "a"
+            },
+            {
+                "hex": "eda080"
+            },
+            {
+                "text": "b\n"
+            }
+        ],
+        "lines": [
+            {
+                "text": "a���b",
+                "ending": "\n"
+            }
+        ]
+    },
+    {
+        "description": "An incomplete sequence before a line ending becomes one U+FFFD",
+        "input": [
+            {
+                "text": "a"
+            },
+            {
+                "hex": "e282"
+            },
+            {
+                "text": "\nb"
+            }
+        ],
+        "lines": [
+            {
+                "text": "a�",
+                "ending": "\n"
+            },
+            {
+                "text": "b",
+                "ending": ""
+            }
+        ]
+    },
+    {
+        "description": "An incomplete sequence at end of file is dropped",
+        "input": [
+            {
+                "text": "a\nb"
+            },
+            {
+                "hex": "e282"
+            }
+        ],
+        "lines": [
+            {
+                "text": "a",
+                "ending": "\n"
+            },
+            {
+                "text": "b",
+                "ending": ""
+            }
+        ]
+    },
+    {
+        "description": "A last line that is only an incomplete sequence disappears",
+        "input": [
+            {
+                "text": "a\n"
+            },
+            {
+                "hex": "e282"
+            }
+        ],
+        "lines": [
+            {
+                "text": "a",
+                "ending": "\n"
+            }
+        ]
+    },
+    {
+        "description": "A lone continuation byte at end of file becomes U+FFFD",
+        "input": [
+            {
+                "text": "a\nb"
+            },
+            {
+                "hex": "82"
+            }
+        ],
+        "lines": [
+            {
+                "text": "a",
+                "ending": "\n"
+            },
+            {
+                "text": "b�",
+                "ending": ""
+            }
+        ]
+    },
+    {
+        "description": "A character split across the 64 KiB read boundary",
+        "input": [
+            {
+                "text": "a",
+                "repeat": 65535
+            },
+            {
+                "text": "€\nb"
+            }
+        ],
+        "lines": [
+            {
+                "text": [
+                    {
+                        "text": "a",
+                        "repeat": 65535
+                    },
+                    {
+                        "text": "€"
+                    }
+                ],
+                "ending": "\n"
+            },
+            {
+                "text": "b",
+                "ending": ""
+            }
+        ]
+    },
+    {
+        "description": "A CRLF split across the 64 KiB read boundary",
+        "input": [
+            {
+                "text": "a",
+                "repeat": 65535
+            },
+            {
+                "text": "\r\nb"
+            }
+        ],
+        "lines": [
+            {
+                "text": [
+                    {
+                        "text": "a",
+                        "repeat": 65535
+                    }
+                ],
+                "ending": "\r\n"
+            },
+            {
+                "text": "b",
+                "ending": ""
+            }
+        ]
+    },
+    {
+        "description": "A lone CR just before the 64 KiB read boundary",
+        "input": [
+            {
+                "text": "a",
+                "repeat": 65535
+            },
+            {
+                "text": "\rb"
+            }
+        ],
+        "lines": [
+            {
+                "text": [
+                    {
+                        "text": "a",
+                        "repeat": 65535
+                    }
+                ],
+                "ending": "\r"
+            },
+            {
+                "text": "b",
+                "ending": ""
+            }
+        ]
+    },
+    {
+        "description": "An incomplete sequence at end of file after the 64 KiB read boundary",
+        "input": [
+            {
+                "text": "a",
+                "repeat": 65536
+            },
+            {
+                "text": "\nb"
+            },
+            {
+                "hex": "e282"
+            }
+        ],
+        "lines": [
+            {
+                "text": [
+                    {
+                        "text": "a",
+                        "repeat": 65536
+                    }
+                ],
+                "ending": "\n"
+            },
+            {
+                "text": "b",
+                "ending": ""
+            }
+        ]
+    }
+]
