@@ -773,6 +773,77 @@
         ]
     },
     {
+        "description": "Unterminated markers with numeric ids are reported first, in numeric order",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:b a.js",
+            "// sync-start:10 a.js",
+            "// sync-start:2 a.js",
+            "body"
+        ],
+        "events": [
+            {
+                "error": {
+                    "markerID": "2",
+                    "reason": "Sync-start '2' has no corresponding sync-end",
+                    "location": {
+                        "line": 3
+                    },
+                    "code": "start-tag-witout-end-tag"
+                }
+            },
+            {
+                "error": {
+                    "markerID": "10",
+                    "reason": "Sync-start '10' has no corresponding sync-end",
+                    "location": {
+                        "line": 2
+                    },
+                    "code": "start-tag-witout-end-tag"
+                }
+            },
+            {
+                "error": {
+                    "markerID": "b",
+                    "reason": "Sync-start 'b' has no corresponding sync-end",
+                    "location": {
+                        "line": 1
+                    },
+                    "code": "start-tag-witout-end-tag"
+                }
+            }
+        ]
+    },
+    {
+        "description": "An unterminated marker's first target puts numeric targets first",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x 1 a.js",
+            "// sync-start:x 1 7",
+            "body"
+        ],
+        "events": [
+            {
+                "error": {
+                    "markerID": "x",
+                    "reason": "Sync-start 'x' has no corresponding sync-end",
+                    "location": {
+                        "line": 2
+                    },
+                    "code": "start-tag-witout-end-tag"
+                }
+            }
+        ]
+    },
+    {
         "description": "A sync-start tag with only a marker id is malformed",
         "comments": [
             "//",
