@@ -197,6 +197,18 @@ pub struct ErrorLocation {
     pub end_column: Option<usize>,
 }
 
+impl ErrorLocation {
+    /// A location covering a whole line.
+    #[must_use]
+    pub fn at_line(line: usize) -> Self {
+        Self {
+            line,
+            start_column: None,
+            end_column: None,
+        }
+    }
+}
+
 /// A change to one line of a file that fixes an error.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum FixAction {
