@@ -5,6 +5,7 @@
 
 mod calc_checksum;
 mod decode_utf8;
+pub mod errors;
 mod is_js_whitespace;
 mod js_trim;
 mod split_lines;
