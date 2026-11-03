@@ -1,3 +1,11 @@
+/// The characters [`is_js_whitespace`] accepts, written for use inside a
+/// regular-expression character class such as `[...]` or `[^...]`.
+///
+/// Written out because the `regex` crate's Unicode `\s` is Rust's whitespace,
+/// not JavaScript's.
+pub(crate) const JS_WHITESPACE_CLASS: &str =
+    r"\t\n\x0B\x0C\r \xA0\x{1680}\x{2000}-\x{200A}\x{2028}\x{2029}\x{202F}\x{205F}\x{3000}\x{FEFF}";
+
 /// Check whether a character is whitespace the way JavaScript defines it.
 ///
 /// This is what `\s` matches in a JavaScript regular expression, with or
@@ -30,7 +38,9 @@ pub fn is_js_whitespace(c: char) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use super::is_js_whitespace;
+    use regex::Regex;
+
+    use super::{JS_WHITESPACE_CLASS, is_js_whitespace};
 
     #[test]
     fn accepts_ascii_whitespace() {
@@ -119,5 +129,20 @@ mod tests {
 
         // Assert
         assert_eq!(count, 25);
+    }
+
+    #[test]
+    fn regex_class_matches_the_same_characters() {
+        // Arrange
+        let class = Regex::new(&format!("^[{JS_WHITESPACE_CLASS}]$")).unwrap();
+        let all = (0..=u32::from(char::MAX)).filter_map(char::from_u32);
+
+        // Act
+        let mismatches: Vec<char> = all
+            .filter(|&c| class.is_match(c.encode_utf8(&mut [0; 4])) != is_js_whitespace(c))
+            .collect();
+
+        // Assert
+        assert_eq!(mismatches, Vec::<char>::new());
     }
 }
