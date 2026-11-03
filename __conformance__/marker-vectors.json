@@ -1,0 +1,1869 @@
+[
+    {
+        "description": "A tag with a checksum and a two-line block",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x 123 a.js",
+            "one",
+            "two",
+            "// sync-end:x"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "one\n",
+                        "two\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "123",
+                            "declaration": "// sync-start:x 123 a.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "A tag with no checksum",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x a.js",
+            "body",
+            "// sync-end:x"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "body\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "",
+                            "declaration": "// sync-start:x a.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "Lines outside any block are ignored",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "before",
+            "// sync-start:x a.js",
+            "body",
+            "// sync-end:x",
+            "after"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "body\n"
+                    ],
+                    "targets": {
+                        "2": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "",
+                            "declaration": "// sync-start:x a.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "An empty block",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x a.js",
+            "// sync-end:x"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "",
+                            "declaration": "// sync-start:x a.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "Several sync-start tags for one marker, one per target",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x 1 a.js",
+            "// sync-start:x 2 b.js",
+            "body",
+            "// sync-end:x"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "body\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "1",
+                            "declaration": "// sync-start:x 1 a.js"
+                        },
+                        "2": {
+                            "target": "b.js",
+                            "type": "local",
+                            "checksum": "2",
+                            "declaration": "// sync-start:x 2 b.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "Two markers one after the other",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x a.js",
+            "one",
+            "// sync-end:x",
+            "// sync-start:y b.js",
+            "two",
+            "// sync-end:y"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "one\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "",
+                            "declaration": "// sync-start:x a.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            },
+            {
+                "marker": {
+                    "id": "y",
+                    "content": [
+                        "two\n"
+                    ],
+                    "targets": {
+                        "4": {
+                            "target": "b.js",
+                            "type": "local",
+                            "checksum": "",
+                            "declaration": "// sync-start:y b.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "A nested marker's tag lines aren't part of the outer block",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:outer a.js",
+            "o1",
+            "// sync-start:inner b.js",
+            "both",
+            "// sync-end:inner",
+            "o2",
+            "// sync-end:outer"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "inner",
+                    "content": [
+                        "both\n"
+                    ],
+                    "targets": {
+                        "3": {
+                            "target": "b.js",
+                            "type": "local",
+                            "checksum": "",
+                            "declaration": "// sync-start:inner b.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            },
+            {
+                "marker": {
+                    "id": "outer",
+                    "content": [
+                        "o1\n",
+                        "both\n",
+                        "o2\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "",
+                            "declaration": "// sync-start:outer a.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "Overlapping markers end in the order of their sync-end tags",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x a.js",
+            "// sync-start:y b.js",
+            "both",
+            "// sync-end:x",
+            "y only",
+            "// sync-end:y"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "both\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "",
+                            "declaration": "// sync-start:x a.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            },
+            {
+                "marker": {
+                    "id": "y",
+                    "content": [
+                        "both\n",
+                        "y only\n"
+                    ],
+                    "targets": {
+                        "2": {
+                            "target": "b.js",
+                            "type": "local",
+                            "checksum": "",
+                            "declaration": "// sync-start:y b.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "A marker id used again after its block ends starts a new block",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x a.js",
+            "one",
+            "// sync-end:x",
+            "// sync-start:x b.js",
+            "two",
+            "// sync-end:x"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "one\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "",
+                            "declaration": "// sync-start:x a.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            },
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "two\n"
+                    ],
+                    "targets": {
+                        "4": {
+                            "target": "b.js",
+                            "type": "local",
+                            "checksum": "",
+                            "declaration": "// sync-start:x b.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "A remote target",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x 123 https://example.com/a",
+            "body",
+            "// sync-end:x"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "body\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "https://example.com/a",
+                            "type": "remote",
+                            "checksum": "123",
+                            "declaration": "// sync-start:x 123 https://example.com/a"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "A target that doesn't exist",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [
+            "missing.js"
+        ],
+        "lines": [
+            "// sync-start:x 1 missing.js",
+            "body",
+            "// sync-end:x"
+        ],
+        "events": [
+            {
+                "error": {
+                    "markerID": "x",
+                    "reason": "Sync-start for 'x' points to 'missing.js', which does not exist or is a directory",
+                    "location": {
+                        "line": 1
+                    },
+                    "code": "file-does-not-exist"
+                }
+            },
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "body\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "missing.js",
+                            "type": "local",
+                            "checksum": "1",
+                            "declaration": "// sync-start:x 1 missing.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "The same target twice",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x 1 a.js",
+            "// sync-start:x 2 a.js",
+            "body",
+            "// sync-end:x"
+        ],
+        "events": [
+            {
+                "error": {
+                    "markerID": "x",
+                    "reason": "Duplicate target for sync-tag 'x'",
+                    "location": {
+                        "line": 2
+                    },
+                    "code": "duplicate-target",
+                    "fix": {
+                        "type": "delete",
+                        "description": "Removed duplicate target for sync-tag 'x'",
+                        "declaration": "// sync-start:x 2 a.js",
+                        "line": 2
+                    }
+                }
+            },
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "body\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "1",
+                            "declaration": "// sync-start:x 1 a.js"
+                        },
+                        "2": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "2",
+                            "declaration": "// sync-start:x 2 a.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "A sync-start tag after the block's content has begun",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x a.js",
+            "body",
+            "// sync-start:x b.js",
+            "more",
+            "// sync-end:x"
+        ],
+        "events": [
+            {
+                "error": {
+                    "markerID": "x",
+                    "reason": "Sync-start for 'x' found after content started",
+                    "location": {
+                        "line": 3
+                    },
+                    "code": "start-tag-after-content"
+                }
+            },
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "body\n",
+                        "more\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "",
+                            "declaration": "// sync-start:x a.js"
+                        },
+                        "3": {
+                            "target": "b.js",
+                            "type": "local",
+                            "checksum": "",
+                            "declaration": "// sync-start:x b.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "Sync-start tags in different comment styles",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x a.js",
+            "# sync-start:x b.js",
+            "body",
+            "// sync-end:x"
+        ],
+        "events": [
+            {
+                "error": {
+                    "markerID": "x",
+                    "reason": "Sync-start tags for 'x' given in different comment styles. Please use the same style for all sync-start tags that have identical identifiers.",
+                    "location": {
+                        "line": 2
+                    },
+                    "code": "different-comment-syntax"
+                }
+            },
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "body\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "",
+                            "declaration": "// sync-start:x a.js"
+                        },
+                        "2": {
+                            "target": "b.js",
+                            "type": "local",
+                            "checksum": "",
+                            "declaration": "# sync-start:x b.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "A sync-end tag with no sync-start tag",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "body",
+            "// sync-end:x"
+        ],
+        "events": [
+            {
+                "error": {
+                    "markerID": "x",
+                    "reason": "Sync-end for 'x' found, but there was no corresponding sync-start",
+                    "location": {
+                        "line": 2
+                    },
+                    "code": "end-tag-without-start-tag"
+                }
+            },
+            {
+                "marker": {
+                    "id": "x",
+                    "content": null,
+                    "targets": {},
+                    "commentStart": null,
+                    "commentEnd": null
+                }
+            }
+        ]
+    },
+    {
+        "description": "A sync-start tag with no sync-end tag",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x a.js",
+            "body"
+        ],
+        "events": [
+            {
+                "error": {
+                    "markerID": "x",
+                    "reason": "Sync-start 'x' has no corresponding sync-end",
+                    "location": {
+                        "line": 1
+                    },
+                    "code": "start-tag-witout-end-tag"
+                }
+            }
+        ]
+    },
+    {
+        "description": "Unterminated sync-start tags are reported only for the first target",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x a.js",
+            "// sync-start:x b.js",
+            "// sync-start:x a.js",
+            "body"
+        ],
+        "events": [
+            {
+                "error": {
+                    "markerID": "x",
+                    "reason": "Duplicate target for sync-tag 'x'",
+                    "location": {
+                        "line": 3
+                    },
+                    "code": "duplicate-target",
+                    "fix": {
+                        "type": "delete",
+                        "description": "Removed duplicate target for sync-tag 'x'",
+                        "declaration": "// sync-start:x a.js",
+                        "line": 3
+                    }
+                }
+            },
+            {
+                "error": {
+                    "markerID": "x",
+                    "reason": "Sync-start 'x' has no corresponding sync-end",
+                    "location": {
+                        "line": 1
+                    },
+                    "code": "start-tag-witout-end-tag"
+                }
+            },
+            {
+                "error": {
+                    "markerID": "x",
+                    "reason": "Sync-start 'x' has no corresponding sync-end",
+                    "location": {
+                        "line": 3
+                    },
+                    "code": "start-tag-witout-end-tag"
+                }
+            }
+        ]
+    },
+    {
+        "description": "Several unterminated markers",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x a.js",
+            "// sync-start:y b.js",
+            "body"
+        ],
+        "events": [
+            {
+                "error": {
+                    "markerID": "x",
+                    "reason": "Sync-start 'x' has no corresponding sync-end",
+                    "location": {
+                        "line": 1
+                    },
+                    "code": "start-tag-witout-end-tag"
+                }
+            },
+            {
+                "error": {
+                    "markerID": "y",
+                    "reason": "Sync-start 'y' has no corresponding sync-end",
+                    "location": {
+                        "line": 2
+                    },
+                    "code": "start-tag-witout-end-tag"
+                }
+            }
+        ]
+    },
+    {
+        "description": "A sync-start tag with only a marker id is malformed",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x",
+            "body",
+            "// sync-end:x"
+        ],
+        "events": [
+            {
+                "error": {
+                    "markerID": null,
+                    "reason": "Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'",
+                    "location": {
+                        "line": 1
+                    },
+                    "code": "malformed-start-tag"
+                }
+            },
+            {
+                "error": {
+                    "markerID": "x",
+                    "reason": "Sync-end for 'x' found, but there was no corresponding sync-start",
+                    "location": {
+                        "line": 3
+                    },
+                    "code": "end-tag-without-start-tag"
+                }
+            },
+            {
+                "marker": {
+                    "id": "x",
+                    "content": null,
+                    "targets": {},
+                    "commentStart": null,
+                    "commentEnd": null
+                }
+            }
+        ]
+    },
+    {
+        "description": "A sync-start tag with a checksum but no target has an empty target",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x 123",
+            "body",
+            "// sync-end:x"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "body\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "",
+                            "type": "local",
+                            "checksum": "123",
+                            "declaration": "// sync-start:x 123"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "An empty sync-end tag is malformed",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x a.js",
+            "body",
+            "// sync-end:"
+        ],
+        "events": [
+            {
+                "error": {
+                    "markerID": null,
+                    "reason": "Malformed sync-end: format should be 'sync-end:<label>'",
+                    "location": {
+                        "line": 3
+                    },
+                    "code": "malformed-end-tag"
+                }
+            },
+            {
+                "error": {
+                    "markerID": "x",
+                    "reason": "Sync-start 'x' has no corresponding sync-end",
+                    "location": {
+                        "line": 1
+                    },
+                    "code": "start-tag-witout-end-tag"
+                }
+            }
+        ]
+    },
+    {
+        "description": "One extra word after a sync-end tag's id is allowed",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x a.js",
+            "body",
+            "// sync-end:x 0"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "body\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "",
+                            "declaration": "// sync-start:x a.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "Two extra words after a sync-end tag's id are malformed",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x a.js",
+            "body",
+            "// sync-end:x a b"
+        ],
+        "events": [
+            {
+                "error": {
+                    "markerID": null,
+                    "reason": "Malformed sync-end: format should be 'sync-end:<label>'",
+                    "location": {
+                        "line": 3
+                    },
+                    "code": "malformed-end-tag"
+                }
+            },
+            {
+                "error": {
+                    "markerID": "x",
+                    "reason": "Sync-start 'x' has no corresponding sync-end",
+                    "location": {
+                        "line": 1
+                    },
+                    "code": "start-tag-witout-end-tag"
+                }
+            }
+        ]
+    },
+    {
+        "description": "A target containing a space is malformed",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x 1 my file.js",
+            "body",
+            "// sync-end:x"
+        ],
+        "events": [
+            {
+                "error": {
+                    "markerID": null,
+                    "reason": "Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'",
+                    "location": {
+                        "line": 1
+                    },
+                    "code": "malformed-start-tag"
+                }
+            },
+            {
+                "error": {
+                    "markerID": "x",
+                    "reason": "Sync-end for 'x' found, but there was no corresponding sync-start",
+                    "location": {
+                        "line": 3
+                    },
+                    "code": "end-tag-without-start-tag"
+                }
+            },
+            {
+                "marker": {
+                    "id": "x",
+                    "content": null,
+                    "targets": {},
+                    "commentStart": null,
+                    "commentEnd": null
+                }
+            }
+        ]
+    },
+    {
+        "description": "A comment end after the target",
+        "comments": [
+            "/*"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "/* sync-start:x 1 a.js */",
+            "body",
+            "/* sync-end:x */"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "body\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "1",
+                            "declaration": "/* sync-start:x 1 a.js */"
+                        }
+                    },
+                    "commentStart": "/*",
+                    "commentEnd": " */"
+                }
+            }
+        ]
+    },
+    {
+        "description": "A JSX comment end after the target",
+        "comments": [
+            "{/*"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "{/* sync-start:x 1 a.js */}",
+            "body",
+            "{/* sync-end:x */}"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "body\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "1",
+                            "declaration": "{/* sync-start:x 1 a.js */}"
+                        }
+                    },
+                    "commentStart": "{/*",
+                    "commentEnd": " */}"
+                }
+            }
+        ]
+    },
+    {
+        "description": "A comment end after a target with no checksum",
+        "comments": [
+            "/*"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "/* sync-start:x a.js */",
+            "body",
+            "/* sync-end:x */"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "body\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "",
+                            "declaration": "/* sync-start:x a.js */"
+                        }
+                    },
+                    "commentStart": "/*",
+                    "commentEnd": " */"
+                }
+            }
+        ]
+    },
+    {
+        "description": "Text after the target that isn't a comment end is malformed",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x 1 a.js trailing",
+            "body",
+            "// sync-end:x"
+        ],
+        "events": [
+            {
+                "error": {
+                    "markerID": null,
+                    "reason": "Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'",
+                    "location": {
+                        "line": 1
+                    },
+                    "code": "malformed-start-tag"
+                }
+            },
+            {
+                "error": {
+                    "markerID": "x",
+                    "reason": "Sync-end for 'x' found, but there was no corresponding sync-start",
+                    "location": {
+                        "line": 3
+                    },
+                    "code": "end-tag-without-start-tag"
+                }
+            },
+            {
+                "marker": {
+                    "id": "x",
+                    "content": null,
+                    "targets": {},
+                    "commentStart": null,
+                    "commentEnd": null
+                }
+            }
+        ]
+    },
+    {
+        "description": "No whitespace between the comment and the tag",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "//sync-start:x a.js",
+            "body",
+            "//sync-end:x"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "body\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "",
+                            "declaration": "//sync-start:x a.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "Several spaces and tabs between the parts",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "//  \tsync-start:x\t\t1 \t a.js",
+            "body",
+            "//\tsync-end:x"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "body\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "1",
+                            "declaration": "//  \tsync-start:x\t\t1 \t a.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "Indented tags, with indented content kept as is",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "    // sync-start:x a.js",
+            "    body",
+            "\tmore",
+            "    // sync-end:x"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "    body\n",
+                        "\tmore\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "",
+                            "declaration": "    // sync-start:x a.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "Trailing whitespace on tag lines",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x 1 a.js   ",
+            "body  ",
+            "// sync-end:x \t"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "body  \n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "1",
+                            "declaration": "// sync-start:x 1 a.js   "
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "Blank and whitespace-only lines inside a block",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x a.js",
+            "",
+            "   ",
+            "// sync-end:x"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "\n",
+                        "   \n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "",
+                            "declaration": "// sync-start:x a.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "A tag mentioned after other text on a line is content",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x a.js",
+            "code(); // sync-start:y b.js",
+            "// sync-end:x"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "code(); // sync-start:y b.js\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "",
+                            "declaration": "// sync-start:x a.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "A marker id containing a colon",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:a:b 1 a.js",
+            "body",
+            "// sync-end:a:b"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "a:b",
+                    "content": [
+                        "body\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "1",
+                            "declaration": "// sync-start:a:b 1 a.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "A checksum with leading zeros",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x 007 a.js",
+            "body",
+            "// sync-end:x"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "body\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "007",
+                            "declaration": "// sync-start:x 007 a.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "A non-ASCII digit isn't a checksum, so the tag is malformed",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x \u00b2 a.js",
+            "body",
+            "// sync-end:x"
+        ],
+        "events": [
+            {
+                "error": {
+                    "markerID": null,
+                    "reason": "Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'",
+                    "location": {
+                        "line": 1
+                    },
+                    "code": "malformed-start-tag"
+                }
+            },
+            {
+                "error": {
+                    "markerID": "x",
+                    "reason": "Sync-end for 'x' found, but there was no corresponding sync-start",
+                    "location": {
+                        "line": 3
+                    },
+                    "code": "end-tag-without-start-tag"
+                }
+            },
+            {
+                "marker": {
+                    "id": "x",
+                    "content": null,
+                    "targets": {},
+                    "commentStart": null,
+                    "commentEnd": null
+                }
+            }
+        ]
+    },
+    {
+        "description": "A non-ASCII letter can be a comment end, since only ASCII letters are word characters",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x 1 a.js \u00e9",
+            "body",
+            "// sync-end:x"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "body\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "1",
+                            "declaration": "// sync-start:x 1 a.js \u00e9"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": " \u00e9"
+                }
+            }
+        ]
+    },
+    {
+        "description": "A byte order mark before a tag on the first line is trimmed",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "\ufeff// sync-start:x a.js",
+            "body",
+            "// sync-end:x"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "body\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "",
+                            "declaration": "\ufeff// sync-start:x a.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "Non-breaking space indentation is trimmed",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "\u00a0// sync-start:x a.js",
+            "body",
+            "\u00a0// sync-end:x"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "body\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "",
+                            "declaration": "\u00a0// sync-start:x a.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "Ideographic spaces separate a tag's parts",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "//\u3000sync-start:x\u30001\u3000a.js",
+            "body",
+            "// sync-end:x"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "body\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "1",
+                            "declaration": "//\u3000sync-start:x\u30001\u3000a.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "NEL isn't whitespace, so a tag after it is content",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "\u0085// sync-start:x a.js",
+            "body",
+            "// sync-end:x"
+        ],
+        "events": [
+            {
+                "error": {
+                    "markerID": "x",
+                    "reason": "Sync-end for 'x' found, but there was no corresponding sync-start",
+                    "location": {
+                        "line": 3
+                    },
+                    "code": "end-tag-without-start-tag"
+                }
+            },
+            {
+                "marker": {
+                    "id": "x",
+                    "content": null,
+                    "targets": {},
+                    "commentStart": null,
+                    "commentEnd": null
+                }
+            }
+        ]
+    },
+    {
+        "description": "NEL isn't whitespace, so it doesn't separate a tag's parts",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x\u0085a.js",
+            "body",
+            "// sync-end:x"
+        ],
+        "events": [
+            {
+                "error": {
+                    "markerID": null,
+                    "reason": "Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'",
+                    "location": {
+                        "line": 1
+                    },
+                    "code": "malformed-start-tag"
+                }
+            },
+            {
+                "error": {
+                    "markerID": "x",
+                    "reason": "Sync-end for 'x' found, but there was no corresponding sync-start",
+                    "location": {
+                        "line": 3
+                    },
+                    "code": "end-tag-without-start-tag"
+                }
+            },
+            {
+                "marker": {
+                    "id": "x",
+                    "content": null,
+                    "targets": {},
+                    "commentStart": null,
+                    "commentEnd": null
+                }
+            }
+        ]
+    },
+    {
+        "description": "U+2028 at the end of a tag line is trimmed",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x 1 a.js\u2028",
+            "body",
+            "// sync-end:x\u2029"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "body\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "1",
+                            "declaration": "// sync-start:x 1 a.js\u2028"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "U+2028 inside a tag line stops it being a tag",
+        "comments": [
+            "/*"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "/* sync-start:x 1 a.js\u2028*/",
+            "body",
+            "/* sync-end:x */"
+        ],
+        "events": [
+            {
+                "error": {
+                    "markerID": "x",
+                    "reason": "Sync-end for 'x' found, but there was no corresponding sync-start",
+                    "location": {
+                        "line": 3
+                    },
+                    "code": "end-tag-without-start-tag"
+                }
+            },
+            {
+                "marker": {
+                    "id": "x",
+                    "content": null,
+                    "targets": {},
+                    "commentStart": null,
+                    "commentEnd": null
+                }
+            }
+        ]
+    },
+    {
+        "description": "U+2028 inside a content line is kept",
+        "comments": [
+            "//",
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x a.js",
+            "a\u2028b",
+            "// sync-end:x"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "a\u2028b\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "",
+                            "declaration": "// sync-start:x a.js"
+                        }
+                    },
+                    "commentStart": "//",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "A longer comment style is tried when a shorter one doesn't match",
+        "comments": [
+            "//",
+            "///"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "/// sync-start:x a.js",
+            "body",
+            "/// sync-end:x"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "body\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "",
+                            "declaration": "/// sync-start:x a.js"
+                        }
+                    },
+                    "commentStart": "///",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    },
+    {
+        "description": "Comment styles containing regular expression characters match literally",
+        "comments": [
+            "{{/*"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "{{/* sync-start:x 1 a.js */}}",
+            "body",
+            "{{/* sync-end:x */}}",
+            "{{ sync-start:y a.js"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "body\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "1",
+                            "declaration": "{{/* sync-start:x 1 a.js */}}"
+                        }
+                    },
+                    "commentStart": "{{/*",
+                    "commentEnd": " */}}"
+                }
+            }
+        ]
+    },
+    {
+        "description": "A comment style no line uses finds no tags",
+        "comments": [
+            "#"
+        ],
+        "missingTargets": [],
+        "lines": [
+            "// sync-start:x a.js",
+            "body",
+            "// sync-end:x"
+        ],
+        "events": []
+    },
+    {
+        "description": "No comment styles at all matches tags with no comment",
+        "comments": [],
+        "missingTargets": [],
+        "lines": [
+            "sync-start:x a.js",
+            "body",
+            "sync-end:x"
+        ],
+        "events": [
+            {
+                "marker": {
+                    "id": "x",
+                    "content": [
+                        "body\n"
+                    ],
+                    "targets": {
+                        "1": {
+                            "target": "a.js",
+                            "type": "local",
+                            "checksum": "",
+                            "declaration": "sync-start:x a.js"
+                        }
+                    },
+                    "commentStart": "",
+                    "commentEnd": ""
+                }
+            }
+        ]
+    }
+]
