@@ -13,6 +13,7 @@ workspace = true
 
 [dependencies]
 adler2 = "2"
+indexmap = "2"
 
 [dev-dependencies]
 serde = { version = "1", features = ["derive"] }
