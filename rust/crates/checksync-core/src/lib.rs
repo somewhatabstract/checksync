@@ -5,6 +5,7 @@
 
 mod calc_checksum;
 mod decode_utf8;
+pub mod errors;
 mod split_lines;
 mod types;
 
