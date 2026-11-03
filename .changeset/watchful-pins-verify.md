@@ -1,4 +1,0 @@
----
----
-
-Audit workflows with zizmor
