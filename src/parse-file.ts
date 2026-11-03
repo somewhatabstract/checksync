@@ -1,14 +1,13 @@
 /**
  * Code to extract and manipulate our sync markers from files.
  */
-import readline from "readline";
-import fs from "fs";
 
 import MarkerParser from "./marker-parser";
 import getNormalizedPathInfo from "./get-normalized-path-info";
 import * as Errors from "./errors";
 import {closesdir} from "ancesdir";
 import calcChecksum from "./checksum";
+import readLines from "./read-lines";
 
 import {
     Markers,
@@ -116,24 +115,11 @@ export default function parseFile(
                 options.comments,
             );
 
-            // Open the file synchronously so we get a nice error if the file
-            // does not exist or errors in some way during open.
-            const fd = fs.openSync(file, "r");
-            const fileStream = fs.createReadStream(file, {fd});
-
-            let lineCount = 0;
-
-            // Start the parsing.
-            readline
-                .createInterface({
-                    input: fileStream,
-                    crlfDelay: Infinity,
-                })
-                .on("line", (line: string) => {
-                    lineCount++;
-                    markerParser.parseLine(line);
-                })
-                .on("close", () => {
+            readLines(file)
+                .then((lines) => {
+                    for (const line of lines) {
+                        markerParser.parseLine(line);
+                    }
                     markerParser.recordUnterminatedMarkers();
 
                     const markerCount = Object.keys(markers).length;
@@ -141,11 +127,14 @@ export default function parseFile(
                         markers: markerCount === 0 ? null : markers,
                         referencedFiles,
                         errors,
-                        lineCount,
+                        lineCount: lines.length,
                     } as const;
 
                     resolve({...result, readOnly});
-                });
+                })
+                // An error while parsing the lines is reported the same way
+                // as an error reading the file.
+                .catch(reject);
         } catch (e: any) {
             reject(e);
         }
