@@ -10,6 +10,7 @@ on:
     paths:
     - 'rust/**'
     - '__conformance__/*-vectors.json'
+    - 'src/error-codes.ts'
     - '.gitattributes'
     - '.github/workflows/rust.yml'
 
@@ -19,6 +20,7 @@ on:
     paths:
     - 'rust/**'
     - '__conformance__/*-vectors.json'
+    - 'src/error-codes.ts'
     - '.gitattributes'
     - '.github/workflows/rust.yml'
 

@@ -9,8 +9,8 @@ use crate::types::{Line, LineEnding};
 /// record of its original ending.
 ///
 /// Node.js 24 `readline` also ends lines at U+2028 and U+2029, so checksync
-/// 11.x replaces them with `\n` in checksums. Keeping them in the line instead
-/// matches earlier versions and the original Python sync linter.
+/// 11.0.0 replaced them with `\n` in checksums. Keeping them in the line
+/// matches every other version and the original Python sync linter.
 ///
 /// # Arguments
 ///

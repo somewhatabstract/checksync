@@ -11,4 +11,7 @@ mod types;
 pub use calc_checksum::calc_checksum;
 pub use decode_utf8::decode_utf8;
 pub use split_lines::split_lines;
-pub use types::{Line, LineEnding};
+pub use types::{
+    ErrorCode, ErrorDetails, ErrorLocation, FixAction, Line, LineEnding, Marker, Markers,
+    NormalizedPathInfo, Target, TargetType, Targets,
+};
