@@ -9,10 +9,11 @@ import {StringDecoder} from "string_decoder";
  * lines. The file is decoded as UTF-8: invalid bytes become U+FFFD, and an
  * incomplete character at the very end of the file is dropped.
  *
- * This is how checksync read files before 11.0.0, through Node.js 22's
- * readline with `crlfDelay: Infinity`. Node.js 24's readline also ends lines at
- * U+2028 and U+2029, which changed checksums for blocks containing them, so
- * checksync splits lines itself rather than using readline.
+ * This is how readline with `crlfDelay: Infinity`, which checksync used to
+ * read files until 11.0.1, splits lines on Node.js 22. Node.js 24's readline
+ * also ends lines at U+2028 and U+2029, which changed checksums for blocks
+ * containing them on any checksync version run on Node.js 24, so checksync
+ * splits lines itself rather than using readline.
  *
  * @param file The path of the file to read.
  * @returns A promise of the file's lines, in order.
