@@ -1,0 +1,422 @@
+[
+    {
+        "description": "A name pattern matches at any depth",
+        "ignoreFile": "*.log\n",
+        "paths": [
+            {
+                "path": "a.log",
+                "result": "ignored"
+            },
+            {
+                "path": "dir/a.log",
+                "result": "ignored"
+            },
+            {
+                "path": "dir/sub/a.log",
+                "result": "ignored"
+            },
+            {
+                "path": "a.txt",
+                "result": "none"
+            },
+            {
+                "path": "a.log.txt",
+                "result": "none"
+            }
+        ]
+    },
+    {
+        "description": "Matching ignores case",
+        "ignoreFile": "*.log\nBuild/\n",
+        "paths": [
+            {
+                "path": "a.LOG",
+                "result": "ignored"
+            },
+            {
+                "path": "A.Log",
+                "result": "ignored"
+            },
+            {
+                "path": "build/x.js",
+                "result": "ignored"
+            },
+            {
+                "path": "BUILD/x.js",
+                "result": "ignored"
+            }
+        ]
+    },
+    {
+        "description": "A leading slash anchors the pattern to the ignore file's folder",
+        "ignoreFile": "/build\n",
+        "paths": [
+            {
+                "path": "build",
+                "result": "ignored"
+            },
+            {
+                "path": "build/x.js",
+                "result": "ignored"
+            },
+            {
+                "path": "src/build",
+                "result": "none"
+            },
+            {
+                "path": "src/build/x.js",
+                "result": "none"
+            }
+        ]
+    },
+    {
+        "description": "A trailing slash matches only folders",
+        "ignoreFile": "build/\n",
+        "paths": [
+            {
+                "path": "build",
+                "result": "none"
+            },
+            {
+                "path": "build/x.js",
+                "result": "ignored"
+            },
+            {
+                "path": "src/build/x.js",
+                "result": "ignored"
+            }
+        ]
+    },
+    {
+        "description": "A slash in the middle anchors the pattern",
+        "ignoreFile": "doc/frotz\n",
+        "paths": [
+            {
+                "path": "doc/frotz",
+                "result": "ignored"
+            },
+            {
+                "path": "doc/frotz/x.js",
+                "result": "ignored"
+            },
+            {
+                "path": "a/doc/frotz",
+                "result": "none"
+            }
+        ]
+    },
+    {
+        "description": "A negation unignores a file",
+        "ignoreFile": "*.log\n!keep.log\n",
+        "paths": [
+            {
+                "path": "a.log",
+                "result": "ignored"
+            },
+            {
+                "path": "keep.log",
+                "result": "unignored"
+            },
+            {
+                "path": "dir/keep.log",
+                "result": "unignored"
+            }
+        ]
+    },
+    {
+        "description": "A negation can't unignore a file in an ignored folder",
+        "ignoreFile": "logs/\n!logs/keep.log\n",
+        "paths": [
+            {
+                "path": "logs/a.log",
+                "result": "ignored"
+            },
+            {
+                "path": "logs/keep.log",
+                "result": "ignored"
+            }
+        ]
+    },
+    {
+        "description": "A negation after a folder's contents are ignored does unignore",
+        "ignoreFile": "logs/*\n!logs/keep.log\n",
+        "paths": [
+            {
+                "path": "logs/a.log",
+                "result": "ignored"
+            },
+            {
+                "path": "logs/keep.log",
+                "result": "unignored"
+            }
+        ]
+    },
+    {
+        "description": "A later pattern overrides an earlier one",
+        "ignoreFile": "!a.log\n*.log\n",
+        "paths": [
+            {
+                "path": "a.log",
+                "result": "ignored"
+            }
+        ]
+    },
+    {
+        "description": "A negation with nothing to override is still an opinion",
+        "ignoreFile": "!a.js\n",
+        "paths": [
+            {
+                "path": "a.js",
+                "result": "unignored"
+            },
+            {
+                "path": "b.js",
+                "result": "none"
+            }
+        ]
+    },
+    {
+        "description": "A leading **/ matches in any folder",
+        "ignoreFile": "**/foo\n",
+        "paths": [
+            {
+                "path": "foo",
+                "result": "ignored"
+            },
+            {
+                "path": "a/foo",
+                "result": "ignored"
+            },
+            {
+                "path": "a/b/foo/x.js",
+                "result": "ignored"
+            }
+        ]
+    },
+    {
+        "description": "A trailing /** matches everything inside",
+        "ignoreFile": "foo/**\n",
+        "paths": [
+            {
+                "path": "foo",
+                "result": "none"
+            },
+            {
+                "path": "foo/x.js",
+                "result": "ignored"
+            },
+            {
+                "path": "foo/a/b.js",
+                "result": "ignored"
+            },
+            {
+                "path": "a/foo/x.js",
+                "result": "none"
+            }
+        ]
+    },
+    {
+        "description": "/**/ matches zero or more folders",
+        "ignoreFile": "a/**/b\n",
+        "paths": [
+            {
+                "path": "a/b",
+                "result": "ignored"
+            },
+            {
+                "path": "a/x/b",
+                "result": "ignored"
+            },
+            {
+                "path": "a/x/y/b",
+                "result": "ignored"
+            },
+            {
+                "path": "x/a/b",
+                "result": "none"
+            }
+        ]
+    },
+    {
+        "description": "* doesn't cross folders",
+        "ignoreFile": "a/*.js\n",
+        "paths": [
+            {
+                "path": "a/x.js",
+                "result": "ignored"
+            },
+            {
+                "path": "a/b/x.js",
+                "result": "none"
+            }
+        ]
+    },
+    {
+        "description": "? matches one character",
+        "ignoreFile": "file?.js\n",
+        "paths": [
+            {
+                "path": "file1.js",
+                "result": "ignored"
+            },
+            {
+                "path": "file.js",
+                "result": "none"
+            },
+            {
+                "path": "file12.js",
+                "result": "none"
+            }
+        ]
+    },
+    {
+        "description": "A character class matches one of its characters",
+        "ignoreFile": "file[0-9].js\n[!a]x.js\n",
+        "paths": [
+            {
+                "path": "file5.js",
+                "result": "ignored"
+            },
+            {
+                "path": "filex.js",
+                "result": "none"
+            },
+            {
+                "path": "bx.js",
+                "result": "ignored"
+            },
+            {
+                "path": "ax.js",
+                "result": "none"
+            }
+        ]
+    },
+    {
+        "description": "Comments and blank lines are skipped",
+        "ignoreFile": "# *.js\n\n   \n*.log\n",
+        "paths": [
+            {
+                "path": "a.js",
+                "result": "none"
+            },
+            {
+                "path": "a.log",
+                "result": "ignored"
+            },
+            {
+                "path": "# *.js",
+                "result": "none"
+            }
+        ]
+    },
+    {
+        "description": "A backslash escapes a leading # or !",
+        "ignoreFile": "\\#hash\n\\!bang\n",
+        "paths": [
+            {
+                "path": "#hash",
+                "result": "ignored"
+            },
+            {
+                "path": "!bang",
+                "result": "ignored"
+            }
+        ]
+    },
+    {
+        "description": "Trailing spaces are dropped unless escaped",
+        "ignoreFile": "a.js   \nb\\ \n",
+        "paths": [
+            {
+                "path": "a.js",
+                "result": "ignored"
+            },
+            {
+                "path": "b ",
+                "result": "ignored"
+            },
+            {
+                "path": "b",
+                "result": "none"
+            }
+        ]
+    },
+    {
+        "description": "A lone * matches everything",
+        "ignoreFile": "*\n",
+        "paths": [
+            {
+                "path": "a.js",
+                "result": "ignored"
+            },
+            {
+                "path": "dir/a.js",
+                "result": "ignored"
+            },
+            {
+                "path": ".hidden",
+                "result": "ignored"
+            }
+        ]
+    },
+    {
+        "description": "Dotfiles match like any other file",
+        "ignoreFile": ".*\n",
+        "paths": [
+            {
+                "path": ".env",
+                "result": "ignored"
+            },
+            {
+                "path": "dir/.env",
+                "result": "ignored"
+            },
+            {
+                "path": "a.js",
+                "result": "none"
+            }
+        ]
+    },
+    {
+        "description": "CRLF line endings are allowed",
+        "ignoreFile": "*.log\r\n!keep.log\r\n",
+        "paths": [
+            {
+                "path": "a.log",
+                "result": "ignored"
+            },
+            {
+                "path": "keep.log",
+                "result": "unignored"
+            }
+        ]
+    },
+    {
+        "description": "A file outside the ignore file's folder gets no opinion",
+        "ignoreFile": "*\n",
+        "paths": [
+            {
+                "path": "../outside.log",
+                "result": "none"
+            },
+            {
+                "path": "inside.log",
+                "result": "ignored"
+            }
+        ]
+    },
+    {
+        "description": "An empty ignore file has no opinion",
+        "ignoreFile": "",
+        "paths": [
+            {
+                "path": "a.js",
+                "result": "none"
+            },
+            {
+                "path": "dir/a.js",
+                "result": "none"
+            }
+        ]
+    }
+]
