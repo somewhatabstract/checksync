@@ -117,7 +117,10 @@ const TagDecodeGroup = Object.freeze({
  * @class MarkerParser
  */
 export default class MarkerParser {
-    _openMarkers: TrackedMarkers = {};
+    // Marker ids and target paths come from the file being parsed, so these
+    // maps have no prototype: an id like "constructor" must not find an
+    // inherited property.
+    _openMarkers: TrackedMarkers = Object.create(null);
     _addMarker: addMarkerFn;
     _recordError: recordErrorFn;
     _normalizePath: normalizeTargetFn;
@@ -221,7 +224,7 @@ export default class MarkerParser {
     ) => {
         this._openMarkers[id] = this._openMarkers[id] || {
             content: [],
-            targets: {},
+            targets: Object.create(null),
             commentStart,
             commentEnd,
         };

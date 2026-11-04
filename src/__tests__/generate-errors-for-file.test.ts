@@ -982,4 +982,81 @@ describe("#generateMarkerEdges", () => {
             `"Unknown target type: unknown"`,
         );
     });
+
+    it("should yield a missing return tag error for a marker id like constructor that the target file doesn't have", () => {
+        // Arrange
+        const options: Options = {} as any;
+        const markerCache: MarkerCache = {
+            filea: {
+                readOnly: false,
+                errors: [],
+                aliases: ["filea"],
+                markers: {
+                    constructor: {
+                        commentStart: "//",
+                        commentEnd: undefined,
+                        contentChecksum: "",
+                        selfChecksum: "",
+                        targets: {
+                            [1]: {
+                                checksum: "5678",
+                                target: "fileb",
+                                declaration:
+                                    "// sync-start:constructor 5678 fileb",
+                                type: "local" as const,
+                            },
+                        },
+                    },
+                },
+            },
+            fileb: {
+                readOnly: false,
+                errors: [],
+                aliases: ["fileb"],
+                markers: {},
+            },
+        };
+
+        // Act
+        const result = Array.from(
+            generateErrorsForFile(options, "filea", markerCache),
+        );
+
+        // Assert
+        expect(result).toEqual([
+            {
+                markerID: "constructor",
+                code: "no-return-tag",
+                location: {line: 1},
+                reason: "No return tag named 'constructor' in 'fileb'",
+            },
+        ]);
+    });
+
+    it("should yield a fileDoesNotExist error for a marker id like toString that the file has no marker for", () => {
+        // Arrange
+        const options: Options = {} as any;
+        const error = {
+            markerID: "toString",
+            reason: "It's an error",
+            code: ErrorCode.fileDoesNotExist,
+            location: {line: 1},
+        };
+        const markerCache: MarkerCache = {
+            filea: {
+                readOnly: false,
+                errors: [error],
+                aliases: ["filea"],
+                markers: {},
+            },
+        };
+
+        // Act
+        const result = Array.from(
+            generateErrorsForFile(options, "filea", markerCache),
+        );
+
+        // Assert
+        expect(result).toEqual([error]);
+    });
 });

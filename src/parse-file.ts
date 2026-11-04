@@ -10,7 +10,7 @@ import calcChecksum from "./checksum";
 import readLines from "./read-lines";
 
 import {
-    Markers,
+    Marker,
     Targets,
     Options,
     FileParseResult,
@@ -39,7 +39,9 @@ export default function parseFile(
     // We want ancesdir to start the search inside the same folder as the file
     // we're parsing, so we add a fake child onto it that ancesdir will strip.
     const rootPath = closesdir(file, options.rootMarker ?? undefined);
-    const markers: Markers = {};
+    // Marker ids come from the file, so they're kept in a Map: in a plain
+    // object, an id like "constructor" would find an inherited property.
+    const markers = new Map<string, Marker>();
     const errors: Array<ErrorDetails> = [];
 
     const recordError = (e: ErrorDetails): void => {
@@ -60,7 +62,7 @@ export default function parseFile(
                 recordError(Errors.emptyMarker(id, lineNumber));
             }
 
-            if (markers[id]) {
+            if (markers.has(id)) {
                 recordError(Errors.duplicateMarker(id, lineNumber));
             }
 
@@ -70,14 +72,14 @@ export default function parseFile(
             }
         }
 
-        markers[id] = {
+        markers.set(id, {
             contentChecksum:
                 content == null ? NoChecksum : calcChecksum(content),
             selfChecksum: calcChecksum([...(content ?? []), relativeFilePath]),
             targets,
             commentStart,
             commentEnd,
-        };
+        });
     };
 
     const referencedFiles: Array<string> = [];
@@ -122,9 +124,13 @@ export default function parseFile(
                     }
                     markerParser.recordUnterminatedMarkers();
 
-                    const markerCount = Object.keys(markers).length;
                     const result = {
-                        markers: markerCount === 0 ? null : markers,
+                        // Object.fromEntries defines each id as an own
+                        // property, so even "__proto__" becomes a marker.
+                        markers:
+                            markers.size === 0
+                                ? null
+                                : Object.fromEntries(markers),
                         referencedFiles,
                         errors,
                         lineCount: lines.length,

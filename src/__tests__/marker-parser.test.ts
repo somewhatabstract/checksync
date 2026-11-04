@@ -334,4 +334,90 @@ describe("MarkerParser", () => {
             expect(recordedIds).toEqual(["markerid1", "markerid2"]);
         });
     });
+
+    describe("ids and targets that are also Object property names", () => {
+        const NAMES = [
+            "constructor",
+            "toString",
+            "hasOwnProperty",
+            "__proto__",
+        ];
+
+        it.each(NAMES)(
+            "should not record errors for a marker with id %s",
+            (id) => {
+                // Arrange
+                const recordError = jest.fn<any, any>();
+                const parser = new MarkerParser(
+                    (target) => ({path: target, exists: true, type: "local"}),
+                    jest.fn<any, any>(),
+                    recordError,
+                    ["//"],
+                );
+
+                // Act
+                parser.parseLine(`// sync-start:${id} a.js`);
+                parser.parseLine("body");
+                parser.parseLine(`// sync-end:${id}`);
+                parser.recordUnterminatedMarkers();
+
+                // Assert
+                expect(recordError).not.toHaveBeenCalled();
+            },
+        );
+
+        it.each(NAMES)("should report the marker with id %s", (id) => {
+            // Arrange
+            const addMarker = jest.fn<any, any>();
+            const parser = new MarkerParser(
+                (target) => ({path: target, exists: true, type: "local"}),
+                addMarker,
+                jest.fn<any, any>(),
+                ["//"],
+            );
+
+            // Act
+            parser.parseLine(`// sync-start:${id} a.js`);
+            parser.parseLine("body");
+            parser.parseLine(`// sync-end:${id}`);
+
+            // Assert
+            expect(addMarker).toHaveBeenCalledWith(
+                id,
+                ["body\n"],
+                {
+                    "1": {
+                        target: "a.js",
+                        type: "local",
+                        checksum: "",
+                        declaration: `// sync-start:${id} a.js`,
+                    },
+                },
+                "//",
+                "",
+            );
+        });
+
+        it.each(NAMES)(
+            "should not report a duplicate target for a target path %s",
+            (target) => {
+                // Arrange
+                const recordError = jest.fn<any, any>();
+                const parser = new MarkerParser(
+                    (target) => ({path: target, exists: true, type: "local"}),
+                    jest.fn<any, any>(),
+                    recordError,
+                    ["//"],
+                );
+
+                // Act
+                parser.parseLine(`// sync-start:x 1 ${target}`);
+                parser.parseLine("body");
+                parser.parseLine("// sync-end:x");
+
+                // Assert
+                expect(recordError).not.toHaveBeenCalled();
+            },
+        );
+    });
 });

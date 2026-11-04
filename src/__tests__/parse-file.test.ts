@@ -979,4 +979,72 @@ describe("#parseFile", () => {
             lineCount: 0,
         });
     });
+
+    describe("marker ids that are also Object property names", () => {
+        const NAMES = [
+            "constructor",
+            "toString",
+            "hasOwnProperty",
+            "__proto__",
+        ];
+        const options: Options = {
+            includeGlobs: [],
+            comments: [],
+            autoFix: false,
+            rootMarker: null,
+            dryRun: false,
+            excludeGlobs: [],
+            ignoreFiles: [],
+            json: false,
+            allowEmptyTags: false,
+            cachePath: "",
+            cacheMode: "ignore",
+        };
+        const target = {
+            [1]: {
+                type: "local" as const,
+                target: "target.a",
+                checksum: "CHECKSUM_A",
+                declaration: "DECLARATION_A",
+            },
+        };
+
+        it.each(NAMES)(
+            "should not record a duplicate marker for the first marker with id %s",
+            async (id) => {
+                // Arrange
+                const markerParserSpy = jest.spyOn(MarkerParser, "default");
+                setupMarkerParser();
+                jest.spyOn(ReadLines, "default").mockResolvedValueOnce([]);
+                jest.spyOn(Ancesdir, "closesdir").mockReturnValue("root.path");
+                const promise = parseFile(options, "root.path/file.js", false);
+                const addMarkerCb = markerParserSpy.mock.calls[0][1];
+
+                // Act
+                addMarkerCb(id, ["CONTENT"], target, "//", "");
+                const result = await promise;
+
+                // Assert
+                expect(result.errors).toEqual([]);
+            },
+        );
+
+        it("should return a marker with id __proto__ as an own property", async () => {
+            // Arrange
+            const markerParserSpy = jest.spyOn(MarkerParser, "default");
+            setupMarkerParser();
+            jest.spyOn(ReadLines, "default").mockResolvedValueOnce([]);
+            jest.spyOn(Ancesdir, "closesdir").mockReturnValue("root.path");
+            const promise = parseFile(options, "root.path/file.js", false);
+            const addMarkerCb = markerParserSpy.mock.calls[0][1];
+
+            // Act
+            addMarkerCb("__proto__", ["CONTENT"], target, "//", "");
+            const result = await promise;
+            const ownIds = Object.getOwnPropertyNames(result.markers);
+
+            // Assert
+            expect(ownIds).toEqual(["__proto__"]);
+        });
+    });
 });
