@@ -1,6 +1,8 @@
 //! Types shared across checksync-core.
 
 use std::collections::BTreeMap;
+use std::fmt;
+use std::path::PathBuf;
 
 use indexmap::IndexMap;
 
@@ -287,4 +289,85 @@ pub enum ParseEvent {
     Marker(ParsedMarker),
     /// A problem with the tags.
     Error(ErrorDetails),
+}
+
+/// Why the root folder for a path couldn't be found.
+///
+/// The messages match the errors the `ancesdir` package throws, which
+/// checksync's JavaScript implementation reports as they are.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum RootMarkerError {
+    /// The search has to start from an absolute path.
+    RelativeStart {
+        /// The relative path the search was asked to start from.
+        from: PathBuf,
+    },
+    /// No folder from the start up to the file system root has the marker.
+    NotFound {
+        /// The name of the marker file or folder.
+        marker: String,
+        /// The path the search started from.
+        from: PathBuf,
+    },
+}
+
+impl fmt::Display for RootMarkerError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::RelativeStart { from } => write!(
+                f,
+                "The starting path must be absolute, but \"{}\" is relative",
+                from.display()
+            ),
+            Self::NotFound { marker, from } => write!(
+                f,
+                "Could not find marker, \"{marker}\", from given starting location \"{}\"",
+                from.display()
+            ),
+        }
+    }
+}
+
+impl std::error::Error for RootMarkerError {}
+
+#[cfg(test)]
+mod tests {
+    use std::path::PathBuf;
+
+    use super::RootMarkerError;
+
+    #[test]
+    fn describes_a_missing_root_marker_as_ancesdir_does() {
+        // Arrange
+        let error = RootMarkerError::NotFound {
+            marker: ".root".to_owned(),
+            from: PathBuf::from("/a/b"),
+        };
+
+        // Act
+        let result = error.to_string();
+
+        // Assert
+        assert_eq!(
+            result,
+            "Could not find marker, \".root\", from given starting location \"/a/b\""
+        );
+    }
+
+    #[test]
+    fn describes_a_relative_start_as_ancesdir_does() {
+        // Arrange
+        let error = RootMarkerError::RelativeStart {
+            from: PathBuf::from("a/b"),
+        };
+
+        // Act
+        let result = error.to_string();
+
+        // Assert
+        assert_eq!(
+            result,
+            "The starting path must be absolute, but \"a/b\" is relative"
+        );
+    }
 }
