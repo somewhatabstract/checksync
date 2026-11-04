@@ -20,8 +20,7 @@ use crate::node_relative::node_relative;
 ///
 /// Any error reading the current working folder.
 pub fn cwd_relative_path(file_path: &Path) -> io::Result<PathBuf> {
-    let cwd = std::env::current_dir()?;
-    Ok(node_relative(&cwd, &cwd, file_path))
+    std::env::current_dir().map(|cwd| node_relative(&cwd, &cwd, file_path))
 }
 
 #[cfg(test)]
