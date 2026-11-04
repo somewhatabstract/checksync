@@ -260,3 +260,31 @@ pub struct NormalizedPathInfo {
     /// Whether the target is a file or a URL.
     pub kind: TargetType,
 }
+
+/// A marker the parser has read to the end of, before any checksums are
+/// worked out.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct ParsedMarker {
+    /// The marker's id.
+    pub id: String,
+    /// The block's content lines, each ending with `\n`, or `None` for a
+    /// sync-end tag with no matching sync-start tag.
+    pub content: Option<Vec<String>>,
+    /// The marker's targets, keyed by the line of each sync-start tag.
+    pub targets: Targets,
+    /// The comment syntax that starts the marker's first sync-start tag, or
+    /// `None` for a sync-end tag with no matching sync-start tag.
+    pub comment_start: Option<String>,
+    /// The text after the target on the marker's first sync-start tag, or
+    /// `None` for a sync-end tag with no matching sync-start tag.
+    pub comment_end: Option<String>,
+}
+
+/// Something the marker parser reports: a finished marker or an error.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ParseEvent {
+    /// A marker whose sync-end tag has been read.
+    Marker(ParsedMarker),
+    /// A problem with the tags.
+    Error(ErrorDetails),
+}
