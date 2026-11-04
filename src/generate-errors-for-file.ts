@@ -37,7 +37,14 @@ export default function* generateErrors(
     for (const error of fileInfo.errors) {
         if (error.code === ErrorCode.fileDoesNotExist) {
             // Does this error relate to a migrateable target?
-            const sourceMarker = fileInfo.markers[error.markerID!];
+            // Markers loaded from a cache file are ordinary objects, so an
+            // id like "constructor" must only find a marker of its own.
+            const sourceMarker = Object.hasOwn(
+                fileInfo.markers,
+                error.markerID!,
+            )
+                ? fileInfo.markers[error.markerID!]
+                : undefined;
             // Malformed tags won't have a source marker.
             if (sourceMarker) {
                 const sourceRef = sourceMarker.targets[error.location!.line];
@@ -117,7 +124,10 @@ export default function* generateErrors(
                 const targetInfo: FileInfo | null | undefined =
                     cache[sourceRef.target];
                 const targetMarker: Marker | null | undefined =
-                    targetInfo?.markers[markerID];
+                    targetInfo != null &&
+                    Object.hasOwn(targetInfo.markers, markerID)
+                        ? targetInfo.markers[markerID]
+                        : undefined;
 
                 const targetDetails = getTargetDetailsForAlias(
                     targetMarker,
