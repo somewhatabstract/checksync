@@ -1,6 +1,84 @@
+import fs from "fs";
+import path from "path";
+
 import MarkerParser from "../marker-parser";
+import {ErrorDetails, Targets} from "../types";
+
+/**
+ * Something the parser reported: a completed marker or an error.
+ */
+type ParseEvent =
+    | {
+          marker: {
+              id: string;
+              content: ReadonlyArray<string> | null;
+              targets: Targets;
+              commentStart: string | null;
+              commentEnd: string | null;
+          };
+      }
+    | {error: ErrorDetails};
+
+/**
+ * Marker-parser vectors shared with the Rust implementation, which tests
+ * against the same file so both parse tags identically.
+ *
+ * Each vector's targets exist unless listed in `missingTargets`, and a target
+ * containing `://` is remote. `events` lists everything the parser reports,
+ * in order, after parsing every line and recording unterminated markers.
+ */
+const VECTORS: ReadonlyArray<{
+    description: string;
+    comments: ReadonlyArray<string>;
+    missingTargets: ReadonlyArray<string>;
+    lines: ReadonlyArray<string>;
+    events: ReadonlyArray<ParseEvent>;
+}> = JSON.parse(
+    fs.readFileSync(
+        path.join(__dirname, "../../__conformance__/marker-vectors.json"),
+        "utf8",
+    ),
+);
 
 describe("MarkerParser", () => {
+    it.each(VECTORS)(
+        "should report what the vector expects: $description",
+        ({comments, missingTargets, lines, events}) => {
+            // Arrange
+            const reported: Array<ParseEvent> = [];
+            const parser = new MarkerParser(
+                (target) => ({
+                    path: target,
+                    exists:
+                        target.includes("://") ||
+                        !missingTargets.includes(target),
+                    type: target.includes("://") ? "remote" : "local",
+                }),
+                (id, content, targets, commentStart, commentEnd) =>
+                    reported.push({
+                        marker: {
+                            id,
+                            content: content ?? null,
+                            targets,
+                            commentStart: commentStart ?? null,
+                            commentEnd: commentEnd ?? null,
+                        },
+                    }),
+                (error) => reported.push({error}),
+                comments,
+            );
+
+            // Act
+            for (const line of lines) {
+                parser.parseLine(line);
+            }
+            parser.recordUnterminatedMarkers();
+
+            // Assert
+            expect(reported).toEqual(events);
+        },
+    );
+
     describe("#recordUnterminatedMarkers", () => {
         it("should record nothing when no markers parsed", () => {
             // Arrange
