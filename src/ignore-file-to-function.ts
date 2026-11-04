@@ -25,14 +25,22 @@ export default async (
     // in a directory governed by the ignore file and if so, whether
     // it should be allowed per that ignore file's rules.
     return (filePath: string) => {
-        if (!filePath.startsWith(gitIgnoreDir)) {
-            // This file path is not in a directory governed by the
-            // ignore file, so this ignore file has no opinion
+        // The ignore file only governs paths inside its own directory. We
+        // check the relative path rather than whether the file path starts
+        // with the directory, since a sibling directory can share that
+        // prefix: "/a/b.gitignore" doesn't govern "/ab/file". Anything outside
+        // gives a path the ignore package rejects, so it gets no opinion.
+        const relativePath = path.relative(gitIgnoreDir, filePath);
+        if (
+            relativePath === "" ||
+            relativePath === ".." ||
+            relativePath.startsWith(`..${path.sep}`) ||
+            path.isAbsolute(relativePath)
+        ) {
             return undefined;
         }
 
         // Find out if the ignore file has an opinion about this file path.
-        const relativePath = path.relative(gitIgnoreDir, filePath);
         const {ignored, unignored} = ignorer.test(relativePath);
 
         log.verbose(() => {
