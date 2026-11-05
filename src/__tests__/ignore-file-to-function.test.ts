@@ -67,6 +67,63 @@ describe("ignoreFileToFunction", () => {
             expect(result).toBeUndefined();
         });
 
+        it.each([
+            [
+                "a sibling directory that starts with the same name",
+                "/foo/barbaz/myfile.txt",
+            ],
+            ["the ignore file's own directory", "/foo/bar"],
+        ])(
+            "should return undefined without testing the path for %s",
+            async (_, filePath) => {
+                // Arrange
+                const NullLogger = new Logger(null);
+                const testSpy = jest.fn(() => ({
+                    ignored: true,
+                    unignored: false,
+                }));
+                jest.spyOn(ignore, "default").mockReturnValue({
+                    add: jest.fn().mockReturnThis(),
+                    test: testSpy,
+                } as any);
+                jest.spyOn(fsasync, "readFile").mockResolvedValue("*\n");
+                const predicate = await ignoreFileToFunction(
+                    "/foo/bar/baz.gitignore",
+                    NullLogger,
+                );
+
+                // Act
+                const result = predicate(filePath);
+
+                // Assert
+                expect(result).toBeUndefined();
+            },
+        );
+
+        it("should test a path inside a directory whose name starts with two dots", async () => {
+            // Arrange
+            const NullLogger = new Logger(null);
+            const testSpy = jest.fn(() => ({
+                ignored: true,
+                unignored: false,
+            }));
+            jest.spyOn(ignore, "default").mockReturnValue({
+                add: jest.fn().mockReturnThis(),
+                test: testSpy,
+            } as any);
+            jest.spyOn(fsasync, "readFile").mockResolvedValue("*\n");
+            const predicate = await ignoreFileToFunction(
+                "/foo/bar/baz.gitignore",
+                NullLogger,
+            );
+
+            // Act
+            const result = predicate("/foo/bar/..cache/myfile.txt");
+
+            // Assert
+            expect(result).toBeFalse();
+        });
+
         it("should return undefined if the given file path is in a directory governed by the ignore file but the ignore file has no opinion on that file", async () => {
             // Arrange
             const NullLogger = new Logger(null);
