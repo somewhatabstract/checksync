@@ -371,3 +371,15 @@ mod tests {
         );
     }
 }
+
+/// What an ignore file says about a path.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum IgnoreDecision {
+    /// The path is ignored.
+    Ignored,
+    /// The path is explicitly unignored by a negated pattern.
+    Unignored,
+    /// The ignore file says nothing about the path, or the path isn't
+    /// inside the ignore file's folder.
+    NoOpinion,
+}
