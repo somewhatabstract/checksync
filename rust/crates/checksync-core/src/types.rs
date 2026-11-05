@@ -371,3 +371,18 @@ mod tests {
         );
     }
 }
+
+/// How a byte fared against a bracket class in a glob pattern.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) enum BracketClassMatch {
+    /// The byte is in the class, which closes with the `]` at `close`.
+    Matched {
+        /// The index of the class's closing `]`.
+        close: usize,
+    },
+    /// The byte isn't in the class.
+    NoMatch,
+    /// The class is malformed, such as an unclosed `[` or an unknown POSIX
+    /// class, so nothing can match the pattern.
+    Abort,
+}
