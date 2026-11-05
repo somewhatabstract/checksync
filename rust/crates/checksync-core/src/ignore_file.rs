@@ -10,7 +10,7 @@ use crate::types::{GitignorePattern, IgnoreDecision};
 /// A loaded `.gitignore`-style file that decides about paths in its folder.
 ///
 /// Patterns are read and matched as git reads and matches them, ignoring
-/// case as checksync's JavaScript implementation does. A path inside an
+/// the case of ASCII letters. A path inside an
 /// ignored folder stays ignored even if a later pattern negates the path
 /// itself.
 #[derive(Debug)]
@@ -22,10 +22,14 @@ pub struct IgnoreFile {
 impl IgnoreFile {
     /// Read an ignore file.
     ///
-    /// Two things differ from checksync's JavaScript implementation, which
-    /// uses the `ignore` package; in both, this follows git. Ignoring case
-    /// applies only to ASCII letters, and in a pattern such as `a**/b`, the
-    /// `**` can match across folders, so it matches `a/x/b`.
+    /// Three things differ from checksync's JavaScript implementation, which
+    /// uses the `ignore` package; in each, this follows git:
+    ///
+    /// - Ignoring case applies only to ASCII letters.
+    /// - In a pattern such as `a**/b`, the `**` can match across folders, so
+    ///   it matches `a/x/b`.
+    /// - On Unix, a file name that isn't valid UTF-8 is matched by its bytes.
+    ///   The JavaScript decodes it first, turning the bad bytes into U+FFFD.
     ///
     /// # Arguments
     ///
