@@ -1,12 +1,15 @@
 use std::path::{Path, PathBuf};
 
 use crate::closesdir::{DEFAULT_ROOT_MARKER, closesdir};
+use crate::node_relative::node_relative;
 use crate::types::RootMarkerError;
 
 /// Make an absolute file path relative to the root folder it's under.
 ///
 /// The root is the closest folder at or above the file with the root marker
-/// (see [`closesdir`]). A path that's already relative is returned as it is.
+/// (see [`closesdir`]). The result is worked out as Node.js's `path.relative`
+/// would, so `.`, `..` and repeated separators in the file path are resolved
+/// as text. A path that's already relative is returned as it is.
 ///
 /// # Arguments
 ///
@@ -28,11 +31,9 @@ pub fn root_relative_path(
         return Ok(file_path.to_path_buf());
     }
     let root = closesdir(file_path, marker.unwrap_or(DEFAULT_ROOT_MARKER))?;
-    // The root is the file or one of its folders, so it's always a prefix.
-    Ok(file_path
-        .strip_prefix(&root)
-        .map(Path::to_path_buf)
-        .unwrap_or_default())
+    // Both paths are absolute, so the folder relative paths would be
+    // resolved against is never used.
+    Ok(node_relative(&root, &root, file_path))
 }
 
 #[cfg(test)]
@@ -52,6 +53,21 @@ mod tests {
         fs::create_dir_all(dir.path().join("a/b")).unwrap();
         fs::write(dir.path().join("a/.root"), "").unwrap();
         let file = dir.path().join("a/b/file.js");
+
+        // Act
+        let result = root_relative_path(&file, Some(".root"));
+
+        // Assert
+        assert_eq!(result, Ok(PathBuf::from("b").join("file.js")));
+    }
+
+    #[test]
+    fn resolves_dot_segments_in_the_file_path() {
+        // Arrange
+        let dir = TempDir::new().unwrap();
+        fs::create_dir_all(dir.path().join("a/b")).unwrap();
+        fs::write(dir.path().join("a/.root"), "").unwrap();
+        let file = dir.path().join("a/b/./c/../file.js");
 
         // Act
         let result = root_relative_path(&file, Some(".root"));
