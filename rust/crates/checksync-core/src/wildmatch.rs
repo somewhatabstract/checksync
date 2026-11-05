@@ -37,7 +37,7 @@ pub(crate) fn wildmatch(pattern: &[u8], text: &[u8], pathname: bool, casefold: b
     dowild(pattern, 0, text, 0, pathname, casefold) == Outcome::Match
 }
 
-/// The byte at `index`, or NUL past the end, so slices read like C strings.
+/// Get the byte at `index`, or NUL past the end, so slices read like C strings.
 fn at(bytes: &[u8], index: usize) -> u8 {
     bytes.get(index).copied().unwrap_or(0)
 }
@@ -51,7 +51,7 @@ fn fold(byte: u8, casefold: bool) -> u8 {
     }
 }
 
-/// Whether the text has a `/` from `index` on, before any NUL.
+/// Find the first `/` in the text from `index` on, before any NUL.
 fn slash_from(text: &[u8], index: usize) -> Option<usize> {
     // The text index never passes the end, since it only moves past a byte.
     text[index..]

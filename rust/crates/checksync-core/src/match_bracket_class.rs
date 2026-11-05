@@ -60,9 +60,10 @@ pub(crate) fn match_bracket_class(
                     return BracketClassMatch::Abort;
                 }
             }
-            let upper = byte.to_ascii_uppercase();
             matched |= (previous..=current).contains(&byte)
-                || (casefold && byte.is_ascii_lowercase() && (previous..=current).contains(&upper));
+                || (casefold
+                    && byte.is_ascii_lowercase()
+                    && (previous..=current).contains(&byte.to_ascii_uppercase()));
             // A range can't be the start of another range.
             current = 0;
         } else if current == b'[' && at(index + 1) == b':' {

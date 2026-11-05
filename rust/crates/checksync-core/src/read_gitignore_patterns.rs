@@ -5,10 +5,11 @@ use crate::types::GitignorePattern;
 /// Read the patterns in a `.gitignore` file, as git does.
 ///
 /// A UTF-8 byte order mark at the start is skipped. Lines end at `\n`, and a
-/// `\r` just before it is dropped. A blank line, or one starting with `#`,
-/// isn't a pattern, and trailing spaces are trimmed (see
-/// [`trim_gitignore_trailing_spaces`]). A NUL byte ends its line, as it ends
-/// a C string in git.
+/// `\r` just before it is dropped. An empty line, or one starting with `#`,
+/// isn't a pattern. Trailing spaces are trimmed (see
+/// [`trim_gitignore_trailing_spaces`]) and a NUL byte ends its line, as it
+/// ends a C string in git, so a line can still leave an empty pattern, which
+/// matches nothing.
 ///
 /// # Arguments
 ///
@@ -20,14 +21,10 @@ use crate::types::GitignorePattern;
 #[must_use]
 pub(crate) fn read_gitignore_patterns(contents: &[u8]) -> Vec<GitignorePattern> {
     let contents = contents.strip_prefix(b"\xEF\xBB\xBF").unwrap_or(contents);
-    let mut lines: Vec<&[u8]> = contents.split(|&byte| byte == b'\n').collect();
-    // Text after the last `\n` is a line too, but the empty text after a
-    // final `\n` isn't.
-    if lines.last().is_some_and(|line| line.is_empty()) {
-        lines.pop();
-    }
-    lines
-        .into_iter()
+    // Text after the last `\n` is a line too; the empty text after a final
+    // `\n` is dropped with the other empty lines.
+    contents
+        .split(|&byte| byte == b'\n')
         .filter(|line| !line.is_empty() && line[0] != b'#')
         .map(|line| {
             let line = line.strip_suffix(b"\r").unwrap_or(line);
