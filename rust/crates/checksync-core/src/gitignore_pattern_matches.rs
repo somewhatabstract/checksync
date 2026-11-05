@@ -204,6 +204,30 @@ mod tests {
     }
 
     #[test]
+    fn keeps_the_literal_character_after_a_leading_slash() {
+        // Arrange
+        let line = "/a**/b";
+
+        // Act
+        let result = [matches(line, "a/x/b"), matches(line, "ax/b")];
+
+        // Assert
+        assert_eq!(result, [false, true]);
+    }
+
+    #[test]
+    fn matches_any_folders_with_a_double_asterisk_after_a_leading_slash() {
+        // Arrange
+        let line = "/**/b";
+
+        // Act
+        let result = [matches(line, "b"), matches(line, "x/y/b")];
+
+        // Assert
+        assert_eq!(result, [true, true]);
+    }
+
+    #[test]
     fn matches_any_folders_with_a_double_asterisk_after_a_literal_folder() {
         // Arrange
         let line = "a/**/b";
