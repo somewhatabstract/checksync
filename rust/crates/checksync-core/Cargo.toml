@@ -13,7 +13,6 @@ workspace = true
 
 [dependencies]
 adler2 = "2"
-ignore = "0.4"
 indexmap = "2"
 regex = "1"
 

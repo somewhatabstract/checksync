@@ -1,36 +1,32 @@
 use std::io;
 use std::path::{Component, Path, PathBuf};
 
-use ignore::Match;
-use ignore::gitignore::{Gitignore, GitignoreBuilder};
-
-use crate::escape_glob_braces::escape_glob_braces;
+use crate::gitignore_pattern_matches::gitignore_pattern_matches;
 use crate::node_relative::node_relative;
-use crate::types::IgnoreDecision;
+use crate::normalize_separators::normalize_separators;
+use crate::read_gitignore_patterns::read_gitignore_patterns;
+use crate::types::{GitignorePattern, IgnoreDecision};
 
 /// A loaded ignore file, in `.gitignore` syntax, that decides about paths in
 /// its own folder.
 ///
-/// It matches the way checksync's JavaScript implementation uses the
-/// `ignore` package: patterns ignore case, and a path inside an ignored
-/// folder stays ignored even if a later pattern negates the path itself.
+/// Patterns are read and matched as git reads and matches them, ignoring
+/// case as checksync's JavaScript implementation does. A path inside an
+/// ignored folder stays ignored even if a later pattern negates the path
+/// itself.
 #[derive(Debug)]
 pub struct IgnoreFile {
     folder: PathBuf,
-    matcher: Gitignore,
+    patterns: Vec<GitignorePattern>,
 }
 
 impl IgnoreFile {
     /// Read an ignore file.
     ///
-    /// Patterns mean what they mean to git. A byte order mark at the start
-    /// is skipped, braces match themselves, and a pattern that can't be
-    /// parsed, such as an unclosed `[`, matches nothing, as does a line
-    /// that's only `!`. Invalid UTF-8 becomes U+FFFD.
-    ///
-    /// Two things differ from checksync's JavaScript implementation. POSIX
-    /// character classes, such as `[[:alpha:]]`, aren't supported, and
-    /// ignoring case applies only to ASCII letters, as in git.
+    /// Two things differ from checksync's JavaScript implementation, which
+    /// uses the `ignore` package; in both, this follows git. Ignoring case
+    /// applies only to ASCII letters, and in a pattern such as `a**/b`, the
+    /// `**` can match across folders, so it matches `a/x/b`.
     ///
     /// # Arguments
     ///
@@ -44,34 +40,11 @@ impl IgnoreFile {
     ///
     /// Any error reading the file.
     pub fn load(path: &Path) -> io::Result<Self> {
-        let bytes = std::fs::read(path)?;
-        let contents = String::from_utf8_lossy(&bytes);
-        let contents = contents.strip_prefix('\u{feff}').unwrap_or(&contents);
-        Ok(Self::from_contents(path, contents))
-    }
-
-    /// Build an ignore file from its contents, as if it were at `path`.
-    fn from_contents(path: &Path, contents: &str) -> Self {
-        let folder = path.parent().map(Path::to_path_buf).unwrap_or_default();
-        let mut builder = GitignoreBuilder::new(&folder);
-        // Setting case insensitivity can't fail; the `Result` is only there
-        // for future options.
-        let _ = builder.case_insensitive(true);
-        // Git skips an unclosed `[`; the crate would match it literally.
-        builder.allow_unclosed_class(false);
-        for line in contents.lines() {
-            // Git ignores a lone `!`; the crate would read it as unignoring
-            // every path.
-            if line.trim_end() == "!" {
-                continue;
-            }
-            // A pattern that can't be parsed is skipped, so it matches
-            // nothing, as with git.
-            let _ = builder.add_line(None, &escape_glob_braces(line));
-        }
-        // Building only fails for patterns already rejected above.
-        let matcher = builder.build().ok().unwrap_or_else(Gitignore::empty);
-        Self { folder, matcher }
+        let contents = std::fs::read(path)?;
+        Ok(Self {
+            folder: path.parent().map(Path::to_path_buf).unwrap_or_default(),
+            patterns: read_gitignore_patterns(&contents),
+        })
     }
 
     /// Decide what this ignore file says about a file.
@@ -80,9 +53,8 @@ impl IgnoreFile {
     /// beside or above it, including a sibling folder whose name merely
     /// starts with this folder's name, gets [`IgnoreDecision::NoOpinion`].
     /// The folders above the file are checked first: if any is ignored, so
-    /// is the file, even if a later pattern negates the file itself. Git and
-    /// the `ignore` package both work this way, but the `ignore` crate's own
-    /// matching checks the file first.
+    /// is the file, even if a later pattern negates the file itself, as in
+    /// git. Otherwise the last pattern that matches the file decides.
     ///
     /// # Arguments
     ///
@@ -100,19 +72,32 @@ impl IgnoreFile {
         if outside {
             return IgnoreDecision::NoOpinion;
         }
+        let relative = normalize_separators(&relative.to_string_lossy());
+        let relative = relative.as_bytes();
         let in_ignored_folder = relative
-            .ancestors()
-            .skip(1)
-            .filter(|folder| !folder.as_os_str().is_empty())
-            .any(|folder| self.matcher.matched(folder, true).is_ignore());
+            .iter()
+            .enumerate()
+            .filter(|&(_, &byte)| byte == b'/')
+            .any(|(slash, _)| {
+                self.last_match(&relative[..slash], true)
+                    .is_some_and(|pattern| !pattern.negated)
+            });
         if in_ignored_folder {
             return IgnoreDecision::Ignored;
         }
-        match self.matcher.matched(&relative, false) {
-            Match::Ignore(_) => IgnoreDecision::Ignored,
-            Match::Whitelist(_) => IgnoreDecision::Unignored,
-            Match::None => IgnoreDecision::NoOpinion,
+        match self.last_match(relative, false) {
+            Some(pattern) if pattern.negated => IgnoreDecision::Unignored,
+            Some(_) => IgnoreDecision::Ignored,
+            None => IgnoreDecision::NoOpinion,
         }
+    }
+
+    /// The last pattern that matches a path, which is the one that decides.
+    fn last_match(&self, path: &[u8], is_dir: bool) -> Option<&GitignorePattern> {
+        self.patterns
+            .iter()
+            .rev()
+            .find(|pattern| gitignore_pattern_matches(pattern, path, is_dir, true))
     }
 }
 
@@ -184,6 +169,19 @@ mod tests {
 
         // Assert
         assert_eq!(result, IgnoreDecision::Ignored);
+    }
+
+    #[test]
+    fn does_not_ignore_files_in_a_folder_unignored_again() {
+        // Arrange
+        let dir = TempDir::new().unwrap();
+        let file = ignore_file(dir.path(), "logs/\n!logs/\n");
+
+        // Act
+        let result = file.decide(&dir.path().join("logs/x.log"));
+
+        // Assert
+        assert_eq!(result, IgnoreDecision::NoOpinion);
     }
 
     #[test]

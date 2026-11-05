@@ -63,7 +63,7 @@ fn decision_name(decision: IgnoreDecision) -> &'static str {
 }
 
 #[test]
-fn explains_every_rust_divergence() {
+fn explains_every_rust_divergence_and_differs_from_the_javascript() {
     // Arrange
     let vectors = load_vectors();
 
@@ -75,7 +75,7 @@ fn explains_every_rust_divergence() {
                 expected
                     .rust
                     .as_ref()
-                    .filter(|rust| rust.reason.trim().is_empty())
+                    .filter(|rust| rust.reason.trim().is_empty() || rust.result == expected.result)
                     .map(|_| format!("{}: {}", vector.description, expected.path))
             })
         })

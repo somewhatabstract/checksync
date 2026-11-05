@@ -486,11 +486,7 @@
         "paths": [
             {
                 "path": "q",
-                "result": "ignored",
-                "rust": {
-                    "result": "none",
-                    "reason": "The Rust implementation doesn't support POSIX character classes, such as [:alpha:]."
-                }
+                "result": "ignored"
             },
             {
                 "path": "1",
@@ -499,7 +495,7 @@
         ]
     },
     {
-        "description": "Ignoring case applies to letters beyond ASCII",
+        "description": "The JavaScript ignores case for letters beyond ASCII, which git doesn't",
         "ignoreFile": "É.txt\n",
         "paths": [
             {
@@ -513,6 +509,140 @@
             {
                 "path": "É.txt",
                 "result": "ignored"
+            }
+        ]
+    },
+    {
+        "description": "A backslash in a bracket class escapes the next character",
+        "ignoreFile": "[\\]]\n[a\\-z]\n",
+        "paths": [
+            {
+                "path": "]",
+                "result": "ignored"
+            },
+            {
+                "path": "-",
+                "result": "ignored"
+            },
+            {
+                "path": "b",
+                "result": "none"
+            }
+        ]
+    },
+    {
+        "description": "Braces in a bracket class are ordinary characters",
+        "ignoreFile": "[{}]\n",
+        "paths": [
+            {
+                "path": "{",
+                "result": "ignored"
+            },
+            {
+                "path": "}",
+                "result": "ignored"
+            }
+        ]
+    },
+    {
+        "description": "A brace can end a bracket class range",
+        "ignoreFile": "[a-{]\n",
+        "paths": [
+            {
+                "path": "b",
+                "result": "ignored"
+            },
+            {
+                "path": "{",
+                "result": "ignored"
+            }
+        ]
+    },
+    {
+        "description": "A dash after a range in a bracket class is an ordinary character",
+        "ignoreFile": "[a-c-e]\n",
+        "paths": [
+            {
+                "path": "-",
+                "result": "ignored"
+            },
+            {
+                "path": "d",
+                "result": "none"
+            },
+            {
+                "path": "e",
+                "result": "ignored"
+            }
+        ]
+    },
+    {
+        "description": "A slash in a bracket class doesn't match a folder separator",
+        "ignoreFile": "a[/]b\n",
+        "paths": [
+            {
+                "path": "a/b",
+                "result": "none"
+            }
+        ]
+    },
+    {
+        "description": "Three or more asterisks between slashes act as two",
+        "ignoreFile": "a/***/b\n",
+        "paths": [
+            {
+                "path": "a/b",
+                "result": "ignored"
+            },
+            {
+                "path": "a/x/y/b",
+                "result": "ignored"
+            }
+        ]
+    },
+    {
+        "description": "Only trailing spaces are stripped, not tabs",
+        "ignoreFile": "foo\t\n",
+        "paths": [
+            {
+                "path": "foo",
+                "result": "none"
+            },
+            {
+                "path": "foo\t",
+                "result": "ignored"
+            }
+        ]
+    },
+    {
+        "description": "An escaped trailing space is kept",
+        "ignoreFile": "foo\\  \n",
+        "paths": [
+            {
+                "path": "foo ",
+                "result": "ignored"
+            },
+            {
+                "path": "foo",
+                "result": "none"
+            }
+        ]
+    },
+    {
+        "description": "The JavaScript matches two asterisks joined to other characters within one folder name, which git doesn't",
+        "ignoreFile": "a**/b\n",
+        "paths": [
+            {
+                "path": "ax/b",
+                "result": "ignored"
+            },
+            {
+                "path": "a/x/b",
+                "result": "none",
+                "rust": {
+                    "result": "ignored",
+                    "reason": "The Rust implementation matches as git does, where `a**` here also matches across the folder separator."
+                }
             }
         ]
     },

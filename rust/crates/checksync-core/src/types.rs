@@ -383,3 +383,41 @@ pub enum IgnoreDecision {
     /// inside the ignore file's folder.
     NoOpinion,
 }
+
+/// How a byte fared against a bracket class in a glob pattern.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) enum BracketClassMatch {
+    /// The byte is in the class, which closes with the `]` at `close`.
+    Matched {
+        /// The index of the class's closing `]`.
+        close: usize,
+    },
+    /// The byte isn't in the class.
+    NoMatch,
+    /// The class is malformed, such as an unclosed `[` or an unknown POSIX
+    /// class, so nothing can match the pattern.
+    Abort,
+}
+
+/// One pattern from a `.gitignore` file, read as git reads it.
+#[derive(Debug, Clone, PartialEq, Eq)]
+#[expect(
+    clippy::struct_excessive_bools,
+    reason = "each one matches one of git's pattern flags"
+)]
+pub(crate) struct GitignorePattern {
+    /// The pattern, without a leading `!` or a trailing `/`.
+    pub pattern: Vec<u8>,
+    /// How many bytes at the start of the pattern have no glob characters.
+    pub literal_prefix: usize,
+    /// Whether the pattern started with `!`, so a match unignores.
+    pub negated: bool,
+    /// Whether the pattern ended with `/`, so it only matches folders.
+    pub dir_only: bool,
+    /// Whether the pattern has no `/`, so it matches the last part of a
+    /// path at any depth rather than the whole path.
+    pub basename_only: bool,
+    /// Whether the pattern is `*` followed by literal text only, such as
+    /// `*.log`.
+    pub ends_with: bool,
+}
