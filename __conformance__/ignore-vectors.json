@@ -425,6 +425,98 @@
         ]
     },
     {
+        "description": "A byte order mark at the start of the file isn't part of the first pattern",
+        "ignoreFile": "\ufeffa.log\n",
+        "paths": [
+            {
+                "path": "a.log",
+                "result": "ignored"
+            }
+        ]
+    },
+    {
+        "description": "A pattern with an unclosed bracket matches nothing",
+        "ignoreFile": "[\nfoo[ab\n",
+        "paths": [
+            {
+                "path": "[",
+                "result": "none"
+            },
+            {
+                "path": "foo[ab",
+                "result": "none"
+            }
+        ]
+    },
+    {
+        "description": "A line that is only an exclamation mark matches nothing",
+        "ignoreFile": "*.js\n!\n",
+        "paths": [
+            {
+                "path": "x.js",
+                "result": "ignored"
+            },
+            {
+                "path": "x.txt",
+                "result": "none"
+            }
+        ]
+    },
+    {
+        "description": "Braces match themselves rather than a choice of names",
+        "ignoreFile": "{a,b}\n",
+        "paths": [
+            {
+                "path": "a",
+                "result": "none"
+            },
+            {
+                "path": "b",
+                "result": "none"
+            },
+            {
+                "path": "{a,b}",
+                "result": "ignored"
+            }
+        ]
+    },
+    {
+        "description": "A POSIX character class matches its characters",
+        "ignoreFile": "[[:alpha:]]\n",
+        "paths": [
+            {
+                "path": "q",
+                "result": "ignored",
+                "rust": {
+                    "result": "none",
+                    "reason": "The Rust implementation doesn't support POSIX character classes, such as [:alpha:]."
+                }
+            },
+            {
+                "path": "1",
+                "result": "none"
+            }
+        ]
+    },
+    {
+        "description": "Ignoring case applies to letters beyond ASCII",
+        "ignoreFile": "É.txt\n",
+        "paths": [
+            {
+                "path": "é.txt",
+                "result": "ignored",
+                "rust": {
+                    "result": "none",
+                    "reason": "The Rust implementation ignores case only for ASCII letters, as git does."
+                }
+            },
+            {
+                "path": "É.txt",
+                "result": "ignored"
+            }
+        ]
+    },
+    {
         "description": "An empty ignore file has no opinion",
         "ignoreFile": "",
         "paths": [
