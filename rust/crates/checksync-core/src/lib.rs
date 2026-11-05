@@ -13,6 +13,12 @@ mod is_js_whitespace;
 mod js_object_keys;
 mod js_trim;
 mod marker_parser;
+// Used by ignore-file matching in a later PR.
+#[cfg_attr(not(test), expect(dead_code))]
+mod match_bracket_class;
+// Used by ignore-file matching in a later PR.
+#[cfg_attr(not(test), expect(dead_code))]
+mod matches_posix_class;
 mod node_normalize;
 mod node_relative;
 mod normalize_separators;
@@ -20,6 +26,9 @@ mod os_separators;
 mod root_relative_path;
 mod split_lines;
 mod types;
+// Used by ignore-file matching in a later PR.
+#[cfg_attr(not(test), expect(dead_code))]
+mod wildmatch;
 
 pub use calc_checksum::calc_checksum;
 pub use closesdir::{DEFAULT_ROOT_MARKER, closesdir};
