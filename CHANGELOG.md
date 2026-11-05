@@ -1,5 +1,12 @@
 # checksync
 
+## 11.0.2
+
+### Patch Changes
+
+- a7626e7: Treat marker ids such as `constructor`, `toString` and `__proto__` like any other id, instead of reporting a stray error and failing to parse the file
+- 65e831e: Fix a crash when an ignore file's folder name is the start of a sibling folder's name, such as `src/.gitignore` next to `src-utils/`
+
 ## 11.0.1
 
 ### Patch Changes
