@@ -29,7 +29,24 @@ pub(crate) fn node_normalize(path: &Path) -> PathBuf {
             _ => parts.push(component),
         }
     }
-    let mut normalized: PathBuf = parts.iter().collect();
+    // Segments are added as text rather than with `PathBuf::push`, which on
+    // Windows would treat a segment like `C:x` as a new drive and drop
+    // everything before it.
+    let mut normalized = PathBuf::new();
+    let mut after_segment = false;
+    for part in &parts {
+        if matches!(part, Component::Prefix(_) | Component::RootDir) {
+            normalized.push(part);
+            after_segment = false;
+        } else {
+            let text = normalized.as_mut_os_string();
+            if after_segment {
+                text.push(std::path::MAIN_SEPARATOR_STR);
+            }
+            text.push(part.as_os_str());
+            after_segment = true;
+        }
+    }
     if normalized.as_os_str().is_empty() {
         normalized.push(".");
     }
@@ -55,6 +72,32 @@ mod tests {
     /// Build a path from `/`-separated parts, so tests run on any platform.
     fn path(parts: &str) -> PathBuf {
         PathBuf::from(parts.replace('/', MAIN_SEPARATOR_STR))
+    }
+
+    #[cfg(windows)]
+    #[test]
+    fn keeps_a_segment_that_looks_like_a_drive() {
+        // Arrange
+        let input = Path::new(r"C:\a\C:b");
+
+        // Act
+        let result = node_normalize(input);
+
+        // Assert
+        assert_eq!(result.as_os_str(), r"C:\a\C:b");
+    }
+
+    #[cfg(windows)]
+    #[test]
+    fn keeps_a_drive_relative_path_relative() {
+        // Arrange
+        let input = Path::new(r"C:a\.\b");
+
+        // Act
+        let result = node_normalize(input);
+
+        // Assert
+        assert_eq!(result.as_os_str(), r"C:a\b");
     }
 
     #[test]
