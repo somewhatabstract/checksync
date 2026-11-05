@@ -12,14 +12,15 @@ type Decision = "ignored" | "unignored" | "none";
 
 /**
  * Ignore-file vectors shared with the Rust implementation, which tests against
- * the same file so both apply ignore files identically.
+ * the same file so both apply ignore files the same way, apart from the
+ * deliberate differences recorded in `rust` fields.
  *
  * Each vector's `ignoreFile` is written to a `.gitignore` in a new folder, or
  * in the subfolder `folder` of it when that's given. Each path is relative to
  * the ignore file's folder, using `/`, and may use `..` to reach outside it.
  *
- * A path's optional `rust` field records where the Rust implementation
- * deliberately decides differently, so it doesn't apply here.
+ * A path's optional `rust` field gives the Rust implementation's result where
+ * it deliberately differs, with the reason, so it doesn't apply here.
  */
 const VECTORS: ReadonlyArray<{
     description: string;
