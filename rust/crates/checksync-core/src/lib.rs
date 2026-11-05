@@ -9,6 +9,9 @@ mod cwd_relative_path;
 mod decode_utf8;
 pub mod errors;
 mod get_normalized_path_info;
+// Used by ignore-file matching in a later PR.
+#[cfg_attr(not(test), expect(dead_code))]
+mod gitignore_pattern_matches;
 mod is_js_whitespace;
 mod js_object_keys;
 mod js_trim;
@@ -23,8 +26,17 @@ mod node_normalize;
 mod node_relative;
 mod normalize_separators;
 mod os_separators;
+// Used by ignore-file matching in a later PR.
+#[cfg_attr(not(test), expect(dead_code))]
+mod parse_gitignore_pattern;
+// Used by ignore-file matching in a later PR.
+#[cfg_attr(not(test), expect(dead_code))]
+mod read_gitignore_patterns;
 mod root_relative_path;
 mod split_lines;
+// Used by ignore-file matching in a later PR.
+#[cfg_attr(not(test), expect(dead_code))]
+mod trim_gitignore_trailing_spaces;
 mod types;
 // Used by ignore-file matching in a later PR.
 #[cfg_attr(not(test), expect(dead_code))]
