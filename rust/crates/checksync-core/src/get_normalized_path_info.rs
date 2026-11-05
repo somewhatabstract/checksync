@@ -9,12 +9,12 @@ use crate::types::{NormalizedPathInfo, TargetType};
 /// A target containing `://` is a URL: it's returned as written, and always
 /// counts as existing, since checksync doesn't fetch URLs. Any other target
 /// is a path relative to the root, unless it starts at a root, which on
-/// Windows includes a path with no drive, such as `\shared\x.js`. A relative
-/// target is joined to the root as Node.js's `path.join` would, as text, so
-/// an empty target is the root itself. The result is normalized as Node.js's
-/// `path.normalize` would, and it exists only if it's a file. A folder, or a symbolic link even to a file,
-/// doesn't count, as in checksync's JavaScript implementation, which checks
-/// with `lstat`.
+/// Windows includes a path with no drive, such as `\shared\x.js`. A
+/// relative target is joined to the root as Node.js's `path.join` would, as
+/// text, so an empty target is the root itself. The result is normalized as
+/// Node.js's `path.normalize` would, and it exists only if it's a file. A
+/// folder, or a symbolic link even to a file, doesn't count, as in
+/// checksync's JavaScript implementation, which checks with `lstat`.
 ///
 /// # Arguments
 ///
@@ -43,9 +43,11 @@ pub fn get_normalized_path_info(root_path: &Path, target: &str) -> NormalizedPat
     } else {
         // Not `Path::join`, which adds a trailing separator for an empty
         // target and, on Windows, replaces the root with a target like `C:x`.
+        // The target gets the platform's separators first: under a Windows
+        // `\\?\` root, only `\` separates segments.
         let mut joined = root_path.as_os_str().to_owned();
         joined.push(std::path::MAIN_SEPARATOR_STR);
-        joined.push(target);
+        joined.push(os_separators(&target.to_string_lossy()));
         PathBuf::from(joined)
     };
     let path = os_separators(&node_normalize(&absolute).to_string_lossy());
@@ -145,6 +147,28 @@ mod tests {
 
         // Assert
         assert_eq!(result.path, format!(r"{}\C:x.js", root.path().display()));
+    }
+
+    #[cfg(windows)]
+    #[test]
+    fn resolves_dot_dot_under_a_verbatim_root() {
+        // Arrange
+        let dir = TempDir::new().unwrap();
+        fs::write(dir.path().join("b.js"), "").unwrap();
+        let root = std::path::PathBuf::from(format!(r"\\?\{}", dir.path().display()));
+
+        // Act
+        let result = get_normalized_path_info(&root, "a/../b.js");
+
+        // Assert
+        assert_eq!(
+            result,
+            NormalizedPathInfo {
+                path: format!(r"{}\b.js", root.display()),
+                exists: true,
+                kind: TargetType::Local,
+            }
+        );
     }
 
     #[test]
