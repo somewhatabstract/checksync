@@ -15,8 +15,11 @@ fn same(a: &[u8], b: &[u8], casefold: bool) -> bool {
 /// A folder-only pattern only matches a folder. A pattern with no `/`
 /// matches the path's last part, and any other pattern matches the whole
 /// path, with a leading `/` only anchoring it. As in git, the literal text
-/// at the start of a pattern is compared first, and only the rest is
-/// matched as a glob, so `a**/b` matches `a/x/b`.
+/// at the start of a pattern is compared first, and the rest is matched as a
+/// glob along with the literal text's last character. Since git 2.52, that
+/// last character is kept so a `**` straight after literal text, as in
+/// `a**/b`, isn't mistaken for a whole folder name, so it doesn't match
+/// `a/x/b`.
 ///
 /// # Arguments
 ///
@@ -59,8 +62,8 @@ pub(crate) fn gitignore_pattern_matches(
     if path.is_empty() || prefix > path.len() || !same(&glob[..prefix], &path[..prefix], casefold) {
         return false;
     }
-    let (glob, name) = (&glob[prefix..], &path[prefix..]);
-    wildmatch(glob, name, true, casefold)
+    let keep = prefix.saturating_sub(1);
+    wildmatch(&glob[keep..], &path[keep..], true, casefold)
 }
 
 #[cfg(test)]
@@ -189,12 +192,24 @@ mod tests {
     }
 
     #[test]
-    fn matches_the_rest_as_a_glob_after_the_literal_start() {
+    fn does_not_treat_a_double_asterisk_after_literal_text_as_a_folder() {
         // Arrange
         let line = "a**/b";
 
         // Act
         let result = [matches(line, "a/x/b"), matches(line, "ax/b")];
+
+        // Assert
+        assert_eq!(result, [false, true]);
+    }
+
+    #[test]
+    fn matches_any_folders_with_a_double_asterisk_after_a_literal_folder() {
+        // Arrange
+        let line = "a/**/b";
+
+        // Act
+        let result = [matches(line, "a/b"), matches(line, "a/x/y/b")];
 
         // Assert
         assert_eq!(result, [true, true]);

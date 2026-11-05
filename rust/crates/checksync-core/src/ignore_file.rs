@@ -22,12 +22,10 @@ pub struct IgnoreFile {
 impl IgnoreFile {
     /// Read an ignore file.
     ///
-    /// Three things differ from checksync's JavaScript implementation, which
-    /// uses the `ignore` package; in each, this follows git:
+    /// Two things differ from checksync's JavaScript implementation, which
+    /// uses the `ignore` package; in both, this follows git:
     ///
     /// - Ignoring case applies only to ASCII letters.
-    /// - In a pattern such as `a**/b`, the `**` can match across folders, so
-    ///   it matches `a/x/b`.
     /// - On Unix, a file name that isn't valid UTF-8 is matched by its bytes.
     ///   The JavaScript decodes it first, turning the bad bytes into U+FFFD.
     ///

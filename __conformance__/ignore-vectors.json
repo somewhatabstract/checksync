@@ -629,7 +629,7 @@
         ]
     },
     {
-        "description": "The JavaScript matches two asterisks joined to other characters within one folder name, which git doesn't",
+        "description": "Two asterisks joined to other characters match within one folder name",
         "ignoreFile": "a**/b\n",
         "paths": [
             {
@@ -638,11 +638,7 @@
             },
             {
                 "path": "a/x/b",
-                "result": "none",
-                "rust": {
-                    "result": "ignored",
-                    "reason": "The Rust implementation matches as git does, where `a**` here also matches across the folder separator."
-                }
+                "result": "none"
             }
         ]
     },
