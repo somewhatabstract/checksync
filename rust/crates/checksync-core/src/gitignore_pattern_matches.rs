@@ -60,7 +60,7 @@ pub(crate) fn gitignore_pattern_matches(
         return false;
     }
     let (glob, name) = (&glob[prefix..], &path[prefix..]);
-    (prefix > 0 && glob.is_empty() && name.is_empty()) || wildmatch(glob, name, true, casefold)
+    wildmatch(glob, name, true, casefold)
 }
 
 #[cfg(test)]
