@@ -406,6 +406,25 @@
         ]
     },
     {
+        "description": "An ignore file has no opinion on a sibling folder whose name starts with its own folder's name",
+        "folder": "a",
+        "ignoreFile": "*.log\n",
+        "paths": [
+            {
+                "path": "x.log",
+                "result": "ignored"
+            },
+            {
+                "path": "../ab/x.log",
+                "result": "none"
+            },
+            {
+                "path": "../x.log",
+                "result": "none"
+            }
+        ]
+    },
+    {
         "description": "An empty ignore file has no opinion",
         "ignoreFile": "",
         "paths": [
