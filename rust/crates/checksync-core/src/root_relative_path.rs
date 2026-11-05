@@ -65,9 +65,28 @@ mod tests {
     fn resolves_dot_segments_in_the_file_path() {
         // Arrange
         let dir = TempDir::new().unwrap();
-        fs::create_dir_all(dir.path().join("a/b")).unwrap();
+        fs::create_dir_all(dir.path().join("a/b/c")).unwrap();
         fs::write(dir.path().join("a/.root"), "").unwrap();
         let file = dir.path().join("a/b/./c/../file.js");
+
+        // Act
+        let result = root_relative_path(&file, Some(".root"));
+
+        // Assert
+        assert_eq!(result, Ok(PathBuf::from("b").join("file.js")));
+    }
+
+    #[test]
+    fn resolves_repeated_separators_in_the_file_path() {
+        // Arrange
+        let dir = TempDir::new().unwrap();
+        fs::create_dir_all(dir.path().join("a/b")).unwrap();
+        fs::write(dir.path().join("a/.root"), "").unwrap();
+        let file = PathBuf::from(format!(
+            "{}{sep}a{sep}{sep}b{sep}{sep}file.js",
+            dir.path().display(),
+            sep = std::path::MAIN_SEPARATOR
+        ));
 
         // Act
         let result = root_relative_path(&file, Some(".root"));
