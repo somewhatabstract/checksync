@@ -4,6 +4,7 @@ use std::path::{Component, Path, PathBuf};
 use ignore::Match;
 use ignore::gitignore::{Gitignore, GitignoreBuilder};
 
+use crate::escape_glob_braces::escape_glob_braces;
 use crate::node_relative::node_relative;
 use crate::types::IgnoreDecision;
 
@@ -22,8 +23,14 @@ pub struct IgnoreFile {
 impl IgnoreFile {
     /// Read an ignore file.
     ///
-    /// Invalid UTF-8 becomes U+FFFD, and a pattern that can't be parsed,
-    /// such as an unclosed `[`, matches nothing.
+    /// Patterns mean what they mean to git. A byte order mark at the start
+    /// is skipped, braces match themselves, and a pattern that can't be
+    /// parsed, such as an unclosed `[`, matches nothing, as does a line
+    /// that's only `!`. Invalid UTF-8 becomes U+FFFD.
+    ///
+    /// Two things differ from checksync's JavaScript implementation. POSIX
+    /// character classes, such as `[[:alpha:]]`, aren't supported, and
+    /// ignoring case applies only to ASCII letters, as in git.
     ///
     /// # Arguments
     ///
@@ -39,7 +46,8 @@ impl IgnoreFile {
     pub fn load(path: &Path) -> io::Result<Self> {
         let bytes = std::fs::read(path)?;
         let contents = String::from_utf8_lossy(&bytes);
-        Ok(Self::from_contents(path, &contents))
+        let contents = contents.strip_prefix('\u{feff}').unwrap_or(&contents);
+        Ok(Self::from_contents(path, contents))
     }
 
     /// Build an ignore file from its contents, as if it were at `path`.
@@ -49,10 +57,17 @@ impl IgnoreFile {
         // Setting case insensitivity can't fail; the `Result` is only there
         // for future options.
         let _ = builder.case_insensitive(true);
+        // Git skips an unclosed `[`; the crate would match it literally.
+        builder.allow_unclosed_class(false);
         for line in contents.lines() {
+            // Git ignores a lone `!`; the crate would read it as unignoring
+            // every path.
+            if line.trim_end() == "!" {
+                continue;
+            }
             // A pattern that can't be parsed is skipped, so it matches
-            // nothing, as with the `ignore` package.
-            let _ = builder.add_line(None, line);
+            // nothing, as with git.
+            let _ = builder.add_line(None, &escape_glob_braces(line));
         }
         // Building only fails for patterns already rejected above.
         let matcher = builder.build().ok().unwrap_or_else(Gitignore::empty);
@@ -198,7 +213,7 @@ mod tests {
     }
 
     #[test]
-    fn skips_a_pattern_it_cannot_parse() {
+    fn keeps_the_patterns_after_one_it_cannot_parse() {
         // Arrange
         let dir = TempDir::new().unwrap();
         let file = ignore_file(dir.path(), "[\n*.log\n");
@@ -208,6 +223,58 @@ mod tests {
 
         // Assert
         assert_eq!(result, IgnoreDecision::Ignored);
+    }
+
+    #[test]
+    fn matches_nothing_with_an_unclosed_bracket() {
+        // Arrange
+        let dir = TempDir::new().unwrap();
+        let file = ignore_file(dir.path(), "foo[ab\n");
+
+        // Act
+        let result = file.decide(&dir.path().join("foo[ab"));
+
+        // Assert
+        assert_eq!(result, IgnoreDecision::NoOpinion);
+    }
+
+    #[test]
+    fn skips_a_byte_order_mark() {
+        // Arrange
+        let dir = TempDir::new().unwrap();
+        let file = ignore_file(dir.path(), "\u{feff}a.log\n");
+
+        // Act
+        let result = file.decide(&dir.path().join("a.log"));
+
+        // Assert
+        assert_eq!(result, IgnoreDecision::Ignored);
+    }
+
+    #[test]
+    fn skips_a_line_that_is_only_an_exclamation_mark() {
+        // Arrange
+        let dir = TempDir::new().unwrap();
+        let file = ignore_file(dir.path(), "!\n");
+
+        // Act
+        let result = file.decide(&dir.path().join("x.js"));
+
+        // Assert
+        assert_eq!(result, IgnoreDecision::NoOpinion);
+    }
+
+    #[test]
+    fn matches_braces_literally() {
+        // Arrange
+        let dir = TempDir::new().unwrap();
+        let file = ignore_file(dir.path(), "{a,b}\n");
+
+        // Act
+        let result = file.decide(&dir.path().join("a"));
+
+        // Assert
+        assert_eq!(result, IgnoreDecision::NoOpinion);
     }
 
     #[test]

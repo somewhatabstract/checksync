@@ -8,6 +8,7 @@ mod closesdir;
 mod cwd_relative_path;
 mod decode_utf8;
 pub mod errors;
+mod escape_glob_braces;
 mod get_normalized_path_info;
 mod ignore_file;
 mod is_allowed_by_ignore_files;

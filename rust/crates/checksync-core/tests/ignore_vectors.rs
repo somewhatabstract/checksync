@@ -11,6 +11,23 @@ use serde::Deserialize;
 struct ExpectedPath {
     path: String,
     result: String,
+    rust: Option<RustDivergence>,
+}
+
+/// A decision the Rust implementation makes differently on purpose.
+#[derive(Deserialize)]
+struct RustDivergence {
+    result: String,
+    reason: String,
+}
+
+impl ExpectedPath {
+    /// The decision the Rust implementation should make.
+    fn rust_result(&self) -> &str {
+        self.rust
+            .as_ref()
+            .map_or(self.result.as_str(), |rust| rust.result.as_str())
+    }
 }
 
 /// One entry in the shared ignore-file vector table.
@@ -46,6 +63,29 @@ fn decision_name(decision: IgnoreDecision) -> &'static str {
 }
 
 #[test]
+fn explains_every_rust_divergence() {
+    // Arrange
+    let vectors = load_vectors();
+
+    // Act
+    let unexplained: Vec<String> = vectors
+        .iter()
+        .flat_map(|vector| {
+            vector.paths.iter().filter_map(|expected| {
+                expected
+                    .rust
+                    .as_ref()
+                    .filter(|rust| rust.reason.trim().is_empty())
+                    .map(|_| format!("{}: {}", vector.description, expected.path))
+            })
+        })
+        .collect();
+
+    // Assert
+    assert_eq!(unexplained, Vec::<String>::new());
+}
+
+#[test]
 fn decides_every_shared_ignore_vector() {
     // Arrange
     let vectors = load_vectors();
@@ -65,10 +105,11 @@ fn decides_every_shared_ignore_vector() {
                 .iter()
                 .filter_map(|expected| {
                     let actual = decision_name(ignore_file.decide(&folder.join(&expected.path)));
-                    (actual != expected.result).then(|| {
+                    let wanted = expected.rust_result();
+                    (actual != wanted).then(|| {
                         format!(
-                            "{}: {}: expected {}, got {actual}",
-                            vector.description, expected.path, expected.result
+                            "{}: {}: expected {wanted}, got {actual}",
+                            vector.description, expected.path
                         )
                     })
                 })
