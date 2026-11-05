@@ -1,5 +1,7 @@
-//! Check `IgnoreFile` against the ignore-file vectors shared with the
-//! TypeScript implementation, so both apply ignore files identically.
+//! Check `IgnoreFile` against the ignore-file vectors shared with TypeScript.
+//!
+//! Both implementations apply ignore files the same way, apart from the
+//! deliberate differences recorded in the vectors' `rust` fields.
 
 use std::fs;
 

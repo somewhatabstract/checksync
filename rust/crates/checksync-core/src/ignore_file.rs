@@ -1,14 +1,13 @@
+use std::borrow::Cow;
 use std::io;
 use std::path::{Component, Path, PathBuf};
 
 use crate::gitignore_pattern_matches::gitignore_pattern_matches;
 use crate::node_relative::node_relative;
-use crate::normalize_separators::normalize_separators;
 use crate::read_gitignore_patterns::read_gitignore_patterns;
 use crate::types::{GitignorePattern, IgnoreDecision};
 
-/// A loaded ignore file, in `.gitignore` syntax, that decides about paths in
-/// its own folder.
+/// A loaded `.gitignore`-style file that decides about paths in its folder.
 ///
 /// Patterns are read and matched as git reads and matches them, ignoring
 /// case as checksync's JavaScript implementation does. A path inside an
@@ -72,8 +71,8 @@ impl IgnoreFile {
         if outside {
             return IgnoreDecision::NoOpinion;
         }
-        let relative = normalize_separators(&relative.to_string_lossy());
-        let relative = relative.as_bytes();
+        let relative = path_bytes(&relative);
+        let relative = relative.as_ref();
         let in_ignored_folder = relative
             .iter()
             .enumerate()
@@ -92,13 +91,33 @@ impl IgnoreFile {
         }
     }
 
-    /// The last pattern that matches a path, which is the one that decides.
+    /// Find the last pattern that matches a path, which is the one that decides.
     fn last_match(&self, path: &[u8], is_dir: bool) -> Option<&GitignorePattern> {
         self.patterns
             .iter()
             .rev()
             .find(|pattern| gitignore_pattern_matches(pattern, path, is_dir, true))
     }
+}
+
+/// Get a relative path's bytes, with `/` separating folders, for matching.
+///
+/// On Unix these are the path's own bytes, as git matches them, so a name
+/// that isn't valid UTF-8 can still match a pattern with the same bytes.
+#[cfg(unix)]
+fn path_bytes(path: &Path) -> Cow<'_, [u8]> {
+    use std::os::unix::ffi::OsStrExt;
+    Cow::Borrowed(path.as_os_str().as_bytes())
+}
+
+/// Get a relative path's bytes, with `/` separating folders, for matching.
+///
+/// Windows paths are UTF-16, so they're converted to UTF-8 and their `\`
+/// separators to `/`.
+#[cfg(not(unix))]
+fn path_bytes(path: &Path) -> Cow<'_, [u8]> {
+    use crate::normalize_separators::normalize_separators;
+    Cow::Owned(normalize_separators(&path.to_string_lossy()).into_bytes())
 }
 
 #[cfg(test)]
@@ -273,6 +292,24 @@ mod tests {
 
         // Assert
         assert_eq!(result, IgnoreDecision::NoOpinion);
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn matches_a_name_that_is_not_utf8_by_its_bytes() {
+        // Arrange
+        use std::ffi::OsStr;
+        use std::os::unix::ffi::OsStrExt;
+        let dir = TempDir::new().unwrap();
+        let path = dir.path().join(".gitignore");
+        fs::write(&path, b"caf\xE9\n").unwrap();
+        let file = IgnoreFile::load(&path).unwrap();
+
+        // Act
+        let result = file.decide(&dir.path().join(OsStr::from_bytes(b"caf\xE9")));
+
+        // Assert
+        assert_eq!(result, IgnoreDecision::Ignored);
     }
 
     #[test]
