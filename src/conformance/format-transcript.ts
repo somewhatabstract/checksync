@@ -15,6 +15,17 @@ const formatStream = (name: string, content: string): string => {
 };
 
 /**
+ * Keep the first line of some output, noting whether anything followed it.
+ */
+const keepFirstLine = (content: string): string => {
+    const newline = content.indexOf("\n");
+    if (newline < 0 || newline === content.length - 1) {
+        return content;
+    }
+    return `${content.slice(0, newline + 1)}(rest not recorded)\n`;
+};
+
+/**
  * Format a conformance case and its result as a golden transcript.
  *
  * The working directory is included when the case sets one, so that the
@@ -28,10 +39,9 @@ export default function formatTranscript(
     testCase: ConformanceCase,
     result: RunResult,
 ): string {
-    const stderr =
-        testCase.stderrPresenceOnly && result.stderr !== ""
-            ? "(not recorded, but not empty)\n"
-            : result.stderr;
+    const stderr = testCase.stderrFirstLineOnly
+        ? keepFirstLine(result.stderr)
+        : result.stderr;
     return [
         `args: ${JSON.stringify(testCase.args)}\n`,
         testCase.cwd == null ? "" : `cwd: ${testCase.cwd}\n`,

@@ -66,29 +66,47 @@ describe("#formatTranscript", () => {
         );
     });
 
-    it("should record only that stderr had output when the case asks for that", () => {
+    it("should keep only the first line of stderr when the case asks for that", () => {
         // Arrange
-        const caseWithPresence = {...testCase, stderrPresenceOnly: true};
-        const result = {exitCode: 6, stdout: "", stderr: "at x (main.js:1:2)"};
+        const caseWithFirstLine = {...testCase, stderrFirstLineOnly: true};
+        const result = {
+            exitCode: 6,
+            stdout: "",
+            stderr: "Error    a.json\nat x (main.js:1:2)\n",
+        };
 
         // Act
-        const transcript = formatTranscript(caseWithPresence, result);
+        const transcript = formatTranscript(caseWithFirstLine, result);
 
         // Assert
-        expect(transcript).toContain(
-            "--- stderr ---\n(not recorded, but not empty)\n",
+        expect(transcript).toEndWith(
+            "--- stderr ---\nError    a.json\n(rest not recorded)\n",
         );
     });
 
-    it("should leave empty stderr empty when recording only its presence", () => {
+    it("should keep stderr whole when it is only one line", () => {
         // Arrange
-        const caseWithPresence = {...testCase, stderrPresenceOnly: true};
-        const result = {exitCode: 6, stdout: "", stderr: ""};
+        const caseWithFirstLine = {...testCase, stderrFirstLineOnly: true};
+        const result = {exitCode: 6, stdout: "", stderr: "Error    a.json\n"};
 
         // Act
-        const transcript = formatTranscript(caseWithPresence, result);
+        const transcript = formatTranscript(caseWithFirstLine, result);
 
         // Assert
-        expect(transcript).toEndWith("--- stderr ---\n");
+        expect(transcript).toEndWith("--- stderr ---\nError    a.json\n");
+    });
+
+    it("should keep a single line without a newline as it is", () => {
+        // Arrange
+        const caseWithFirstLine = {...testCase, stderrFirstLineOnly: true};
+        const result = {exitCode: 6, stdout: "", stderr: "Error"};
+
+        // Act
+        const transcript = formatTranscript(caseWithFirstLine, result);
+
+        // Assert
+        expect(transcript).toEndWith(
+            "--- stderr ---\nError\n\\ No newline at end of stderr\n",
+        );
     });
 });

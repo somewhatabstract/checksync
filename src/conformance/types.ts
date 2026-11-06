@@ -13,8 +13,8 @@ export type ConformanceCase = {
     args: ReadonlyArray<string>;
 
     /**
-     * The path, relative to the repository root, of the marker cache file the
-     * case writes, if it writes one.
+     * The path, relative to the case's working directory, of the marker cache
+     * file the case writes, if it writes one.
      */
     cacheFile?: string;
 
@@ -28,18 +28,20 @@ export type ConformanceCase = {
 
     /**
      * The working directory to run the case in, as a forward-slash path
-     * relative to the repository root, if not the root itself.
+     * relative to the root it runs in, if not that root itself.
      */
     cwd?: string;
 
     /**
-     * Whether to record only that stderr had output, rather than its text.
+     * Whether to record only the first line of stderr, noting that more was
+     * left out.
      *
-     * For output that comes from the runtime rather than checksync, such as
-     * stack traces and system error messages, which change between builds,
-     * runtimes and implementations.
+     * For errors where checksync names the problem on the first line and
+     * then passes on text from the runtime, such as a stack trace or a system
+     * error message, which changes between builds, runtimes and
+     * implementations.
      */
-    stderrPresenceOnly?: boolean;
+    stderrFirstLineOnly?: boolean;
 };
 
 /**

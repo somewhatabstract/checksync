@@ -86,24 +86,23 @@ const main = (argv: ReadonlyArray<string>): number => {
         ),
         ...CLI_CASES,
     ]) {
-        const cachePath =
-            testCase.cacheFile == null
-                ? null
-                : path.join(ROOT_DIR, testCase.cacheFile);
-        if (cachePath != null) {
-            // checksync doesn't create the directory, and a stale cache
-            // must not be mistaken for this run's output.
-            fs.mkdirSync(path.dirname(cachePath), {recursive: true});
-            fs.rmSync(cachePath, {force: true});
-        }
-
         // A case that writes files runs in a scratch copy of its example, so
         // that the committed example is never changed.
         const scratchRoot =
             testCase.scratchExample == null
                 ? null
                 : createScratchRoot(ROOT_DIR, testCase.scratchExample);
-        const cwd = scratchRoot ?? path.join(ROOT_DIR, testCase.cwd ?? "");
+        const cwd = path.join(scratchRoot ?? ROOT_DIR, testCase.cwd ?? "");
+        const cachePath =
+            testCase.cacheFile == null
+                ? null
+                : path.join(cwd, testCase.cacheFile);
+        if (cachePath != null) {
+            // checksync doesn't create the directory, and a stale cache
+            // must not be mistaken for this run's output.
+            fs.mkdirSync(path.dirname(cachePath), {recursive: true});
+            fs.rmSync(cachePath, {force: true});
+        }
         const normalizeOptions = getNormalizeOptions(cwd);
         let result: RunResult;
         let fileChanges: string | null = null;

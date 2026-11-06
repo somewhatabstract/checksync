@@ -47,9 +47,11 @@ export const CLI_CASES: ReadonlyArray<ConformanceCase> = [
         id: "cli/bad-config-malformed-json",
         args: ["--config", "malformed.json", "no-tags.txt"],
         cwd: BAD_CONFIG_DIR,
-        // The error includes the JSON parser's message and a stack trace.
-        stderrPresenceOnly: true,
+        // After naming the file, the error passes on the JSON parser's message
+        // and a stack trace.
+        stderrFirstLineOnly: true,
     },
+    // Known bug: a config that fails validation exits without saying why.
     {
         id: "cli/bad-config-wrong-type",
         args: ["--config", "wrong-type.json", "no-tags.txt"],
@@ -60,6 +62,8 @@ export const CLI_CASES: ReadonlyArray<ConformanceCase> = [
         args: ["--config", "unknown-option.json", "no-tags.txt"],
         cwd: BAD_CONFIG_DIR,
     },
+    // Known bug: a top-level array passes validation and is used as if it
+    // were an empty config.
     {
         id: "cli/bad-config-top-level-array",
         args: ["--config", "array.json", "no-tags.txt"],
@@ -69,14 +73,15 @@ export const CLI_CASES: ReadonlyArray<ConformanceCase> = [
         id: "cli/bad-config-missing-file",
         args: ["--config", "missing.json", "no-tags.txt"],
         cwd: BAD_CONFIG_DIR,
-        // The error includes the system's message for a missing file.
-        stderrPresenceOnly: true,
+        // After naming the file, the error passes on the system's message.
+        stderrFirstLineOnly: true,
     },
     {
         id: "cli/bad-config-relative-path-elsewhere",
-        // A relative path is opened after changing to the config file's
-        // folder, so it is not found unless that folder is the working one.
+        // Known bug: a relative path is opened after changing to the config
+        // file's folder, so it is not found unless that folder is the
+        // working one.
         args: ["--config", `${BAD_CONFIG_DIR}/array.json`, "no-tags.txt"],
-        stderrPresenceOnly: true,
+        stderrFirstLineOnly: true,
     },
 ];
