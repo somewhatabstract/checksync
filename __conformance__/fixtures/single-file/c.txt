@@ -1,0 +1,3 @@
+// sync-start:other 341902140 a.txt
+shared in c
+// sync-end:other

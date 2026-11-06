@@ -1,0 +1,7 @@
+// sync-start:pair 500040709 b.txt
+shared in a
+// sync-end:pair
+
+// sync-start:other 1 c.txt
+also in a
+// sync-end:other
