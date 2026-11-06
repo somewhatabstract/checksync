@@ -83,12 +83,10 @@ export default async function determineOptions(
         ...configFromFile,
         ...argsOptions,
     };
-    if (
-        configFromFile?.includeGlobs == null &&
-        argsOptions?.includeGlobs == null
-    ) {
-        combinedOptions.includeGlobs = defaultIncludeGlobs(startDir);
-    }
+    combinedOptions.includeGlobs =
+        argsOptions?.includeGlobs ??
+        configFromFile?.includeGlobs ??
+        defaultIncludeGlobs(startDir);
     // We have to build the combined migrations.
     // Since this is a nested configuration, it's a little different.
     // We only allow the mode to be overridden by args, the mappings always

@@ -380,7 +380,9 @@ describe("#determineOptions", () => {
             jest.spyOn(FindConfigurationFile, "default").mockReturnValue(
                 "/path/to/config/file",
             );
-            jest.spyOn(LoadConfigurationFile, "default").mockResolvedValue({});
+            jest.spyOn(LoadConfigurationFile, "default").mockResolvedValue(
+                {} as any,
+            );
             const NullLogger = new Logger(null, true);
 
             // Act
@@ -415,7 +417,7 @@ describe("#determineOptions", () => {
             );
             jest.spyOn(LoadConfigurationFile, "default").mockResolvedValue({
                 includeGlobs: [],
-            });
+            } as any);
             const NullLogger = new Logger(null, true);
 
             // Act

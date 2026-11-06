@@ -48,11 +48,14 @@ Where:
     \`<include_paths>\`    are space-separated paths and glob patterns
                        for identifying files to check.
                        Defaults to all files below the current working
-                       directory. Note that files and folders that start
-                       with a period are not automatically parsed; they
-                       must be explicitly included in the \`<include_paths>\`
-                       argument or corresponding \`includeGlobs\` configuration
-                       value.
+                       directory (or the \`--cwd\` folder). If a configuration
+                       file is used and that folder is not inside the
+                       configuration file's folder, defaults to all files
+                       below the configuration file's folder instead. Note
+                       that files and folders that start with a period are
+                       not automatically parsed; they must be explicitly
+                       included in the \`<include_paths>\` argument or
+                       corresponding \`includeGlobs\` configuration value.
 
 ## Arguments
 

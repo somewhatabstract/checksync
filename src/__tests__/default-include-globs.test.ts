@@ -34,4 +34,37 @@ describe("defaultIncludeGlobs", () => {
         // Assert
         expect(result).toStrictEqual(["\\[a\\]/**"]);
     });
+
+    it("should match everything below the working directory when the start folder is above it", () => {
+        // Arrange
+        const startDir = path.dirname(process.cwd());
+
+        // Act
+        const result = defaultIncludeGlobs(startDir);
+
+        // Assert
+        expect(result).toStrictEqual(["**"]);
+    });
+
+    it("should match everything below the working directory when the start folder is beside it", () => {
+        // Arrange
+        const startDir = path.join(path.dirname(process.cwd()), "elsewhere");
+
+        // Act
+        const result = defaultIncludeGlobs(startDir);
+
+        // Assert
+        expect(result).toStrictEqual(["**"]);
+    });
+
+    it("should match below a start folder whose name begins with two periods", () => {
+        // Arrange
+        const startDir = path.join(process.cwd(), "..a");
+
+        // Act
+        const result = defaultIncludeGlobs(startDir);
+
+        // Assert
+        expect(result).toStrictEqual(["..a/**"]);
+    });
 });

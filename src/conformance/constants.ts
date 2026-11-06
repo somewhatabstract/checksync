@@ -80,6 +80,14 @@ export const CLI_CASES: ReadonlyArray<ConformanceCase> = [
         cwd: `${NO_PATHS_BELOW_CONFIG_DIR}/sub`,
     },
     {
+        id: "cli/no-paths-config-elsewhere",
+        // The configuration is in a folder beside the starting folder, so
+        // everything below the configuration's folder is checked instead,
+        // which the broken file there shows.
+        args: ["--config", "../../no-paths-below-config/.checksyncrc.json"],
+        cwd: "__conformance__/fixtures/no-paths/sub",
+    },
+    {
         id: "cli/no-paths-cwd-option",
         args: ["--cwd", `${NO_PATHS_BELOW_CONFIG_DIR}/sub`],
     },
