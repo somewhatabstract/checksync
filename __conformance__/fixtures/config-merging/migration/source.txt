@@ -1,0 +1,3 @@
+// sync-start:migrated 1 moved/target.txt
+shared
+// sync-end:migrated

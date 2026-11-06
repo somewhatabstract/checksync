@@ -1,0 +1,11 @@
+args: ["**/*.txt"]
+cwd: __conformance__/fixtures/config-discovery/marker-beats-closer/sub/deeper
+exit code: 2
+--- stdout ---
+
+🛑  Unfixable errors found. Fix the errors in these files and try again.
+  sub/deeper/tagged.txt
+--- stderr ---
+Error    sub/deeper/tagged.txt:1
+Sync-end for 'marker_beats_closer' found, but there was no corresponding sync-start
+

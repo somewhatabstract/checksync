@@ -1,0 +1,6 @@
+args: ["--comments","//","**/*.txt"]
+cwd: __conformance__/fixtures/config-merging/options
+exit code: 0
+--- stdout ---
+🎉  Everything is in sync!
+--- stderr ---

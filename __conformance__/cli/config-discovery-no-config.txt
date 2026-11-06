@@ -1,0 +1,11 @@
+args: ["--no-config","**/*.txt"]
+cwd: __conformance__/fixtures/config-discovery/beside-marker/sub
+exit code: 2
+--- stdout ---
+
+🛑  Unfixable errors found. Fix the errors in these files and try again.
+  tagged.txt
+--- stderr ---
+Error    tagged.txt:2
+Sync-end for 'no_config' found, but there was no corresponding sync-start
+

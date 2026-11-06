@@ -1,0 +1,11 @@
+{
+    "migration": {
+        "mode": "all",
+        "mappings": [
+            {
+                "from": ["moved/"],
+                "to": "https://example.com/moved/"
+            }
+        ]
+    }
+}
