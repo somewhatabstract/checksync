@@ -19,7 +19,9 @@ const SCENARIOS: Record<string, ReadonlyArray<string>> = {
  * Get the conformance cases for the given examples.
  *
  * Each example is run once per scenario, and once more with `--output-cache`
- * so that the marker cache it writes can be recorded too. The `migrate_all`
+ * so that the marker cache it writes can be recorded too. Each is then run
+ * with `--update-tags` in a scratch copy, so that the files autofix writes
+ * can be recorded without changing the example. The `migrate_all`
  * example also passes `--migrate all`, since that is the behavior it exists
  * to cover.
  *
@@ -43,6 +45,11 @@ export default function getConformanceCases(
                 id: `${example}.output-cache`,
                 args: ["--output-cache", cacheFile, ...migrateArgs, glob],
                 cacheFile,
+            },
+            {
+                id: `${example}.autofix`,
+                args: ["--update-tags", ...migrateArgs, glob],
+                scratchExample: example,
             },
         ];
     });

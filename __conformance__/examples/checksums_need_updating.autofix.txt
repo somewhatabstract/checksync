@@ -1,0 +1,18 @@
+args: ["--update-tags","__examples__/checksums_need_updating/**"]
+exit code: 0
+--- stdout ---
+Fix      __examples__/checksums_need_updating/unsymlinked/a.js:4
+Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/unsymlinked/b.py:3' from 45678 to 249234014.
+
+Fix      __examples__/checksums_need_updating/unsymlinked/a.js:5
+Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/unsymlinked/c.jsx:3' from 1234 to 1992689801.
+
+Fix      __examples__/checksums_need_updating/unsymlinked/b.py:3
+Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/unsymlinked/a.js:4' from 4567 to 2050223083.
+
+Fix      __examples__/checksums_need_updating/unsymlinked/c.jsx:3
+Updated checksum for sync-tag 'update_me' referencing '__examples__/checksums_need_updating/unsymlinked/a.js:5' from 123 to 2050223083.
+
+Info     Fixed issues in 3 file(s)
+🎉  Everything is in sync!
+--- stderr ---

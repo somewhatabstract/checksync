@@ -1,0 +1,9 @@
+--- __examples__/migrate_missing_target/example.js (changed) ---
+"// This is a a javascript (or similar language) file\n"
+"\n"
+"// sync-start:migrate_missing_target 1291658605 https://example.com/1/missing_target.py\n"
+"// sync-start:migrate_missing_target2 1291658605 https://example.com/2/missing_target.py\n"
+"const someCode = \"does a thing\";\n"
+"console.log(someCode);\n"
+"// sync-end:migrate_missing_target\n"
+"// sync-end:migrate_missing_target2\n"

@@ -24,7 +24,10 @@ import normalizeCache from "../src/conformance/normalize-cache";
 import formatTranscript from "../src/conformance/format-transcript";
 import checkGolden from "../src/conformance/check-golden";
 import getActualPath from "../src/conformance/get-actual-path";
-import {Launcher} from "../src/conformance/types";
+import createScratchRoot from "../src/conformance/create-scratch-root";
+import snapshotFiles from "../src/conformance/snapshot-files";
+import formatFileChanges from "../src/conformance/format-file-changes";
+import {Launcher, NormalizeOptions, RunResult} from "../src/conformance/types";
 
 const ROOT_DIR = path.join(__dirname, "..");
 const GOLDEN_DIR = path.join(ROOT_DIR, "__conformance__", "examples");
@@ -63,14 +66,16 @@ const main = (argv: ReadonlyArray<string>): number => {
         launcherIndex >= 0
             ? {command: path.resolve(argv[launcherIndex + 1]), args: []}
             : {command: process.execPath, args: [nodeScript]};
-    const normalizeOptions = {
-        rootDir: ROOT_DIR,
-        launchString:
-            launcherIndex >= 0
-                ? path.relative(ROOT_DIR, launcher.command)
-                : path.relative(ROOT_DIR, nodeScript),
+    // checksync reports paths, including its own launch string, relative to
+    // its working directory, so what gets normalized depends on where it ran.
+    const getNormalizeOptions = (cwd: string): NormalizeOptions => ({
+        rootDir: cwd,
+        launchString: path.relative(
+            cwd,
+            launcherIndex >= 0 ? launcher.command : nodeScript,
+        ),
         pathSeparator: path.sep,
-    };
+    });
 
     let failures = 0;
     for (const testCase of getConformanceCases(
@@ -87,7 +92,31 @@ const main = (argv: ReadonlyArray<string>): number => {
             fs.rmSync(cachePath, {force: true});
         }
 
-        const result = runChecksync(launcher, testCase.args, ROOT_DIR);
+        // A case that writes files runs in a scratch copy of its example, so
+        // that the committed example is never changed.
+        const scratchRoot =
+            testCase.scratchExample == null
+                ? null
+                : createScratchRoot(ROOT_DIR, testCase.scratchExample);
+        const cwd = scratchRoot ?? ROOT_DIR;
+        const normalizeOptions = getNormalizeOptions(cwd);
+        let result: RunResult;
+        let fileChanges: string | null = null;
+        try {
+            const before =
+                scratchRoot == null ? null : snapshotFiles(scratchRoot);
+            result = runChecksync(launcher, testCase.args, cwd);
+            if (scratchRoot != null && before != null) {
+                fileChanges = formatFileChanges(
+                    before,
+                    snapshotFiles(scratchRoot),
+                );
+            }
+        } finally {
+            if (scratchRoot != null) {
+                fs.rmSync(scratchRoot, {recursive: true, force: true});
+            }
+        }
         const transcript = formatTranscript(testCase, {
             exitCode: result.exitCode,
             stdout: normalizeOutput(result.stdout, normalizeOptions),
@@ -95,6 +124,13 @@ const main = (argv: ReadonlyArray<string>): number => {
         });
         const goldenBase = path.join(GOLDEN_DIR, testCase.id);
         if (checkAndReport(`${goldenBase}.txt`, transcript, update)) {
+            failures++;
+        }
+
+        if (
+            fileChanges != null &&
+            checkAndReport(`${goldenBase}.files.txt`, fileChanges, update)
+        ) {
             failures++;
         }
 
