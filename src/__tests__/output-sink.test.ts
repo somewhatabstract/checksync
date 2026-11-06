@@ -9,6 +9,7 @@ import * as FileReferenceLogger from "../file-reference-logger";
 import * as FixFile from "../fix-file";
 import * as GetLaunchString from "../get-launch-string";
 import * as RootRelativePath from "../root-relative-path";
+import * as CwdRelativePath from "../cwd-relative-path";
 
 import {ErrorDetails} from "../types";
 
@@ -98,6 +99,11 @@ describe("OutputSink", () => {
             const NullLogger = new Logger();
             const outputSink = new OutputSink(defaultOptions, NullLogger);
             jest.spyOn(RootRelativePath, "default").mockReturnValue("src/a.js");
+            // Keep the paths as given, so the message is the same on every
+            // platform.
+            jest.spyOn(CwdRelativePath, "default").mockImplementation(
+                (file: string) => file,
+            );
             jest.spyOn(FileReferenceLogger, "default").mockImplementation(
                 (file: string) => ({file}) as any,
             );
@@ -126,6 +132,11 @@ describe("OutputSink", () => {
                 NullLogger,
             );
             jest.spyOn(RootRelativePath, "default").mockReturnValue("src/a.js");
+            // Keep the paths as given, so the message is the same on every
+            // platform.
+            jest.spyOn(CwdRelativePath, "default").mockImplementation(
+                (file: string) => file,
+            );
             jest.spyOn(FileReferenceLogger, "default").mockImplementation(
                 (file: string) => ({file}) as any,
             );
