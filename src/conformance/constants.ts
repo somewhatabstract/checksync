@@ -83,7 +83,8 @@ export const CLI_CASES: ReadonlyArray<ConformanceCase> = [
         id: "cli/no-paths-config-elsewhere",
         // The configuration is in a folder beside the starting folder, so
         // everything below the configuration's folder is checked instead,
-        // which the broken file there shows.
+        // which the broken file there shows. The configuration's exclude
+        // globs still apply, so the broken file they exclude isn't reported.
         args: ["--config", "../../no-paths-below-config/.checksyncrc.json"],
         cwd: "__conformance__/fixtures/no-paths/sub",
     },
