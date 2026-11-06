@@ -3,7 +3,7 @@
  */
 export type ConformanceCase = {
     /**
-     * Unique identifier for the case, used to name its golden file.
+     * Unique identifier for the case, used to name its golden files.
      */
     id: string;
 

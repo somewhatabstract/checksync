@@ -1,0 +1,5 @@
+args: ["--not-an-option","__examples__/correct_checksums/**"]
+exit code: 4
+--- stdout ---
+--- stderr ---
+Error    Unknown arguments: not-an-option, notAnOption

@@ -55,7 +55,7 @@ If you make changes that change snapshots, you may need to run tests with the `-
 
 #### Conformance tests
 
-`pnpm test:conformance` builds `checksync` and runs the real CLI over every folder in `__examples__`, in several scenarios (check-only, `--json`, `--update-tags --dry-run`, `--output-cache` and so on). It compares what each run prints, its exit code, and any files it writes with the golden files in `__conformance__/examples`. CI runs it on Linux, macOS and Windows as the "Integration tests" job.
+`pnpm test:conformance` builds `checksync` and runs the real CLI over every folder in `__examples__`, in several scenarios (check-only, `--json`, `--update-tags --dry-run`, `--output-cache` and so on), plus a set of command-line cases such as `--help` and bad arguments. It compares what each run prints, its exit code, and any files it writes with the golden files in `__conformance__/examples` and `__conformance__/cli`. CI runs it on Linux, macOS and Windows as the "Integration tests" job.
 
 When a case doesn't match, the output it got is written next to the golden file with `.actual` before the extension, and the difference is printed.
 

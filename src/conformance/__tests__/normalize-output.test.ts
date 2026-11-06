@@ -86,4 +86,59 @@ describe("#normalizeOutput", () => {
         // Assert
         expect(result).toBe(`{"version": "0.0.0"}`);
     });
+
+    it("should replace the version in the help text's heading", () => {
+        // Arrange
+        const output = "checksync 11.0.2 ✅ 🔗\n";
+
+        // Act
+        const result = normalizeOutput(output, options);
+
+        // Assert
+        expect(result).toBe("checksync 0.0.0 ✅ 🔗\n");
+    });
+
+    it("should replace a version that is all of the output, as --version prints it", () => {
+        // Arrange
+        const output = "12.0.0-rc.1\n";
+
+        // Act
+        const result = normalizeOutput(output, options);
+
+        // Assert
+        expect(result).toBe("0.0.0\n");
+    });
+
+    it("should leave a version-like number alone when it is only part of a line", () => {
+        // Arrange
+        const output = "Updated to 1.2.3 today\n";
+
+        // Act
+        const result = normalizeOutput(output, options);
+
+        // Assert
+        expect(result).toBe("Updated to 1.2.3 today\n");
+    });
+
+    it("should leave a help-style heading alone when it doesn't start the output", () => {
+        // Arrange
+        const output = "Info\nchecksync 1.2.3\n";
+
+        // Act
+        const result = normalizeOutput(output, options);
+
+        // Assert
+        expect(result).toBe("Info\nchecksync 1.2.3\n");
+    });
+
+    it("should leave a version alone when it is one line of several", () => {
+        // Arrange
+        const output = "1.2.3\nmore\n";
+
+        // Act
+        const result = normalizeOutput(output, options);
+
+        // Assert
+        expect(result).toBe("1.2.3\nmore\n");
+    });
 });
