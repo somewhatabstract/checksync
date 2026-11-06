@@ -1,0 +1,16 @@
+args: ["--update-tags","__examples__/migrate_missing_target/**"]
+exit code: 0
+--- stdout ---
+Fix      __examples__/migrate_missing_target/example.js:3
+Migrated sync-tag 'migrate_missing_target'
+Target changed from '__examples__/migrate_missing_target/missing_target.py' to 'https://example.com/1/missing_target.py'
+Checksum updated from 12345 to 1291658605
+
+Fix      __examples__/migrate_missing_target/example.js:4
+Migrated sync-tag 'migrate_missing_target2'
+Target changed from '__examples__/migrate_missing_target/subfolder/missing_target.py' to 'https://example.com/2/missing_target.py'
+Checksum updated from no checksum to 1291658605
+
+Info     Fixed issues in 1 file(s)
+🎉  Everything is in sync!
+--- stderr ---

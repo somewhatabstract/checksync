@@ -1,7 +1,7 @@
 import getConformanceCases from "../get-conformance-cases";
 
 describe("#getConformanceCases", () => {
-    it("should create a check-only, json, autofix dry-run, and output-cache case per example", () => {
+    it("should create a check-only, json, autofix dry-run, output-cache, and autofix case per example", () => {
         // Arrange
         const examples = ["an_example"];
 
@@ -35,6 +35,11 @@ describe("#getConformanceCases", () => {
                 ],
                 cacheFile: ".conformance-output/an_example.cache.json",
             },
+            {
+                id: "an_example.autofix",
+                args: ["--update-tags", "__examples__/an_example/**"],
+                scratchExample: "an_example",
+            },
         ]);
     });
 
@@ -52,10 +57,12 @@ describe("#getConformanceCases", () => {
             "b.json",
             "b.autofix-dry-run",
             "b.output-cache",
+            "b.autofix",
             "a.check-only",
             "a.json",
             "a.autofix-dry-run",
             "a.output-cache",
+            "a.autofix",
         ]);
     });
 
@@ -87,6 +94,24 @@ describe("#getConformanceCases", () => {
         expect(outputCache?.args).toEqual([
             "--output-cache",
             ".conformance-output/migrate_all.cache.json",
+            "--migrate",
+            "all",
+            "__examples__/migrate_all/**",
+        ]);
+    });
+
+    it("should migrate all tags when autofixing the migrate_all example so its writes match the other scenarios", () => {
+        // Arrange
+        const examples = ["migrate_all"];
+
+        // Act
+        const autofix = getConformanceCases(examples).find(
+            (c) => c.id === "migrate_all.autofix",
+        );
+
+        // Assert
+        expect(autofix?.args).toEqual([
+            "--update-tags",
             "--migrate",
             "all",
             "__examples__/migrate_all/**",

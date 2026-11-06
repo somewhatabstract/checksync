@@ -1,0 +1,12 @@
+args: ["--update-tags","__examples__/no_checksums/**"]
+exit code: 0
+--- stdout ---
+Fix      __examples__/no_checksums/example_one-a.js:3
+Updated checksum for sync-tag 'example_one' referencing '__examples__/no_checksums/example_one-b.py:3' from no checksum to 249234014.
+
+Fix      __examples__/no_checksums/example_one-b.py:3
+Updated checksum for sync-tag 'example_one' referencing '__examples__/no_checksums/example_one-a.js:3' from no checksum to 770446101.
+
+Info     Fixed issues in 2 file(s)
+🎉  Everything is in sync!
+--- stderr ---

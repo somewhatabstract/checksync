@@ -1,0 +1,13 @@
+--- __examples__/no_checksums/example_one-a.js (changed) ---
+"// This is a a javascript (or similar language) file\n"
+"\n"
+"// sync-start:example_one 249234014 __examples__/no_checksums/example_one-b.py\n"
+"const someCode = \"does a thing\";\n"
+"console.log(someCode);\n"
+"// sync-end:example_one\n"
+--- __examples__/no_checksums/example_one-b.py (changed) ---
+"# Test file in Python style\n"
+"\n"
+"# sync-start:example_one 770446101 __examples__/no_checksums/example_one-a.js\n"
+"code = 1\n"
+"# sync-end:example_one\n"

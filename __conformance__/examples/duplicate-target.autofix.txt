@@ -1,0 +1,15 @@
+args: ["--update-tags","__examples__/duplicate-target/**"]
+exit code: 0
+--- stdout ---
+Fix      __examples__/duplicate-target/a.js:4
+Updated checksum for sync-tag 'update_me' referencing '__examples__/duplicate-target/b.py:3' from 12352 to 249234014.
+
+Fix      __examples__/duplicate-target/a.js:5
+Removed duplicate target for sync-tag 'update_me'
+
+Fix      __examples__/duplicate-target/b.py:3
+Updated checksum for sync-tag 'update_me' referencing '__examples__/duplicate-target/a.js:4' from 4567 to 2050223083.
+
+Info     Fixed issues in 2 file(s)
+🎉  Everything is in sync!
+--- stderr ---

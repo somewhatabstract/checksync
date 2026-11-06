@@ -1,0 +1,5 @@
+args: ["--update-tags","__examples__/excluded/**"]
+exit code: 1
+--- stdout ---
+--- stderr ---
+Error    No matching files

@@ -1,0 +1,13 @@
+--- __examples__/line_endings/crlf.txt (changed) ---
+"Carriage return and line feed (CRLF) line endings.\n"
+"\n"
+"# sync-start:endings 1014363271 __examples__/line_endings/lf.txt\n"
+"# sync-start:endings 1014363271 __examples__/line_endings/cr.txt\n"
+"shared line one\n"
+"shared line two\n"
+"# sync-end:endings\n"
+"\n"
+"# sync-start:stale 1404499267 __examples__/line_endings/lf.txt\n"
+"stale line one\n"
+"stale line two\n"
+"# sync-end:stale\n"

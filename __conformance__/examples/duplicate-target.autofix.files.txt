@@ -1,0 +1,15 @@
+--- __examples__/duplicate-target/a.js (changed) ---
+"// This is a a javascript (or similar language) file\n"
+"\n"
+"export default function test() {\n"
+"    // sync-start:update_me 249234014 __examples__/duplicate-target/b.py\n"
+"    const someCode = \"does a thing\";\n"
+"    console.log(someCode);\n"
+"    // sync-end:update_me\n"
+"}\n"
+--- __examples__/duplicate-target/b.py (changed) ---
+"# Test file in Python style\n"
+"\n"
+"# sync-start:update_me 2050223083 __examples__/duplicate-target/a.js\n"
+"code = 1\n"
+"# sync-end:update_me\n"

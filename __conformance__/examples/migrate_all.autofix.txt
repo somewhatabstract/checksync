@@ -1,0 +1,16 @@
+args: ["--update-tags","--migrate","all","__examples__/migrate_all/**"]
+exit code: 0
+--- stdout ---
+Fix      __examples__/migrate_all/example-1.js:3
+Migrated sync-tag 'migrate_all'
+Target changed from '__examples__/migrate_all/example-2.js' to 'https://example.com/2/example-2.js'
+Checksum updated from 12345 to 60104996
+
+Fix      __examples__/migrate_all/example-2.js:3
+Migrated sync-tag 'migrate_all'
+Target changed from '__examples__/migrate_all/example-1.js' to 'https://example.com/2/example-1.js'
+Checksum updated from 12345 to 60367141
+
+Info     Fixed issues in 2 file(s)
+🎉  Everything is in sync!
+--- stderr ---

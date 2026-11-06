@@ -1,0 +1,9 @@
+args: ["--update-tags","__examples__/line_endings/**"]
+exit code: 0
+--- stdout ---
+Fix      __examples__/line_endings/crlf.txt:9
+Updated checksum for sync-tag 'stale' referencing '__examples__/line_endings/lf.txt:9' from 1 to 1404499267.
+
+Info     Fixed issues in 1 file(s)
+🎉  Everything is in sync!
+--- stderr ---

@@ -1,0 +1,11 @@
+args: ["--update-tags","__examples__/no_self_reference/**"]
+exit code: 2
+--- stdout ---
+Info     Fixed issues in 1 file(s)
+
+🛑  Could not update all tags due to unfixable errors. Fix the errors in these files and try again.
+  __examples__/no_self_reference/example.js
+--- stderr ---
+Error    __examples__/no_self_reference/example.js:3
+Sync-tag 'example_three' cannot target itself
+

@@ -17,7 +17,30 @@ export type ConformanceCase = {
      * case writes, if it writes one.
      */
     cacheFile?: string;
+
+    /**
+     * The example to copy into a scratch root and run the case there, if the
+     * case writes files.
+     *
+     * The files the run changes are recorded too.
+     */
+    scratchExample?: string;
 };
+
+/**
+ * One entry in a snapshot of a directory tree.
+ *
+ * Symbolic links are recorded as links, not followed, so that writing through
+ * a link can be told apart from replacing it.
+ */
+export type FileEntry =
+    {kind: "file"; content: Buffer} | {kind: "symlink"; target: string};
+
+/**
+ * The entries of a directory tree, keyed by forward-slash path relative to
+ * the snapshotted directory.
+ */
+export type FileSnapshot = ReadonlyMap<string, FileEntry>;
 
 /**
  * The observable result of running checksync.

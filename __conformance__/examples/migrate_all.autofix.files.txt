@@ -1,0 +1,14 @@
+--- __examples__/migrate_all/example-1.js (changed) ---
+"// This is a a javascript (or similar language) file\n"
+"\n"
+"// sync-start:migrate_all 60104996 https://example.com/2/example-2.js\n"
+"const someCode = \"does a thing\";\n"
+"console.log(someCode);\n"
+"// sync-end:migrate_all\n"
+--- __examples__/migrate_all/example-2.js (changed) ---
+"// This is a a javascript (or similar language) file\n"
+"\n"
+"// sync-start:migrate_all 60367141 https://example.com/2/example-1.js\n"
+"const someCode = \"does a thing\";\n"
+"console.log(someCode);\n"
+"// sync-end:migrate_all\n"
