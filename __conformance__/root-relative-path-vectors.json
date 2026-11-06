@@ -1,0 +1,82 @@
+{
+    "markers": [
+        "a/.root",
+        "a/b/inner/.root",
+        "pkg/package.json",
+        "dirmark/.rootdir/"
+    ],
+    "vectors": [
+        {
+            "description": "A file below the marker's folder",
+            "file": "<root>/a/b/c.js",
+            "marker": ".root",
+            "expected": {
+                "path": "b/c.js"
+            }
+        },
+        {
+            "description": "A file in the marker's own folder",
+            "file": "<root>/a/x.js",
+            "marker": ".root",
+            "expected": {
+                "path": "x.js"
+            }
+        },
+        {
+            "description": "The closest marker wins",
+            "file": "<root>/a/b/inner/d.js",
+            "marker": ".root",
+            "expected": {
+                "path": "d.js"
+            }
+        },
+        {
+            "description": "Dot segments in the file path are resolved",
+            "file": "<root>/a/b/./d/../c.js",
+            "marker": ".root",
+            "expected": {
+                "path": "b/c.js"
+            }
+        },
+        {
+            "description": "Repeated separators in the file path are collapsed",
+            "file": "<root>/a//b//c.js",
+            "marker": ".root",
+            "expected": {
+                "path": "b/c.js"
+            }
+        },
+        {
+            "description": "A relative file path is returned as it is",
+            "file": "b/c.js",
+            "marker": ".root",
+            "expected": {
+                "path": "b/c.js"
+            }
+        },
+        {
+            "description": "With no marker given, package.json is the marker",
+            "file": "<root>/pkg/src/x.js",
+            "marker": null,
+            "expected": {
+                "path": "src/x.js"
+            }
+        },
+        {
+            "description": "A folder can be the marker",
+            "file": "<root>/dirmark/src/x.js",
+            "marker": ".rootdir",
+            "expected": {
+                "path": "src/x.js"
+            }
+        },
+        {
+            "description": "No folder above the file has the marker",
+            "file": "<root>/a/b/c.js",
+            "marker": ".no-such-marker",
+            "expected": {
+                "error": "Could not find marker, \".no-such-marker\", from given starting location \"<root>/a/b/c.js\""
+            }
+        }
+    ]
+}

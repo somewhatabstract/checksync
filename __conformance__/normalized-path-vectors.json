@@ -1,0 +1,137 @@
+{
+    "files": [
+        "b/c.js",
+        "a/x.js"
+    ],
+    "folders": [
+        "folder"
+    ],
+    "vectors": [
+        {
+            "description": "A relative target that exists",
+            "target": "b/c.js",
+            "expected": {
+                "path": "<root>/b/c.js",
+                "exists": true,
+                "type": "local"
+            }
+        },
+        {
+            "description": "A leading ./ is dropped",
+            "target": "./b/c.js",
+            "expected": {
+                "path": "<root>/b/c.js",
+                "exists": true,
+                "type": "local"
+            }
+        },
+        {
+            "description": "Dot segments are resolved as text",
+            "target": "a/../b/./c.js",
+            "expected": {
+                "path": "<root>/b/c.js",
+                "exists": true,
+                "type": "local"
+            }
+        },
+        {
+            "description": "Repeated separators are collapsed",
+            "target": "b//c.js",
+            "expected": {
+                "path": "<root>/b/c.js",
+                "exists": true,
+                "type": "local"
+            }
+        },
+        {
+            "description": "A target that doesn't exist",
+            "target": "b/missing.js",
+            "expected": {
+                "path": "<root>/b/missing.js",
+                "exists": false,
+                "type": "local"
+            }
+        },
+        {
+            "description": "A folder doesn't count as existing",
+            "target": "folder",
+            "expected": {
+                "path": "<root>/folder",
+                "exists": false,
+                "type": "local"
+            }
+        },
+        {
+            "description": "A trailing separator is kept",
+            "target": "b/",
+            "expected": {
+                "path": "<root>/b/",
+                "exists": false,
+                "type": "local"
+            }
+        },
+        {
+            "description": "An empty target is the root itself",
+            "target": "",
+            "expected": {
+                "path": "<root>",
+                "exists": false,
+                "type": "local"
+            }
+        },
+        {
+            "description": "A dot is the root itself",
+            "target": ".",
+            "expected": {
+                "path": "<root>",
+                "exists": false,
+                "type": "local"
+            }
+        },
+        {
+            "description": "A target can climb out of the root",
+            "target": "../outside.js",
+            "expected": {
+                "path": "<parent>/outside.js",
+                "exists": false,
+                "type": "local"
+            }
+        },
+        {
+            "description": "An absolute target is kept",
+            "target": "<root>/b/c.js",
+            "expected": {
+                "path": "<root>/b/c.js",
+                "exists": true,
+                "type": "local"
+            }
+        },
+        {
+            "description": "An absolute target is normalized",
+            "target": "<root>/a/../b/c.js",
+            "expected": {
+                "path": "<root>/b/c.js",
+                "exists": true,
+                "type": "local"
+            }
+        },
+        {
+            "description": "A URL is a remote target that always exists",
+            "target": "https://example.com/a/b.js",
+            "expected": {
+                "path": "https://example.com/a/b.js",
+                "exists": true,
+                "type": "remote"
+            }
+        },
+        {
+            "description": "Anything containing :// is a remote target",
+            "target": "not-a-scheme://x",
+            "expected": {
+                "path": "not-a-scheme://x",
+                "exists": true,
+                "type": "remote"
+            }
+        }
+    ]
+}
