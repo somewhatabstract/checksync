@@ -425,6 +425,224 @@
         ]
     },
     {
+        "description": "A byte order mark at the start of the file isn't part of the first pattern",
+        "ignoreFile": "\ufeffa.log\n",
+        "paths": [
+            {
+                "path": "a.log",
+                "result": "ignored"
+            }
+        ]
+    },
+    {
+        "description": "A pattern with an unclosed bracket matches nothing",
+        "ignoreFile": "[\nfoo[ab\n",
+        "paths": [
+            {
+                "path": "[",
+                "result": "none"
+            },
+            {
+                "path": "foo[ab",
+                "result": "none"
+            }
+        ]
+    },
+    {
+        "description": "A line that is only an exclamation mark matches nothing",
+        "ignoreFile": "*.js\n!\n",
+        "paths": [
+            {
+                "path": "x.js",
+                "result": "ignored"
+            },
+            {
+                "path": "x.txt",
+                "result": "none"
+            }
+        ]
+    },
+    {
+        "description": "Braces match themselves rather than a choice of names",
+        "ignoreFile": "{a,b}\n",
+        "paths": [
+            {
+                "path": "a",
+                "result": "none"
+            },
+            {
+                "path": "b",
+                "result": "none"
+            },
+            {
+                "path": "{a,b}",
+                "result": "ignored"
+            }
+        ]
+    },
+    {
+        "description": "A POSIX character class matches its characters",
+        "ignoreFile": "[[:alpha:]]\n",
+        "paths": [
+            {
+                "path": "q",
+                "result": "ignored"
+            },
+            {
+                "path": "1",
+                "result": "none"
+            }
+        ]
+    },
+    {
+        "description": "The JavaScript ignores case for letters beyond ASCII, which git doesn't",
+        "ignoreFile": "É.txt\n",
+        "paths": [
+            {
+                "path": "é.txt",
+                "result": "ignored",
+                "rust": {
+                    "result": "none",
+                    "reason": "The Rust implementation ignores case only for ASCII letters, as git does."
+                }
+            },
+            {
+                "path": "É.txt",
+                "result": "ignored"
+            }
+        ]
+    },
+    {
+        "description": "A backslash in a bracket class escapes the next character",
+        "ignoreFile": "[\\]]\n[a\\-z]\n",
+        "paths": [
+            {
+                "path": "]",
+                "result": "ignored"
+            },
+            {
+                "path": "-",
+                "result": "ignored"
+            },
+            {
+                "path": "b",
+                "result": "none"
+            }
+        ]
+    },
+    {
+        "description": "Braces in a bracket class are ordinary characters",
+        "ignoreFile": "[{}]\n",
+        "paths": [
+            {
+                "path": "{",
+                "result": "ignored"
+            },
+            {
+                "path": "}",
+                "result": "ignored"
+            }
+        ]
+    },
+    {
+        "description": "A brace can end a bracket class range",
+        "ignoreFile": "[a-{]\n",
+        "paths": [
+            {
+                "path": "b",
+                "result": "ignored"
+            },
+            {
+                "path": "{",
+                "result": "ignored"
+            }
+        ]
+    },
+    {
+        "description": "A dash after a range in a bracket class is an ordinary character",
+        "ignoreFile": "[a-c-e]\n",
+        "paths": [
+            {
+                "path": "-",
+                "result": "ignored"
+            },
+            {
+                "path": "d",
+                "result": "none"
+            },
+            {
+                "path": "e",
+                "result": "ignored"
+            }
+        ]
+    },
+    {
+        "description": "A slash in a bracket class doesn't match a folder separator",
+        "ignoreFile": "a[/]b\n",
+        "paths": [
+            {
+                "path": "a/b",
+                "result": "none"
+            }
+        ]
+    },
+    {
+        "description": "Three or more asterisks between slashes act as two",
+        "ignoreFile": "a/***/b\n",
+        "paths": [
+            {
+                "path": "a/b",
+                "result": "ignored"
+            },
+            {
+                "path": "a/x/y/b",
+                "result": "ignored"
+            }
+        ]
+    },
+    {
+        "description": "Only trailing spaces are stripped, not tabs",
+        "ignoreFile": "foo\t\n",
+        "paths": [
+            {
+                "path": "foo",
+                "result": "none"
+            },
+            {
+                "path": "foo\t",
+                "result": "ignored"
+            }
+        ]
+    },
+    {
+        "description": "An escaped trailing space is kept",
+        "ignoreFile": "foo\\  \n",
+        "paths": [
+            {
+                "path": "foo ",
+                "result": "ignored"
+            },
+            {
+                "path": "foo",
+                "result": "none"
+            }
+        ]
+    },
+    {
+        "description": "Two asterisks joined to other characters match within one folder name",
+        "ignoreFile": "a**/b\n",
+        "paths": [
+            {
+                "path": "ax/b",
+                "result": "ignored"
+            },
+            {
+                "path": "a/x/b",
+                "result": "none"
+            }
+        ]
+    },
+    {
         "description": "An empty ignore file has no opinion",
         "ignoreFile": "",
         "paths": [
