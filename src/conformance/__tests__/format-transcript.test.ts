@@ -47,4 +47,66 @@ describe("#formatTranscript", () => {
             "--- stdout ---\nout\n\\ No newline at end of stdout\n",
         );
     });
+
+    it("should include the working directory when the case sets one", () => {
+        // Arrange
+        const caseWithCwd = {...testCase, cwd: "fixtures/a"};
+        const result = {exitCode: 0, stdout: "", stderr: ""};
+
+        // Act
+        const transcript = formatTranscript(caseWithCwd, result);
+
+        // Assert
+        expect(transcript).toBe(
+            `args: ["--json","a/**"]\n` +
+                "cwd: fixtures/a\n" +
+                "exit code: 0\n" +
+                "--- stdout ---\n" +
+                "--- stderr ---\n",
+        );
+    });
+
+    it("should keep only the first line of stderr when the case asks for that", () => {
+        // Arrange
+        const caseWithFirstLine = {...testCase, stderrFirstLineOnly: true};
+        const result = {
+            exitCode: 6,
+            stdout: "",
+            stderr: "Error    a.json\nat x (main.js:1:2)\n",
+        };
+
+        // Act
+        const transcript = formatTranscript(caseWithFirstLine, result);
+
+        // Assert
+        expect(transcript).toEndWith(
+            "--- stderr ---\nError    a.json\n(rest not recorded)\n",
+        );
+    });
+
+    it("should keep stderr whole when it is only one line", () => {
+        // Arrange
+        const caseWithFirstLine = {...testCase, stderrFirstLineOnly: true};
+        const result = {exitCode: 6, stdout: "", stderr: "Error    a.json\n"};
+
+        // Act
+        const transcript = formatTranscript(caseWithFirstLine, result);
+
+        // Assert
+        expect(transcript).toEndWith("--- stderr ---\nError    a.json\n");
+    });
+
+    it("should keep a single line without a newline as it is", () => {
+        // Arrange
+        const caseWithFirstLine = {...testCase, stderrFirstLineOnly: true};
+        const result = {exitCode: 6, stdout: "", stderr: "Error"};
+
+        // Act
+        const transcript = formatTranscript(caseWithFirstLine, result);
+
+        // Assert
+        expect(transcript).toEndWith(
+            "--- stderr ---\nError\n\\ No newline at end of stderr\n",
+        );
+    });
 });
