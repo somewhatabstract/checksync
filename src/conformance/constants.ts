@@ -2,7 +2,7 @@ import {ConformanceCase} from "./types";
 
 /**
  * The fixture folder, relative to the repository root, for configuration
- * files that can't be loaded.
+ * files that can't be loaded, along with one that can.
  */
 const BAD_CONFIG_DIR = "__conformance__/fixtures/bad-config";
 
@@ -51,7 +51,6 @@ export const CLI_CASES: ReadonlyArray<ConformanceCase> = [
         // and a stack trace.
         stderrFirstLineOnly: true,
     },
-    // Known bug: a config that fails validation exits without saying why.
     {
         id: "cli/bad-config-wrong-type",
         args: ["--config", "wrong-type.json", "no-tags.txt"],
@@ -62,8 +61,6 @@ export const CLI_CASES: ReadonlyArray<ConformanceCase> = [
         args: ["--config", "unknown-option.json", "no-tags.txt"],
         cwd: BAD_CONFIG_DIR,
     },
-    // Known bug: a top-level array passes validation and is used as if it
-    // were an empty config.
     {
         id: "cli/bad-config-top-level-array",
         args: ["--config", "array.json", "no-tags.txt"],
@@ -77,11 +74,9 @@ export const CLI_CASES: ReadonlyArray<ConformanceCase> = [
         stderrFirstLineOnly: true,
     },
     {
-        id: "cli/bad-config-relative-path-elsewhere",
-        // Known bug: a relative path is opened after changing to the config
-        // file's folder, so it is not found unless that folder is the
-        // working one.
-        args: ["--config", `${BAD_CONFIG_DIR}/array.json`, "no-tags.txt"],
-        stderrFirstLineOnly: true,
+        id: "cli/config-relative-path-elsewhere",
+        // A relative path to a config in another folder is opened before
+        // changing to that folder, and globs then resolve from there.
+        args: ["--config", `${BAD_CONFIG_DIR}/valid.json`, "no-tags.txt"],
     },
 ];

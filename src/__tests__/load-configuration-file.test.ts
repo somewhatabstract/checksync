@@ -186,6 +186,75 @@ describe("#loadConfigurationFile", () => {
         );
     });
 
+    it.each([
+        ["an array", "[]"],
+        ["null", "null"],
+        ["a number", "5"],
+    ])(
+        "should log an error if the configuration is %s rather than an object",
+        async (_, json) => {
+            // Arrange
+            const NullLogger = new Logger(null, true);
+            const errorSpy = jest.spyOn(NullLogger, "error");
+            jest.spyOn(FS, "readFile").mockImplementationOnce((path, cb) => {
+                cb(null, Buffer.from(json));
+            });
+
+            // Act
+            try {
+                await loadConfigurationFile("FILE", NullLogger);
+            } catch (e: any) {
+                // Don't care for this test case.
+            }
+
+            // Assert
+            expect(errorSpy).toHaveBeenCalledWith(
+                expect.stringContaining(
+                    "The configuration must be a JSON object",
+                ),
+            );
+        },
+    );
+
+    it("should throw if the configuration is not an object", () => {
+        // Arrange
+        const NullLogger = new Logger(null, true);
+        jest.spyOn(FS, "readFile").mockImplementationOnce((path, cb) => {
+            cb(null, Buffer.from("[]"));
+        });
+
+        // Act
+        const underTest = loadConfigurationFile("FILE", NullLogger);
+
+        // Assert
+        return expect(underTest).rejects.toThrow(
+            "Unable to load rc file: FILE",
+        );
+    });
+
+    it("should log why the configuration is not valid", async () => {
+        // Arrange
+        const NullLogger = new Logger(null, true);
+        const errorSpy = jest.spyOn(NullLogger, "error");
+        jest.spyOn(FS, "readFile").mockImplementationOnce((path, cb) => {
+            cb(null, Buffer.from(JSON.stringify({comments: 5})));
+        });
+
+        // Act
+        try {
+            await loadConfigurationFile("FILE", NullLogger);
+        } catch (e: any) {
+            // Don't care for this test case.
+        }
+
+        // Assert
+        expect(errorSpy).toHaveBeenCalledWith(
+            expect.stringContaining(
+                `"comments" does not satisfy the schema's "type" rule`,
+            ),
+        );
+    });
+
     it("should throw if configuration is not valid", () => {
         // Arrange
         const NullLogger = new Logger(null, true);
