@@ -296,12 +296,20 @@ export type ErrorDetailsByDeclaration = {
 
 /**
  * One node of a JSON schema validator's detailed output.
+ *
+ * This is the part of `@hyperjump/json-schema`'s result that checksync
+ * reads; the validator's own result type must stay assignable to it.
  */
 export type SchemaValidationResult = {
     /**
      * The URI of the schema keyword that was checked, ending in `#<name>`.
      */
     keyword: string;
+
+    /**
+     * The URI of the place in the schema that holds the keyword.
+     */
+    absoluteKeywordLocation: string;
 
     /**
      * A JSON pointer fragment, such as `#/comments`, to the checked value.

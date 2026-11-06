@@ -6,8 +6,10 @@ const SCHEMA = "https://json-schema.org/draft/2020-12/schema";
 const leaf = (
     rule: string,
     instanceLocation: string,
+    schemaLocation: string = `#/properties/x/${rule}`,
 ): SchemaValidationResult => ({
     keyword: `${SCHEMA}#${rule}`,
+    absoluteKeywordLocation: `file://./checksync.schema.json${schemaLocation}`,
     instanceLocation,
     valid: false,
     errors: [],
@@ -18,6 +20,7 @@ describe("#formatSchemaErrors", () => {
         // Arrange
         const result = {
             keyword: `${SCHEMA}#validate`,
+            absoluteKeywordLocation: "file://./checksync.schema.json#",
             instanceLocation: "#",
             valid: true,
         };
@@ -44,14 +47,14 @@ describe("#formatSchemaErrors", () => {
 
     it("should refer to the whole configuration when the failure is at its top", () => {
         // Arrange
-        const result = leaf("additionalProperties", "#");
+        const result = leaf("required", "#", "#/required");
 
         // Act
         const messages = formatSchemaErrors(result);
 
         // Assert
         expect(messages).toEqual([
-            `The configuration does not satisfy the schema's "additionalProperties" rule`,
+            `The configuration does not satisfy the schema's "required" rule`,
         ]);
     });
 
@@ -59,11 +62,14 @@ describe("#formatSchemaErrors", () => {
         // Arrange
         const result = {
             keyword: `${SCHEMA}#validate`,
+            absoluteKeywordLocation: "file://./checksync.schema.json#",
             instanceLocation: "#",
             valid: false,
             errors: [
                 {
                     keyword: `${SCHEMA}#properties`,
+                    absoluteKeywordLocation:
+                        "file://./checksync.schema.json#/properties",
                     instanceLocation: "#",
                     valid: false,
                     errors: [leaf("type", "#/comments")],
@@ -80,10 +86,12 @@ describe("#formatSchemaErrors", () => {
         ]);
     });
 
-    it("should describe every failure, in the order reported", () => {
+    it("should describe each reported failure, in the order reported", () => {
         // Arrange
         const result = {
             keyword: `${SCHEMA}#properties`,
+            absoluteKeywordLocation:
+                "file://./checksync.schema.json#/properties",
             instanceLocation: "#",
             valid: false,
             errors: [
@@ -106,6 +114,8 @@ describe("#formatSchemaErrors", () => {
         // Arrange
         const result = {
             keyword: `${SCHEMA}#properties`,
+            absoluteKeywordLocation:
+                "file://./checksync.schema.json#/properties",
             instanceLocation: "#",
             valid: false,
             errors: [
@@ -123,9 +133,13 @@ describe("#formatSchemaErrors", () => {
         ]);
     });
 
-    it("should describe a value the schema forbids outright as an unknown option", () => {
+    it("should describe a key that additionalProperties forbids as an unknown option", () => {
         // Arrange
-        const result = leaf("validate", "#/notAnOption");
+        const result = leaf(
+            "validate",
+            "#/notAnOption",
+            "#/additionalProperties",
+        );
 
         // Act
         const messages = formatSchemaErrors(result);
@@ -138,6 +152,8 @@ describe("#formatSchemaErrors", () => {
         // Arrange
         const result = {
             keyword: `${SCHEMA}#type`,
+            absoluteKeywordLocation:
+                "file://./checksync.schema.json#/properties/comments/type",
             instanceLocation: "#/comments",
             valid: false,
         };
@@ -149,5 +165,33 @@ describe("#formatSchemaErrors", () => {
         expect(messages).toEqual([
             `"comments" does not satisfy the schema's "type" rule`,
         ]);
+    });
+
+    it("should not call a value an unknown option when another rule forbids it", () => {
+        // Arrange
+        const result = leaf("validate", "#/a", "#/properties/a/not");
+
+        // Act
+        const messages = formatSchemaErrors(result);
+
+        // Assert
+        expect(messages).toEqual([
+            `"a" does not satisfy the schema's "validate" rule`,
+        ]);
+    });
+
+    it("should decode the path to a value so it matches the file", () => {
+        // Arrange
+        const result = leaf(
+            "validate",
+            "#/a%20b~1c~0d",
+            "#/additionalProperties",
+        );
+
+        // Act
+        const messages = formatSchemaErrors(result);
+
+        // Assert
+        expect(messages).toEqual([`"a b/c~d" is not a known option`]);
     });
 });

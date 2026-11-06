@@ -1,15 +1,29 @@
 import {SchemaValidationResult} from "./types";
 
 /**
+ * Decode a JSON pointer fragment into the path it names, such as `a/b c`.
+ */
+const decodePointer = (fragment: string): string =>
+    fragment
+        .replace(/^#\/?/, "")
+        .split("/")
+        .map((segment) =>
+            decodeURIComponent(segment).replace(/~1/g, "/").replace(/~0/g, "~"),
+        )
+        .join("/");
+
+/**
  * Describe each way a configuration fails its schema.
  *
  * Only the deepest failures are described, since they name the value and
  * the rule it broke; the ones above them only say that something inside
- * failed. A value the schema forbids outright is described as an unknown
- * option, since that is the only way the checksync schema forbids one.
+ * failed. A key that the schema's `additionalProperties` forbids is
+ * described as an unknown option. The validator may stop at the first
+ * failure within an object, so this describes what it reports rather than
+ * every problem in the file.
  *
  * @param result The validator's detailed output for the configuration.
- * @returns One message per failed rule, in the order they were reported.
+ * @returns One message per reported failure, in the order reported.
  */
 export default function formatSchemaErrors(
     result: SchemaValidationResult,
@@ -22,11 +36,9 @@ export default function formatSchemaErrors(
         return failedChildren.flatMap(formatSchemaErrors);
     }
     const rule = result.keyword.slice(result.keyword.lastIndexOf("#") + 1);
-    const location = result.instanceLocation.replace(/^#\/?/, "");
+    const location = decodePointer(result.instanceLocation);
     const value = location === "" ? "The configuration" : `"${location}"`;
-    // A failed "validate" with nothing beneath it is a value the schema
-    // forbids outright, such as an option it doesn't know.
-    return rule === "validate"
+    return result.absoluteKeywordLocation.endsWith("/additionalProperties")
         ? [`${value} is not a known option`]
         : [`${value} does not satisfy the schema's "${rule}" rule`];
 }

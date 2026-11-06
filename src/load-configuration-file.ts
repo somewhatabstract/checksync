@@ -78,7 +78,7 @@ export default async function loadConfigurationFile(
                     migration: migrationOptions,
                 };
             }
-            for (const message of formatSchemaErrors(validation as any)) {
+            for (const message of formatSchemaErrors(validation)) {
                 rcLog.error(message);
             }
         }
