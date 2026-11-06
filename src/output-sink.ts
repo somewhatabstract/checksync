@@ -21,6 +21,7 @@ export default class OutputSink {
     _options: Options;
     _errorsByFile: ErrorsByFile = {};
     _filesWithUnfixableErrors: Set<string> = new Set();
+    _fileForKey: Map<string, string> = new Map();
 
     _fileLog: FileReferenceLogger | null | undefined = null;
 
@@ -61,8 +62,15 @@ export default class OutputSink {
             );
         }
         if (this._getErrorsForFile(file) != null) {
+            const otherFile = this._fileForKey.get(this._getKeyForFile(file));
+            if (otherFile != null && otherFile !== file) {
+                throw new Error(
+                    `${cwdRelativePath(file)} and ${cwdRelativePath(otherFile)} have the same path from their roots, so they can't be checked in the same run. All files in a run must share one root: the closest folder above them that contains the root marker (${this._options.rootMarker ?? "package.json"}). Check them in separate runs, or use --root-marker to pick a marker that only the shared root contains.`,
+                );
+            }
             throw new Error("File has already been drained to the output sink");
         }
+        this._fileForKey.set(this._getKeyForFile(file), file);
         this._fileLog = new FileReferenceLogger(file, this._mainLog);
         this._initErrorsForFile(file);
     }

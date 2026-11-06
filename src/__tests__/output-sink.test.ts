@@ -92,6 +92,31 @@ describe("OutputSink", () => {
                 `"File has already been drained to the output sink"`,
             );
         });
+
+        it("should throw an error naming both files if another file under a different root has the same root-relative path", async () => {
+            // Arrange
+            const NullLogger = new Logger();
+            const outputSink = new OutputSink(defaultOptions, NullLogger);
+            jest.spyOn(RootRelativePath, "default").mockReturnValue("src/a.js");
+            jest.spyOn(FileReferenceLogger, "default").mockImplementation(
+                (file: string) => ({file}) as any,
+            );
+            outputSink.startFile("one/src/a.js");
+            outputSink.processError({
+                markerID: "MARKER_ID",
+                reason: "REASON",
+                code: ErrorCode.couldNotParse,
+            });
+            await outputSink.endFile();
+
+            // Act
+            const underTest = () => outputSink.startFile("two/src/a.js");
+
+            // Assert
+            expect(underTest).toThrowErrorMatchingInlineSnapshot(
+                `"two/src/a.js and one/src/a.js have the same path from their roots, so they can't be checked in the same run. All files in a run must share one root: the closest folder above them that contains the root marker (package.json). Check them in separate runs, or use --root-marker to pick a marker that only the shared root contains."`,
+            );
+        });
     });
 
     describe("#processError", () => {
