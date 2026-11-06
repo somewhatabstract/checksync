@@ -1,0 +1,2 @@
+%% sync-end:farther_without_extension
+@@ sync-end:closer_with_extension

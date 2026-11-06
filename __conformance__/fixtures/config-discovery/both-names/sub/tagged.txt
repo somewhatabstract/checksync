@@ -1,0 +1,2 @@
+%% sync-end:without_extension
+@@ sync-end:with_extension

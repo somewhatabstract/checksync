@@ -1,1 +1,2 @@
 %% sync-end:beside_marker
+// sync-end:no_config

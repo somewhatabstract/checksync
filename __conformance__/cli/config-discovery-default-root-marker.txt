@@ -1,6 +1,11 @@
 args: ["**/*.txt"]
 cwd: __conformance__/fixtures/config-discovery/root-marker-option/sub
-exit code: 0
+exit code: 2
 --- stdout ---
-🎉  Everything is in sync!
+
+🛑  Unfixable errors found. Fix the errors in these files and try again.
+  tagged.txt
 --- stderr ---
+Error    tagged.txt:2
+Sync-end for 'inner_config' found, but there was no corresponding sync-start
+

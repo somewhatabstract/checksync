@@ -10,11 +10,11 @@ const BAD_CONFIG_DIR = "__conformance__/fixtures/bad-config";
  * The fixture folder, relative to the repository root, for finding a
  * configuration file.
  *
- * Each fixture has its own root marker, so the repository's configuration
- * isn't found. A tagged file there holds only a `%%` sync-end, which is an
- * error when the configuration that recognises `%%` comments is used, and
- * nothing at all otherwise. The path in the error also shows which folder
- * checksync changed to.
+ * Each case finds a root marker within its fixture, so the repository's
+ * configuration isn't used. Each tagged file holds lone sync-ends in comment
+ * styles that only one configuration recognises, so which error appears, if
+ * any, shows which configuration was used. The path in the error shows which
+ * folder checksync changed to.
  */
 const DISCOVERY_DIR = "__conformance__/fixtures/config-discovery";
 
@@ -109,9 +109,18 @@ export const CLI_CASES: ReadonlyArray<ConformanceCase> = [
     },
     {
         id: "cli/config-discovery-closest",
-        // Nothing is beside the root marker, so the closest one is used.
         args: ["**/*.txt"],
         cwd: `${DISCOVERY_DIR}/closest/a/b`,
+    },
+    {
+        id: "cli/config-discovery-without-extension-wins",
+        args: ["**/*.txt"],
+        cwd: `${DISCOVERY_DIR}/both-names/sub`,
+    },
+    {
+        id: "cli/config-discovery-closest-across-names",
+        args: ["**/*.txt"],
+        cwd: `${DISCOVERY_DIR}/closest-across-names/a/b/c`,
     },
     {
         id: "cli/config-discovery-root-marker-beats-closer",
@@ -120,7 +129,6 @@ export const CLI_CASES: ReadonlyArray<ConformanceCase> = [
     },
     {
         id: "cli/config-discovery-default-root-marker",
-        // The nearer package.json has its own configuration beside it.
         args: ["**/*.txt"],
         cwd: `${DISCOVERY_DIR}/root-marker-option/sub`,
     },
@@ -166,6 +174,12 @@ export const CLI_CASES: ReadonlyArray<ConformanceCase> = [
     {
         id: "cli/config-merging-migration-mode-argument",
         args: ["--migrate", "missing", "source.txt"],
+        cwd: `${MERGING_DIR}/migration`,
+    },
+    {
+        id: "cli/config-merging-migration-mode-without-config",
+        // Mappings only come from a configuration, so nothing is migrated.
+        args: ["--no-config", "--migrate", "all", "source.txt"],
         cwd: `${MERGING_DIR}/migration`,
     },
 ];

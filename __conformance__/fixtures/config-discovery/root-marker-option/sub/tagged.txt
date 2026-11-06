@@ -1,1 +1,2 @@
 %% sync-end:root_marker_option
+@@ sync-end:inner_config
