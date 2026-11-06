@@ -3,7 +3,9 @@
  */
 export type ConformanceCase = {
     /**
-     * Unique identifier for the case, used to name its golden file.
+     * Unique identifier for the case, which is also the path of its golden
+     * files, without extension, relative to the directory that holds all the
+     * goldens.
      */
     id: string;
 

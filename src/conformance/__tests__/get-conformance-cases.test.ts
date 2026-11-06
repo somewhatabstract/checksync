@@ -11,15 +11,15 @@ describe("#getConformanceCases", () => {
         // Assert
         expect(result).toEqual([
             {
-                id: "an_example.check-only",
+                id: "examples/an_example.check-only",
                 args: ["__examples__/an_example/**"],
             },
             {
-                id: "an_example.json",
+                id: "examples/an_example.json",
                 args: ["--json", "__examples__/an_example/**"],
             },
             {
-                id: "an_example.autofix-dry-run",
+                id: "examples/an_example.autofix-dry-run",
                 args: [
                     "--update-tags",
                     "--dry-run",
@@ -27,7 +27,7 @@ describe("#getConformanceCases", () => {
                 ],
             },
             {
-                id: "an_example.output-cache",
+                id: "examples/an_example.output-cache",
                 args: [
                     "--output-cache",
                     ".conformance-output/an_example.cache.json",
@@ -36,7 +36,7 @@ describe("#getConformanceCases", () => {
                 cacheFile: ".conformance-output/an_example.cache.json",
             },
             {
-                id: "an_example.autofix",
+                id: "examples/an_example.autofix",
                 args: ["--update-tags", "__examples__/an_example/**"],
                 scratchExample: "an_example",
             },
@@ -53,16 +53,16 @@ describe("#getConformanceCases", () => {
 
         // Assert
         expect(ids).toEqual([
-            "b.check-only",
-            "b.json",
-            "b.autofix-dry-run",
-            "b.output-cache",
-            "b.autofix",
-            "a.check-only",
-            "a.json",
-            "a.autofix-dry-run",
-            "a.output-cache",
-            "a.autofix",
+            "examples/b.check-only",
+            "examples/b.json",
+            "examples/b.autofix-dry-run",
+            "examples/b.output-cache",
+            "examples/b.autofix",
+            "examples/a.check-only",
+            "examples/a.json",
+            "examples/a.autofix-dry-run",
+            "examples/a.output-cache",
+            "examples/a.autofix",
         ]);
     });
 
@@ -87,7 +87,7 @@ describe("#getConformanceCases", () => {
 
         // Act
         const outputCache = getConformanceCases(examples).find(
-            (c) => c.id === "migrate_all.output-cache",
+            (c) => c.id === "examples/migrate_all.output-cache",
         );
 
         // Assert
@@ -106,7 +106,7 @@ describe("#getConformanceCases", () => {
 
         // Act
         const autofix = getConformanceCases(examples).find(
-            (c) => c.id === "migrate_all.autofix",
+            (c) => c.id === "examples/migrate_all.autofix",
         );
 
         // Assert

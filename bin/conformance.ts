@@ -2,7 +2,8 @@
 /* eslint-disable no-console */
 
 /**
- * Run checksync over every example and compare against golden files.
+ * Run checksync over every example and command-line case, and compare the
+ * results against golden files.
  *
  * Usage:
  *   conformance [--update] [--launcher <executable>]
@@ -24,13 +25,14 @@ import normalizeCache from "../src/conformance/normalize-cache";
 import formatTranscript from "../src/conformance/format-transcript";
 import checkGolden from "../src/conformance/check-golden";
 import getActualPath from "../src/conformance/get-actual-path";
+import {CLI_CASES} from "../src/conformance/constants";
 import createScratchRoot from "../src/conformance/create-scratch-root";
 import snapshotFiles from "../src/conformance/snapshot-files";
 import formatFileChanges from "../src/conformance/format-file-changes";
 import {Launcher, NormalizeOptions, RunResult} from "../src/conformance/types";
 
 const ROOT_DIR = path.join(__dirname, "..");
-const GOLDEN_DIR = path.join(ROOT_DIR, "__conformance__", "examples");
+const GOLDEN_DIR = path.join(ROOT_DIR, "__conformance__");
 
 /**
  * Check or record one golden file, reporting a failure.
@@ -78,9 +80,12 @@ const main = (argv: ReadonlyArray<string>): number => {
     });
 
     let failures = 0;
-    for (const testCase of getConformanceCases(
-        getExamples(path.join(ROOT_DIR, "__examples__")),
-    )) {
+    for (const testCase of [
+        ...getConformanceCases(
+            getExamples(path.join(ROOT_DIR, "__examples__")),
+        ),
+        ...CLI_CASES,
+    ]) {
         const cachePath =
             testCase.cacheFile == null
                 ? null

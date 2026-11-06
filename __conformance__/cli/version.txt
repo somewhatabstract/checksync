@@ -1,0 +1,5 @@
+args: ["--version"]
+exit code: 0
+--- stdout ---
+0.0.0
+--- stderr ---

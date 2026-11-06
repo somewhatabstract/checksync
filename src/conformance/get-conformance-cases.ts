@@ -38,16 +38,16 @@ export default function getConformanceCases(
         const cacheFile = `${CACHE_DIR}/${example}.cache.json`;
         return [
             ...Object.entries(SCENARIOS).map(([scenario, scenarioArgs]) => ({
-                id: `${example}.${scenario}`,
+                id: `examples/${example}.${scenario}`,
                 args: [...scenarioArgs, ...migrateArgs, glob],
             })),
             {
-                id: `${example}.output-cache`,
+                id: `examples/${example}.output-cache`,
                 args: ["--output-cache", cacheFile, ...migrateArgs, glob],
                 cacheFile,
             },
             {
-                id: `${example}.autofix`,
+                id: `examples/${example}.autofix`,
                 args: ["--update-tags", ...migrateArgs, glob],
                 scratchExample: example,
             },

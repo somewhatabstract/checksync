@@ -1,0 +1,6 @@
+args: ["--migrate","bogus","__examples__/correct_checksums/**"]
+exit code: 4
+--- stdout ---
+--- stderr ---
+Error    Invalid values:
+  Argument: migrate, Given: "bogus", Choices: "all", "missing"

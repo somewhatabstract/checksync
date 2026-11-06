@@ -1,0 +1,5 @@
+args: ["__examples__/does_not_exist/**"]
+exit code: 1
+--- stdout ---
+--- stderr ---
+Error    No matching files
