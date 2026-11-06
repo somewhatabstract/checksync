@@ -60,7 +60,11 @@ fn gives_every_shared_root_relative_vector() {
                 Ok(path) => Expected::Path(path.display().to_string()),
                 Err(error) => Expected::Error(error.to_string()),
             };
+            // A relative file path comes back as given, so its expected path
+            // keeps its `/`.
+            let as_given = !vector.file.starts_with("<root>");
             let wanted = match &vector.expected {
+                Expected::Path(path) if as_given => Expected::Path(path.clone()),
                 Expected::Path(path) => Expected::Path(path.replace('/', MAIN_SEPARATOR_STR)),
                 Expected::Error(message) => Expected::Error(message.replace("<root>", &root_text)),
             };

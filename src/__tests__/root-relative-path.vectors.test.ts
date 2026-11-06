@@ -10,8 +10,9 @@ import rootRelativePath from "../root-relative-path";
  *
  * Each of the `markers` is created as an empty file under a new root folder,
  * and `<root>` stands for that folder. Paths are written with `/`. An expected
- * path is compared with the platform's separators; an expected error message
- * shows the file path as given.
+ * path is compared with the platform's separators, except for a relative file
+ * path, which comes back as given; an expected error message also shows the
+ * file path as given.
  */
 const TABLE: {
     markers: ReadonlyArray<string>;
@@ -55,9 +56,14 @@ describe("rootRelativePath vectors", () => {
         ({file, marker, expected}) => {
             // Arrange
             const filePath = file.replaceAll("<root>", root);
+            const asGiven = !file.startsWith("<root>");
             const want =
                 "path" in expected
-                    ? {path: expected.path.replaceAll("/", path.sep)}
+                    ? {
+                          path: asGiven
+                              ? expected.path
+                              : expected.path.replaceAll("/", path.sep),
+                      }
                     : {error: expected.error.replaceAll("<root>", root)};
 
             // Act
