@@ -40,7 +40,11 @@ describe("getFiles vectors", () => {
         // The file walk waits on real timers, which the global fake timers
         // would stop.
         jest.useRealTimers();
-        root = fs.mkdtempSync(path.join(os.tmpdir(), "file-vectors-"));
+        // Resolved, since getFiles builds absolute paths from the resolved
+        // current folder; on macOS the temporary folder is behind a symlink.
+        root = fs.realpathSync(
+            fs.mkdtempSync(path.join(os.tmpdir(), "file-vectors-")),
+        );
         for (const [file, contents] of Object.entries(TABLE.files)) {
             fs.mkdirSync(path.dirname(path.join(root, file)), {
                 recursive: true,
