@@ -39,7 +39,9 @@ describe("getNormalizedPathInfo vectors", () => {
      * Swap the placeholders in a table value for the real folders.
      */
     const expand = (value: string): string =>
-        value.replaceAll("<root>", root).replaceAll("<parent>", parent);
+        value
+            .replaceAll("<root>", () => root)
+            .replaceAll("<parent>", () => parent);
 
     beforeEach(() => {
         parent = fs.mkdtempSync(path.join(os.tmpdir(), "path-vectors-"));

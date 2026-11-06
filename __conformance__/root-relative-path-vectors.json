@@ -1,7 +1,9 @@
 {
     "markers": [
         "a/.root",
-        "a/b/inner/.root"
+        "a/b/inner/.root",
+        "pkg/package.json",
+        "dirmark/.rootdir/"
     ],
     "vectors": [
         {
@@ -50,6 +52,22 @@
             "marker": ".root",
             "expected": {
                 "path": "b/c.js"
+            }
+        },
+        {
+            "description": "With no marker given, package.json is the marker",
+            "file": "<root>/pkg/src/x.js",
+            "marker": null,
+            "expected": {
+                "path": "src/x.js"
+            }
+        },
+        {
+            "description": "A folder can be the marker",
+            "file": "<root>/dirmark/src/x.js",
+            "marker": ".rootdir",
+            "expected": {
+                "path": "src/x.js"
             }
         },
         {

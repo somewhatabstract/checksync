@@ -20,11 +20,12 @@ enum Expected {
 struct Vector {
     description: String,
     file: String,
-    marker: String,
+    marker: Option<String>,
     expected: Expected,
 }
 
-/// The shared table: the marker files to create, and the vectors.
+/// The shared table: the markers to create (a folder when it ends with `/`),
+/// and the vectors.
 #[derive(Deserialize)]
 struct Table {
     markers: Vec<String>,
@@ -44,9 +45,13 @@ fn gives_every_shared_root_relative_vector() {
     let parent = tempfile::TempDir::new().unwrap();
     let root = parent.path().join("root");
     for marker in &table.markers {
-        let marker = root.join(marker);
-        fs::create_dir_all(marker.parent().unwrap()).unwrap();
-        fs::write(marker, "").unwrap();
+        if marker.ends_with('/') {
+            fs::create_dir_all(root.join(marker)).unwrap();
+        } else {
+            let marker = root.join(marker);
+            fs::create_dir_all(marker.parent().unwrap()).unwrap();
+            fs::write(marker, "").unwrap();
+        }
     }
     let root_text = root.display().to_string();
 
@@ -56,7 +61,7 @@ fn gives_every_shared_root_relative_vector() {
         .iter()
         .filter_map(|vector| {
             let file = vector.file.replace("<root>", &root_text);
-            let actual = match root_relative_path(Path::new(&file), Some(&vector.marker)) {
+            let actual = match root_relative_path(Path::new(&file), vector.marker.as_deref()) {
                 Ok(path) => Expected::Path(path.display().to_string()),
                 Err(error) => Expected::Error(error.to_string()),
             };
