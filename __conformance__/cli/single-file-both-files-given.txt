@@ -2,6 +2,10 @@ args: ["a.txt","b.txt"]
 cwd: __conformance__/fixtures/single-file
 exit code: 3
 --- stdout ---
+Mismatch a.txt:5
+Looks like you changed the target content for sync-tag 'other' in 'c.txt:1'
+Make sure you've made corresponding changes in the source file, if necessary (1 != 500171782)
+
 Mismatch b.txt:1
 Looks like you changed the target content for sync-tag 'pair' in 'a.txt:1'
 Make sure you've made corresponding changes in the source file, if necessary (1 != 499909636)
@@ -9,5 +13,5 @@ Make sure you've made corresponding changes in the source file, if necessary (1 
 
 🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing:
   
-  checksync -c "//" -u b.txt
+  checksync -c "//" -u a.txt b.txt
 --- stderr ---

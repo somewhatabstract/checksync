@@ -25,8 +25,13 @@ const DISCOVERY_DIR = "__conformance__/fixtures/config-discovery";
 const MERGING_DIR = "__conformance__/fixtures/config-merging";
 
 /**
- * The fixture folder, relative to the repository root, for checking a single
- * file whose linked file has a broken sync-tag pointing back at it.
+ * The fixture folder, relative to the repository root, for checking single
+ * files that link to each other.
+ *
+ * `a.txt` links to `b.txt` and `c.txt`. Its own tag for `b.txt` is right but
+ * `b.txt`'s tag back to it is wrong, so that mismatch shows only when
+ * `b.txt` is checked. Its own tag for `c.txt` is wrong, so that mismatch
+ * shows only when `a.txt` is checked.
  */
 const SINGLE_FILE_DIR = "__conformance__/fixtures/single-file";
 
@@ -34,9 +39,8 @@ const SINGLE_FILE_DIR = "__conformance__/fixtures/single-file";
  * Cases that cover the command-line surface rather than any one example.
  *
  * These run from the repository root, like the example cases, unless they
- * set a working directory. Each glob they pass matches either a small set of
- * files that are in sync or nothing at all, so that the result shows how the
- * arguments were handled.
+ * set a working directory. Each passes as few files as it can, so that the
+ * result shows how the arguments and configuration were handled.
  */
 export const CLI_CASES: ReadonlyArray<ConformanceCase> = [
     {id: "cli/help", args: ["--help"]},
@@ -189,6 +193,7 @@ export const CLI_CASES: ReadonlyArray<ConformanceCase> = [
         cwd: `${MERGING_DIR}/migration`,
     },
     {
+        // A baseline for the other single-file cases.
         id: "cli/single-file-in-sync",
         args: ["__examples__/correct_checksums/a.js"],
     },
@@ -197,13 +202,14 @@ export const CLI_CASES: ReadonlyArray<ConformanceCase> = [
         args: ["__examples__/checksums_need_updating/unsymlinked/a.js"],
     },
     {
+        // A literal path, where the no-matching-files cases use a glob.
         id: "cli/single-file-missing",
         args: ["__examples__/correct_checksums/missing.js"],
     },
     {
         id: "cli/single-file-linked-file-broken",
         // Only the given file's own tags are checked, so the broken tag that
-        // points back at it from the linked file isn't reported (see #2320).
+        // points back at it from b.txt isn't reported (see #2320).
         args: ["a.txt"],
         cwd: SINGLE_FILE_DIR,
     },
