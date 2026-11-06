@@ -56,6 +56,14 @@ export const CLI_CASES: ReadonlyArray<ConformanceCase> = [
         // Recorded so that a cache written before the conflict is caught.
         cacheFile: ".conformance-output/conflicting-options.cache.json",
     },
+    {
+        id: "cli/no-paths",
+        // With no paths, every file below the working directory is checked.
+        // The fixture has its own configuration, without include globs, so
+        // the repository's isn't found and the default applies.
+        args: [],
+        cwd: "__conformance__/fixtures/no-paths",
+    },
     {id: "cli/no-matching-files", args: ["__examples__/does_not_exist/**"]},
     {
         id: "cli/no-matching-files-json",

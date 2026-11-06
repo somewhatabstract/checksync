@@ -7,9 +7,10 @@ const defaultOptions: Options = {
     excludeGlobs: [],
     dryRun: false,
     ignoreFiles: [".gitignore"],
-    // Make sure we have something to search, so default to current working
-    // directory if no globs are given.
-    includeGlobs: [`${process.cwd()}**`],
+    // Make sure we have something to search, so default to everything below
+    // the current working directory if no globs are given. A folder expands
+    // to everything below it when files are found, so this follows `--cwd`.
+    includeGlobs: ["."],
     cachePath: "cache.json",
     cacheMode: "ignore",
 };
