@@ -115,7 +115,8 @@ const main = (argv: ReadonlyArray<string>): number => {
         console.error(
             `\n${failures} golden file(s) failed. Mismatched output was ` +
                 "written next to each one with `.actual` before its " +
-                "extension. Run with --update to accept the new output.",
+                "extension. If the change is intended, run " +
+                "`pnpm test:conformance:update` to record it.",
         );
         return 1;
     }

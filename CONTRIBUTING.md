@@ -49,9 +49,20 @@ To execute these operations outside of a pull request, you can use `pnpm`.
 
 - `pnpm typecheck`
 - `pnpm eslint`
-- `pnpm test` (or `pnpm test:integration` and `pnpm test:unit` to run test categories separately)
+- `pnpm test` (or `pnpm test:unit` and `pnpm test:conformance` to run test categories separately)
 
 If you make changes that change snapshots, you may need to run tests with the `-u` jest option and commit the updated snapshot files along with the rest of your contribution.
+
+#### Conformance tests
+
+`pnpm test:conformance` builds `checksync` and runs the real CLI over every folder in `__examples__`, in several scenarios (check-only, `--json`, `--update-tags --dry-run`, `--output-cache` and so on). It compares what each run prints, its exit code, and any files it writes with the golden files in `__conformance__/examples`. CI runs it on Linux, macOS and Windows as the "Integration tests" job.
+
+When a case doesn't match, the output it got is written next to the golden file with `.actual` before the extension, and the difference is printed.
+
+- **If the change in behavior is a mistake**, fix the code until the cases match again.
+- **If the change is intended**, or you've added an example, run `pnpm test:conformance:update` to record the new output, then commit the updated golden files with your change. Check the diff before committing: every changed line is a change in what `checksync` does, and reviewers will read it that way.
+
+Nothing updates the golden files automatically. The tests never change the examples themselves.
 
 💭**REMEMBER** If you would like to contribute code changes to the project, first make sure there's a corresponding issue for the change you wish to make.
 
