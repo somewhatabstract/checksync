@@ -18,9 +18,11 @@ const ROOT_FILES = ["package.json", ".checksyncrc.json", ".gitignore"];
  * checksums and output. Symbolic links are copied as links.
  *
  * @param rootDir The absolute path of the repository root.
- * @param example The name of the directory within `__examples__` to copy.
+ * @param example The name of the example to copy.
  * @returns The absolute, real path of the scratch root, which the caller
  * removes when done.
+ * @throws {Error} If the scratch root can't be created or filled, in which
+ * case nothing is left behind.
  */
 export default function createScratchRoot(
     rootDir: string,
@@ -31,13 +33,21 @@ export default function createScratchRoot(
     const scratchRoot = fs.realpathSync(
         fs.mkdtempSync(path.join(os.tmpdir(), "checksync-conformance-")),
     );
-    for (const file of ROOT_FILES) {
-        fs.copyFileSync(path.join(rootDir, file), path.join(scratchRoot, file));
+    try {
+        for (const file of ROOT_FILES) {
+            fs.copyFileSync(
+                path.join(rootDir, file),
+                path.join(scratchRoot, file),
+            );
+        }
+        fs.cpSync(
+            path.join(rootDir, "__examples__", example),
+            path.join(scratchRoot, "__examples__", example),
+            {recursive: true, verbatimSymlinks: true},
+        );
+    } catch (e) {
+        fs.rmSync(scratchRoot, {recursive: true, force: true});
+        throw e;
     }
-    fs.cpSync(
-        path.join(rootDir, "__examples__", example),
-        path.join(scratchRoot, "__examples__", example),
-        {recursive: true, verbatimSymlinks: true},
-    );
     return scratchRoot;
 }

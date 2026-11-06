@@ -27,7 +27,7 @@ import getActualPath from "../src/conformance/get-actual-path";
 import createScratchRoot from "../src/conformance/create-scratch-root";
 import snapshotFiles from "../src/conformance/snapshot-files";
 import formatFileChanges from "../src/conformance/format-file-changes";
-import {Launcher, NormalizeOptions} from "../src/conformance/types";
+import {Launcher, NormalizeOptions, RunResult} from "../src/conformance/types";
 
 const ROOT_DIR = path.join(__dirname, "..");
 const GOLDEN_DIR = path.join(ROOT_DIR, "__conformance__", "examples");
@@ -94,22 +94,27 @@ const main = (argv: ReadonlyArray<string>): number => {
 
         // A case that writes files runs in a scratch copy of its example, so
         // that the committed example is never changed.
-        const cwd =
+        const scratchRoot =
             testCase.scratchExample == null
-                ? ROOT_DIR
+                ? null
                 : createScratchRoot(ROOT_DIR, testCase.scratchExample);
+        const cwd = scratchRoot ?? ROOT_DIR;
         const normalizeOptions = getNormalizeOptions(cwd);
-        const before = cwd === ROOT_DIR ? null : snapshotFiles(cwd);
-        let result;
+        let result: RunResult;
         let fileChanges: string | null = null;
         try {
+            const before =
+                scratchRoot == null ? null : snapshotFiles(scratchRoot);
             result = runChecksync(launcher, testCase.args, cwd);
-            if (before != null) {
-                fileChanges = formatFileChanges(before, snapshotFiles(cwd));
+            if (scratchRoot != null && before != null) {
+                fileChanges = formatFileChanges(
+                    before,
+                    snapshotFiles(scratchRoot),
+                );
             }
         } finally {
-            if (cwd !== ROOT_DIR) {
-                fs.rmSync(cwd, {recursive: true, force: true});
+            if (scratchRoot != null) {
+                fs.rmSync(scratchRoot, {recursive: true, force: true});
             }
         }
         const transcript = formatTranscript(testCase, {

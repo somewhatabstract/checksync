@@ -75,4 +75,38 @@ describe("#createScratchRoot", () => {
             {recursive: true, verbatimSymlinks: true},
         );
     });
+
+    it("should remove the scratch root when copying fails so nothing is left behind", () => {
+        // Arrange
+        jest.spyOn(fs, "cpSync").mockImplementation(() => {
+            throw new Error("copy failed");
+        });
+        const rmSyncSpy = jest.spyOn(fs, "rmSync");
+
+        // Act
+        try {
+            createScratchRoot("/repo", "an_example");
+        } catch {
+            // The error is checked by the next test.
+        }
+
+        // Assert
+        expect(rmSyncSpy).toHaveBeenCalledWith(
+            "/real/checksync-conformance-abc",
+            {recursive: true, force: true},
+        );
+    });
+
+    it("should rethrow the error when copying fails", () => {
+        // Arrange
+        jest.spyOn(fs, "cpSync").mockImplementation(() => {
+            throw new Error("copy failed");
+        });
+
+        // Act
+        const underTest = () => createScratchRoot("/repo", "an_example");
+
+        // Assert
+        expect(underTest).toThrow("copy failed");
+    });
 });
