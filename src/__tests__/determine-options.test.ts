@@ -161,6 +161,34 @@ describe("#determineOptions", () => {
             expect(setCwdSpy).not.toHaveBeenCalled();
         });
 
+        it("should load the config file before changing to its folder so a relative path still works", async () => {
+            // Arrange
+            jest.spyOn(FindConfigurationFile, "default").mockReturnValue(
+                "/path/to/config/file",
+            );
+            const calls: Array<string> = [];
+            jest.spyOn(LoadConfigurationFile, "default").mockImplementation(
+                () => {
+                    calls.push("load");
+                    return Promise.resolve({} as any);
+                },
+            );
+            jest.spyOn(SetCwd, "default").mockImplementation(() => {
+                calls.push("setCwd");
+            });
+            const args = {
+                _: ["foo"],
+                rootMarker: "root",
+            };
+            const NullLogger = new Logger(null, true);
+
+            // Act
+            await determineOptions(args, NullLogger);
+
+            // Assert
+            expect(calls).toEqual(["load", "setCwd"]);
+        });
+
         it("should attempt to load the found config file", async () => {
             // Arrange
             jest.spyOn(FindConfigurationFile, "default").mockReturnValue(

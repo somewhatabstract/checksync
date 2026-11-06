@@ -43,6 +43,13 @@ export default async function determineOptions(
         }
     });
 
+    // Load the config file before changing directory, since a relative path
+    // to it is relative to where we are now.
+    const configFromFile =
+        configFilePath == null
+            ? null
+            : await loadConfigurationFile(configFilePath, log);
+
     if (configFilePath != null) {
         // We found a config file.
         // In order for paths defined in the config file to work
@@ -54,10 +61,6 @@ export default async function determineOptions(
         setCwd(log, path.dirname(configFilePath));
     }
 
-    const configFromFile =
-        configFilePath == null
-            ? null
-            : await loadConfigurationFile(configFilePath, log);
     log.verbose(() =>
         configFromFile == null
             ? null

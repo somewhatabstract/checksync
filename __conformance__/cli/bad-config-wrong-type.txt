@@ -3,3 +3,6 @@ cwd: __conformance__/fixtures/bad-config
 exit code: 6
 --- stdout ---
 --- stderr ---
+Error    wrong-type.json
+"comments" does not satisfy the schema's "type" rule
+

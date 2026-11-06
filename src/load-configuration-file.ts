@@ -7,6 +7,7 @@ import {ILog, Options} from "./types";
 import FileReferenceLogger from "./file-reference-logger";
 import checksyncSchema from "./checksync.schema.json";
 import {loadMigrationConfig} from "./load-migration-config";
+import formatSchemaErrors from "./format-schema-errors";
 
 const readFileAsync = promisify(fs.readFile);
 
@@ -28,44 +29,58 @@ export default async function loadConfigurationFile(
         // Load the configuration JSON.
         const rcFile = String(await readFileAsync(configPath));
         const rcJson = JSON.parse(rcFile);
+        if (
+            rcJson == null ||
+            typeof rcJson !== "object" ||
+            Array.isArray(rcJson)
+        ) {
+            // The schema can't catch this, as the value is spread into an
+            // object to validate it.
+            rcLog.error("The configuration must be a JSON object");
+        } else {
+            const rcForValidation = {...rcJson} as const;
+            if (!rcForValidation.$schema) {
+                rcForValidation.$schema = "file://./checksync.schema.json";
+            }
+            if (!rcForValidation.$schemaVersion) {
+                rcForValidation.$schemaVersion = version;
+            }
+            JsonSchema.setShouldMetaValidate(false);
 
-        const rcForValidation = {...rcJson} as const;
-        if (!rcForValidation.$schema) {
-            rcForValidation.$schema = "file://./checksync.schema.json";
-        }
-        if (!rcForValidation.$schemaVersion) {
-            rcForValidation.$schemaVersion = version;
-        }
-        JsonSchema.setShouldMetaValidate(false);
+            // Load the schema versions into the schema validator, giving it a URI to ID it.
+            JsonSchema.add(
+                checksyncSchema,
+                "file://./checksync.schema.json",
+                version,
+            );
 
-        // Load the schema versions into the schema validator, giving it a URI to ID it.
-        JsonSchema.add(
-            checksyncSchema,
-            "file://./checksync.schema.json",
-            version,
-        );
+            // Now get that schema using the same URI, and use it to validate the
+            // configuration we loaded.
+            const schema = await JsonSchema.get(
+                "file://./checksync.schema.json",
+            );
 
-        // Now get that schema using the same URI, and use it to validate the
-        // configuration we loaded.
-        const schema = await JsonSchema.get("file://./checksync.schema.json");
+            log.verbose(() => `Validating configuration`);
+            const validation = await JsonSchema.validate(
+                schema,
+                rcForValidation,
+                DETAILED,
+            );
 
-        log.verbose(() => `Validating configuration`);
-        const validation = await JsonSchema.validate(
-            schema,
-            rcForValidation,
-            DETAILED,
-        );
+            if (validation.valid) {
+                // We need to parse the migrations config.
+                const {migration, ...rest} = rcJson;
+                const migrationOptions = loadMigrationConfig(migration, rcLog);
 
-        if (validation.valid) {
-            // We need to parse the migrations config.
-            const {migration, ...rest} = rcJson;
-            const migrationOptions = loadMigrationConfig(migration, rcLog);
-
-            log.verbose(() => `Configuration is valid`);
-            return {
-                ...rest,
-                migration: migrationOptions,
-            };
+                log.verbose(() => `Configuration is valid`);
+                return {
+                    ...rest,
+                    migration: migrationOptions,
+                };
+            }
+            for (const message of formatSchemaErrors(validation as any)) {
+                rcLog.error(message);
+            }
         }
     } catch (error: any) {
         rcLog.error(error.stack);

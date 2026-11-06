@@ -1,0 +1,5 @@
+args: ["--config","__conformance__/fixtures/bad-config/valid.json","no-tags.txt"]
+exit code: 0
+--- stdout ---
+🎉  Everything is in sync!
+--- stderr ---
