@@ -349,7 +349,7 @@
             ]
         },
         {
-            "description": "Symbolic links aren't followed or listed",
+            "description": "Symbolic links found while walking aren't listed or followed",
             "cwd": "",
             "include": [
                 "links/**"
@@ -384,15 +384,14 @@
             "description": "An ignore-file path that matches nothing ignores nothing",
             "cwd": "",
             "include": [
-                "*.log",
-                "src/*.log"
+                "build/**"
             ],
             "exclude": [],
             "ignoreFiles": [
                 "missing/.gitignore"
             ],
             "expected": [
-                "src/three.log"
+                "build/out.js"
             ]
         },
         {
@@ -408,6 +407,167 @@
                 "a.js",
                 "src/one.js"
             ]
+        },
+        {
+            "description": "A pattern's starting folder can go through a symbolic link",
+            "cwd": "",
+            "include": [
+                "links/dir/**"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                "links/dir/nested/four.js",
+                "links/dir/nested/keep.log",
+                "links/dir/one.js",
+                "links/dir/three.log",
+                "links/dir/two.ts"
+            ]
+        },
+        {
+            "description": "A symbolic link named directly isn't listed or expanded",
+            "cwd": "",
+            "include": [
+                "links/file.js",
+                "links/dir"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": []
+        },
+        {
+            "description": "A file inside an ignored folder is ignored",
+            "cwd": "",
+            "include": [
+                "build/out.js"
+            ],
+            "exclude": [],
+            "ignoreFiles": [
+                ".gitignore"
+            ],
+            "expected": []
+        },
+        {
+            "description": "An ignored folder expands to nothing",
+            "cwd": "",
+            "include": [
+                "build"
+            ],
+            "exclude": [],
+            "ignoreFiles": [
+                ".gitignore"
+            ],
+            "expected": []
+        },
+        {
+            "description": "A negated include pattern removes matches",
+            "cwd": "",
+            "include": [
+                "src/**",
+                "!src/nested/**"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                "src/one.js",
+                "src/three.log",
+                "src/two.ts"
+            ]
+        },
+        {
+            "description": "A trailing separator still expands a folder",
+            "cwd": "",
+            "include": [
+                "src/"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                "src/nested/four.js",
+                "src/nested/keep.log",
+                "src/one.js",
+                "src/three.log",
+                "src/two.ts"
+            ]
+        },
+        {
+            "description": "Braces choose between alternatives",
+            "cwd": "",
+            "include": [
+                "src/*.{js,ts}"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                "src/one.js",
+                "src/two.ts"
+            ]
+        },
+        {
+            "description": "A leading ./ is allowed",
+            "cwd": "",
+            "include": [
+                "./src/one.js"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                "src/one.js"
+            ]
+        },
+        {
+            "description": "A ../ glob reaches out of the current folder",
+            "cwd": "src",
+            "include": [
+                "../other/**"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                "other/five.js",
+                "other/six.txt"
+            ]
+        },
+        {
+            "description": "The parent folder expands like any other",
+            "cwd": "src",
+            "include": [
+                ".."
+            ],
+            "exclude": [
+                "../node_modules/**",
+                "../links/**"
+            ],
+            "ignoreFiles": [],
+            "expected": [
+                "B.js",
+                "UPPER.JS",
+                "_under.js",
+                "a.js",
+                "build/out.js",
+                "c.ts",
+                "docs/readme.md",
+                "noignore/seven.js",
+                "other/five.js",
+                "other/six.txt",
+                "src/nested/four.js",
+                "src/nested/keep.log",
+                "src/one.js",
+                "src/three.log",
+                "src/two.ts",
+                "with space.js",
+                "é.js"
+            ]
+        },
+        {
+            "description": "A pattern that only matches folders finds nothing",
+            "cwd": "",
+            "include": [
+                "*/"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": []
         }
     ],
     "symlinks": {

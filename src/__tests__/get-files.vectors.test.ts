@@ -6,8 +6,8 @@ import Logger from "../logger";
 import getFiles from "../get-files";
 
 /**
- * File-discovery vectors shared with the Rust implementation, which tests
- * against the same file so both find the same files.
+ * File-discovery vectors, to be shared with the Rust implementation so both
+ * find the same files.
  *
  * The `files`, with their contents, and the `symlinks`, each pointing at a
  * relative target, are created under a new root folder. Each vector runs from
@@ -40,11 +40,12 @@ describe("getFiles vectors", () => {
         // The file walk waits on real timers, which the global fake timers
         // would stop.
         jest.useRealTimers();
-        // Resolved, since getFiles builds absolute paths from the resolved
-        // current folder; on macOS the temporary folder is behind a symlink.
-        root = fs.realpathSync(
-            fs.mkdtempSync(path.join(os.tmpdir(), "file-vectors-")),
-        );
+        // getFiles builds absolute paths from the current folder as the
+        // operating system reports it, which can differ from the path we
+        // created: on macOS the temporary folder is behind a symlink.
+        process.chdir(fs.mkdtempSync(path.join(os.tmpdir(), "file-vectors-")));
+        root = process.cwd();
+        process.chdir(originalCwd);
         for (const [file, contents] of Object.entries(TABLE.files)) {
             fs.mkdirSync(path.dirname(path.join(root, file)), {
                 recursive: true,
