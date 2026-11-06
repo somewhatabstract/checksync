@@ -24,10 +24,12 @@ export const CLI_CASES: ReadonlyArray<ConformanceCase> = [
         id: "cli/conflicting-options",
         args: [
             "--output-cache",
-            ".conformance-output/conflict.cache.json",
+            ".conformance-output/conflicting-options.cache.json",
             "--update-tags",
             "__examples__/correct_checksums/**",
         ],
+        // Recorded so that a cache written before the conflict is caught.
+        cacheFile: ".conformance-output/conflicting-options.cache.json",
     },
     {id: "cli/no-matching-files", args: ["__examples__/does_not_exist/**"]},
     {

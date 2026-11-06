@@ -98,7 +98,7 @@ describe("#normalizeOutput", () => {
         expect(result).toBe("checksync 0.0.0 ✅ 🔗\n");
     });
 
-    it("should replace a version printed on its own line, as --version prints it", () => {
+    it("should replace a version that is all of the output, as --version prints it", () => {
         // Arrange
         const output = "12.0.0-rc.1\n";
 
@@ -118,5 +118,27 @@ describe("#normalizeOutput", () => {
 
         // Assert
         expect(result).toBe("Updated to 1.2.3 today\n");
+    });
+
+    it("should leave a help-style heading alone when it doesn't start the output", () => {
+        // Arrange
+        const output = "Info\nchecksync 1.2.3\n";
+
+        // Act
+        const result = normalizeOutput(output, options);
+
+        // Assert
+        expect(result).toBe("Info\nchecksync 1.2.3\n");
+    });
+
+    it("should leave a version alone when it is one line of several", () => {
+        // Arrange
+        const output = "1.2.3\nmore\n";
+
+        // Act
+        const result = normalizeOutput(output, options);
+
+        // Assert
+        expect(result).toBe("1.2.3\nmore\n");
     });
 });

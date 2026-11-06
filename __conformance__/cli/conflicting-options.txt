@@ -1,4 +1,4 @@
-args: ["--output-cache",".conformance-output/conflict.cache.json","--update-tags","__examples__/correct_checksums/**"]
+args: ["--output-cache",".conformance-output/conflicting-options.cache.json","--update-tags","__examples__/correct_checksums/**"]
 exit code: 4
 --- stdout ---
 --- stderr ---
