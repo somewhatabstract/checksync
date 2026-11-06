@@ -114,7 +114,35 @@ describe("OutputSink", () => {
 
             // Assert
             expect(underTest).toThrowErrorMatchingInlineSnapshot(
-                `"two/src/a.js and one/src/a.js have the same path from their roots, so they can't be checked in the same run. All files in a run must share one root: the closest folder above them that contains the root marker (package.json). Check them in separate runs, or use --root-marker to pick a marker that only the shared root contains."`,
+                `"two/src/a.js and one/src/a.js have the same path from their roots, so checksync can't report on both in one run. Files checked together should share one root: the closest folder above them that contains the root marker (package.json). Check them in separate runs, or choose a root marker that only the shared root contains, with --root-marker or the rootMarker option in your configuration."`,
+            );
+        });
+
+        it("should name the configured root marker in the error", async () => {
+            // Arrange
+            const NullLogger = new Logger();
+            const outputSink = new OutputSink(
+                {...defaultOptions, rootMarker: ".marker"},
+                NullLogger,
+            );
+            jest.spyOn(RootRelativePath, "default").mockReturnValue("src/a.js");
+            jest.spyOn(FileReferenceLogger, "default").mockImplementation(
+                (file: string) => ({file}) as any,
+            );
+            outputSink.startFile("one/src/a.js");
+            outputSink.processError({
+                markerID: "MARKER_ID",
+                reason: "REASON",
+                code: ErrorCode.couldNotParse,
+            });
+            await outputSink.endFile();
+
+            // Act
+            const underTest = () => outputSink.startFile("two/src/a.js");
+
+            // Assert
+            expect(underTest).toThrowErrorMatchingInlineSnapshot(
+                `"two/src/a.js and one/src/a.js have the same path from their roots, so checksync can't report on both in one run. Files checked together should share one root: the closest folder above them that contains the root marker (.marker). Check them in separate runs, or choose a root marker that only the shared root contains, with --root-marker or the rootMarker option in your configuration."`,
             );
         });
     });

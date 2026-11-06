@@ -42,14 +42,11 @@ export default class OutputSink {
         return this._errorsByFile[this._getKeyForFile(file)];
     }
 
-    _initErrorsForFile(file: string): void {
-        this._errorsByFile[this._getKeyForFile(file)] = [];
-    }
-
     _cleanUpErrorlessFile(file: string): boolean {
         const relativePath = this._getKeyForFile(file);
         if (this._errorsByFile[relativePath].length === 0) {
             delete this._errorsByFile[relativePath];
+            this._fileForKey.delete(relativePath);
             return true;
         }
         return false;
@@ -61,18 +58,21 @@ export default class OutputSink {
                 "Cannot start processing a file while already processing another",
             );
         }
-        if (this._getErrorsForFile(file) != null) {
-            const otherFile = this._fileForKey.get(this._getKeyForFile(file));
+        const key = this._getKeyForFile(file);
+        if (this._errorsByFile[key] != null) {
+            // Files are tracked by their path from their root, so a file under
+            // another root can look like one that was already reported.
+            const otherFile = this._fileForKey.get(key);
             if (otherFile != null && otherFile !== file) {
                 throw new Error(
-                    `${cwdRelativePath(file)} and ${cwdRelativePath(otherFile)} have the same path from their roots, so they can't be checked in the same run. All files in a run must share one root: the closest folder above them that contains the root marker (${this._options.rootMarker ?? "package.json"}). Check them in separate runs, or use --root-marker to pick a marker that only the shared root contains.`,
+                    `${cwdRelativePath(file)} and ${cwdRelativePath(otherFile)} have the same path from their roots, so checksync can't report on both in one run. Files checked together should share one root: the closest folder above them that contains the root marker (${this._options.rootMarker ?? "package.json"}). Check them in separate runs, or choose a root marker that only the shared root contains, with --root-marker or the rootMarker option in your configuration.`,
                 );
             }
             throw new Error("File has already been drained to the output sink");
         }
-        this._fileForKey.set(this._getKeyForFile(file), file);
+        this._fileForKey.set(key, file);
         this._fileLog = new FileReferenceLogger(file, this._mainLog);
-        this._initErrorsForFile(file);
+        this._errorsByFile[key] = [];
     }
 
     processError(errorDetails: ErrorDetails): void {

@@ -4,12 +4,12 @@ exit code: 5
 --- stdout ---
 Mismatch one/src/a.js:1
 Looks like you changed the target content for sync-tag 'pair' in 'one/src/b.js:1'
-Make sure you've made corresponding changes in the source file, if necessary (0 != 525075366)
+Make sure you've made corresponding changes in the source file, if necessary (0 != 1016006195)
 
 Mismatch one/src/b.js:1
 Looks like you changed the target content for sync-tag 'pair' in 'one/src/a.js:1'
-Make sure you've made corresponding changes in the source file, if necessary (0 != 525075366)
+Make sure you've made corresponding changes in the source file, if necessary (0 != 1016006195)
 
 --- stderr ---
-Error    two/src/a.js and one/src/a.js have the same path from their roots, so they can't be checked in the same run. All files in a run must share one root: the closest folder above them that contains the root marker (package.json). Check them in separate runs, or use --root-marker to pick a marker that only the shared root contains.
+Error    two/src/a.js and one/src/a.js have the same path from their roots, so checksync can't report on both in one run. Files checked together should share one root: the closest folder above them that contains the root marker (package.json). Check them in separate runs, or choose a root marker that only the shared root contains, with --root-marker or the rootMarker option in your configuration.
 (rest not recorded)
