@@ -25,6 +25,21 @@ export type ConformanceCase = {
      * The files the run changes are recorded too.
      */
     scratchExample?: string;
+
+    /**
+     * The working directory to run the case in, as a forward-slash path
+     * relative to the repository root, if not the root itself.
+     */
+    cwd?: string;
+
+    /**
+     * Whether to record only that stderr had output, rather than its text.
+     *
+     * For output that comes from the runtime rather than checksync, such as
+     * stack traces and system error messages, which change between builds,
+     * runtimes and implementations.
+     */
+    stderrPresenceOnly?: boolean;
 };
 
 /**

@@ -1,0 +1,5 @@
+args: ["--config","__conformance__/fixtures/bad-config/array.json","no-tags.txt"]
+exit code: 6
+--- stdout ---
+--- stderr ---
+(not recorded, but not empty)

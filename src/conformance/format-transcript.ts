@@ -17,6 +17,9 @@ const formatStream = (name: string, content: string): string => {
 /**
  * Format a conformance case and its result as a golden transcript.
  *
+ * The working directory is included when the case sets one, so that the
+ * transcript says how to reproduce the run.
+ *
  * @param testCase The case that was run.
  * @param result The normalized result of running it.
  * @returns The transcript text.
@@ -25,10 +28,15 @@ export default function formatTranscript(
     testCase: ConformanceCase,
     result: RunResult,
 ): string {
+    const stderr =
+        testCase.stderrPresenceOnly && result.stderr !== ""
+            ? "(not recorded, but not empty)\n"
+            : result.stderr;
     return [
         `args: ${JSON.stringify(testCase.args)}\n`,
+        testCase.cwd == null ? "" : `cwd: ${testCase.cwd}\n`,
         `exit code: ${result.exitCode}\n`,
         formatStream("stdout", result.stdout),
-        formatStream("stderr", result.stderr),
+        formatStream("stderr", stderr),
     ].join("");
 }

@@ -1,0 +1,6 @@
+args: ["--config","malformed.json","no-tags.txt"]
+cwd: __conformance__/fixtures/bad-config
+exit code: 6
+--- stdout ---
+--- stderr ---
+(not recorded, but not empty)

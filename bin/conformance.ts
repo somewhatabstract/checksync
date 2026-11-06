@@ -103,7 +103,7 @@ const main = (argv: ReadonlyArray<string>): number => {
             testCase.scratchExample == null
                 ? null
                 : createScratchRoot(ROOT_DIR, testCase.scratchExample);
-        const cwd = scratchRoot ?? ROOT_DIR;
+        const cwd = scratchRoot ?? path.join(ROOT_DIR, testCase.cwd ?? "");
         const normalizeOptions = getNormalizeOptions(cwd);
         let result: RunResult;
         let fileChanges: string | null = null;
