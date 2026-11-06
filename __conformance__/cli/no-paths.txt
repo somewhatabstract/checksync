@@ -1,0 +1,6 @@
+args: []
+cwd: __conformance__/fixtures/no-paths
+exit code: 0
+--- stdout ---
+🎉  Everything is in sync!
+--- stderr ---
