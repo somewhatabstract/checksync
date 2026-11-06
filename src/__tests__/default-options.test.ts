@@ -5,7 +5,7 @@ describe("defaultOptions", () => {
         return import("../default-options");
     };
 
-    it("should set includeGlobs to the current working directory", async () => {
+    it("should set includeGlobs to everything below the working directory", async () => {
         // Arrange
 
         // Act
@@ -14,7 +14,7 @@ describe("defaultOptions", () => {
         } = await importDefaultOptions();
 
         // Assert
-        expect(result).toEqual(["."]);
+        expect(result).toEqual(["**"]);
     });
 
     it("should provide expected defaults", async () => {
@@ -41,7 +41,7 @@ describe("defaultOptions", () => {
     ".gitignore",
   ],
   "includeGlobs": [
-    ".",
+    "**",
   ],
   "json": false,
 }

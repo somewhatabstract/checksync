@@ -7,6 +7,7 @@ import {ILog, MigrationOptions, Options} from "./types";
 import {Arguments} from "yargs";
 import path from "path";
 import setCwd from "./set-cwd";
+import defaultIncludeGlobs from "./default-include-globs";
 
 export default async function determineOptions(
     args: Arguments<any>,
@@ -50,6 +51,10 @@ export default async function determineOptions(
             ? null
             : await loadConfigurationFile(configFilePath, log);
 
+    // With no include globs, every file below the folder we started in is
+    // checked, so remember it before a config file moves us elsewhere.
+    const startDir = process.cwd();
+
     if (configFilePath != null) {
         // We found a config file.
         // In order for paths defined in the config file to work
@@ -78,6 +83,12 @@ export default async function determineOptions(
         ...configFromFile,
         ...argsOptions,
     };
+    if (
+        configFromFile?.includeGlobs == null &&
+        argsOptions?.includeGlobs == null
+    ) {
+        combinedOptions.includeGlobs = defaultIncludeGlobs(startDir);
+    }
     // We have to build the combined migrations.
     // Since this is a nested configuration, it's a little different.
     // We only allow the mode to be overridden by args, the mappings always

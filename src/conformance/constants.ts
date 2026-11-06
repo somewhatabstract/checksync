@@ -25,6 +25,13 @@ const DISCOVERY_DIR = "__conformance__/fixtures/config-discovery";
 const MERGING_DIR = "__conformance__/fixtures/config-merging";
 
 /**
+ * The fixture folder, relative to the repository root, for running with no
+ * paths from below the folder that holds the configuration file.
+ */
+const NO_PATHS_BELOW_CONFIG_DIR =
+    "__conformance__/fixtures/no-paths-below-config";
+
+/**
  * Cases that cover the command-line surface rather than any one example.
  *
  * These run from the repository root, like the example cases, unless they
@@ -63,6 +70,18 @@ export const CLI_CASES: ReadonlyArray<ConformanceCase> = [
         // the repository's isn't found and the default applies.
         args: [],
         cwd: "__conformance__/fixtures/no-paths",
+    },
+    {
+        id: "cli/no-paths-below-config",
+        // The configuration is found in the folder above, which becomes the
+        // working directory, but only files below the starting folder are
+        // checked. The broken file beside the configuration shows if it isn't.
+        args: [],
+        cwd: `${NO_PATHS_BELOW_CONFIG_DIR}/sub`,
+    },
+    {
+        id: "cli/no-paths-cwd-option",
+        args: ["--cwd", `${NO_PATHS_BELOW_CONFIG_DIR}/sub`],
     },
     {id: "cli/no-matching-files", args: ["__examples__/does_not_exist/**"]},
     {

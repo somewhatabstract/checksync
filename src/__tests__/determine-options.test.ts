@@ -3,6 +3,7 @@ import * as FindConfigurationFile from "../find-configuration-file";
 import * as LoadConfigurationFile from "../load-configuration-file";
 import * as OptionsFromArgs from "../options-from-args";
 import * as SetCwd from "../set-cwd";
+import * as DefaultIncludeGlobs from "../default-include-globs";
 
 import determineOptions from "../determine-options";
 import defaultOptions from "../default-options";
@@ -11,6 +12,7 @@ jest.mock("../find-configuration-file");
 jest.mock("../load-configuration-file");
 jest.mock("../options-from-args");
 jest.mock("../set-cwd");
+jest.mock("../default-include-globs");
 
 describe("#determineOptions", () => {
     it("should convert args to options", async () => {
@@ -361,6 +363,84 @@ describe("#determineOptions", () => {
                 mode: "all",
                 mappings: {a: "b"},
             });
+        });
+    });
+
+    describe("include globs", () => {
+        it("should default to everything below the folder it started in, found before changing to the config file's folder", async () => {
+            // Arrange
+            const startDir = process.cwd();
+            const defaultIncludeGlobsSpy = jest.spyOn(
+                DefaultIncludeGlobs,
+                "default",
+            );
+            jest.spyOn(SetCwd, "default").mockImplementation(() => {
+                jest.spyOn(process, "cwd").mockReturnValue("/path/to/config");
+            });
+            jest.spyOn(FindConfigurationFile, "default").mockReturnValue(
+                "/path/to/config/file",
+            );
+            jest.spyOn(LoadConfigurationFile, "default").mockResolvedValue({});
+            const NullLogger = new Logger(null, true);
+
+            // Act
+            await determineOptions({_: []}, NullLogger);
+
+            // Assert
+            expect(defaultIncludeGlobsSpy).toHaveBeenCalledWith(startDir);
+        });
+
+        it("should use the default include globs when neither the arguments nor the config file give any", async () => {
+            // Arrange
+            jest.spyOn(DefaultIncludeGlobs, "default").mockReturnValue([
+                "DEFAULT/**",
+            ]);
+            jest.spyOn(FindConfigurationFile, "default").mockReturnValue(null);
+            const NullLogger = new Logger(null, true);
+
+            // Act
+            const result = await determineOptions({_: []}, NullLogger);
+
+            // Assert
+            expect(result.includeGlobs).toStrictEqual(["DEFAULT/**"]);
+        });
+
+        it("should use the config file's include globs when the arguments give none", async () => {
+            // Arrange
+            jest.spyOn(DefaultIncludeGlobs, "default").mockReturnValue([
+                "DEFAULT/**",
+            ]);
+            jest.spyOn(FindConfigurationFile, "default").mockReturnValue(
+                "/path/to/config/file",
+            );
+            jest.spyOn(LoadConfigurationFile, "default").mockResolvedValue({
+                includeGlobs: [],
+            });
+            const NullLogger = new Logger(null, true);
+
+            // Act
+            const result = await determineOptions({_: []}, NullLogger);
+
+            // Assert
+            expect(result.includeGlobs).toStrictEqual([]);
+        });
+
+        it("should use the arguments' include globs when given", async () => {
+            // Arrange
+            jest.spyOn(DefaultIncludeGlobs, "default").mockReturnValue([
+                "DEFAULT/**",
+            ]);
+            jest.spyOn(OptionsFromArgs, "optionsFromArgs").mockReturnValue({
+                includeGlobs: ["foo"],
+            });
+            jest.spyOn(FindConfigurationFile, "default").mockReturnValue(null);
+            const NullLogger = new Logger(null, true);
+
+            // Act
+            const result = await determineOptions({_: ["foo"]}, NullLogger);
+
+            // Assert
+            expect(result.includeGlobs).toStrictEqual(["foo"]);
         });
     });
 });
