@@ -1,0 +1,417 @@
+{
+    "files": {
+        "a.js": "",
+        "B.js": "",
+        "c.ts": "",
+        "with space.js": "",
+        "_under.js": "",
+        "é.js": "",
+        ".hidden.js": "",
+        ".dotdir/x.js": "",
+        "src/one.js": "",
+        "src/two.ts": "",
+        "src/three.log": "",
+        "src/nested/four.js": "",
+        "src/nested/keep.log": "",
+        "src/nested/.gitignore": "!keep.log\n",
+        "docs/readme.md": "",
+        "build/out.js": "",
+        "node_modules/pkg/index.js": "",
+        "UPPER.JS": "",
+        ".gitignore": "build/\n*.log\n",
+        "other/.gitignore": "*.js\n",
+        "other/five.js": "",
+        "other/six.txt": "",
+        "noignore/seven.js": ""
+    },
+    "vectors": [
+        {
+            "description": "A folder expands to everything below it, skipping dotfiles",
+            "cwd": "",
+            "include": [
+                "src"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                "src/nested/four.js",
+                "src/nested/keep.log",
+                "src/one.js",
+                "src/three.log",
+                "src/two.ts"
+            ]
+        },
+        {
+            "description": "A dot expands to everything below the current folder",
+            "cwd": "",
+            "include": [
+                "."
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                "B.js",
+                "UPPER.JS",
+                "_under.js",
+                "a.js",
+                "build/out.js",
+                "c.ts",
+                "docs/readme.md",
+                "node_modules/pkg/index.js",
+                "noignore/seven.js",
+                "other/five.js",
+                "other/six.txt",
+                "src/nested/four.js",
+                "src/nested/keep.log",
+                "src/one.js",
+                "src/three.log",
+                "src/two.ts",
+                "with space.js",
+                "é.js"
+            ]
+        },
+        {
+            "description": "A glob in one folder",
+            "cwd": "",
+            "include": [
+                "src/*.js"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                "src/one.js"
+            ]
+        },
+        {
+            "description": "A recursive glob",
+            "cwd": "",
+            "include": [
+                "**/*.js"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                "B.js",
+                "_under.js",
+                "a.js",
+                "build/out.js",
+                "node_modules/pkg/index.js",
+                "noignore/seven.js",
+                "other/five.js",
+                "src/nested/four.js",
+                "src/one.js",
+                "with space.js",
+                "é.js"
+            ]
+        },
+        {
+            "description": "Matching is case-sensitive",
+            "cwd": "",
+            "include": [
+                "*.js"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                "B.js",
+                "_under.js",
+                "a.js",
+                "with space.js",
+                "é.js"
+            ]
+        },
+        {
+            "description": "A dotfile or dot folder is found when the pattern names it",
+            "cwd": "",
+            "include": [
+                ".hidden.js",
+                ".dotdir/**"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                ".dotdir/x.js",
+                ".hidden.js"
+            ]
+        },
+        {
+            "description": "A plain file path",
+            "cwd": "",
+            "include": [
+                "src/one.js"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                "src/one.js"
+            ]
+        },
+        {
+            "description": "A path that doesn't exist matches nothing",
+            "cwd": "",
+            "include": [
+                "missing",
+                "missing/**"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": []
+        },
+        {
+            "description": "Overlapping patterns list a file once",
+            "cwd": "",
+            "include": [
+                "src/**",
+                "src/*.js"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                "src/nested/four.js",
+                "src/nested/keep.log",
+                "src/one.js",
+                "src/three.log",
+                "src/two.ts"
+            ]
+        },
+        {
+            "description": "Exclude globs remove matches",
+            "cwd": "",
+            "include": [
+                "**/*.js"
+            ],
+            "exclude": [
+                "node_modules/**",
+                "**/nested/**"
+            ],
+            "ignoreFiles": [],
+            "expected": [
+                "B.js",
+                "_under.js",
+                "a.js",
+                "build/out.js",
+                "noignore/seven.js",
+                "other/five.js",
+                "src/one.js",
+                "with space.js",
+                "é.js"
+            ]
+        },
+        {
+            "description": "The default ignore file applies when it exists",
+            "cwd": "",
+            "include": [
+                "**"
+            ],
+            "exclude": [
+                "node_modules/**"
+            ],
+            "ignoreFiles": [
+                ".gitignore"
+            ],
+            "expected": [
+                "B.js",
+                "UPPER.JS",
+                "_under.js",
+                "a.js",
+                "c.ts",
+                "docs/readme.md",
+                "noignore/seven.js",
+                "other/five.js",
+                "other/six.txt",
+                "src/nested/four.js",
+                "src/one.js",
+                "src/two.ts",
+                "with space.js",
+                "é.js"
+            ]
+        },
+        {
+            "description": "The default ignore file is optional",
+            "cwd": "noignore",
+            "include": [
+                "**"
+            ],
+            "exclude": [],
+            "ignoreFiles": [
+                ".gitignore"
+            ],
+            "expected": [
+                "noignore/seven.js"
+            ]
+        },
+        {
+            "description": "Ignore-file globs apply nested ignore files from the top down",
+            "cwd": "",
+            "include": [
+                "**"
+            ],
+            "exclude": [
+                "node_modules/**"
+            ],
+            "ignoreFiles": [
+                "**/.gitignore"
+            ],
+            "expected": [
+                "B.js",
+                "UPPER.JS",
+                "_under.js",
+                "a.js",
+                "c.ts",
+                "docs/readme.md",
+                "noignore/seven.js",
+                "other/six.txt",
+                "src/nested/four.js",
+                "src/nested/keep.log",
+                "src/one.js",
+                "src/two.ts",
+                "with space.js",
+                "é.js"
+            ]
+        },
+        {
+            "description": "An ignore file only applies below its own folder",
+            "cwd": "",
+            "include": [
+                "**"
+            ],
+            "exclude": [
+                "node_modules/**"
+            ],
+            "ignoreFiles": [
+                "other/.gitignore"
+            ],
+            "expected": [
+                "B.js",
+                "UPPER.JS",
+                "_under.js",
+                "a.js",
+                "build/out.js",
+                "c.ts",
+                "docs/readme.md",
+                "noignore/seven.js",
+                "other/six.txt",
+                "src/nested/four.js",
+                "src/nested/keep.log",
+                "src/one.js",
+                "src/three.log",
+                "src/two.ts",
+                "with space.js",
+                "é.js"
+            ]
+        },
+        {
+            "description": "No ignore files",
+            "cwd": "",
+            "include": [
+                "**"
+            ],
+            "exclude": [
+                "node_modules/**"
+            ],
+            "ignoreFiles": [],
+            "expected": [
+                "B.js",
+                "UPPER.JS",
+                "_under.js",
+                "a.js",
+                "build/out.js",
+                "c.ts",
+                "docs/readme.md",
+                "noignore/seven.js",
+                "other/five.js",
+                "other/six.txt",
+                "src/nested/four.js",
+                "src/nested/keep.log",
+                "src/one.js",
+                "src/three.log",
+                "src/two.ts",
+                "with space.js",
+                "é.js"
+            ]
+        },
+        {
+            "description": "Results are sorted by UTF-16 code unit, as JavaScript sorts strings",
+            "cwd": "",
+            "include": [
+                "*"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                "B.js",
+                "UPPER.JS",
+                "_under.js",
+                "a.js",
+                "c.ts",
+                "with space.js",
+                "é.js"
+            ]
+        },
+        {
+            "description": "Symbolic links aren't followed or listed",
+            "cwd": "",
+            "include": [
+                "links/**"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": []
+        },
+        {
+            "description": "A folder name as an exclude glob",
+            "cwd": "",
+            "include": [
+                "**/*.js"
+            ],
+            "exclude": [
+                "node_modules",
+                "src"
+            ],
+            "ignoreFiles": [],
+            "expected": [
+                "B.js",
+                "_under.js",
+                "a.js",
+                "build/out.js",
+                "noignore/seven.js",
+                "other/five.js",
+                "with space.js",
+                "é.js"
+            ]
+        },
+        {
+            "description": "An ignore-file path that matches nothing ignores nothing",
+            "cwd": "",
+            "include": [
+                "*.log",
+                "src/*.log"
+            ],
+            "exclude": [],
+            "ignoreFiles": [
+                "missing/.gitignore"
+            ],
+            "expected": [
+                "src/three.log"
+            ]
+        },
+        {
+            "description": "Include globs are relative to the current folder",
+            "cwd": "src",
+            "include": [
+                "*.js",
+                "../a.js"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                "a.js",
+                "src/one.js"
+            ]
+        }
+    ],
+    "symlinks": {
+        "links/file.js": "../a.js",
+        "links/dir": "../src"
+    }
+}
