@@ -1,3 +1,4 @@
+use std::ffi::{OsStr, OsString};
 use std::path::{Component, Path, PathBuf};
 
 use crate::node_normalize::node_normalize;
@@ -39,14 +40,19 @@ pub(crate) fn node_relative(cwd: &Path, from: &Path, to: &Path) -> PathBuf {
             return to.iter().collect();
         }
     }
-    let mut relative = PathBuf::new();
-    for _ in shared..from.len() {
-        relative.push("..");
+    // Segments are added as text rather than with `PathBuf::push`, which on
+    // Windows would treat a segment like `C:x` as a new drive and drop
+    // everything before it.
+    let climb = std::iter::repeat_n(OsStr::new(".."), from.len() - shared);
+    let descend = to[shared..].iter().copied().map(Component::as_os_str);
+    let mut relative = OsString::new();
+    for segment in climb.chain(descend) {
+        if !relative.is_empty() {
+            relative.push(std::path::MAIN_SEPARATOR_STR);
+        }
+        relative.push(segment);
     }
-    for component in &to[shared..] {
-        relative.push(component);
-    }
-    relative
+    PathBuf::from(relative)
 }
 
 /// Compare two path segments, ignoring case, as Node.js does on Windows.
@@ -101,6 +107,20 @@ mod tests {
 
         // Assert
         assert_eq!(result, path("../../x"));
+    }
+
+    #[cfg(windows)]
+    #[test]
+    fn keeps_a_segment_that_looks_like_a_drive() {
+        // Arrange
+        let from = Path::new(r"C:\a\x");
+        let to = Path::new(r"C:\a\C:b");
+
+        // Act
+        let result = node_relative(&cwd(), from, to);
+
+        // Assert
+        assert_eq!(result.as_os_str(), r"..\C:b");
     }
 
     #[test]
