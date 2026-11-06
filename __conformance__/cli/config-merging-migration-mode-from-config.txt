@@ -1,0 +1,12 @@
+args: ["source.txt"]
+cwd: __conformance__/fixtures/config-merging/migration
+exit code: 3
+--- stdout ---
+Migrate  source.txt:1
+Recommended migration to remote target 'https://example.com/moved/target.txt' and update checksum to 1006700203.
+
+
+🛠  Desynchronized blocks detected. Check them and update as required before resynchronizing:
+  
+  checksync -u source.txt
+--- stderr ---

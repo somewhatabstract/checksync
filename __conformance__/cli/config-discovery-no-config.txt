@@ -1,0 +1,6 @@
+args: ["--no-config","**/*.txt"]
+cwd: __conformance__/fixtures/config-discovery/beside-marker/sub
+exit code: 0
+--- stdout ---
+🎉  Everything is in sync!
+--- stderr ---

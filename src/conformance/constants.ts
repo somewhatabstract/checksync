@@ -7,6 +7,24 @@ import {ConformanceCase} from "./types";
 const BAD_CONFIG_DIR = "__conformance__/fixtures/bad-config";
 
 /**
+ * The fixture folder, relative to the repository root, for finding a
+ * configuration file.
+ *
+ * Each fixture has its own root marker, so the repository's configuration
+ * isn't found. A tagged file there holds only a `%%` sync-end, which is an
+ * error when the configuration that recognises `%%` comments is used, and
+ * nothing at all otherwise. The path in the error also shows which folder
+ * checksync changed to.
+ */
+const DISCOVERY_DIR = "__conformance__/fixtures/config-discovery";
+
+/**
+ * The fixture folder, relative to the repository root, for combining a
+ * configuration file with arguments.
+ */
+const MERGING_DIR = "__conformance__/fixtures/config-merging";
+
+/**
  * Cases that cover the command-line surface rather than any one example.
  *
  * These run from the repository root, like the example cases, unless they
@@ -78,5 +96,76 @@ export const CLI_CASES: ReadonlyArray<ConformanceCase> = [
         // A relative path to a config in another folder is opened before
         // changing to that folder, and globs then resolve from there.
         args: ["--config", `${BAD_CONFIG_DIR}/valid.json`, "no-tags.txt"],
+    },
+    {
+        id: "cli/config-discovery-beside-root-marker",
+        args: ["**/*.txt"],
+        cwd: `${DISCOVERY_DIR}/beside-marker/sub`,
+    },
+    {
+        id: "cli/config-discovery-without-extension",
+        args: ["**/*.txt"],
+        cwd: `${DISCOVERY_DIR}/rc-without-extension/sub`,
+    },
+    {
+        id: "cli/config-discovery-closest",
+        // Nothing is beside the root marker, so the closest one is used.
+        args: ["**/*.txt"],
+        cwd: `${DISCOVERY_DIR}/closest/a/b`,
+    },
+    {
+        id: "cli/config-discovery-root-marker-beats-closer",
+        args: ["**/*.txt"],
+        cwd: `${DISCOVERY_DIR}/marker-beats-closer/sub/deeper`,
+    },
+    {
+        id: "cli/config-discovery-default-root-marker",
+        // The nearer package.json has its own configuration beside it.
+        args: ["**/*.txt"],
+        cwd: `${DISCOVERY_DIR}/root-marker-option/sub`,
+    },
+    {
+        id: "cli/config-discovery-root-marker-option",
+        args: ["--root-marker", "marker.txt", "**/*.txt"],
+        cwd: `${DISCOVERY_DIR}/root-marker-option/sub`,
+    },
+    {
+        id: "cli/config-discovery-no-config",
+        args: ["--no-config", "**/*.txt"],
+        cwd: `${DISCOVERY_DIR}/beside-marker/sub`,
+    },
+    {
+        id: "cli/config-discovery-explicit-config-wins",
+        args: ["--config", "../.checksyncrc.json", "**/*.txt"],
+        cwd: `${DISCOVERY_DIR}/root-marker-option/sub`,
+    },
+    {
+        id: "cli/config-discovery-cwd-option",
+        args: ["--cwd", `${DISCOVERY_DIR}/beside-marker/sub`, "**/*.txt"],
+    },
+    {
+        id: "cli/config-merging-config-only",
+        args: ["**/*.txt"],
+        cwd: `${MERGING_DIR}/options`,
+    },
+    {
+        id: "cli/config-merging-comments-argument",
+        args: ["--comments", "//", "**/*.txt"],
+        cwd: `${MERGING_DIR}/options`,
+    },
+    {
+        id: "cli/config-merging-ignore-argument",
+        args: ["--ignore", "nothing/**", "**/*.txt"],
+        cwd: `${MERGING_DIR}/options`,
+    },
+    {
+        id: "cli/config-merging-migration-mode-from-config",
+        args: ["source.txt"],
+        cwd: `${MERGING_DIR}/migration`,
+    },
+    {
+        id: "cli/config-merging-migration-mode-argument",
+        args: ["--migrate", "missing", "source.txt"],
+        cwd: `${MERGING_DIR}/migration`,
     },
 ];

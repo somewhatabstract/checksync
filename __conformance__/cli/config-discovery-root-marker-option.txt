@@ -1,0 +1,11 @@
+args: ["--root-marker","marker.txt","**/*.txt"]
+cwd: __conformance__/fixtures/config-discovery/root-marker-option/sub
+exit code: 2
+--- stdout ---
+
+🛑  Unfixable errors found. Fix the errors in these files and try again.
+  sub/tagged.txt
+--- stderr ---
+Error    sub/tagged.txt:1
+Sync-end for 'root_marker_option' found, but there was no corresponding sync-start
+

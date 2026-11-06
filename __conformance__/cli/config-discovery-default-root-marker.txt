@@ -1,0 +1,6 @@
+args: ["**/*.txt"]
+cwd: __conformance__/fixtures/config-discovery/root-marker-option/sub
+exit code: 0
+--- stdout ---
+🎉  Everything is in sync!
+--- stderr ---
