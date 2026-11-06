@@ -1,0 +1,6 @@
+args: ["a.txt"]
+cwd: __conformance__/fixtures/single-file
+exit code: 0
+--- stdout ---
+🎉  Everything is in sync!
+--- stderr ---

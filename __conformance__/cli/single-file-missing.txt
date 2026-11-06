@@ -1,0 +1,5 @@
+args: ["__examples__/correct_checksums/missing.js"]
+exit code: 1
+--- stdout ---
+--- stderr ---
+Error    No matching files

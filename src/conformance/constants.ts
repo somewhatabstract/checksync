@@ -25,6 +25,12 @@ const DISCOVERY_DIR = "__conformance__/fixtures/config-discovery";
 const MERGING_DIR = "__conformance__/fixtures/config-merging";
 
 /**
+ * The fixture folder, relative to the repository root, for checking a single
+ * file whose linked file has a broken sync-tag pointing back at it.
+ */
+const SINGLE_FILE_DIR = "__conformance__/fixtures/single-file";
+
+/**
  * Cases that cover the command-line surface rather than any one example.
  *
  * These run from the repository root, like the example cases, unless they
@@ -181,5 +187,43 @@ export const CLI_CASES: ReadonlyArray<ConformanceCase> = [
         // Mappings only come from a configuration, so nothing is migrated.
         args: ["--no-config", "--migrate", "all", "source.txt"],
         cwd: `${MERGING_DIR}/migration`,
+    },
+    {
+        id: "cli/single-file-in-sync",
+        args: ["__examples__/correct_checksums/a.js"],
+    },
+    {
+        id: "cli/single-file-own-tags-broken",
+        args: ["__examples__/checksums_need_updating/unsymlinked/a.js"],
+    },
+    {
+        id: "cli/single-file-missing",
+        args: ["__examples__/correct_checksums/missing.js"],
+    },
+    {
+        id: "cli/single-file-linked-file-broken",
+        // Only the given file's own tags are checked, so the broken tag that
+        // points back at it from the linked file isn't reported (see #2320).
+        args: ["a.txt"],
+        cwd: SINGLE_FILE_DIR,
+    },
+    {
+        id: "cli/single-file-linked-file-given",
+        args: ["b.txt"],
+        cwd: SINGLE_FILE_DIR,
+    },
+    {
+        id: "cli/single-file-both-files-given",
+        args: ["a.txt", "b.txt"],
+        cwd: SINGLE_FILE_DIR,
+    },
+    {
+        id: "cli/single-file-autofix",
+        // Only the given file is fixed, not the files it links to.
+        args: [
+            "--update-tags",
+            "__examples__/checksums_need_updating/unsymlinked/a.js",
+        ],
+        scratchExample: "checksums_need_updating",
     },
 ];
