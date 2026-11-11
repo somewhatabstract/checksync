@@ -5,9 +5,8 @@ describe("defaultOptions", () => {
         return import("../default-options");
     };
 
-    it("should set includeGlobs to all files under the current working directory", async () => {
+    it("should set includeGlobs to everything below the working directory", async () => {
         // Arrange
-        jest.spyOn(process, "cwd").mockReturnValue("/");
 
         // Act
         const {
@@ -15,12 +14,11 @@ describe("defaultOptions", () => {
         } = await importDefaultOptions();
 
         // Assert
-        expect(result).toEqual(["/**"]);
+        expect(result).toEqual(["**"]);
     });
 
     it("should provide expected defaults", async () => {
         // Arrange
-        jest.spyOn(process, "cwd").mockReturnValue("/");
 
         // Act
         const {default: result} = await importDefaultOptions();
@@ -43,7 +41,7 @@ describe("defaultOptions", () => {
     ".gitignore",
   ],
   "includeGlobs": [
-    "/**",
+    "**",
   ],
   "json": false,
 }

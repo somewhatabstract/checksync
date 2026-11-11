@@ -25,6 +25,13 @@ const DISCOVERY_DIR = "__conformance__/fixtures/config-discovery";
 const MERGING_DIR = "__conformance__/fixtures/config-merging";
 
 /**
+ * The fixture folder, relative to the repository root, for running with no
+ * paths from below the folder that holds the configuration file.
+ */
+const NO_PATHS_BELOW_CONFIG_DIR =
+    "__conformance__/fixtures/no-paths-below-config";
+
+/**
  * The fixture folder, relative to the repository root, for checking single
  * files that link to each other.
  *
@@ -76,6 +83,35 @@ export const CLI_CASES: ReadonlyArray<ConformanceCase> = [
         cwd: "__conformance__/fixtures/multiple-roots",
         // The error is followed by a stack trace.
         stderrFirstLineOnly: true,
+    },
+    {
+        id: "cli/no-paths",
+        // With no paths, every file below the working directory is checked.
+        // The fixture has its own configuration, without include globs, so
+        // the repository's isn't found and the default applies.
+        args: [],
+        cwd: "__conformance__/fixtures/no-paths",
+    },
+    {
+        id: "cli/no-paths-below-config",
+        // The configuration is found in the folder above, which becomes the
+        // working directory, but only files below the starting folder are
+        // checked. The broken file beside the configuration shows if it isn't.
+        args: [],
+        cwd: `${NO_PATHS_BELOW_CONFIG_DIR}/sub`,
+    },
+    {
+        id: "cli/no-paths-config-elsewhere",
+        // The configuration is in a folder beside the starting folder, so
+        // everything below the configuration's folder is checked instead,
+        // which the broken file there shows. The configuration's exclude
+        // globs still apply, so the broken file they exclude isn't reported.
+        args: ["--config", "../../no-paths-below-config/.checksyncrc.json"],
+        cwd: "__conformance__/fixtures/no-paths/sub",
+    },
+    {
+        id: "cli/no-paths-cwd-option",
+        args: ["--cwd", `${NO_PATHS_BELOW_CONFIG_DIR}/sub`],
     },
     {id: "cli/no-matching-files", args: ["__examples__/does_not_exist/**"]},
     {
