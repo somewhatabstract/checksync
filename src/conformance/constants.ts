@@ -74,6 +74,17 @@ export const CLI_CASES: ReadonlyArray<ConformanceCase> = [
         cacheFile: ".conformance-output/conflicting-options.cache.json",
     },
     {
+        id: "cli/multiple-roots",
+        // Each folder has its own root marker, and both hold files at the same
+        // paths from their root. The first folder's files have mismatched
+        // checksums, so the second folder's are seen as the same files and the
+        // run stops.
+        args: ["one", "two"],
+        cwd: "__conformance__/fixtures/multiple-roots",
+        // The error is followed by a stack trace.
+        stderrFirstLineOnly: true,
+    },
+    {
         id: "cli/no-paths",
         // With no paths, every file below the working directory is checked.
         // The fixture has its own configuration, without include globs, so

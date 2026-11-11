@@ -9,6 +9,7 @@ import * as FileReferenceLogger from "../file-reference-logger";
 import * as FixFile from "../fix-file";
 import * as GetLaunchString from "../get-launch-string";
 import * as RootRelativePath from "../root-relative-path";
+import * as CwdRelativePath from "../cwd-relative-path";
 
 import {ErrorDetails} from "../types";
 
@@ -90,6 +91,69 @@ describe("OutputSink", () => {
             // Assert
             expect(underTest).toThrowErrorMatchingInlineSnapshot(
                 `"File has already been drained to the output sink"`,
+            );
+        });
+
+        it("should throw an error naming both files if another file under a different root has the same root-relative path", async () => {
+            // Arrange
+            const NullLogger = new Logger();
+            const outputSink = new OutputSink(defaultOptions, NullLogger);
+            jest.spyOn(RootRelativePath, "default").mockReturnValue("src/a.js");
+            // Keep the paths as given, so the message is the same on every
+            // platform.
+            jest.spyOn(CwdRelativePath, "default").mockImplementation(
+                (file: string) => file,
+            );
+            jest.spyOn(FileReferenceLogger, "default").mockImplementation(
+                (file: string) => ({file}) as any,
+            );
+            outputSink.startFile("one/src/a.js");
+            outputSink.processError({
+                markerID: "MARKER_ID",
+                reason: "REASON",
+                code: ErrorCode.couldNotParse,
+            });
+            await outputSink.endFile();
+
+            // Act
+            const underTest = () => outputSink.startFile("two/src/a.js");
+
+            // Assert
+            expect(underTest).toThrowErrorMatchingInlineSnapshot(
+                `"Cannot check two/src/a.js and one/src/a.js in the same run: they are under different root folders (the closest folders above them containing package.json). Check them separately, or set --root-marker (or rootMarker in your configuration) to a file that only a folder above both of them contains."`,
+            );
+        });
+
+        it("should name the configured root marker in the error", async () => {
+            // Arrange
+            const NullLogger = new Logger();
+            const outputSink = new OutputSink(
+                {...defaultOptions, rootMarker: ".marker"},
+                NullLogger,
+            );
+            jest.spyOn(RootRelativePath, "default").mockReturnValue("src/a.js");
+            // Keep the paths as given, so the message is the same on every
+            // platform.
+            jest.spyOn(CwdRelativePath, "default").mockImplementation(
+                (file: string) => file,
+            );
+            jest.spyOn(FileReferenceLogger, "default").mockImplementation(
+                (file: string) => ({file}) as any,
+            );
+            outputSink.startFile("one/src/a.js");
+            outputSink.processError({
+                markerID: "MARKER_ID",
+                reason: "REASON",
+                code: ErrorCode.couldNotParse,
+            });
+            await outputSink.endFile();
+
+            // Act
+            const underTest = () => outputSink.startFile("two/src/a.js");
+
+            // Assert
+            expect(underTest).toThrowErrorMatchingInlineSnapshot(
+                `"Cannot check two/src/a.js and one/src/a.js in the same run: they are under different root folders (the closest folders above them containing .marker). Check them separately, or set --root-marker (or rootMarker in your configuration) to a file that only a folder above both of them contains."`,
             );
         });
     });
