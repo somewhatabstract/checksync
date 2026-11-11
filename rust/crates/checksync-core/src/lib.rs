@@ -3,11 +3,14 @@
 //! This crate is pure: it performs no network access and writes nothing to
 //! stdout or stderr. Presentation and process concerns belong to the CLI.
 
+mod byte_at;
 mod calc_checksum;
 mod closesdir;
 mod cwd_relative_path;
 mod decode_utf8;
 pub mod errors;
+mod find_slash;
+mod fold_byte;
 mod get_normalized_path_info;
 mod gitignore_pattern_matches;
 mod ignore_file;
@@ -17,6 +20,8 @@ mod js_object_keys;
 mod js_trim;
 mod marker_parser;
 mod match_bracket_class;
+mod match_star;
+mod match_wild_from;
 mod matches_posix_class;
 mod node_normalize;
 mod node_relative;
@@ -24,9 +29,12 @@ mod normalize_separators;
 mod os_separators;
 mod parse_gitignore_pattern;
 mod read_gitignore_patterns;
+mod read_star_run;
 mod root_relative_path;
+mod skip_to_literal;
 mod split_lines;
 mod trim_gitignore_trailing_spaces;
+mod try_star_start_points;
 mod types;
 mod wildmatch;
 

@@ -421,3 +421,59 @@ pub(crate) struct GitignorePattern {
     /// `*.log`.
     pub ends_with: bool,
 }
+
+/// How an attempt to match part of a glob pattern ended, as in git's
+/// `dowild`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) enum WildmatchOutcome {
+    /// The rest of the text matches the rest of the pattern.
+    Match,
+    /// It doesn't match, but a `*` before it may match from a later point.
+    NoMatch,
+    /// No later starting point can match either, so stop trying.
+    Abort,
+    /// A `*` reached a `/` it can't cross, so only an enclosing `**` can
+    /// try a later starting point.
+    AbortToDoubleStar,
+}
+
+/// A glob pattern and the text it's matched against, with the options that
+/// apply.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) struct WildmatchInput<'a> {
+    /// The glob pattern.
+    pub pattern: &'a [u8],
+    /// The text to match.
+    pub text: &'a [u8],
+    /// Whether `/` separates folders.
+    pub pathname: bool,
+    /// Whether to ignore case, for ASCII letters only.
+    pub casefold: bool,
+}
+
+/// How a run of `*` in a glob pattern matches.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) struct StarRun {
+    /// The index of the first pattern byte after the run.
+    pub next: usize,
+    /// Whether the run can match across a `/`.
+    pub match_slash: bool,
+    /// Whether the run is a `**` that makes up a whole folder name, such as
+    /// in `a/**/b`, so `**/` may also match nothing.
+    pub whole_folder: bool,
+}
+
+/// What to do after matching a run of `*` in a glob pattern.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) enum StarStep {
+    /// The match attempt is over, with this outcome.
+    Done(WildmatchOutcome),
+    /// The run matched the rest of a folder name; carry on matching the `/`
+    /// at these positions.
+    Continue {
+        /// The index of the `/` in the pattern.
+        pattern_index: usize,
+        /// The index of the `/` in the text.
+        text_index: usize,
+    },
+}
