@@ -28,31 +28,19 @@ pub(crate) fn read_star_run(
     start: usize,
     pathname: bool,
 ) -> StarRun {
-    if byte_at(pattern, after_star) != b'*' {
-        return StarRun {
-            next: after_star,
-            match_slash: !pathname,
-            whole_folder: false,
-        };
-    }
     let mut next = after_star;
     while byte_at(pattern, next) == b'*' {
         next += 1;
     }
-    if !pathname {
-        return StarRun {
-            next,
-            match_slash: true,
-            whole_folder: false,
-        };
-    }
+    let is_double_star = next > after_star;
     let starts_folder = after_star - start < 2 || pattern[after_star - 2] == b'/';
-    let ends_folder = matches!(byte_at(pattern, next), 0 | b'/')
-        || (byte_at(pattern, next) == b'\\' && byte_at(pattern, next + 1) == b'/');
-    let whole_folder = starts_folder && ends_folder;
+    let after_run = byte_at(pattern, next);
+    let ends_folder =
+        matches!(after_run, 0 | b'/') || (after_run == b'\\' && byte_at(pattern, next + 1) == b'/');
+    let whole_folder = pathname && is_double_star && starts_folder && ends_folder;
     StarRun {
         next,
-        match_slash: whole_folder,
+        match_slash: !pathname || whole_folder,
         whole_folder,
     }
 }

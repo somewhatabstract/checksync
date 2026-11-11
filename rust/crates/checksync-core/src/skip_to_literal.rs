@@ -6,7 +6,8 @@ use crate::types::WildmatchInput;
 ///
 /// A `*` followed by a literal byte can only stop where the text has that
 /// byte, so the text is searched for it. Unless the `*` can match `/`, the
-/// search stops at the end of the folder name.
+/// search stops at the end of the folder name, so a `/` is never found then;
+/// callers handle a `*` that can't match `/` before a `/` themselves.
 ///
 /// # Arguments
 ///

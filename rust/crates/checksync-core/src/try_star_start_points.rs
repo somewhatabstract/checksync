@@ -4,8 +4,7 @@ use crate::match_wild_from::match_wild_from;
 use crate::skip_to_literal::skip_to_literal;
 use crate::types::{WildmatchInput, WildmatchOutcome};
 
-/// Match the rest of a pattern after a `*`, trying each place the `*` could
-/// stop.
+/// Try each place a `*` could stop, matching the rest of the pattern after it.
 ///
 /// Starting where the `*` began in the text, this tries the rest of the
 /// pattern at each later point until one matches or no later point can.
@@ -31,11 +30,13 @@ pub(crate) fn try_star_start_points(
     text_index: usize,
     match_slash: bool,
 ) -> WildmatchOutcome {
+    let next = byte_at(input.pattern, pattern_index);
+    let literal =
+        (!matches!(next, b'*' | b'?' | b'[' | b'\\')).then(|| fold_byte(next, input.casefold));
     let mut t = text_index;
     while byte_at(input.text, t) != 0 {
-        let next = byte_at(input.pattern, pattern_index);
-        if !matches!(next, b'*' | b'?' | b'[' | b'\\') {
-            match skip_to_literal(input, t, fold_byte(next, input.casefold), match_slash) {
+        if let Some(wanted) = literal {
+            match skip_to_literal(input, t, wanted, match_slash) {
                 Some(found) => t = found,
                 None if match_slash => return WildmatchOutcome::Abort,
                 None => return WildmatchOutcome::AbortToDoubleStar,

@@ -422,8 +422,7 @@ pub(crate) struct GitignorePattern {
     pub ends_with: bool,
 }
 
-/// How an attempt to match part of a glob pattern ended, as in git's
-/// `dowild`.
+/// How an attempt to match part of a glob pattern ended, as in git's `dowild`.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub(crate) enum WildmatchOutcome {
     /// The rest of the text matches the rest of the pattern.
@@ -437,8 +436,7 @@ pub(crate) enum WildmatchOutcome {
     AbortToDoubleStar,
 }
 
-/// A glob pattern and the text it's matched against, with the options that
-/// apply.
+/// A glob pattern, the text to match it against, and the matching options.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub(crate) struct WildmatchInput<'a> {
     /// The glob pattern.

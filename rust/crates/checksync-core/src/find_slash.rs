@@ -3,15 +3,15 @@
 /// # Arguments
 ///
 /// * `text` - The text to search.
-/// * `index` - Where to start searching; at most the length of `text`.
+/// * `index` - Where to start searching.
 ///
 /// # Returns
 ///
 /// The index of the first `/` at or after `index`, or `None` if a NUL or the
-/// end comes first.
+/// end comes first, or `index` is past the end.
 #[must_use]
 pub(crate) fn find_slash(text: &[u8], index: usize) -> Option<usize> {
-    text[index..]
+    text.get(index..)?
         .iter()
         .take_while(|&&byte| byte != 0)
         .position(|&byte| byte == b'/')
@@ -77,6 +77,18 @@ mod tests {
 
         // Act
         let result = find_slash(text, 2);
+
+        // Assert
+        assert_eq!(result, None);
+    }
+
+    #[test]
+    fn finds_nothing_past_the_end() {
+        // Arrange
+        let text = b"a/";
+
+        // Act
+        let result = find_slash(text, 3);
 
         // Assert
         assert_eq!(result, None);
