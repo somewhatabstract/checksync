@@ -119,9 +119,7 @@ describe("OutputSink", () => {
             const underTest = () => outputSink.startFile("two/src/a.js");
 
             // Assert
-            expect(underTest).toThrowErrorMatchingInlineSnapshot(
-                `"two/src/a.js and one/src/a.js have the same path from their roots, so checksync can't report on both in one run. Files checked together should share one root: the closest folder above them that contains the root marker (package.json). Check them in separate runs, or choose a root marker that only the shared root contains, with --root-marker or the rootMarker option in your configuration."`,
-            );
+            expect(underTest).toThrowErrorMatchingInlineSnapshot(`"Cannot check two/src/a.js and one/src/a.js in the same run: they are under different root folders (the closest folders above them containing package.json). Check them separately, or set --root-marker (or rootMarker in your configuration) to a file that only a folder above both of them contains."`);
         });
 
         it("should name the configured root marker in the error", async () => {
@@ -152,9 +150,7 @@ describe("OutputSink", () => {
             const underTest = () => outputSink.startFile("two/src/a.js");
 
             // Assert
-            expect(underTest).toThrowErrorMatchingInlineSnapshot(
-                `"two/src/a.js and one/src/a.js have the same path from their roots, so checksync can't report on both in one run. Files checked together should share one root: the closest folder above them that contains the root marker (.marker). Check them in separate runs, or choose a root marker that only the shared root contains, with --root-marker or the rootMarker option in your configuration."`,
-            );
+            expect(underTest).toThrowErrorMatchingInlineSnapshot(`"Cannot check two/src/a.js and one/src/a.js in the same run: they are under different root folders (the closest folders above them containing .marker). Check them separately, or set --root-marker (or rootMarker in your configuration) to a file that only a folder above both of them contains."`);
         });
     });
 

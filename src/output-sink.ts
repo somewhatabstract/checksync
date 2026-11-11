@@ -65,7 +65,7 @@ export default class OutputSink {
             const otherFile = this._fileForKey.get(key);
             if (otherFile != null && otherFile !== file) {
                 throw new Error(
-                    `${cwdRelativePath(file)} and ${cwdRelativePath(otherFile)} have the same path from their roots, so checksync can't report on both in one run. Files checked together should share one root: the closest folder above them that contains the root marker (${this._options.rootMarker ?? "package.json"}). Check them in separate runs, or choose a root marker that only the shared root contains, with --root-marker or the rootMarker option in your configuration.`,
+                    `Cannot check ${cwdRelativePath(file)} and ${cwdRelativePath(otherFile)} in the same run: they are under different root folders (the closest folders above them containing ${this._options.rootMarker ?? "package.json"}). Check them separately, or set --root-marker (or rootMarker in your configuration) to a file that only a folder above both of them contains.`,
                 );
             }
             throw new Error("File has already been drained to the output sink");
