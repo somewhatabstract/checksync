@@ -1,0 +1,11 @@
+args: ["--config","../../no-paths-below-config/.checksyncrc.json"]
+cwd: __conformance__/fixtures/no-paths/sub
+exit code: 2
+--- stdout ---
+
+🛑  Unfixable errors found. Fix the errors in these files and try again.
+  outside.txt
+--- stderr ---
+Error    outside.txt:1
+Sync-end for 'outside' found, but there was no corresponding sync-start
+
