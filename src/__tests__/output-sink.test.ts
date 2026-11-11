@@ -119,7 +119,9 @@ describe("OutputSink", () => {
             const underTest = () => outputSink.startFile("two/src/a.js");
 
             // Assert
-            expect(underTest).toThrowErrorMatchingInlineSnapshot(`"Cannot check two/src/a.js and one/src/a.js in the same run: they are under different root folders (the closest folders above them containing package.json). Check them separately, or set --root-marker (or rootMarker in your configuration) to a file that only a folder above both of them contains."`);
+            expect(underTest).toThrowErrorMatchingInlineSnapshot(
+                `"Cannot check two/src/a.js and one/src/a.js in the same run: they are under different root folders (the closest folders above them containing package.json). Check them separately, or set --root-marker (or rootMarker in your configuration) to a file that only a folder above both of them contains."`,
+            );
         });
 
         it("should name the configured root marker in the error", async () => {
@@ -150,7 +152,9 @@ describe("OutputSink", () => {
             const underTest = () => outputSink.startFile("two/src/a.js");
 
             // Assert
-            expect(underTest).toThrowErrorMatchingInlineSnapshot(`"Cannot check two/src/a.js and one/src/a.js in the same run: they are under different root folders (the closest folders above them containing .marker). Check them separately, or set --root-marker (or rootMarker in your configuration) to a file that only a folder above both of them contains."`);
+            expect(underTest).toThrowErrorMatchingInlineSnapshot(
+                `"Cannot check two/src/a.js and one/src/a.js in the same run: they are under different root folders (the closest folders above them containing .marker). Check them separately, or set --root-marker (or rootMarker in your configuration) to a file that only a folder above both of them contains."`,
+            );
         });
     });
 
