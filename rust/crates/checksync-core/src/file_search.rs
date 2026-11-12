@@ -30,26 +30,27 @@ mod strip_leading_dot_slash;
 mod types;
 mod walk_glob_folder;
 
-use crate::glob::GlobOptions;
+use crate::glob::{GlobOptions, HiddenNames};
 
 pub use get_files::get_files;
 pub use types::GetFilesError;
 
 /// How include patterns match paths: by folder, case-sensitively, by whole
-/// characters, and without wildcards matching names that start with `.`, as
-/// fast-glob does by default.
+/// characters, and without wildcards matching names that start with `.`, or
+/// running over `.` or `..`, as fast-glob does by default.
 const INCLUDE_GLOB_OPTIONS: GlobOptions = GlobOptions {
     pathname: true,
     casefold: false,
-    dot: false,
+    hidden: HiddenNames::SkipDotNames,
     unicode: true,
 };
 
 /// How exclude patterns match paths: as include patterns do, except that
-/// wildcards match names that start with `.` too, as fast-glob's do.
+/// wildcards match names that start with `.` too, as fast-glob's do. They
+/// still don't run over `.` or `..`.
 const EXCLUDE_GLOB_OPTIONS: GlobOptions = GlobOptions {
     pathname: true,
     casefold: false,
-    dot: true,
+    hidden: HiddenNames::SkipDotSegments,
     unicode: true,
 };

@@ -767,6 +767,20 @@
                 ],
                 "reason": "`?` is a wildcard wherever it is. fast-glob treats it literally in a folder name before the last, so `?rc/*.js` finds nothing there."
             }
+        },
+        {
+            "description": "A wildcard exclude doesn't match a .. folder",
+            "cwd": "src",
+            "include": [
+                "../src/*.js"
+            ],
+            "exclude": [
+                "**/one.js"
+            ],
+            "ignoreFiles": [],
+            "expected": [
+                "src/one.js"
+            ]
         }
     ],
     "symlinks": {

@@ -58,10 +58,6 @@ pub(crate) enum HiddenNames {
     /// As in fast-glob with `dot: true`, a `*` or `**` can't run over any
     /// part of a name that is exactly `.` or `..`, or start at one. `?` and
     /// bracket sets still match a `.`.
-    #[cfg_attr(
-        not(test),
-        expect(dead_code, reason = "the file finder chooses this for its excludes")
-    )]
     SkipDotSegments,
     /// Wildcards match no name starting with `.`, as in fast-glob's default.
     ///
