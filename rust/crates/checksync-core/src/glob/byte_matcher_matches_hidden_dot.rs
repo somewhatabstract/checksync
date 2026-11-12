@@ -1,7 +1,8 @@
 use super::types::ByteMatcher;
 
-/// Check whether a single-byte token may match a `.` that starts a name
-/// when hidden names are protected.
+/// Check whether a single-byte token may match a hidden name's leading `.`.
+///
+/// This applies when hidden names are protected.
 ///
 /// A literal or escaped byte and a bracket set that isn't negated may, so
 /// they match it if they match a `.` at all; `?` and negated sets may not.

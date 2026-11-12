@@ -32,20 +32,10 @@ pub(super) fn byte_matcher_matches(matcher: &ByteMatcher, byte: u8, options: Glo
 
 #[cfg(test)]
 mod tests {
+    use super::super::TEST_OPTIONS;
+    use super::super::TEST_PATHNAME_OPTIONS;
     use super::super::types::{BracketItem, BracketSet, ByteMatcher, GlobOptions};
     use super::byte_matcher_matches;
-
-    const PLAIN: GlobOptions = GlobOptions {
-        pathname: false,
-        casefold: false,
-        dot: true,
-    };
-
-    const PATHNAME: GlobOptions = GlobOptions {
-        pathname: true,
-        casefold: false,
-        dot: true,
-    };
 
     const CASEFOLD: GlobOptions = GlobOptions {
         pathname: false,
@@ -66,7 +56,7 @@ mod tests {
         let matcher = ByteMatcher::Literal(b'a');
 
         // Act
-        let result = byte_matcher_matches(&matcher, b'a', PLAIN);
+        let result = byte_matcher_matches(&matcher, b'a', TEST_OPTIONS);
 
         // Assert
         assert!(result);
@@ -78,7 +68,7 @@ mod tests {
         let matcher = ByteMatcher::Literal(b'a');
 
         // Act
-        let result = byte_matcher_matches(&matcher, b'A', PLAIN);
+        let result = byte_matcher_matches(&matcher, b'A', TEST_OPTIONS);
 
         // Assert
         assert!(!result);
@@ -102,7 +92,7 @@ mod tests {
         let matcher = ByteMatcher::Escaped(b'A');
 
         // Act
-        let result = byte_matcher_matches(&matcher, b'A', PLAIN);
+        let result = byte_matcher_matches(&matcher, b'A', TEST_OPTIONS);
 
         // Assert
         assert!(result);
@@ -138,7 +128,7 @@ mod tests {
         let matcher = ByteMatcher::Literal(b'/');
 
         // Act
-        let result = byte_matcher_matches(&matcher, b'/', PATHNAME);
+        let result = byte_matcher_matches(&matcher, b'/', TEST_PATHNAME_OPTIONS);
 
         // Assert
         assert!(result);
@@ -150,7 +140,7 @@ mod tests {
         let matcher = ByteMatcher::Any;
 
         // Act
-        let result = byte_matcher_matches(&matcher, b'/', PLAIN);
+        let result = byte_matcher_matches(&matcher, b'/', TEST_OPTIONS);
 
         // Assert
         assert!(result);
@@ -162,7 +152,7 @@ mod tests {
         let matcher = ByteMatcher::Any;
 
         // Act
-        let result = byte_matcher_matches(&matcher, b'/', PATHNAME);
+        let result = byte_matcher_matches(&matcher, b'/', TEST_PATHNAME_OPTIONS);
 
         // Assert
         assert!(!result);
@@ -174,7 +164,7 @@ mod tests {
         let matcher = slash_set();
 
         // Act
-        let result = byte_matcher_matches(&matcher, b'/', PLAIN);
+        let result = byte_matcher_matches(&matcher, b'/', TEST_OPTIONS);
 
         // Assert
         assert!(result);
@@ -186,7 +176,7 @@ mod tests {
         let matcher = slash_set();
 
         // Act
-        let result = byte_matcher_matches(&matcher, b'/', PATHNAME);
+        let result = byte_matcher_matches(&matcher, b'/', TEST_PATHNAME_OPTIONS);
 
         // Assert
         assert!(!result);

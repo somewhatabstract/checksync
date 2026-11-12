@@ -48,14 +48,9 @@ pub(super) fn advance_one_byte(
 
 #[cfg(test)]
 mod tests {
-    use super::super::types::{ByteMatcher, GlobOptions};
+    use super::super::TEST_OPTIONS;
+    use super::super::types::ByteMatcher;
     use super::advance_one_byte;
-
-    const OPTIONS: GlobOptions = GlobOptions {
-        pathname: true,
-        casefold: false,
-        dot: true,
-    };
 
     #[test]
     fn moves_one_byte_past_each_reachable_matching_position() {
@@ -67,7 +62,7 @@ mod tests {
             &ByteMatcher::Literal(b'a'),
             b"aaa",
             &mut positions,
-            OPTIONS,
+            TEST_OPTIONS,
             false,
         );
 
@@ -85,7 +80,7 @@ mod tests {
             &ByteMatcher::Literal(b'a'),
             b"b",
             &mut positions,
-            OPTIONS,
+            TEST_OPTIONS,
             false,
         );
 
@@ -99,7 +94,13 @@ mod tests {
         let mut positions = [false, false, true, false];
 
         // Act
-        let _ = advance_one_byte(&ByteMatcher::Any, b"a/.", &mut positions, OPTIONS, true);
+        let _ = advance_one_byte(
+            &ByteMatcher::Any,
+            b"a/.",
+            &mut positions,
+            TEST_OPTIONS,
+            true,
+        );
 
         // Assert
         assert_eq!(positions, [false, false, false, false]);
@@ -115,7 +116,7 @@ mod tests {
             &ByteMatcher::Literal(b'.'),
             b".",
             &mut positions,
-            OPTIONS,
+            TEST_OPTIONS,
             true,
         );
 
@@ -129,7 +130,7 @@ mod tests {
         let mut positions = [true, false];
 
         // Act
-        let _ = advance_one_byte(&ByteMatcher::Any, b".", &mut positions, OPTIONS, false);
+        let _ = advance_one_byte(&ByteMatcher::Any, b".", &mut positions, TEST_OPTIONS, false);
 
         // Assert
         assert_eq!(positions, [false, true]);
@@ -145,7 +146,7 @@ mod tests {
             &ByteMatcher::Literal(b'a'),
             b"a",
             &mut positions,
-            OPTIONS,
+            TEST_OPTIONS,
             false,
         );
 
@@ -163,7 +164,7 @@ mod tests {
             &ByteMatcher::Literal(b'a'),
             b"b",
             &mut positions,
-            OPTIONS,
+            TEST_OPTIONS,
             false,
         );
 

@@ -40,3 +40,23 @@ mod types;
 pub(crate) use compile_glob::compile_glob;
 pub(crate) use compiled_glob_matches::compiled_glob_matches;
 pub(crate) use types::{CompiledGlob, GlobOptions};
+
+/// The options for tests whose results don't depend on them.
+///
+/// There's no pathname mode or case folding, and hidden names are matched.
+#[cfg(test)]
+const TEST_OPTIONS: GlobOptions = GlobOptions {
+    pathname: false,
+    casefold: false,
+    dot: true,
+};
+
+/// The options for tests in pathname mode.
+///
+/// There's no case folding, and hidden names are matched.
+#[cfg(test)]
+const TEST_PATHNAME_OPTIONS: GlobOptions = GlobOptions {
+    pathname: true,
+    casefold: false,
+    dot: true,
+};

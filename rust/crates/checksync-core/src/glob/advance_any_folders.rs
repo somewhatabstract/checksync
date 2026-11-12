@@ -1,7 +1,6 @@
 use super::starts_hidden_name::starts_hidden_name;
 
-/// Move the reachable text positions past a `**/` that matches whole
-/// folders, in place.
+/// Move the reachable text positions past a whole-folder `**/`, in place.
 ///
 /// Every reachable position stays reachable, where the `**/` matches no
 /// folders, and so does every later position just past a `/`. When

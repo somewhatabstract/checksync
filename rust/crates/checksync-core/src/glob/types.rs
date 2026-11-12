@@ -17,8 +17,7 @@ pub(crate) struct GlobOptions {
     /// nothing, though ranges and classes such as `[A-Z]` and `[:upper:]`
     /// still match lowercase letters.
     pub casefold: bool,
-    /// Whether wildcards may match a `.` that starts a name, in pathname
-    /// mode.
+    /// Whether wildcards may match a `.` that starts a name.
     ///
     /// When off, as in fast-glob, a name starting with `.` can only be
     /// matched by a pattern name starting with a literal `.` or a bracket set
@@ -35,8 +34,9 @@ pub(crate) struct CompiledGlob {
     pub(super) tokens: Vec<GlobToken>,
     /// How the pattern treats slashes, letter case and hidden names.
     pub(super) options: GlobOptions,
-    /// Whether wildcards stay off a `.` that starts a name, worked out once
-    /// from `options`: in pathname mode without `dot`.
+    /// Whether wildcards stay off a `.` that starts a name.
+    ///
+    /// Worked out once from `options`: in pathname mode without `dot`.
     pub(super) hides_dots: bool,
 }
 
@@ -50,8 +50,9 @@ pub(super) enum GlobToken {
         /// Whether the run may include `/`.
         crosses_slash: bool,
     },
-    /// Any number of whole folders, including none: either nothing, or any
-    /// run of bytes that ends with `/`.
+    /// Any number of whole folders, including none.
+    ///
+    /// That's either nothing, or any run of bytes that ends with `/`.
     AnyFolders,
 }
 

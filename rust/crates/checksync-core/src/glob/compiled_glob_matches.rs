@@ -35,6 +35,8 @@ pub(crate) fn compiled_glob_matches(glob: &CompiledGlob, text: &[u8]) -> bool {
 
 #[cfg(test)]
 mod tests {
+    use super::super::TEST_OPTIONS;
+    use super::super::TEST_PATHNAME_OPTIONS;
     use serde::Deserialize;
 
     use super::super::compile_glob::compile_glob;
@@ -55,8 +57,7 @@ mod tests {
         cases: Vec<Case>,
     }
 
-    /// One pattern and text, the options to match them with, and git's
-    /// answer.
+    /// One pattern and text, its options, and git's answer.
     #[derive(Deserialize)]
     struct Case {
         pattern: String,
@@ -66,8 +67,9 @@ mod tests {
         matches: bool,
     }
 
-    /// Glob cases recorded from git's own matcher, which checksync's
-    /// TypeScript doesn't use.
+    /// Glob cases recorded from git's own matcher.
+    ///
+    /// checksync's TypeScript doesn't use this matcher.
     const VECTORS: &str = include_str!(concat!(
         env!("CARGO_MANIFEST_DIR"),
         "/../../../__conformance__/glob-vectors.json"
@@ -120,18 +122,6 @@ mod tests {
         compiled_glob_matches(&compile_glob(pattern, options).unwrap(), text)
     }
 
-    const PLAIN: GlobOptions = GlobOptions {
-        pathname: false,
-        casefold: false,
-        dot: true,
-    };
-
-    const PATHNAME: GlobOptions = GlobOptions {
-        pathname: true,
-        casefold: false,
-        dot: true,
-    };
-
     const HIDING_DOTS: GlobOptions = GlobOptions {
         pathname: true,
         casefold: false,
@@ -150,7 +140,7 @@ mod tests {
         let pattern = b"abc";
 
         // Act
-        let result = matches(pattern, b"abc", PLAIN);
+        let result = matches(pattern, b"abc", TEST_OPTIONS);
 
         // Assert
         assert!(result);
@@ -162,7 +152,7 @@ mod tests {
         let pattern = b"ab";
 
         // Act
-        let result = matches(pattern, b"abc", PLAIN);
+        let result = matches(pattern, b"abc", TEST_OPTIONS);
 
         // Assert
         assert!(!result);
@@ -174,7 +164,7 @@ mod tests {
         let pattern = b"";
 
         // Act
-        let result = matches(pattern, b"", PLAIN);
+        let result = matches(pattern, b"", TEST_OPTIONS);
 
         // Assert
         assert!(result);
@@ -186,7 +176,7 @@ mod tests {
         let pattern = b"a?c";
 
         // Act
-        let result = matches(pattern, b"a/c", PLAIN);
+        let result = matches(pattern, b"a/c", TEST_OPTIONS);
 
         // Assert
         assert!(result);
@@ -198,7 +188,7 @@ mod tests {
         let pattern = b"a*c";
 
         // Act
-        let result = matches(pattern, b"ab/bc", PLAIN);
+        let result = matches(pattern, b"ab/bc", TEST_OPTIONS);
 
         // Assert
         assert!(result);
@@ -210,7 +200,7 @@ mod tests {
         let pattern = b"a*";
 
         // Act
-        let result = matches(pattern, b"a", PLAIN);
+        let result = matches(pattern, b"a", TEST_OPTIONS);
 
         // Assert
         assert!(result);
@@ -222,7 +212,7 @@ mod tests {
         let pattern = b"[[:digit:]x-z]";
 
         // Act
-        let result = matches(pattern, b"y", PLAIN);
+        let result = matches(pattern, b"y", TEST_OPTIONS);
 
         // Assert
         assert!(result);
@@ -234,7 +224,7 @@ mod tests {
         let pattern = b"a\\*";
 
         // Act
-        let result = matches(pattern, b"ab", PLAIN);
+        let result = matches(pattern, b"ab", TEST_OPTIONS);
 
         // Assert
         assert!(!result);
@@ -246,7 +236,7 @@ mod tests {
         let pattern = b"ab";
 
         // Act
-        let result = matches(pattern, b"ab\0c", PLAIN);
+        let result = matches(pattern, b"ab\0c", TEST_OPTIONS);
 
         // Assert
         assert!(result);
@@ -258,7 +248,7 @@ mod tests {
         let pattern = b"a*c";
 
         // Act
-        let result = matches(pattern, b"ab/c", PATHNAME);
+        let result = matches(pattern, b"ab/c", TEST_PATHNAME_OPTIONS);
 
         // Assert
         assert!(!result);
@@ -270,7 +260,7 @@ mod tests {
         let pattern = b"**/x";
 
         // Act
-        let result = matches(pattern, b"x", PATHNAME);
+        let result = matches(pattern, b"x", TEST_PATHNAME_OPTIONS);
 
         // Assert
         assert!(result);
@@ -282,7 +272,7 @@ mod tests {
         let pattern = b"**/x";
 
         // Act
-        let result = matches(pattern, b"a/b/x", PATHNAME);
+        let result = matches(pattern, b"a/b/x", TEST_PATHNAME_OPTIONS);
 
         // Assert
         assert!(result);
@@ -294,7 +284,7 @@ mod tests {
         let pattern = b"a/**/b";
 
         // Act
-        let result = matches(pattern, b"a/b", PATHNAME);
+        let result = matches(pattern, b"a/b", TEST_PATHNAME_OPTIONS);
 
         // Assert
         assert!(result);
@@ -306,7 +296,7 @@ mod tests {
         let pattern = b"a/**/b";
 
         // Act
-        let result = matches(pattern, b"a/x/y/b", PATHNAME);
+        let result = matches(pattern, b"a/x/y/b", TEST_PATHNAME_OPTIONS);
 
         // Assert
         assert!(result);
@@ -318,7 +308,7 @@ mod tests {
         let pattern = b"a/**";
 
         // Act
-        let result = matches(pattern, b"a/b/c", PATHNAME);
+        let result = matches(pattern, b"a/b/c", TEST_PATHNAME_OPTIONS);
 
         // Assert
         assert!(result);
@@ -330,7 +320,7 @@ mod tests {
         let pattern = b"a/**";
 
         // Act
-        let result = matches(pattern, b"a", PATHNAME);
+        let result = matches(pattern, b"a", TEST_PATHNAME_OPTIONS);
 
         // Assert
         assert!(!result);
@@ -342,7 +332,7 @@ mod tests {
         let pattern = b"a**";
 
         // Act
-        let result = matches(pattern, b"a/b", PATHNAME);
+        let result = matches(pattern, b"a/b", TEST_PATHNAME_OPTIONS);
 
         // Assert
         assert!(!result);
@@ -354,7 +344,7 @@ mod tests {
         let pattern = b"a/**/b";
 
         // Act
-        let result = matches(pattern, b"a/b", PLAIN);
+        let result = matches(pattern, b"a/b", TEST_OPTIONS);
 
         // Assert
         assert!(!result);
@@ -402,7 +392,7 @@ mod tests {
         let pattern = b"abc";
 
         // Act
-        let result = matches(pattern, b"ABC", PLAIN);
+        let result = matches(pattern, b"ABC", TEST_OPTIONS);
 
         // Assert
         assert!(!result);

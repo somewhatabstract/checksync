@@ -40,20 +40,10 @@ pub(super) fn tokenize_glob(pattern: &[u8], options: GlobOptions) -> Option<Vec<
 
 #[cfg(test)]
 mod tests {
-    use super::super::types::{BracketItem, BracketSet, ByteMatcher, GlobOptions, GlobToken};
+    use super::super::TEST_OPTIONS;
+    use super::super::TEST_PATHNAME_OPTIONS;
+    use super::super::types::{BracketItem, BracketSet, ByteMatcher, GlobToken};
     use super::tokenize_glob;
-
-    const PLAIN: GlobOptions = GlobOptions {
-        pathname: false,
-        casefold: false,
-        dot: true,
-    };
-
-    const PATHNAME: GlobOptions = GlobOptions {
-        pathname: true,
-        casefold: false,
-        dot: true,
-    };
 
     #[test]
     fn reads_literal_bytes() {
@@ -61,7 +51,7 @@ mod tests {
         let pattern = b"ab";
 
         // Act
-        let result = tokenize_glob(pattern, PLAIN);
+        let result = tokenize_glob(pattern, TEST_OPTIONS);
 
         // Assert
         assert_eq!(
@@ -79,7 +69,7 @@ mod tests {
         let pattern = b"\\?";
 
         // Act
-        let result = tokenize_glob(pattern, PLAIN);
+        let result = tokenize_glob(pattern, TEST_OPTIONS);
 
         // Assert
         assert_eq!(
@@ -94,7 +84,7 @@ mod tests {
         let pattern = b"?";
 
         // Act
-        let result = tokenize_glob(pattern, PLAIN);
+        let result = tokenize_glob(pattern, TEST_OPTIONS);
 
         // Assert
         assert_eq!(result, Some(vec![GlobToken::One(ByteMatcher::Any)]));
@@ -106,7 +96,7 @@ mod tests {
         let pattern = b"**/a";
 
         // Act
-        let result = tokenize_glob(pattern, PATHNAME);
+        let result = tokenize_glob(pattern, TEST_PATHNAME_OPTIONS);
 
         // Assert
         assert_eq!(
@@ -124,7 +114,7 @@ mod tests {
         let pattern = b"[a]";
 
         // Act
-        let result = tokenize_glob(pattern, PLAIN);
+        let result = tokenize_glob(pattern, TEST_OPTIONS);
 
         // Assert
         assert_eq!(
@@ -142,7 +132,7 @@ mod tests {
         let pattern = b"a\\";
 
         // Act
-        let result = tokenize_glob(pattern, PLAIN);
+        let result = tokenize_glob(pattern, TEST_OPTIONS);
 
         // Assert
         assert_eq!(result, None);
@@ -154,7 +144,7 @@ mod tests {
         let pattern = b"a[b";
 
         // Act
-        let result = tokenize_glob(pattern, PLAIN);
+        let result = tokenize_glob(pattern, TEST_OPTIONS);
 
         // Assert
         assert_eq!(result, None);

@@ -27,6 +27,7 @@ pub(crate) fn compile_glob(pattern: &[u8], options: GlobOptions) -> Option<Compi
 
 #[cfg(test)]
 mod tests {
+    use super::super::TEST_OPTIONS;
     use super::super::types::{ByteMatcher, CompiledGlob, GlobOptions, GlobToken};
     use super::compile_glob;
 
@@ -40,26 +41,20 @@ mod tests {
         compile_glob(b"?", options).map(|glob| glob.hides_dots)
     }
 
-    const OPTIONS: GlobOptions = GlobOptions {
-        pathname: true,
-        casefold: true,
-        dot: true,
-    };
-
     #[test]
     fn compiles_the_pattern_with_its_options() {
         // Arrange
         let pattern = b"?";
 
         // Act
-        let result = compile_glob(pattern, OPTIONS);
+        let result = compile_glob(pattern, TEST_OPTIONS);
 
         // Assert
         assert_eq!(
             result,
             Some(CompiledGlob {
                 tokens: vec![GlobToken::One(ByteMatcher::Any)],
-                options: OPTIONS,
+                options: TEST_OPTIONS,
                 hides_dots: false,
             })
         );
@@ -71,7 +66,7 @@ mod tests {
         let pattern = b"?\0[";
 
         // Act
-        let result = compile_glob(pattern, OPTIONS).map(|glob| glob.tokens);
+        let result = compile_glob(pattern, TEST_OPTIONS).map(|glob| glob.tokens);
 
         // Assert
         assert_eq!(result, Some(vec![GlobToken::One(ByteMatcher::Any)]));
@@ -83,7 +78,7 @@ mod tests {
         let pattern = b"[ab";
 
         // Act
-        let result = compile_glob(pattern, OPTIONS);
+        let result = compile_glob(pattern, TEST_OPTIONS);
 
         // Assert
         assert_eq!(result, None);
