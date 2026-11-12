@@ -84,4 +84,112 @@ mod tests {
         // Assert
         assert_eq!(result, IgnoreDecision::Unignored);
     }
+
+    #[test]
+    fn ignores_a_name_at_the_top_with_an_anchored_leading_double_star() {
+        // Arrange
+        let patterns = gitignore_parse(b"/**/b\n");
+
+        // Act
+        let result = gitignore_decide_path(&patterns, b"b");
+
+        // Assert
+        assert_eq!(result, IgnoreDecision::Ignored);
+    }
+
+    #[test]
+    fn ignores_a_name_deeper_down_with_an_anchored_leading_double_star() {
+        // Arrange
+        let patterns = gitignore_parse(b"/**/b\n");
+
+        // Act
+        let result = gitignore_decide_path(&patterns, b"x/y/b");
+
+        // Assert
+        assert_eq!(result, IgnoreDecision::Ignored);
+    }
+
+    #[test]
+    fn ignores_a_folders_contents_with_an_anchored_leading_double_star() {
+        // Arrange
+        let patterns = gitignore_parse(b"/**/b\n");
+
+        // Act
+        let result = gitignore_decide_path(&patterns, b"b/c");
+
+        // Assert
+        assert_eq!(result, IgnoreDecision::Ignored);
+    }
+
+    #[test]
+    fn needs_a_whole_name_with_an_anchored_leading_double_star() {
+        // Arrange
+        let patterns = gitignore_parse(b"/**/b\n");
+
+        // Act
+        let result = gitignore_decide_path(&patterns, b"ab");
+
+        // Assert
+        assert_eq!(result, IgnoreDecision::NoOpinion);
+    }
+
+    #[test]
+    fn matches_within_the_first_name_with_an_anchored_joined_double_star() {
+        // Arrange
+        let patterns = gitignore_parse(b"/a**/b\n");
+
+        // Act
+        let result = gitignore_decide_path(&patterns, b"ax/b");
+
+        // Assert
+        assert_eq!(result, IgnoreDecision::Ignored);
+    }
+
+    #[test]
+    fn does_not_cross_folders_with_an_anchored_joined_double_star() {
+        // Arrange
+        let patterns = gitignore_parse(b"/a**/b\n");
+
+        // Act
+        let result = gitignore_decide_path(&patterns, b"ax/y/b");
+
+        // Assert
+        assert_eq!(result, IgnoreDecision::NoOpinion);
+    }
+
+    #[test]
+    fn anchors_a_joined_double_star_to_the_folder() {
+        // Arrange
+        let patterns = gitignore_parse(b"/a**/b\n");
+
+        // Act
+        let result = gitignore_decide_path(&patterns, b"x/a/b");
+
+        // Assert
+        assert_eq!(result, IgnoreDecision::NoOpinion);
+    }
+
+    #[test]
+    fn anchors_a_pattern_whose_only_slash_is_leading() {
+        // Arrange
+        let patterns = gitignore_parse(b"/**b\n");
+
+        // Act
+        let result = gitignore_decide_path(&patterns, b"x/xb");
+
+        // Assert
+        assert_eq!(result, IgnoreDecision::NoOpinion);
+    }
+
+    #[test]
+    fn matches_a_name_at_any_depth_without_a_leading_slash() {
+        // Arrange
+        let patterns = gitignore_parse(b"**b\n");
+
+        // Act
+        let result = gitignore_decide_path(&patterns, b"x/xb");
+
+        // Assert
+        assert_eq!(result, IgnoreDecision::Ignored);
+    }
 }

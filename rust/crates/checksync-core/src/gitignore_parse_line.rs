@@ -1,3 +1,4 @@
+use crate::bytes_before_nul::bytes_before_nul;
 use crate::compile_glob::compile_glob;
 use crate::gitignore_trim_trailing_spaces::gitignore_trim_trailing_spaces;
 use crate::types::{GitignorePattern, GlobOptions};
@@ -11,8 +12,8 @@ pub(crate) const GITIGNORE_GLOB_OPTIONS: GlobOptions = GlobOptions {
 
 /// Read one line of a `.gitignore`-style file as a pattern.
 ///
-/// A NUL byte ends the line, and one `\r` before the line feed is dropped.
-/// A line starting with `#` is a comment, and trailing unescaped spaces are
+/// One `\r` directly before the line feed is dropped, and then a NUL byte
+/// ends the line, so a `\r` just before a NUL is kept. A line starting with `#` is a comment, and trailing unescaped spaces are
 /// dropped. A leading `!` negates the pattern and one trailing `/` limits it
 /// to folders. A `/` anywhere else anchors the pattern to the ignore file's
 /// folder, and a leading `/` is then dropped.
@@ -27,8 +28,7 @@ pub(crate) const GITIGNORE_GLOB_OPTIONS: GlobOptions = GlobOptions {
 /// holds one that can never match anything, which has no effect.
 #[must_use]
 pub(crate) fn gitignore_parse_line(line: &[u8]) -> Option<GitignorePattern> {
-    let line = line.split(|&byte| byte == 0).next().unwrap_or_default();
-    let line = line.strip_suffix(b"\r").unwrap_or(line);
+    let line = bytes_before_nul(line.strip_suffix(b"\r").unwrap_or(line));
     if line.first() == Some(&b'#') {
         return None;
     }
@@ -190,6 +190,30 @@ mod tests {
     }
 
     #[test]
+    fn drops_a_carriage_return_after_a_nul_byte() {
+        // Arrange
+        let line = b"a\0x\r";
+
+        // Act
+        let result = gitignore_parse_line(line);
+
+        // Assert
+        assert_eq!(result, Some(pattern(b"a", false, false, false)));
+    }
+
+    #[test]
+    fn keeps_a_carriage_return_before_a_nul_byte() {
+        // Arrange
+        let line = b"a\r\0x";
+
+        // Act
+        let result = gitignore_parse_line(line);
+
+        // Assert
+        assert_eq!(result, Some(pattern(b"a\r", false, false, false)));
+    }
+
+    #[test]
     fn negates_a_pattern_starting_with_an_exclamation_mark() {
         // Arrange
         let line = b"!a";
@@ -271,6 +295,18 @@ mod tests {
 
         // Assert
         assert_eq!(result, Some(pattern(b"build", false, false, true)));
+    }
+
+    #[test]
+    fn anchors_a_leading_slash_before_a_double_star() {
+        // Arrange
+        let line = b"/**b";
+
+        // Act
+        let result = gitignore_parse_line(line);
+
+        // Assert
+        assert_eq!(result, Some(pattern(b"**b", false, false, true)));
     }
 
     #[test]
