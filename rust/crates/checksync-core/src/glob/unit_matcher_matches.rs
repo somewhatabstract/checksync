@@ -49,13 +49,13 @@ pub(super) fn unit_matcher_matches(
 mod tests {
     use super::super::TEST_OPTIONS;
     use super::super::TEST_PATHNAME_OPTIONS;
-    use super::super::types::{BracketItem, BracketSet, GlobOptions, UnitMatcher};
+    use super::super::types::{BracketItem, BracketSet, GlobOptions, HiddenNames, UnitMatcher};
     use super::unit_matcher_matches;
 
     const CASEFOLD: GlobOptions = GlobOptions {
         pathname: false,
         casefold: true,
-        dot: true,
+        hidden: HiddenNames::MatchAll,
         unicode: false,
     };
 

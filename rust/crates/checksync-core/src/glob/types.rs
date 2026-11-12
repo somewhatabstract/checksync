@@ -4,10 +4,6 @@
 ///
 /// There's no default: callers choose every option.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[expect(
-    clippy::struct_excessive_bools,
-    reason = "each option is an independent switch callers set explicitly"
-)]
 pub(crate) struct GlobOptions {
     /// Whether `/` separates folders.
     ///
@@ -21,14 +17,10 @@ pub(crate) struct GlobOptions {
     /// nothing, though ranges and classes such as `[A-Z]` and `[:upper:]`
     /// still match lowercase letters.
     pub casefold: bool,
-    /// Whether wildcards may match a `.` that starts a name.
+    /// Which hidden names wildcards may match, in pathname mode.
     ///
-    /// When off, as in fast-glob, a name starting with `.` can only be
-    /// matched by a pattern name starting with a literal `.` or a bracket set
-    /// that isn't negated: `?`, `*`, `**` and negated sets don't match its
-    /// `.`, and a `*` can't even match nothing in front of it. Without
-    /// `pathname`, this has no effect. git's matching has it on.
-    pub dot: bool,
+    /// Without `pathname`, this has no effect: wildcards match everything.
+    pub hidden: HiddenNames,
     /// Whether `?` and bracket sets match whole UTF-8 characters.
     ///
     /// When on, as in fast-glob, `?` and a bracket set match one character
@@ -46,10 +38,39 @@ pub(crate) struct CompiledGlob {
     pub(super) tokens: Vec<GlobToken>,
     /// How the pattern treats slashes, letter case and hidden names.
     pub(super) options: GlobOptions,
-    /// Whether wildcards stay off a `.` that starts a name.
+    /// Which hidden names wildcards may match.
     ///
-    /// Worked out once from `options`: in pathname mode without `dot`.
-    pub(super) hides_dots: bool,
+    /// Worked out once from `options`: `options.hidden` in pathname mode, and
+    /// `HiddenNames::MatchAll` otherwise.
+    pub(super) hidden: HiddenNames,
+}
+
+/// Which names starting with `.` a glob's wildcards may match.
+///
+/// A literal `.` in the pattern always matches, so `.git/**` and `../*`
+/// still match names starting with `.`, whichever is chosen.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) enum HiddenNames {
+    /// Wildcards match every name, as in git.
+    MatchAll,
+    /// Wildcards match names starting with `.`, but not `.` or `..`.
+    ///
+    /// As in fast-glob with `dot: true`, a `*` or `**` can't run over any
+    /// part of a name that is exactly `.` or `..`, or start at one. `?` and
+    /// bracket sets still match a `.`.
+    #[cfg_attr(
+        not(test),
+        expect(dead_code, reason = "the file finder chooses this for its excludes")
+    )]
+    SkipDotSegments,
+    /// Wildcards match no name starting with `.`, as in fast-glob's default.
+    ///
+    /// A name starting with `.` can only be matched by a pattern name
+    /// starting with a literal `.` or a bracket set that isn't negated: `?`,
+    /// `*`, `**` and negated sets don't match its `.`, and a `*` can't even
+    /// match nothing in front of it. As with `SkipDotSegments`, a `*` or
+    /// `**` can't touch a name that is exactly `.` or `..`.
+    SkipDotNames,
 }
 
 /// One step of a parsed glob pattern.

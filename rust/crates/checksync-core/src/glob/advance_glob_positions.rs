@@ -2,7 +2,7 @@ use super::advance_any_folders::advance_any_folders;
 use super::advance_one_byte::advance_one_byte;
 use super::advance_one_char::advance_one_char;
 use super::advance_star::advance_star;
-use super::types::{GlobOptions, GlobToken};
+use super::types::{GlobOptions, GlobToken, HiddenNames};
 
 /// Move the reachable text positions past one glob token, in place.
 ///
@@ -15,7 +15,7 @@ use super::types::{GlobOptions, GlobToken};
 ///   after the token.
 /// * `options` - How to treat slashes and letter case, and whether to read
 ///   the text as characters rather than bytes.
-/// * `hides_dots` - Whether wildcards stay off a `.` that starts a name.
+/// * `hidden` - Which hidden names wildcards may match.
 ///
 /// # Returns
 ///
@@ -26,17 +26,18 @@ pub(super) fn advance_glob_positions(
     text: &[u8],
     positions: &mut [bool],
     options: GlobOptions,
-    hides_dots: bool,
+    hidden: HiddenNames,
 ) -> bool {
+    let hides_dots = hidden == HiddenNames::SkipDotNames;
     match token {
         GlobToken::One(matcher) if options.unicode => {
             advance_one_char(matcher, text, positions, options, hides_dots)
         }
         GlobToken::One(matcher) => advance_one_byte(matcher, text, positions, options, hides_dots),
         GlobToken::Star { crosses_slash } => {
-            advance_star(text, positions, *crosses_slash, hides_dots, options.unicode)
+            advance_star(text, positions, *crosses_slash, hidden, options.unicode)
         }
-        GlobToken::AnyFolders => advance_any_folders(text, positions, hides_dots),
+        GlobToken::AnyFolders => advance_any_folders(text, positions, hidden),
     }
 }
 
@@ -44,7 +45,7 @@ pub(super) fn advance_glob_positions(
 mod tests {
     use super::super::TEST_PATHNAME_OPTIONS;
     use super::super::TEST_UNICODE_OPTIONS;
-    use super::super::types::{GlobToken, UnitMatcher};
+    use super::super::types::{GlobToken, HiddenNames, UnitMatcher};
     use super::advance_glob_positions;
 
     #[test]
@@ -54,7 +55,13 @@ mod tests {
         let mut positions = [true, false, false];
 
         // Act
-        let _ = advance_glob_positions(&token, b"ab", &mut positions, TEST_PATHNAME_OPTIONS, false);
+        let _ = advance_glob_positions(
+            &token,
+            b"ab",
+            &mut positions,
+            TEST_PATHNAME_OPTIONS,
+            HiddenNames::MatchAll,
+        );
 
         // Assert
         assert_eq!(positions, [false, true, false]);
@@ -69,7 +76,13 @@ mod tests {
         let mut positions = [true, false, false];
 
         // Act
-        let _ = advance_glob_positions(&token, b"a/", &mut positions, TEST_PATHNAME_OPTIONS, false);
+        let _ = advance_glob_positions(
+            &token,
+            b"a/",
+            &mut positions,
+            TEST_PATHNAME_OPTIONS,
+            HiddenNames::MatchAll,
+        );
 
         // Assert
         assert_eq!(positions, [true, true, false]);
@@ -82,7 +95,13 @@ mod tests {
         let mut positions = [true, false, false];
 
         // Act
-        let _ = advance_glob_positions(&token, b"a/", &mut positions, TEST_PATHNAME_OPTIONS, false);
+        let _ = advance_glob_positions(
+            &token,
+            b"a/",
+            &mut positions,
+            TEST_PATHNAME_OPTIONS,
+            HiddenNames::MatchAll,
+        );
 
         // Assert
         assert_eq!(positions, [true, false, true]);
@@ -95,8 +114,13 @@ mod tests {
         let mut positions = [true, false];
 
         // Act
-        let result =
-            advance_glob_positions(&token, b"a", &mut positions, TEST_PATHNAME_OPTIONS, false);
+        let result = advance_glob_positions(
+            &token,
+            b"a",
+            &mut positions,
+            TEST_PATHNAME_OPTIONS,
+            HiddenNames::MatchAll,
+        );
 
         // Assert
         assert!(!result);
@@ -114,7 +138,7 @@ mod tests {
             "é".as_bytes(),
             &mut positions,
             TEST_UNICODE_OPTIONS,
-            false,
+            HiddenNames::MatchAll,
         );
 
         // Assert

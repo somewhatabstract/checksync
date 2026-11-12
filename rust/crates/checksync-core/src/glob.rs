@@ -25,6 +25,7 @@ mod decode_glob_char;
 mod expand_brace_pieces;
 mod expand_braces;
 mod find_brace_group;
+mod in_dot_segment;
 mod next_brace_piece;
 mod parse_bracket_set;
 mod posix_class_contains;
@@ -47,7 +48,7 @@ pub(crate) use compile_glob::compile_glob;
 pub(crate) use compiled_glob_matches::compiled_glob_matches;
 pub(crate) use expand_braces::expand_braces;
 pub(crate) use types::BraceExpansionError;
-pub(crate) use types::{CompiledGlob, GlobOptions};
+pub(crate) use types::{CompiledGlob, GlobOptions, HiddenNames};
 
 /// The options for tests whose results don't depend on them.
 ///
@@ -56,7 +57,7 @@ pub(crate) use types::{CompiledGlob, GlobOptions};
 const TEST_OPTIONS: GlobOptions = GlobOptions {
     pathname: false,
     casefold: false,
-    dot: true,
+    hidden: HiddenNames::MatchAll,
     unicode: false,
 };
 
@@ -67,7 +68,7 @@ const TEST_OPTIONS: GlobOptions = GlobOptions {
 const TEST_PATHNAME_OPTIONS: GlobOptions = GlobOptions {
     pathname: true,
     casefold: false,
-    dot: true,
+    hidden: HiddenNames::MatchAll,
     unicode: false,
 };
 
@@ -78,6 +79,6 @@ const TEST_PATHNAME_OPTIONS: GlobOptions = GlobOptions {
 const TEST_UNICODE_OPTIONS: GlobOptions = GlobOptions {
     pathname: true,
     casefold: false,
-    dot: true,
+    hidden: HiddenNames::MatchAll,
     unicode: true,
 };

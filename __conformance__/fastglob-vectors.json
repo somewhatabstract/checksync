@@ -1252,7 +1252,7 @@
             ]
         },
         {
-            "description": "Wildcards never match . or .. names in micromatch",
+            "description": "Wildcards don't match . or .. names, but literal dots do",
             "cases": [
                 {
                     "pattern": "*",
@@ -1264,11 +1264,7 @@
                     "pattern": "*",
                     "text": ".",
                     "dot": true,
-                    "matches": false,
-                    "rust": {
-                        "matches": true,
-                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
-                    }
+                    "matches": false
                 },
                 {
                     "pattern": "*",
@@ -1280,11 +1276,7 @@
                     "pattern": "*",
                     "text": "..",
                     "dot": true,
-                    "matches": false,
-                    "rust": {
-                        "matches": true,
-                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
-                    }
+                    "matches": false
                 },
                 {
                     "pattern": "a/*/b",
@@ -1296,11 +1288,7 @@
                     "pattern": "a/*/b",
                     "text": "a/./b",
                     "dot": true,
-                    "matches": false,
-                    "rust": {
-                        "matches": true,
-                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
-                    }
+                    "matches": false
                 },
                 {
                     "pattern": "a/**/b",
@@ -1312,12 +1300,121 @@
                     "pattern": "a/**/b",
                     "text": "a/../b",
                     "dot": true,
-                    "matches": false,
-                    "rust": {
-                        "matches": true,
-                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
-                    }
+                    "matches": false
                 },
+                {
+                    "pattern": "a/.*/b",
+                    "text": "a/../b",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/.*/b",
+                    "text": "a/../b",
+                    "dot": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "**/a.js",
+                    "text": "../src/a.js",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "**/a.js",
+                    "text": "../src/a.js",
+                    "dot": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "**",
+                    "text": "a/..",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "**",
+                    "text": "a/..",
+                    "dot": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "../*",
+                    "text": "../a",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "../*",
+                    "text": "../a",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "../**/a.js",
+                    "text": "../src/a.js",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "../**/a.js",
+                    "text": "../src/a.js",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "..",
+                    "text": "..",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "..",
+                    "text": "..",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/../b",
+                    "text": "a/../b",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/../b",
+                    "text": "a/../b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "?",
+                    "text": ".",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "?",
+                    "text": ".",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[.][.]",
+                    "text": "..",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[.][.]",
+                    "text": "..",
+                    "dot": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "micromatch's .* needs something after the dot",
+            "cases": [
                 {
                     "pattern": ".*",
                     "text": ".",
@@ -1325,7 +1422,7 @@
                     "matches": false,
                     "rust": {
                         "matches": true,
-                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
+                        "reason": "A `*` may match nothing here, so `.*` matches the name `.`; micromatch's `.*` needs at least one more character."
                     }
                 },
                 {
@@ -1335,27 +1432,7 @@
                     "matches": false,
                     "rust": {
                         "matches": true,
-                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
-                    }
-                },
-                {
-                    "pattern": "a/.*/b",
-                    "text": "a/../b",
-                    "dot": false,
-                    "matches": false,
-                    "rust": {
-                        "matches": true,
-                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
-                    }
-                },
-                {
-                    "pattern": "a/.*/b",
-                    "text": "a/../b",
-                    "dot": true,
-                    "matches": false,
-                    "rust": {
-                        "matches": true,
-                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
+                        "reason": "A `*` may match nothing here, so `.*` matches the name `.`; micromatch's `.*` needs at least one more character."
                     }
                 }
             ]
