@@ -1,0 +1,5452 @@
+{
+    "description": "Glob matching cases for checksync's Rust glob matcher. The expected results come from git 2.56's glob matcher, run as a black box, not from checksync's TypeScript, which doesn't use this matcher.",
+    "vectors": [
+        {
+            "description": "Literal text must match the whole text",
+            "cases": [
+                {
+                    "pattern": "abc",
+                    "text": "abc",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "abc",
+                    "text": "abc",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "abc",
+                    "text": "ab",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "abc",
+                    "text": "ab",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "ab",
+                    "text": "abc",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "ab",
+                    "text": "abc",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "",
+                    "text": "",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "",
+                    "text": "",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a",
+                    "text": "",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a",
+                    "text": "",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                }
+            ]
+        },
+        {
+            "description": "A question mark matches exactly one byte",
+            "cases": [
+                {
+                    "pattern": "a?c",
+                    "text": "abc",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a?c",
+                    "text": "abc",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a?c",
+                    "text": "abc",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a?c",
+                    "text": "abc",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a?c",
+                    "text": "ac",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a?c",
+                    "text": "ac",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a?c",
+                    "text": "ac",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a?c",
+                    "text": "ac",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a?c",
+                    "text": "abbc",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a?c",
+                    "text": "abbc",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a?c",
+                    "text": "abbc",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a?c",
+                    "text": "abbc",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "?",
+                    "text": "/",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "?",
+                    "text": "/",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "?",
+                    "text": "/",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "?",
+                    "text": "/",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a?b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a?b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a?b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a?b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "??",
+                    "text": "é",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "??",
+                    "text": "é",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "??",
+                    "text": "é",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "??",
+                    "text": "é",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "?",
+                    "text": "é",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "?",
+                    "text": "é",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "?",
+                    "text": "é",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "?",
+                    "text": "é",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                }
+            ]
+        },
+        {
+            "description": "A star matches any run of bytes, including none",
+            "cases": [
+                {
+                    "pattern": "a*",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*",
+                    "text": "a",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*",
+                    "text": "a",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*",
+                    "text": "abc",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*",
+                    "text": "abc",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*",
+                    "text": "abc",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*",
+                    "text": "abc",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*c",
+                    "text": "abc",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*c",
+                    "text": "abc",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*c",
+                    "text": "abc",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*c",
+                    "text": "abc",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*c",
+                    "text": "ac",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*c",
+                    "text": "ac",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*c",
+                    "text": "ac",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*c",
+                    "text": "ac",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*b*c",
+                    "text": "axxbyyc",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*b*c",
+                    "text": "axxbyyc",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*b*c",
+                    "text": "axxbyyc",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*b*c",
+                    "text": "axxbyyc",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*",
+                    "text": "/",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*",
+                    "text": "/",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*",
+                    "text": "/",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "*",
+                    "text": "/",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a*",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a*",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "*/b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*/b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*/b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*/b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*",
+                    "text": "",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*",
+                    "text": "",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*",
+                    "text": "",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*",
+                    "text": "",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "A backslash makes the next byte literal",
+            "cases": [
+                {
+                    "pattern": "\\*",
+                    "text": "*",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "\\*",
+                    "text": "*",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "\\*",
+                    "text": "*",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "\\*",
+                    "text": "*",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "\\*",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "\\*",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "\\*",
+                    "text": "a",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "\\*",
+                    "text": "a",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "\\?",
+                    "text": "?",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "\\?",
+                    "text": "?",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "\\?",
+                    "text": "?",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "\\?",
+                    "text": "?",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "\\?",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "\\?",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "\\?",
+                    "text": "a",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "\\?",
+                    "text": "a",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "\\[a]",
+                    "text": "[a]",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "\\[a]",
+                    "text": "[a]",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "\\[a]",
+                    "text": "[a]",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "\\[a]",
+                    "text": "[a]",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "\\\\",
+                    "text": "\\",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "\\\\",
+                    "text": "\\",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "\\\\",
+                    "text": "\\",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "\\\\",
+                    "text": "\\",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "\\a",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "\\a",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "\\a",
+                    "text": "a",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "\\a",
+                    "text": "a",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a\\/b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a\\/b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a\\/b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a\\/b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "A backslash at the end of the pattern matches nothing",
+            "cases": [
+                {
+                    "pattern": "a\\",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a\\",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a\\",
+                    "text": "a\\",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a\\",
+                    "text": "a\\",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "\\",
+                    "text": "",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "\\",
+                    "text": "",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "\\",
+                    "text": "\\",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "\\",
+                    "text": "\\",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                }
+            ]
+        },
+        {
+            "description": "A bracket set matches one byte from the set",
+            "cases": [
+                {
+                    "pattern": "[ab]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[ab]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[ab]",
+                    "text": "b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[ab]",
+                    "text": "b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[ab]",
+                    "text": "c",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[ab]",
+                    "text": "c",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[ab]",
+                    "text": "ab",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[ab]",
+                    "text": "ab",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "x[ab]y",
+                    "text": "xby",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "x[ab]y",
+                    "text": "xby",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-c]",
+                    "text": "b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-c]",
+                    "text": "b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-c]",
+                    "text": "d",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a-c]",
+                    "text": "d",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a-cx-z]",
+                    "text": "y",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-cx-z]",
+                    "text": "y",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "A leading ! or ^ negates a bracket set",
+            "cases": [
+                {
+                    "pattern": "[!a]",
+                    "text": "b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[!a]",
+                    "text": "b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[!a]",
+                    "text": "b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[!a]",
+                    "text": "b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[!a]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[!a]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[!a]",
+                    "text": "a",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[!a]",
+                    "text": "a",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[^a]",
+                    "text": "b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[^a]",
+                    "text": "b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[^a]",
+                    "text": "b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[^a]",
+                    "text": "b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[^a]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[^a]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[^a]",
+                    "text": "a",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[^a]",
+                    "text": "a",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[!a-c]",
+                    "text": "d",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[!a-c]",
+                    "text": "d",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[!a-c]",
+                    "text": "d",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[!a-c]",
+                    "text": "d",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[!a-c]",
+                    "text": "b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[!a-c]",
+                    "text": "b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[!a-c]",
+                    "text": "b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[!a-c]",
+                    "text": "b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[!a]",
+                    "text": "/",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[!a]",
+                    "text": "/",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[!a]",
+                    "text": "/",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[!a]",
+                    "text": "/",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[^]]",
+                    "text": "^",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[^]]",
+                    "text": "^",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[^]]",
+                    "text": "^",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[^]]",
+                    "text": "^",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "A ] straight after the opening bracket or its negation is literal",
+            "cases": [
+                {
+                    "pattern": "[]]",
+                    "text": "]",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[]]",
+                    "text": "]",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[]a]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[]a]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[]a]",
+                    "text": "]",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[]a]",
+                    "text": "]",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[!]]",
+                    "text": "]",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[!]]",
+                    "text": "]",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[!]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[!]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[^]]",
+                    "text": "]",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[^]]",
+                    "text": "]",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[]-a]",
+                    "text": "_",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[]-a]",
+                    "text": "_",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[]-a]",
+                    "text": "b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[]-a]",
+                    "text": "b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                }
+            ]
+        },
+        {
+            "description": "A dash is literal at the end of a set or after a range",
+            "cases": [
+                {
+                    "pattern": "[a-]",
+                    "text": "-",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-]",
+                    "text": "-",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[-a]",
+                    "text": "-",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[-a]",
+                    "text": "-",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-c-e]",
+                    "text": "-",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-c-e]",
+                    "text": "-",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-c-e]",
+                    "text": "d",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a-c-e]",
+                    "text": "d",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a-c-e]",
+                    "text": "e",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-c-e]",
+                    "text": "e",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[!-a]",
+                    "text": "-",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[!-a]",
+                    "text": "-",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[!-a]",
+                    "text": "b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[!-a]",
+                    "text": "b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-]]",
+                    "text": "-]",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-]]",
+                    "text": "-]",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "A backslash inside a bracket set escapes the next byte",
+            "cases": [
+                {
+                    "pattern": "[\\]]",
+                    "text": "]",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[\\]]",
+                    "text": "]",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[\\]]",
+                    "text": "\\",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[\\]]",
+                    "text": "\\",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[\\a]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[\\a]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[\\a]",
+                    "text": "\\",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[\\a]",
+                    "text": "\\",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a\\-z]",
+                    "text": "-",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a\\-z]",
+                    "text": "-",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a\\-z]",
+                    "text": "m",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a\\-z]",
+                    "text": "m",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a-\\z]",
+                    "text": "m",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-\\z]",
+                    "text": "m",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[\\a-c]",
+                    "text": "b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[\\a-c]",
+                    "text": "b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[\\\\]",
+                    "text": "\\",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[\\\\]",
+                    "text": "\\",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "A backwards range matches only its first byte",
+            "cases": [
+                {
+                    "pattern": "[z-a]",
+                    "text": "z",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[z-a]",
+                    "text": "z",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[z-a]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[z-a]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[z-a]",
+                    "text": "m",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[z-a]",
+                    "text": "m",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a-Z]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-Z]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-Z]",
+                    "text": "A",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a-Z]",
+                    "text": "A",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-Z]",
+                    "text": "Z",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a-Z]",
+                    "text": "Z",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[Z-A]",
+                    "text": "Z",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[Z-A]",
+                    "text": "Z",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[Z-A]",
+                    "text": "z",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[Z-A]",
+                    "text": "z",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a-a]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-a]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "A malformed bracket set matches nothing",
+            "cases": [
+                {
+                    "pattern": "[ab",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[ab",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[ab",
+                    "text": "[ab",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[ab",
+                    "text": "[ab",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[",
+                    "text": "[",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[",
+                    "text": "[",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[]",
+                    "text": "]",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[]",
+                    "text": "]",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[]",
+                    "text": "",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[]",
+                    "text": "",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[!]",
+                    "text": "!",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[!]",
+                    "text": "!",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[^]",
+                    "text": "^",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[^]",
+                    "text": "^",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a[",
+                    "text": "a[",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a[",
+                    "text": "a[",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a-",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a-",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a-\\",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a-\\",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[\\",
+                    "text": "\\",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[\\",
+                    "text": "\\",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a\\]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a\\]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "*[a",
+                    "text": "xa",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "*[a",
+                    "text": "xa",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                }
+            ]
+        },
+        {
+            "description": "POSIX classes match their bytes",
+            "cases": [
+                {
+                    "pattern": "[[:alpha:]]",
+                    "text": "q",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:alpha:]]",
+                    "text": "q",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:alpha:]]",
+                    "text": "Q",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:alpha:]]",
+                    "text": "Q",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:alpha:]]",
+                    "text": "1",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:alpha:]]",
+                    "text": "1",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:digit:]]",
+                    "text": "5",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:digit:]]",
+                    "text": "5",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:digit:]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:digit:]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:alnum:]]",
+                    "text": "_",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:alnum:]]",
+                    "text": "_",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:alnum:]]",
+                    "text": "z",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:alnum:]]",
+                    "text": "z",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:upper:]]",
+                    "text": "A",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:upper:]]",
+                    "text": "A",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:upper:]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:upper:]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:lower:]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:lower:]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:lower:]]",
+                    "text": "A",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:lower:]]",
+                    "text": "A",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:xdigit:]]",
+                    "text": "f",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:xdigit:]]",
+                    "text": "f",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:xdigit:]]",
+                    "text": "F",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:xdigit:]]",
+                    "text": "F",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:xdigit:]]",
+                    "text": "g",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:xdigit:]]",
+                    "text": "g",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:punct:]]",
+                    "text": "_",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:punct:]]",
+                    "text": "_",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:punct:]]",
+                    "text": "~",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:punct:]]",
+                    "text": "~",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:punct:]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:punct:]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:blank:]]",
+                    "text": " ",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:blank:]]",
+                    "text": " ",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:blank:]]",
+                    "text": "\t",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:blank:]]",
+                    "text": "\t",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:blank:]]",
+                    "text": "\n",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:blank:]]",
+                    "text": "\n",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:cntrl:]]",
+                    "text": "\u0001",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:cntrl:]]",
+                    "text": "\u0001",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:cntrl:]]",
+                    "text": "",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:cntrl:]]",
+                    "text": "",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:cntrl:]]",
+                    "text": " ",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:cntrl:]]",
+                    "text": " ",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:graph:]]",
+                    "text": "~",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:graph:]]",
+                    "text": "~",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:graph:]]",
+                    "text": " ",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:graph:]]",
+                    "text": " ",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:print:]]",
+                    "text": " ",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:print:]]",
+                    "text": " ",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:print:]]",
+                    "text": "",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:print:]]",
+                    "text": "",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:alpha:][:digit:]]",
+                    "text": "5",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:alpha:][:digit:]]",
+                    "text": "5",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:alpha:][:digit:]]",
+                    "text": "-",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:alpha:][:digit:]]",
+                    "text": "-",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:alpha:]]",
+                    "text": "é",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:alpha:]]",
+                    "text": "é",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                }
+            ]
+        },
+        {
+            "description": "Only space, tab, line feed and carriage return are spaces",
+            "cases": [
+                {
+                    "pattern": "[[:space:]]",
+                    "text": " ",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:space:]]",
+                    "text": " ",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:space:]]",
+                    "text": "\t",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:space:]]",
+                    "text": "\t",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:space:]]",
+                    "text": "\n",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:space:]]",
+                    "text": "\n",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:space:]]",
+                    "text": "\r",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:space:]]",
+                    "text": "\r",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:space:]]",
+                    "text": "\u000b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:space:]]",
+                    "text": "\u000b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:space:]]",
+                    "text": "\f",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:space:]]",
+                    "text": "\f",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                }
+            ]
+        },
+        {
+            "description": "A class starts only where the first ] after [: follows a colon",
+            "cases": [
+                {
+                    "pattern": "[[:a]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:a]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:a]",
+                    "text": ":",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:a]",
+                    "text": ":",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:a]",
+                    "text": "[",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:a]",
+                    "text": "[",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:]]",
+                    "text": ":]",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:]]",
+                    "text": ":]",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:]]",
+                    "text": ":",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:]]",
+                    "text": ":",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:a]b:]]",
+                    "text": "ab:]]",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:a]b:]]",
+                    "text": "ab:]]",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:a]b:]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:a]b:]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:alpha]]",
+                    "text": "a]",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:alpha]]",
+                    "text": "a]",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:alpha]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:alpha]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[x[:alpha]]",
+                    "text": "x]",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[x[:alpha]]",
+                    "text": "x]",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:alpha:]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:alpha:]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:al]pha:]]",
+                    "text": "al]",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:al]pha:]]",
+                    "text": "al]",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[]",
+                    "text": "[",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[]",
+                    "text": "[",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:]",
+                    "text": "[",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:]",
+                    "text": "[",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:]",
+                    "text": ":",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:]",
+                    "text": ":",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "An unknown class name matches nothing, even in a negated set",
+            "cases": [
+                {
+                    "pattern": "[[:foo:]]",
+                    "text": "f",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:foo:]]",
+                    "text": "f",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:foo:]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:foo:]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:foo:]a]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:foo:]a]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a[:foo:]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a[:foo:]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[![:foo:]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[![:foo:]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[::]]",
+                    "text": ":",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[::]]",
+                    "text": ":",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[::]]",
+                    "text": ":]",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[::]]",
+                    "text": ":]",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:ALPHA:]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:ALPHA:]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "*[[:foo:]]",
+                    "text": "xa",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "*[[:foo:]]",
+                    "text": "xa",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                }
+            ]
+        },
+        {
+            "description": "A class can't start or end a range",
+            "cases": [
+                {
+                    "pattern": "[[:upper:]-z]",
+                    "text": "-",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:upper:]-z]",
+                    "text": "-",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:upper:]-z]",
+                    "text": "_",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:upper:]-z]",
+                    "text": "_",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:upper:]-z]",
+                    "text": "Q",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:upper:]-z]",
+                    "text": "Q",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-[:upper:]]",
+                    "text": "a]",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-[:upper:]]",
+                    "text": "a]",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-[:upper:]]",
+                    "text": ":]",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-[:upper:]]",
+                    "text": ":]",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-[:upper:]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a-[:upper:]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                }
+            ]
+        },
+        {
+            "description": "Case folding applies to ASCII letters only",
+            "cases": [
+                {
+                    "pattern": "abc",
+                    "text": "ABC",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "abc",
+                    "text": "ABC",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "ABC",
+                    "text": "abc",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "ABC",
+                    "text": "abc",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "aBc",
+                    "text": "AbC",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "aBc",
+                    "text": "AbC",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "É",
+                    "text": "é",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "É",
+                    "text": "é",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "é",
+                    "text": "É",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "é",
+                    "text": "É",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a*Z",
+                    "text": "Axz",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a*Z",
+                    "text": "Axz",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "Case folding compares escaped bytes with the text lowercased",
+            "cases": [
+                {
+                    "pattern": "\\A",
+                    "text": "A",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "\\A",
+                    "text": "A",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "\\A",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "\\A",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "\\a",
+                    "text": "A",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "\\a",
+                    "text": "A",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "\\a",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "\\a",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "x\\B",
+                    "text": "xb",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "x\\B",
+                    "text": "xb",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "x\\B",
+                    "text": "xB",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "x\\B",
+                    "text": "xB",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                }
+            ]
+        },
+        {
+            "description": "Case folding compares bracket bytes with the text lowercased, but ranges and classes also by uppercase",
+            "cases": [
+                {
+                    "pattern": "[A]",
+                    "text": "A",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[A]",
+                    "text": "A",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[A]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[A]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a]",
+                    "text": "A",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a]",
+                    "text": "A",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[Ab]",
+                    "text": "B",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[Ab]",
+                    "text": "B",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[Ab]",
+                    "text": "A",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[Ab]",
+                    "text": "A",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[A-Z]",
+                    "text": "b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[A-Z]",
+                    "text": "b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-z]",
+                    "text": "B",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a-z]",
+                    "text": "B",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[A-A]",
+                    "text": "A",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[A-A]",
+                    "text": "A",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[Z-a]",
+                    "text": "z",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[Z-a]",
+                    "text": "z",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[Z-a]",
+                    "text": "A",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[Z-a]",
+                    "text": "A",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[Z-a]",
+                    "text": "_",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[Z-a]",
+                    "text": "_",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:upper:]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:upper:]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:lower:]]",
+                    "text": "A",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:lower:]]",
+                    "text": "A",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[!a-z]",
+                    "text": "A",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[!a-z]",
+                    "text": "A",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[![:upper:]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[![:upper:]]",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                }
+            ]
+        },
+        {
+            "description": "With pathname, ?, * and bracket sets don't match a slash",
+            "cases": [
+                {
+                    "pattern": "a?b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a?b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a?b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a?b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a*b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a*b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a*",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a*",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a[/]b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a[/]b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a[/]b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a[/]b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a[!x]b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a[!x]b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a[!x]b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a[!x]b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[--0]",
+                    "text": "/",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[--0]",
+                    "text": "/",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[--0]",
+                    "text": "/",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[--0]",
+                    "text": "/",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "*/*",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*/*",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*/*",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*/*",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*/*",
+                    "text": "a/b/c",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*/*",
+                    "text": "a/b/c",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*/*",
+                    "text": "a/b/c",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "*/*",
+                    "text": "a/b/c",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                }
+            ]
+        },
+        {
+            "description": "**/ at the start matches any number of folders, including none",
+            "cases": [
+                {
+                    "pattern": "**/x",
+                    "text": "x",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "**/x",
+                    "text": "x",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "**/x",
+                    "text": "x",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/x",
+                    "text": "x",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/x",
+                    "text": "a/x",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/x",
+                    "text": "a/x",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/x",
+                    "text": "a/x",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/x",
+                    "text": "a/x",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/x",
+                    "text": "a/b/x",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/x",
+                    "text": "a/b/x",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/x",
+                    "text": "a/b/x",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/x",
+                    "text": "a/b/x",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/x",
+                    "text": "/x",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/x",
+                    "text": "/x",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/x",
+                    "text": "/x",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/x",
+                    "text": "/x",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/x",
+                    "text": "ax",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "**/x",
+                    "text": "ax",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "**/x",
+                    "text": "ax",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "**/x",
+                    "text": "ax",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "**/",
+                    "text": "a/",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/",
+                    "text": "a/",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/",
+                    "text": "a/",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/",
+                    "text": "a/",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/",
+                    "text": "",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "**/",
+                    "text": "",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "**/",
+                    "text": "",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/",
+                    "text": "",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "**/",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "**/",
+                    "text": "a",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "**/",
+                    "text": "a",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "**/*.c",
+                    "text": "a/b.c",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/*.c",
+                    "text": "a/b.c",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/*.c",
+                    "text": "a/b.c",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/*.c",
+                    "text": "a/b.c",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "/**/ in the middle matches any number of folders, including none",
+            "cases": [
+                {
+                    "pattern": "a/**/b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "a/x/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "a/x/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "a/x/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "a/x/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "a/x/y/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "a/x/y/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "a/x/y/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "a/x/y/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "a//b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "a//b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "a//b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "a//b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "ab",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "ab",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "ab",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "ab",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "x/a/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "x/a/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "x/a/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "x/a/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**/",
+                    "text": "a/",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**/",
+                    "text": "a/",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**/",
+                    "text": "a/",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**/",
+                    "text": "a/",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**/",
+                    "text": "a/b/",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**/",
+                    "text": "a/b/",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**/",
+                    "text": "a/b/",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**/",
+                    "text": "a/b/",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**/",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**/",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**/",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**/",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "x/**/**/y",
+                    "text": "x/y",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "x/**/**/y",
+                    "text": "x/y",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "x/**/**/y",
+                    "text": "x/y",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "x/**/**/y",
+                    "text": "x/y",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "/** at the end matches everything inside",
+            "cases": [
+                {
+                    "pattern": "a/**",
+                    "text": "a/",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a/",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a/",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a/",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a/b/c",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a/b/c",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a/b/c",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a/b/c",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a/b/",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a/b/",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a/b/",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a/b/",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "/**",
+                    "text": "/a/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "/**",
+                    "text": "/a/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "/**",
+                    "text": "/a/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "/**",
+                    "text": "/a/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "//**",
+                    "text": "/",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "//**",
+                    "text": "/",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "//**",
+                    "text": "/",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "//**",
+                    "text": "/",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "**",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**",
+                    "text": "",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**",
+                    "text": "",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**",
+                    "text": "",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**",
+                    "text": "",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "Three or more stars making up a folder name act as two",
+            "cases": [
+                {
+                    "pattern": "***/x",
+                    "text": "x",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "***/x",
+                    "text": "x",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "***/x",
+                    "text": "x",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "***/x",
+                    "text": "x",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "***/x",
+                    "text": "a/b/x",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "***/x",
+                    "text": "a/b/x",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "***/x",
+                    "text": "a/b/x",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "***/x",
+                    "text": "a/b/x",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/***/b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/***/b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/***/b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/***/b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/***/b",
+                    "text": "a/x/y/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/***/b",
+                    "text": "a/x/y/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/***/b",
+                    "text": "a/x/y/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/***/b",
+                    "text": "a/x/y/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/***",
+                    "text": "a/b/c",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/***",
+                    "text": "a/b/c",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/***",
+                    "text": "a/b/c",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/***",
+                    "text": "a/b/c",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/****/b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/****/b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/****/b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/****/b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "Two stars joined to other bytes act as one",
+            "cases": [
+                {
+                    "pattern": "a**",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a**",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a**",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a**",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a**",
+                    "text": "ab",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a**",
+                    "text": "ab",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a**",
+                    "text": "ab",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a**",
+                    "text": "ab",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "**b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "**b",
+                    "text": "ab",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**b",
+                    "text": "ab",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**b",
+                    "text": "ab",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**b",
+                    "text": "ab",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a**/b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a**/b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a**/b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a**/b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a**/b",
+                    "text": "ax/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a**/b",
+                    "text": "ax/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a**/b",
+                    "text": "ax/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a**/b",
+                    "text": "ax/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a**/b",
+                    "text": "ax/y/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a**/b",
+                    "text": "ax/y/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a**/b",
+                    "text": "ax/y/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a**/b",
+                    "text": "ax/y/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**b",
+                    "text": "a/xb",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**b",
+                    "text": "a/xb",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**b",
+                    "text": "a/xb",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**b",
+                    "text": "a/xb",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**b",
+                    "text": "a/x/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**b",
+                    "text": "a/x/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**b",
+                    "text": "a/x/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**b",
+                    "text": "a/x/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a?**/b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a?**/b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a?**/b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a?**/b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                }
+            ]
+        },
+        {
+            "description": "** followed by an escaped slash matches across folders, leaving the slash",
+            "cases": [
+                {
+                    "pattern": "a/**\\/b",
+                    "text": "a/x/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**\\/b",
+                    "text": "a/x/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**\\/b",
+                    "text": "a/x/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**\\/b",
+                    "text": "a/x/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**\\/b",
+                    "text": "a/x/y/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**\\/b",
+                    "text": "a/x/y/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**\\/b",
+                    "text": "a/x/y/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**\\/b",
+                    "text": "a/x/y/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**\\/b",
+                    "text": "a//b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**\\/b",
+                    "text": "a//b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**\\/b",
+                    "text": "a//b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**\\/b",
+                    "text": "a//b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**\\/b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**\\/b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**\\/b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**\\/b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "**\\/b",
+                    "text": "x/y/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**\\/b",
+                    "text": "x/y/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**\\/b",
+                    "text": "x/y/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**\\/b",
+                    "text": "x/y/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "/*****\\/",
+                    "text": "/x/A/x/aA/",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "/*****\\/",
+                    "text": "/x/A/x/aA/",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "/*****\\/",
+                    "text": "/x/A/x/aA/",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "/*****\\/",
+                    "text": "/x/A/x/aA/",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "A slash before ** counts even when escaped",
+            "cases": [
+                {
+                    "pattern": "a\\/**/b",
+                    "text": "a/x/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a\\/**/b",
+                    "text": "a/x/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a\\/**/b",
+                    "text": "a/x/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a\\/**/b",
+                    "text": "a/x/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a\\/**/b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a\\/**/b",
+                    "text": "a/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a\\/**/b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a\\/**/b",
+                    "text": "a/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/\\**/b",
+                    "text": "a/*/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/\\**/b",
+                    "text": "a/*/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/\\**/b",
+                    "text": "a/*/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/\\**/b",
+                    "text": "a/*/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/\\**/b",
+                    "text": "a/x/y/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/\\**/b",
+                    "text": "a/x/y/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/\\**/b",
+                    "text": "a/x/y/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/\\**/b",
+                    "text": "a/x/y/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                }
+            ]
+        },
+        {
+            "description": "** followed by anything else acts as one star",
+            "cases": [
+                {
+                    "pattern": "a/**\\b",
+                    "text": "a/x/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**\\b",
+                    "text": "a/x/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**\\b",
+                    "text": "a/x/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**\\b",
+                    "text": "a/x/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**\\b",
+                    "text": "a/xb",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**\\b",
+                    "text": "a/xb",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**\\b",
+                    "text": "a/xb",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**\\b",
+                    "text": "a/xb",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**\\b",
+                    "text": "x/y/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**\\b",
+                    "text": "x/y/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**\\b",
+                    "text": "x/y/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "**\\b",
+                    "text": "x/y/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**[/]b",
+                    "text": "a/x/y/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**[/]b",
+                    "text": "a/x/y/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**[/]b",
+                    "text": "a/x/y/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**[/]b",
+                    "text": "a/x/y/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**[b]",
+                    "text": "a/x/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**[b]",
+                    "text": "a/x/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**[b]",
+                    "text": "a/x/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**[b]",
+                    "text": "a/x/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**?b",
+                    "text": "a/x/b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**?b",
+                    "text": "a/x/b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**?b",
+                    "text": "a/x/b",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**?b",
+                    "text": "a/x/b",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**\\",
+                    "text": "a/x",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**\\",
+                    "text": "a/x",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**\\",
+                    "text": "a/x",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**\\",
+                    "text": "a/x",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                }
+            ]
+        },
+        {
+            "description": "A NUL byte ends the pattern or the text",
+            "cases": [
+                {
+                    "pattern": "ab\u0000c",
+                    "text": "ab",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "ab\u0000c",
+                    "text": "ab",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "ab\u0000c",
+                    "text": "ab",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "ab\u0000c",
+                    "text": "ab",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "ab\u0000c",
+                    "text": "abc",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "ab\u0000c",
+                    "text": "abc",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "ab\u0000c",
+                    "text": "abc",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "ab\u0000c",
+                    "text": "abc",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "ab",
+                    "text": "ab\u0000c",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "ab",
+                    "text": "ab\u0000c",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "ab",
+                    "text": "ab\u0000c",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "ab",
+                    "text": "ab\u0000c",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*\u0000/b",
+                    "text": "axyz",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*\u0000/b",
+                    "text": "axyz",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*\u0000/b",
+                    "text": "axyz",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*\u0000/b",
+                    "text": "axyz",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[\u0000]",
+                    "text": "",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[\u0000]",
+                    "text": "",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[\u0000]",
+                    "text": "",
+                    "pathname": true,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[\u0000]",
+                    "text": "",
+                    "pathname": true,
+                    "casefold": true,
+                    "matches": false
+                }
+            ]
+        },
+        {
+            "description": "Braces and other bytes match themselves",
+            "cases": [
+                {
+                    "pattern": "{a,b}",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "{a,b}",
+                    "text": "a",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "{a,b}",
+                    "text": "{a,b}",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "{a,b}",
+                    "text": "{a,b}",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[{}]",
+                    "text": "{",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[{}]",
+                    "text": "{",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-{]",
+                    "text": "{",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-{]",
+                    "text": "{",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a.b",
+                    "text": "a.b",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a.b",
+                    "text": "a.b",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a.b",
+                    "text": "axb",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a.b",
+                    "text": "axb",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "+(a)",
+                    "text": "+(a)",
+                    "pathname": false,
+                    "casefold": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "+(a)",
+                    "text": "+(a)",
+                    "pathname": false,
+                    "casefold": true,
+                    "matches": true
+                }
+            ]
+        }
+    ]
+}
