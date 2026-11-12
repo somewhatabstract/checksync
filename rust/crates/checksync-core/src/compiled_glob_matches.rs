@@ -36,9 +36,43 @@ pub(crate) fn compiled_glob_matches(glob: &CompiledGlob, text: &[u8]) -> bool {
 
 #[cfg(test)]
 mod tests {
+    use serde::Deserialize;
+
     use super::compiled_glob_matches;
     use crate::compile_glob::compile_glob;
     use crate::types::GlobOptions;
+
+    /// The glob vector table: what it holds, and the vectors themselves.
+    #[derive(Deserialize)]
+    struct Table {
+        description: String,
+        vectors: Vec<Vector>,
+    }
+
+    /// A group of vector cases exercising one feature of the matcher.
+    #[derive(Deserialize)]
+    struct Vector {
+        description: String,
+        cases: Vec<Case>,
+    }
+
+    /// One pattern and text, the options to match them with, and git's
+    /// answer.
+    #[derive(Deserialize)]
+    struct Case {
+        pattern: String,
+        text: String,
+        pathname: bool,
+        casefold: bool,
+        matches: bool,
+    }
+
+    /// Glob cases recorded from git's own matcher, which checksync's
+    /// TypeScript doesn't use.
+    const VECTORS: &str = include_str!(concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/../../../__conformance__/glob-vectors.json"
+    ));
 
     /// Compile `pattern` and match `text` against it.
     fn matches(pattern: &[u8], text: &[u8], options: GlobOptions) -> bool {
@@ -322,5 +356,69 @@ mod tests {
 
         // Assert
         assert!(!result);
+    }
+
+    #[test]
+    fn says_where_the_glob_vectors_come_from() {
+        // Arrange
+        let table: Table = serde_json::from_str(VECTORS).unwrap();
+
+        // Act
+        let result = table.description.contains("git");
+
+        // Assert
+        assert!(result);
+    }
+
+    #[test]
+    fn has_glob_vectors_to_check() {
+        // Arrange
+        let table: Table = serde_json::from_str(VECTORS).unwrap();
+
+        // Act
+        let result = table
+            .vectors
+            .iter()
+            .map(|vector| vector.cases.len())
+            .sum::<usize>();
+
+        // Assert
+        assert_ne!(result, 0);
+    }
+
+    #[test]
+    fn matches_every_glob_vector_as_git_does() {
+        // Arrange
+        let table: Table = serde_json::from_str(VECTORS).unwrap();
+
+        // Act
+        let mismatches: Vec<String> = table
+            .vectors
+            .iter()
+            .flat_map(|vector| {
+                vector.cases.iter().filter_map(|case| {
+                    let options = GlobOptions {
+                        pathname: case.pathname,
+                        casefold: case.casefold,
+                    };
+                    let actual = compile_glob(case.pattern.as_bytes(), options)
+                        .is_some_and(|glob| compiled_glob_matches(&glob, case.text.as_bytes()));
+                    (actual != case.matches).then(|| {
+                        format!(
+                            "{}: {:?} against {:?} (pathname: {}, casefold: {}): expected {}, got {actual}",
+                            vector.description,
+                            case.pattern,
+                            case.text,
+                            case.pathname,
+                            case.casefold,
+                            case.matches
+                        )
+                    })
+                })
+            })
+            .collect();
+
+        // Assert
+        assert_eq!(mismatches, Vec::<String>::new());
     }
 }

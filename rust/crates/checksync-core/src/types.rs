@@ -388,7 +388,7 @@ pub enum IgnoreDecision {
 ///
 /// Both default to off.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
-pub struct GlobOptions {
+pub(crate) struct GlobOptions {
     /// Whether `/` separates folders.
     ///
     /// When set, `?`, `*` and bracket sets never match `/`, and a `**` that
