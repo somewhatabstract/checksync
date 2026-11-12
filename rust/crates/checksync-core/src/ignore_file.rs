@@ -1,10 +1,10 @@
-use std::borrow::Cow;
+use std::fs;
 use std::io;
-use std::path::{Component, Path, PathBuf};
+use std::path::{Path, PathBuf};
 
-use crate::gitignore_pattern_matches::gitignore_pattern_matches;
-use crate::node_relative::node_relative;
-use crate::read_gitignore_patterns::read_gitignore_patterns;
+use crate::gitignore_decide_path::gitignore_decide_path;
+use crate::gitignore_parse::gitignore_parse;
+use crate::gitignore_relative_path::gitignore_relative_path;
 use crate::types::{GitignorePattern, IgnoreDecision};
 
 /// A loaded `.gitignore`-style file that decides about paths in its folder.
@@ -15,7 +15,9 @@ use crate::types::{GitignorePattern, IgnoreDecision};
 /// itself.
 #[derive(Debug)]
 pub struct IgnoreFile {
+    /// The folder the ignore file is in, which it governs.
     folder: PathBuf,
+    /// The ignore file's patterns, in order.
     patterns: Vec<GitignorePattern>,
 }
 
@@ -41,10 +43,10 @@ impl IgnoreFile {
     ///
     /// Any error reading the file.
     pub fn load(path: &Path) -> io::Result<Self> {
-        let contents = std::fs::read(path)?;
+        let contents = fs::read(path)?;
         Ok(Self {
             folder: path.parent().map(Path::to_path_buf).unwrap_or_default(),
-            patterns: read_gitignore_patterns(&contents),
+            patterns: gitignore_parse(&contents),
         })
     }
 
@@ -66,60 +68,11 @@ impl IgnoreFile {
     /// Whether the file is ignored, unignored, or neither.
     #[must_use]
     pub fn decide(&self, file_path: &Path) -> IgnoreDecision {
-        let relative = node_relative(&self.folder, &self.folder, file_path);
-        let outside = relative.as_os_str().is_empty()
-            || relative.is_absolute()
-            || relative.components().next() == Some(Component::ParentDir);
-        if outside {
-            return IgnoreDecision::NoOpinion;
-        }
-        let relative = path_bytes(&relative);
-        let relative = relative.as_ref();
-        let in_ignored_folder = relative
-            .iter()
-            .enumerate()
-            .filter(|&(_, &byte)| byte == b'/')
-            .any(|(slash, _)| {
-                self.last_match(&relative[..slash], true)
-                    .is_some_and(|pattern| !pattern.negated)
-            });
-        if in_ignored_folder {
-            return IgnoreDecision::Ignored;
-        }
-        match self.last_match(relative, false) {
-            Some(pattern) if pattern.negated => IgnoreDecision::Unignored,
-            Some(_) => IgnoreDecision::Ignored,
-            None => IgnoreDecision::NoOpinion,
-        }
+        gitignore_relative_path(&self.folder, file_path)
+            .map_or(IgnoreDecision::NoOpinion, |relative| {
+                gitignore_decide_path(&self.patterns, &relative)
+            })
     }
-
-    /// Find the last pattern that matches a path, which is the one that decides.
-    fn last_match(&self, path: &[u8], is_dir: bool) -> Option<&GitignorePattern> {
-        self.patterns
-            .iter()
-            .rev()
-            .find(|pattern| gitignore_pattern_matches(pattern, path, is_dir, true))
-    }
-}
-
-/// Get a relative path's bytes, with `/` separating folders, for matching.
-///
-/// On Unix these are the path's own bytes, as git matches them, so a name
-/// that isn't valid UTF-8 can still match a pattern with the same bytes.
-#[cfg(unix)]
-fn path_bytes(path: &Path) -> Cow<'_, [u8]> {
-    use std::os::unix::ffi::OsStrExt;
-    Cow::Borrowed(path.as_os_str().as_bytes())
-}
-
-/// Get a relative path's bytes, with `/` separating folders, for matching.
-///
-/// Windows paths are UTF-16, so they're converted to UTF-8 and their `\`
-/// separators to `/`.
-#[cfg(not(unix))]
-fn path_bytes(path: &Path) -> Cow<'_, [u8]> {
-    use crate::normalize_separators::normalize_separators;
-    Cow::Owned(normalize_separators(&path.to_string_lossy()).into_bytes())
 }
 
 #[cfg(test)]

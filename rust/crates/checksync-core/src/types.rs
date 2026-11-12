@@ -384,7 +384,9 @@ pub enum IgnoreDecision {
     NoOpinion,
 }
 
-/// How `glob_matches` treats slashes and letter case.
+/// How a glob pattern treats slashes and letter case.
+///
+/// Both default to off.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub(crate) struct GlobOptions {
     /// Whether `/` separates folders.
@@ -399,6 +401,15 @@ pub(crate) struct GlobOptions {
     /// nothing, though ranges and classes such as `[A-Z]` and `[:upper:]`
     /// still match lowercase letters.
     pub casefold: bool,
+}
+
+/// A glob pattern compiled once so it can be matched against many texts.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct CompiledGlob {
+    /// The pattern's tokens, in order.
+    pub tokens: Vec<GlobToken>,
+    /// How the pattern treats slashes and letter case.
+    pub options: GlobOptions,
 }
 
 /// One step of a parsed glob pattern.
@@ -492,25 +503,18 @@ pub(crate) enum ClassSyntax {
     Unknown,
 }
 
-/// One pattern from a `.gitignore` file, read as git reads it.
+/// One pattern read from a `.gitignore`-style file.
 #[derive(Debug, Clone, PartialEq, Eq)]
-#[expect(
-    clippy::struct_excessive_bools,
-    reason = "each one matches one of git's pattern flags"
-)]
 pub(crate) struct GitignorePattern {
-    /// The pattern, without a leading `!` or a trailing `/`.
-    pub pattern: Vec<u8>,
-    /// How many bytes at the start of the pattern have no glob characters.
-    pub literal_prefix: usize,
+    /// The compiled glob to match, from the pattern without any leading
+    /// `!`, leading `/` or trailing `/`.
+    pub glob: CompiledGlob,
     /// Whether the pattern started with `!`, so a match unignores.
     pub negated: bool,
-    /// Whether the pattern ended with `/`, so it only matches folders.
-    pub dir_only: bool,
-    /// Whether the pattern has no `/`, so it matches the last part of a
-    /// path at any depth rather than the whole path.
-    pub basename_only: bool,
-    /// Whether the pattern is `*` followed by literal text only, such as
-    /// `*.log`.
-    pub ends_with: bool,
+    /// Whether the pattern ended with `/`, so it matches only folders.
+    pub folders_only: bool,
+    /// Whether the pattern held a `/` before any trailing one, so it
+    /// matches the whole path from the ignore file's folder rather than
+    /// just the last name in it.
+    pub anchored: bool,
 }

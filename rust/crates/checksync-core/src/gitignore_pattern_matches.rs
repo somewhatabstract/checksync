@@ -1,294 +1,138 @@
-use crate::glob_matches::glob_matches;
-use crate::types::{GitignorePattern, GlobOptions};
+use crate::compiled_glob_matches::compiled_glob_matches;
+use crate::types::GitignorePattern;
 
-/// Compare two byte strings, ignoring ASCII case when asked.
-fn same(a: &[u8], b: &[u8], casefold: bool) -> bool {
-    if casefold {
-        a.eq_ignore_ascii_case(b)
-    } else {
-        a == b
-    }
-}
-
-/// Check whether a `.gitignore` pattern matches a path, as git does.
+/// Check whether one ignore-file pattern matches a path.
 ///
-/// A folder-only pattern only matches a folder. A pattern with no `/`
-/// matches the path's last part, and any other pattern matches the whole
-/// path, with a leading `/` only anchoring it. As in git, the literal text
-/// at the start of a pattern is compared first, and the rest is matched as a
-/// glob along with the literal text's last character. Since git 2.52, that
-/// last character is kept so a `**` straight after literal text, as in
-/// `a**/b`, isn't mistaken for a whole folder name, so it doesn't match
-/// `a/x/b`.
+/// An anchored pattern is matched against the whole path, and any other
+/// pattern against the last name in it.
 ///
 /// # Arguments
 ///
 /// * `pattern` - The pattern.
-/// * `path` - The path, relative to the ignore file's folder, using `/`.
-/// * `is_dir` - Whether the path is a folder.
-/// * `casefold` - Whether to ignore case, for ASCII letters only.
+/// * `path` - The path relative to the ignore file's folder, with `/`
+///   between names.
+/// * `name` - The last name in `path`, worked out once by the caller for
+///   all the patterns. It must be exactly what follows the last `/` in
+///   `path`, or all of `path` if it has no `/`; debug builds check this.
+/// * `is_folder` - Whether the path is a folder rather than a file.
 ///
 /// # Returns
 ///
-/// Whether the pattern matches. A negated pattern matching means the path
-/// is unignored.
+/// `true` if the pattern matches the path.
 #[must_use]
 pub(crate) fn gitignore_pattern_matches(
     pattern: &GitignorePattern,
     path: &[u8],
-    is_dir: bool,
-    casefold: bool,
+    name: &[u8],
+    is_folder: bool,
 ) -> bool {
-    if pattern.dir_only && !is_dir {
+    debug_assert_eq!(path.rsplit(|&byte| byte == b'/').next(), Some(name));
+    if pattern.folders_only && !is_folder {
         return false;
     }
-    let mut glob = pattern.pattern.as_slice();
-    let mut prefix = pattern.literal_prefix;
-    if pattern.basename_only {
-        let name = path.rsplit(|&byte| byte == b'/').next().unwrap_or_default();
-        return if prefix == glob.len() {
-            same(glob, name, casefold)
-        } else if pattern.ends_with {
-            let tail = &glob[1..];
-            tail.len() <= name.len() && same(tail, &name[name.len() - tail.len()..], casefold)
-        } else {
-            glob_matches(
-                glob,
-                name,
-                GlobOptions {
-                    pathname: false,
-                    casefold,
-                },
-            )
-        };
-    }
-    if let Some(rest) = glob.strip_prefix(b"/") {
-        glob = rest;
-        prefix -= 1;
-    }
-    if path.is_empty() || prefix > path.len() || !same(&glob[..prefix], &path[..prefix], casefold) {
-        return false;
-    }
-    let keep = prefix.saturating_sub(1);
-    glob_matches(
-        &glob[keep..],
-        &path[keep..],
-        GlobOptions {
-            pathname: true,
-            casefold,
-        },
-    )
+    let subject = if pattern.anchored { path } else { name };
+    compiled_glob_matches(&pattern.glob, subject)
 }
 
 #[cfg(test)]
 mod tests {
     use super::gitignore_pattern_matches;
-    use crate::parse_gitignore_pattern::parse_gitignore_pattern;
+    use crate::compile_glob::compile_glob;
+    use crate::gitignore_parse_line::GITIGNORE_GLOB_OPTIONS;
+    use crate::types::GitignorePattern;
 
-    /// Whether `line` matches `path` as a file, ignoring case.
-    fn matches(line: &str, path: &str) -> bool {
-        gitignore_pattern_matches(
-            &parse_gitignore_pattern(line.as_bytes()),
-            path.as_bytes(),
-            false,
-            true,
-        )
+    fn pattern(glob: &[u8], folders_only: bool, anchored: bool) -> GitignorePattern {
+        GitignorePattern {
+            glob: compile_glob(glob, GITIGNORE_GLOB_OPTIONS).unwrap(),
+            negated: false,
+            folders_only,
+            anchored,
+        }
     }
 
     #[test]
-    fn matches_a_name_at_any_depth() {
+    fn matches_a_name_pattern_against_the_last_name() {
         // Arrange
-        let line = "a.log";
+        let pattern = pattern(b"*.log", false, false);
 
         // Act
-        let result = [matches(line, "a.log"), matches(line, "x/y/a.log")];
+        let result = gitignore_pattern_matches(&pattern, b"a/b/c.log", b"c.log", false);
 
         // Assert
-        assert_eq!(result, [true, true]);
+        assert!(result);
     }
 
     #[test]
-    fn compares_a_plain_name_ignoring_case_when_asked() {
+    fn matches_an_anchored_pattern_against_the_whole_path() {
         // Arrange
-        let pattern = parse_gitignore_pattern(b"A.LOG");
+        let pattern = pattern(b"c.log", false, true);
 
         // Act
-        let result = [
-            gitignore_pattern_matches(&pattern, b"a.log", false, true),
-            gitignore_pattern_matches(&pattern, b"a.log", false, false),
-        ];
-
-        // Assert
-        assert_eq!(result, [true, false]);
-    }
-
-    #[test]
-    fn matches_the_end_of_a_name_with_an_asterisk_and_literal_text() {
-        // Arrange
-        let line = "*.log";
-
-        // Act
-        let result = [
-            matches(line, "x/a.log"),
-            matches(line, "a.txt"),
-            matches(line, "og"),
-        ];
-
-        // Assert
-        assert_eq!(result, [true, false, false]);
-    }
-
-    #[test]
-    fn matches_a_name_with_a_glob() {
-        // Arrange
-        let line = "a?.log";
-
-        // Act
-        let result = [matches(line, "x/ab.log"), matches(line, "a.log")];
-
-        // Assert
-        assert_eq!(result, [true, false]);
-    }
-
-    #[test]
-    fn only_matches_a_folder_with_a_folder_pattern() {
-        // Arrange
-        let pattern = parse_gitignore_pattern(b"build/");
-
-        // Act
-        let result = [
-            gitignore_pattern_matches(&pattern, b"build", true, true),
-            gitignore_pattern_matches(&pattern, b"build", false, true),
-        ];
-
-        // Assert
-        assert_eq!(result, [true, false]);
-    }
-
-    #[test]
-    fn matches_a_pattern_with_a_slash_against_the_whole_path() {
-        // Arrange
-        let line = "a/*.js";
-
-        // Act
-        let result = [matches(line, "a/x.js"), matches(line, "b/a/x.js")];
-
-        // Assert
-        assert_eq!(result, [true, false]);
-    }
-
-    #[test]
-    fn anchors_a_pattern_with_a_leading_slash() {
-        // Arrange
-        let line = "/build";
-
-        // Act
-        let result = [matches(line, "build"), matches(line, "x/build")];
-
-        // Assert
-        assert_eq!(result, [true, false]);
-    }
-
-    #[test]
-    fn matches_a_literal_path_without_a_glob() {
-        // Arrange
-        let line = "a/b";
-
-        // Act
-        let result = [
-            matches(line, "a/b"),
-            matches(line, "a/bc"),
-            matches(line, "a"),
-        ];
-
-        // Assert
-        assert_eq!(result, [true, false, false]);
-    }
-
-    #[test]
-    fn does_not_treat_a_double_asterisk_after_literal_text_as_a_folder() {
-        // Arrange
-        let line = "a**/b";
-
-        // Act
-        let result = [matches(line, "a/x/b"), matches(line, "ax/b")];
-
-        // Assert
-        assert_eq!(result, [false, true]);
-    }
-
-    #[test]
-    fn keeps_the_literal_character_after_a_leading_slash() {
-        // Arrange
-        let line = "/a**/b";
-
-        // Act
-        let result = [matches(line, "a/x/b"), matches(line, "ax/b")];
-
-        // Assert
-        assert_eq!(result, [false, true]);
-    }
-
-    #[test]
-    fn matches_any_folders_with_a_double_asterisk_after_a_leading_slash() {
-        // Arrange
-        let line = "/**/b";
-
-        // Act
-        let result = [matches(line, "b"), matches(line, "x/y/b")];
-
-        // Assert
-        assert_eq!(result, [true, true]);
-    }
-
-    #[test]
-    fn matches_any_folders_with_a_double_asterisk_after_a_literal_folder() {
-        // Arrange
-        let line = "a/**/b";
-
-        // Act
-        let result = [matches(line, "a/b"), matches(line, "a/x/y/b")];
-
-        // Assert
-        assert_eq!(result, [true, true]);
-    }
-
-    #[test]
-    fn compares_the_literal_start_ignoring_case_when_asked() {
-        // Arrange
-        let pattern = parse_gitignore_pattern(b"A/*");
-
-        // Act
-        let result = [
-            gitignore_pattern_matches(&pattern, b"a/x", false, true),
-            gitignore_pattern_matches(&pattern, b"a/x", false, false),
-        ];
-
-        // Assert
-        assert_eq!(result, [true, false]);
-    }
-
-    #[test]
-    fn matches_nothing_with_an_empty_path() {
-        // Arrange
-        let line = "*/x";
-
-        // Act
-        let result = matches(line, "");
+        let result = gitignore_pattern_matches(&pattern, b"a/c.log", b"c.log", false);
 
         // Assert
         assert!(!result);
     }
 
     #[test]
-    fn matches_a_glob_from_the_start_without_a_literal_prefix() {
+    fn does_not_let_a_star_cross_folders() {
         // Arrange
-        let line = "*/x";
+        let pattern = pattern(b"a/*", false, true);
 
         // Act
-        let result = [matches(line, "a/x"), matches(line, "a/b/x")];
+        let result = gitignore_pattern_matches(&pattern, b"a/b/c", b"c", false);
 
         // Assert
-        assert_eq!(result, [true, false]);
+        assert!(!result);
+    }
+
+    #[test]
+    fn ignores_ascii_case() {
+        // Arrange
+        let pattern = pattern(b"*.LOG", false, false);
+
+        // Act
+        let result = gitignore_pattern_matches(&pattern, b"a.log", b"a.log", false);
+
+        // Assert
+        assert!(result);
+    }
+
+    #[test]
+    fn does_not_match_a_file_with_a_folder_pattern() {
+        // Arrange
+        let pattern = pattern(b"build", true, false);
+
+        // Act
+        let result = gitignore_pattern_matches(&pattern, b"build", b"build", false);
+
+        // Assert
+        assert!(!result);
+    }
+
+    #[test]
+    #[cfg(debug_assertions)]
+    #[should_panic(expected = "assertion")]
+    fn rejects_a_name_that_is_not_the_last_name_in_debug_builds() {
+        // Arrange
+        let pattern = pattern(b"a", false, false);
+
+        // Act
+        let _ = gitignore_pattern_matches(&pattern, b"a/b", b"a", false);
+
+        // Assert
+        // The call panics.
+    }
+
+    #[test]
+    fn matches_a_folder_with_a_folder_pattern() {
+        // Arrange
+        let pattern = pattern(b"build", true, false);
+
+        // Act
+        let result = gitignore_pattern_matches(&pattern, b"build", b"build", true);
+
+        // Assert
+        assert!(result);
     }
 }
