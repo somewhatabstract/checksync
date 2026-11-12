@@ -136,3 +136,15 @@ pub(super) struct BraceGroup {
     /// The index just past the group's closing `}`.
     pub(super) end: usize,
 }
+
+/// Why a pattern's brace groups couldn't be expanded.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) enum BraceExpansionError {
+    /// The pattern is longer than `expand_braces` accepts.
+    PatternTooLong,
+    /// The pattern's braces nest deeper than `expand_braces` accepts.
+    NestedTooDeeply,
+    /// The expansion would give more patterns, or more bytes of them, than
+    /// `expand_braces` allows.
+    TooManyResults,
+}
