@@ -3,31 +3,31 @@ use crate::advance_one_byte::advance_one_byte;
 use crate::advance_star::advance_star;
 use crate::types::{GlobOptions, GlobToken};
 
-/// Find where in the text matching moves to after one glob token.
+/// Move the reachable text positions past one glob token, in place.
 ///
 /// # Arguments
 ///
 /// * `token` - The token to match.
 /// * `text` - The text being matched.
-/// * `reachable` - For each position in the text, from 0 to its length,
-///   whether matching can have reached it before the token.
+/// * `positions` - For each position in the text, from 0 to its length,
+///   whether matching can reach it. Updated to the positions reachable
+///   after the token.
 /// * `options` - How to treat slashes and letter case.
 ///
 /// # Returns
 ///
-/// For each position in the text, whether matching can reach it after the
-/// token.
+/// `true` if any position is reachable after the token.
 #[must_use]
 pub(crate) fn advance_glob_positions(
     token: &GlobToken,
     text: &[u8],
-    reachable: &[bool],
+    positions: &mut [bool],
     options: GlobOptions,
-) -> Vec<bool> {
+) -> bool {
     match token {
-        GlobToken::One(matcher) => advance_one_byte(matcher, text, reachable, options),
-        GlobToken::Star { crosses_slash } => advance_star(text, reachable, *crosses_slash),
-        GlobToken::AnyFolders => advance_any_folders(text, reachable),
+        GlobToken::One(matcher) => advance_one_byte(matcher, text, positions, options),
+        GlobToken::Star { crosses_slash } => advance_star(text, positions, *crosses_slash),
+        GlobToken::AnyFolders => advance_any_folders(text, positions),
     }
 }
 
@@ -45,12 +45,13 @@ mod tests {
     fn moves_one_byte_for_a_single_byte_token() {
         // Arrange
         let token = GlobToken::One(ByteMatcher::Any);
+        let mut positions = [true, false, false];
 
         // Act
-        let result = advance_glob_positions(&token, b"ab", &[true, false, false], PATHNAME);
+        let _ = advance_glob_positions(&token, b"ab", &mut positions, PATHNAME);
 
         // Assert
-        assert_eq!(result, vec![false, true, false]);
+        assert_eq!(positions, [false, true, false]);
     }
 
     #[test]
@@ -59,23 +60,38 @@ mod tests {
         let token = GlobToken::Star {
             crosses_slash: false,
         };
+        let mut positions = [true, false, false];
 
         // Act
-        let result = advance_glob_positions(&token, b"a/", &[true, false, false], PATHNAME);
+        let _ = advance_glob_positions(&token, b"a/", &mut positions, PATHNAME);
 
         // Assert
-        assert_eq!(result, vec![true, true, false]);
+        assert_eq!(positions, [true, true, false]);
     }
 
     #[test]
     fn spreads_to_folder_starts_for_any_folders() {
         // Arrange
         let token = GlobToken::AnyFolders;
+        let mut positions = [true, false, false];
 
         // Act
-        let result = advance_glob_positions(&token, b"a/", &[true, false, false], PATHNAME);
+        let _ = advance_glob_positions(&token, b"a/", &mut positions, PATHNAME);
 
         // Assert
-        assert_eq!(result, vec![true, false, true]);
+        assert_eq!(positions, [true, false, true]);
+    }
+
+    #[test]
+    fn reports_whether_any_position_is_reachable() {
+        // Arrange
+        let token = GlobToken::One(ByteMatcher::Literal(b'x'));
+        let mut positions = [true, false];
+
+        // Act
+        let result = advance_glob_positions(&token, b"a", &mut positions, PATHNAME);
+
+        // Assert
+        assert!(!result);
     }
 }

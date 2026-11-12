@@ -1,5 +1,13 @@
+use crate::compile_glob::compile_glob;
 use crate::gitignore_trim_trailing_spaces::gitignore_trim_trailing_spaces;
-use crate::types::GitignorePattern;
+use crate::types::{GitignorePattern, GlobOptions};
+
+/// The options every ignore-file glob is matched with: `/` separates
+/// folders, and ASCII case is always ignored.
+pub(crate) const GITIGNORE_GLOB_OPTIONS: GlobOptions = GlobOptions {
+    pathname: true,
+    casefold: true,
+};
 
 /// Read one line of a `.gitignore`-style file as a pattern.
 ///
@@ -15,7 +23,8 @@ use crate::types::GitignorePattern;
 ///
 /// # Returns
 ///
-/// The pattern, or `None` if the line is a comment or holds no pattern.
+/// The pattern, or `None` if the line is a comment, holds no pattern, or
+/// holds one that can never match anything, which has no effect.
 #[must_use]
 pub(crate) fn gitignore_parse_line(line: &[u8]) -> Option<GitignorePattern> {
     let line = line.split(|&byte| byte == 0).next().unwrap_or_default();
@@ -38,7 +47,7 @@ pub(crate) fn gitignore_parse_line(line: &[u8]) -> Option<GitignorePattern> {
     let anchored = line.contains(&b'/');
     let glob = line.strip_prefix(b"/").unwrap_or(line);
     Some(GitignorePattern {
-        glob: glob.to_vec(),
+        glob: compile_glob(glob, GITIGNORE_GLOB_OPTIONS)?,
         negated,
         folders_only,
         anchored,
@@ -47,12 +56,13 @@ pub(crate) fn gitignore_parse_line(line: &[u8]) -> Option<GitignorePattern> {
 
 #[cfg(test)]
 mod tests {
-    use super::gitignore_parse_line;
+    use super::{GITIGNORE_GLOB_OPTIONS, gitignore_parse_line};
+    use crate::compile_glob::compile_glob;
     use crate::types::GitignorePattern;
 
     fn pattern(glob: &[u8], negated: bool, folders_only: bool, anchored: bool) -> GitignorePattern {
         GitignorePattern {
-            glob: glob.to_vec(),
+            glob: compile_glob(glob, GITIGNORE_GLOB_OPTIONS).unwrap(),
             negated,
             folders_only,
             anchored,
@@ -231,6 +241,18 @@ mod tests {
     fn skips_a_lone_slash() {
         // Arrange
         let line = b"/";
+
+        // Act
+        let result = gitignore_parse_line(line);
+
+        // Assert
+        assert_eq!(result, None);
+    }
+
+    #[test]
+    fn skips_a_pattern_that_can_never_match() {
+        // Arrange
+        let line = b"foo[ab";
 
         // Act
         let result = gitignore_parse_line(line);

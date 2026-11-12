@@ -25,12 +25,23 @@ pub(crate) fn gitignore_parse(contents: &[u8]) -> Vec<GitignorePattern> {
 #[cfg(test)]
 mod tests {
     use super::gitignore_parse;
+    use crate::compile_glob::compile_glob;
+    use crate::gitignore_parse_line::GITIGNORE_GLOB_OPTIONS;
+    use crate::types::CompiledGlob;
 
     /// List the globs of the patterns read from `contents`.
-    fn globs(contents: &[u8]) -> Vec<Vec<u8>> {
+    fn globs(contents: &[u8]) -> Vec<CompiledGlob> {
         gitignore_parse(contents)
             .into_iter()
             .map(|pattern| pattern.glob)
+            .collect()
+    }
+
+    /// Compile each of `patterns` as an ignore file would.
+    fn compiled(patterns: &[&[u8]]) -> Vec<CompiledGlob> {
+        patterns
+            .iter()
+            .map(|pattern| compile_glob(pattern, GITIGNORE_GLOB_OPTIONS).unwrap())
             .collect()
     }
 
@@ -43,7 +54,7 @@ mod tests {
         let result = globs(contents);
 
         // Assert
-        assert_eq!(result, vec![b"a".to_vec(), b"b".to_vec()]);
+        assert_eq!(result, compiled(&[b"a", b"b"]));
     }
 
     #[test]
@@ -55,7 +66,7 @@ mod tests {
         let result = globs(contents);
 
         // Assert
-        assert_eq!(result, vec![b"a".to_vec()]);
+        assert_eq!(result, compiled(&[b"a"]));
     }
 
     #[test]
@@ -67,7 +78,7 @@ mod tests {
         let result = globs(contents);
 
         // Assert
-        assert_eq!(result, vec![b"\xEF\xBB\xBFa".to_vec()]);
+        assert_eq!(result, compiled(&[b"\xEF\xBB\xBFa"]));
     }
 
     #[test]
@@ -79,6 +90,6 @@ mod tests {
         let result = globs(contents);
 
         // Assert
-        assert_eq!(result, vec![b"x".to_vec(), b"\xEF\xBB\xBFa".to_vec()]);
+        assert_eq!(result, compiled(&[b"x", b"\xEF\xBB\xBFa"]));
     }
 }

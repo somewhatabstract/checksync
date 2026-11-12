@@ -1,56 +1,49 @@
 use crate::advance_glob_positions::advance_glob_positions;
-use crate::tokenize_glob::tokenize_glob;
-use crate::types::GlobOptions;
+use crate::bytes_before_nul::bytes_before_nul;
+use crate::types::CompiledGlob;
 
-/// Check whether the whole of a text matches a glob pattern.
+/// Check whether the whole of a text matches a compiled glob pattern.
 ///
 /// Matching works on bytes, the way git matches its globs. `?` matches any
 /// one byte, `*` any run of bytes, `[...]` one byte from a set, and `\`
-/// makes the next byte literal. A NUL byte ends the pattern or the text, as
-/// it would a C string. A pattern ending in `\` or holding a malformed
-/// bracket set matches nothing. `GlobOptions` describes how `pathname` and
-/// `casefold` change this.
+/// makes the next byte literal. A NUL byte ends the text, as it would a C
+/// string. `GlobOptions` describes how `pathname` and `casefold` change
+/// this.
 ///
 /// Rather than backtracking, matching tracks every position in the text
-/// that the pattern so far can have reached, so it takes time proportional
-/// to the pattern's length times the text's, however many stars there are.
+/// that the pattern so far can reach, so it takes time proportional to the
+/// pattern's length times the text's, however many stars there are. It
+/// stops as soon as no position is reachable.
 ///
 /// # Arguments
 ///
-/// * `pattern` - The glob pattern.
+/// * `glob` - The compiled pattern.
 /// * `text` - The text to match against it.
-/// * `options` - How to treat slashes and letter case.
 ///
 /// # Returns
 ///
 /// `true` if the pattern matches the whole text.
 #[must_use]
-pub(crate) fn glob_matches(pattern: &[u8], text: &[u8], options: GlobOptions) -> bool {
-    let pattern = before_nul(pattern);
-    let text = before_nul(text);
-    let Some(tokens) = tokenize_glob(pattern, options) else {
-        return false;
-    };
-    let mut reachable = vec![false; text.len() + 1];
-    reachable[0] = true;
-    for token in &tokens {
-        reachable = advance_glob_positions(token, text, &reachable, options);
-    }
-    reachable[text.len()]
-}
-
-/// Cut bytes off at the first NUL, if there is one.
-fn before_nul(bytes: &[u8]) -> &[u8] {
-    bytes
+pub(crate) fn compiled_glob_matches(glob: &CompiledGlob, text: &[u8]) -> bool {
+    let text = bytes_before_nul(text);
+    let mut positions = vec![false; text.len() + 1];
+    positions[0] = true;
+    glob.tokens
         .iter()
-        .position(|&byte| byte == 0)
-        .map_or(bytes, |end| &bytes[..end])
+        .all(|token| advance_glob_positions(token, text, &mut positions, glob.options))
+        && positions[text.len()]
 }
 
 #[cfg(test)]
 mod tests {
-    use super::glob_matches;
+    use super::compiled_glob_matches;
+    use crate::compile_glob::compile_glob;
     use crate::types::GlobOptions;
+
+    /// Compile `pattern` and match `text` against it.
+    fn matches(pattern: &[u8], text: &[u8], options: GlobOptions) -> bool {
+        compiled_glob_matches(&compile_glob(pattern, options).unwrap(), text)
+    }
 
     const PLAIN: GlobOptions = GlobOptions {
         pathname: false,
@@ -73,7 +66,7 @@ mod tests {
         let pattern = b"abc";
 
         // Act
-        let result = glob_matches(pattern, b"abc", PLAIN);
+        let result = matches(pattern, b"abc", PLAIN);
 
         // Assert
         assert!(result);
@@ -85,7 +78,7 @@ mod tests {
         let pattern = b"ab";
 
         // Act
-        let result = glob_matches(pattern, b"abc", PLAIN);
+        let result = matches(pattern, b"abc", PLAIN);
 
         // Assert
         assert!(!result);
@@ -97,7 +90,7 @@ mod tests {
         let pattern = b"";
 
         // Act
-        let result = glob_matches(pattern, b"", PLAIN);
+        let result = matches(pattern, b"", PLAIN);
 
         // Assert
         assert!(result);
@@ -109,7 +102,7 @@ mod tests {
         let pattern = b"a?c";
 
         // Act
-        let result = glob_matches(pattern, b"a/c", PLAIN);
+        let result = matches(pattern, b"a/c", PLAIN);
 
         // Assert
         assert!(result);
@@ -121,7 +114,7 @@ mod tests {
         let pattern = b"a*c";
 
         // Act
-        let result = glob_matches(pattern, b"ab/bc", PLAIN);
+        let result = matches(pattern, b"ab/bc", PLAIN);
 
         // Assert
         assert!(result);
@@ -133,7 +126,7 @@ mod tests {
         let pattern = b"a*";
 
         // Act
-        let result = glob_matches(pattern, b"a", PLAIN);
+        let result = matches(pattern, b"a", PLAIN);
 
         // Assert
         assert!(result);
@@ -145,7 +138,7 @@ mod tests {
         let pattern = b"[[:digit:]x-z]";
 
         // Act
-        let result = glob_matches(pattern, b"y", PLAIN);
+        let result = matches(pattern, b"y", PLAIN);
 
         // Assert
         assert!(result);
@@ -157,58 +150,10 @@ mod tests {
         let pattern = b"a\\*";
 
         // Act
-        let result = glob_matches(pattern, b"ab", PLAIN);
+        let result = matches(pattern, b"ab", PLAIN);
 
         // Assert
         assert!(!result);
-    }
-
-    #[test]
-    fn matches_nothing_with_a_backslash_at_the_end() {
-        // Arrange
-        let pattern = b"a\\";
-
-        // Act
-        let result = glob_matches(pattern, b"a\\", PLAIN);
-
-        // Assert
-        assert!(!result);
-    }
-
-    #[test]
-    fn matches_nothing_with_an_unclosed_bracket() {
-        // Arrange
-        let pattern = b"[ab";
-
-        // Act
-        let result = glob_matches(pattern, b"[ab", PLAIN);
-
-        // Assert
-        assert!(!result);
-    }
-
-    #[test]
-    fn matches_nothing_with_an_unknown_class() {
-        // Arrange
-        let pattern = b"[a[:foo:]]";
-
-        // Act
-        let result = glob_matches(pattern, b"a", PLAIN);
-
-        // Assert
-        assert!(!result);
-    }
-
-    #[test]
-    fn ends_the_pattern_at_a_nul_byte() {
-        // Arrange
-        let pattern = b"ab\0c";
-
-        // Act
-        let result = glob_matches(pattern, b"ab", PLAIN);
-
-        // Assert
-        assert!(result);
     }
 
     #[test]
@@ -217,7 +162,7 @@ mod tests {
         let pattern = b"ab";
 
         // Act
-        let result = glob_matches(pattern, b"ab\0c", PLAIN);
+        let result = matches(pattern, b"ab\0c", PLAIN);
 
         // Assert
         assert!(result);
@@ -229,7 +174,7 @@ mod tests {
         let pattern = b"a*c";
 
         // Act
-        let result = glob_matches(pattern, b"ab/c", PATHNAME);
+        let result = matches(pattern, b"ab/c", PATHNAME);
 
         // Assert
         assert!(!result);
@@ -241,7 +186,7 @@ mod tests {
         let pattern = b"**/x";
 
         // Act
-        let result = glob_matches(pattern, b"x", PATHNAME);
+        let result = matches(pattern, b"x", PATHNAME);
 
         // Assert
         assert!(result);
@@ -253,7 +198,7 @@ mod tests {
         let pattern = b"**/x";
 
         // Act
-        let result = glob_matches(pattern, b"a/b/x", PATHNAME);
+        let result = matches(pattern, b"a/b/x", PATHNAME);
 
         // Assert
         assert!(result);
@@ -265,7 +210,7 @@ mod tests {
         let pattern = b"a/**/b";
 
         // Act
-        let result = glob_matches(pattern, b"a/b", PATHNAME);
+        let result = matches(pattern, b"a/b", PATHNAME);
 
         // Assert
         assert!(result);
@@ -277,7 +222,7 @@ mod tests {
         let pattern = b"a/**/b";
 
         // Act
-        let result = glob_matches(pattern, b"a/x/y/b", PATHNAME);
+        let result = matches(pattern, b"a/x/y/b", PATHNAME);
 
         // Assert
         assert!(result);
@@ -289,7 +234,7 @@ mod tests {
         let pattern = b"a/**";
 
         // Act
-        let result = glob_matches(pattern, b"a/b/c", PATHNAME);
+        let result = matches(pattern, b"a/b/c", PATHNAME);
 
         // Assert
         assert!(result);
@@ -301,7 +246,7 @@ mod tests {
         let pattern = b"a/**";
 
         // Act
-        let result = glob_matches(pattern, b"a", PATHNAME);
+        let result = matches(pattern, b"a", PATHNAME);
 
         // Assert
         assert!(!result);
@@ -313,7 +258,7 @@ mod tests {
         let pattern = b"a**";
 
         // Act
-        let result = glob_matches(pattern, b"a/b", PATHNAME);
+        let result = matches(pattern, b"a/b", PATHNAME);
 
         // Assert
         assert!(!result);
@@ -325,7 +270,7 @@ mod tests {
         let pattern = b"a/**/b";
 
         // Act
-        let result = glob_matches(pattern, b"a/b", PLAIN);
+        let result = matches(pattern, b"a/b", PLAIN);
 
         // Assert
         assert!(!result);
@@ -337,7 +282,7 @@ mod tests {
         let pattern = b"AbC";
 
         // Act
-        let result = glob_matches(pattern, b"aBc", CASEFOLD);
+        let result = matches(pattern, b"aBc", CASEFOLD);
 
         // Assert
         assert!(result);
@@ -349,7 +294,7 @@ mod tests {
         let pattern = b"[A-Z]";
 
         // Act
-        let result = glob_matches(pattern, b"q", CASEFOLD);
+        let result = matches(pattern, b"q", CASEFOLD);
 
         // Assert
         assert!(result);
@@ -361,7 +306,7 @@ mod tests {
         let pattern = b"\xc9";
 
         // Act
-        let result = glob_matches(pattern, b"\xe9", CASEFOLD);
+        let result = matches(pattern, b"\xe9", CASEFOLD);
 
         // Assert
         assert!(!result);
@@ -373,7 +318,7 @@ mod tests {
         let pattern = b"abc";
 
         // Act
-        let result = glob_matches(pattern, b"ABC", PLAIN);
+        let result = matches(pattern, b"ABC", PLAIN);
 
         // Assert
         assert!(!result);

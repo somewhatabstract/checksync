@@ -1,16 +1,10 @@
-use crate::glob_matches::glob_matches;
-use crate::types::{GitignorePattern, GlobOptions};
-
-/// The options every ignore-file glob is matched with.
-const OPTIONS: GlobOptions = GlobOptions {
-    pathname: true,
-    casefold: true,
-};
+use crate::compiled_glob_matches::compiled_glob_matches;
+use crate::types::GitignorePattern;
 
 /// Check whether one ignore-file pattern matches a path.
 ///
 /// An anchored pattern is matched against the whole path, and any other
-/// pattern against the last name in it. ASCII case is always ignored.
+/// pattern against the last name in it.
 ///
 /// # Arguments
 ///
@@ -36,17 +30,19 @@ pub(crate) fn gitignore_pattern_matches(
     } else {
         path.rsplit(|&byte| byte == b'/').next().unwrap_or_default()
     };
-    glob_matches(&pattern.glob, subject, OPTIONS)
+    compiled_glob_matches(&pattern.glob, subject)
 }
 
 #[cfg(test)]
 mod tests {
     use super::gitignore_pattern_matches;
+    use crate::compile_glob::compile_glob;
+    use crate::gitignore_parse_line::GITIGNORE_GLOB_OPTIONS;
     use crate::types::GitignorePattern;
 
     fn pattern(glob: &[u8], folders_only: bool, anchored: bool) -> GitignorePattern {
         GitignorePattern {
-            glob: glob.to_vec(),
+            glob: compile_glob(glob, GITIGNORE_GLOB_OPTIONS).unwrap(),
             negated: false,
             folders_only,
             anchored,

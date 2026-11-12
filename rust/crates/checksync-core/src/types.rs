@@ -384,7 +384,7 @@ pub enum IgnoreDecision {
     NoOpinion,
 }
 
-/// How `glob_matches` treats slashes and letter case.
+/// How a glob pattern treats slashes and letter case.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub(crate) struct GlobOptions {
     /// Whether `/` separates folders.
@@ -399,6 +399,15 @@ pub(crate) struct GlobOptions {
     /// nothing, though ranges and classes such as `[A-Z]` and `[:upper:]`
     /// still match lowercase letters.
     pub casefold: bool,
+}
+
+/// A glob pattern compiled once so it can be matched against many texts.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct CompiledGlob {
+    /// The pattern's tokens, in order.
+    pub tokens: Vec<GlobToken>,
+    /// How the pattern treats slashes and letter case.
+    pub options: GlobOptions,
 }
 
 /// One step of a parsed glob pattern.
@@ -495,9 +504,9 @@ pub(crate) enum ClassSyntax {
 /// One pattern read from a `.gitignore`-style file.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(crate) struct GitignorePattern {
-    /// The glob to match, without any leading `!`, leading `/` or trailing
-    /// `/`.
-    pub glob: Vec<u8>,
+    /// The compiled glob to match, from the pattern without any leading
+    /// `!`, leading `/` or trailing `/`.
+    pub glob: CompiledGlob,
     /// Whether the pattern started with `!`, so a match unignores.
     pub negated: bool,
     /// Whether the pattern ended with `/`, so it matches only folders.
