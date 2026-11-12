@@ -1,4 +1,4 @@
-use super::brace_group_depth::brace_group_depth;
+use super::contains_brace_group::contains_brace_group;
 use super::expand_brace_pieces::expand_brace_pieces;
 use super::types::{BraceBudget, BraceExpansionError};
 
@@ -6,9 +6,6 @@ use super::types::{BraceBudget, BraceExpansionError};
 ///
 /// micromatch's braces has the same limit.
 const MAX_PATTERN_LENGTH: usize = 10_000;
-
-/// The deepest nesting of brace groups `expand_braces` accepts.
-const MAX_NESTING: usize = 64;
 
 /// Expand the `{a,b}` brace groups in a pattern into separate patterns.
 ///
@@ -29,9 +26,10 @@ const MAX_NESTING: usize = 64;
 ///
 /// A pattern with no brace group always gives just itself. To stay within
 /// time and memory, a pattern with groups may be at most 10,000 bytes long,
-/// its groups may nest at most 64 deep (as `brace_group_depth` counts them),
 /// and the expansion may hold at most what `take_brace_budget` allows at
 /// once, counting partial results: 100,000 patterns and 10,000,000 bytes.
+/// Groups may nest to any depth: expansion keeps its work on the heap, so
+/// its use of the call stack doesn't grow with the nesting.
 ///
 /// # Arguments
 ///
@@ -44,9 +42,9 @@ const MAX_NESTING: usize = 64;
 ///
 /// # Errors
 ///
-/// `BraceExpansionError::PatternTooLong`, `BraceExpansionError::NestedTooDeeply`
-/// or `BraceExpansionError::TooManyResults` if the pattern is beyond one of
-/// the limits.
+/// `BraceExpansionError::PatternTooLong` or
+/// `BraceExpansionError::TooManyResults` if the pattern is beyond one of the
+/// limits.
 #[cfg_attr(
     not(test),
     expect(
@@ -55,15 +53,11 @@ const MAX_NESTING: usize = 64;
     )
 )]
 pub(crate) fn expand_braces(pattern: &[u8]) -> Result<Vec<Vec<u8>>, BraceExpansionError> {
-    let depth = brace_group_depth(pattern);
-    if depth == 0 {
+    if !contains_brace_group(pattern) {
         return Ok(vec![pattern.to_vec()]);
     }
     if pattern.len() > MAX_PATTERN_LENGTH {
         return Err(BraceExpansionError::PatternTooLong);
-    }
-    if depth > MAX_NESTING {
-        return Err(BraceExpansionError::NestedTooDeeply);
     }
     expand_brace_pieces(pattern, &mut BraceBudget::default())
 }
@@ -73,7 +67,7 @@ mod tests {
     use serde::Deserialize;
 
     use super::super::types::BraceExpansionError;
-    use super::{MAX_NESTING, MAX_PATTERN_LENGTH, expand_braces};
+    use super::{MAX_PATTERN_LENGTH, expand_braces};
 
     /// The fast-glob vector table, of which these tests read the expansions.
     #[derive(Deserialize)]
@@ -351,58 +345,83 @@ mod tests {
         assert_eq!(result, Ok(vec![pattern.into_bytes()]));
     }
 
-    #[test]
-    fn rejects_groups_nested_too_deeply() {
-        // Arrange
-        let depth = MAX_NESTING + 1;
-        let pattern = ["{a,".repeat(depth), "}".repeat(depth)].concat();
-
-        // Act
-        let result = expand_braces(pattern.as_bytes());
-
-        // Assert
-        assert_eq!(result, Err(BraceExpansionError::NestedTooDeeply));
+    /// Expand `pattern` on a thread with a deliberately small stack.
+    fn expand_on_small_stack(pattern: String) -> Result<usize, BraceExpansionError> {
+        std::thread::Builder::new()
+            .stack_size(64 * 1024)
+            .spawn(move || expand_braces(pattern.as_bytes()).map(|results| results.len()))
+            .unwrap()
+            .join()
+            .unwrap()
     }
 
     #[test]
-    fn expands_groups_nested_as_deeply_as_allowed() {
+    fn expands_deeply_nested_groups() {
         // Arrange
-        let pattern = ["{a,".repeat(MAX_NESTING), "}".repeat(MAX_NESTING)].concat();
+        let pattern = ["{a,".repeat(2_500), "}".repeat(2_500)].concat();
 
         // Act
         let result = expand_braces(pattern.as_bytes()).map(|results| results.len());
 
         // Assert
-        assert_eq!(result, Ok(MAX_NESTING + 1));
+        assert_eq!(result, Ok(2_501));
     }
 
     #[test]
-    fn expands_groups_as_deeply_as_allowed_on_a_small_stack() {
-        // Arrange
-        let pattern = ["{a,".repeat(MAX_NESTING), "}".repeat(MAX_NESTING)].concat();
-        let thread = std::thread::Builder::new().stack_size(128 * 1024);
-
-        // Act
-        let result = thread
-            .spawn(move || expand_braces(pattern.as_bytes()).map(|results| results.len()))
-            .unwrap()
-            .join()
-            .unwrap();
-
-        // Assert
-        assert_eq!(result, Ok(MAX_NESTING + 1));
-    }
-
-    #[test]
-    fn fails_cleanly_on_very_deep_nesting() {
+    fn expands_deeply_nested_groups_on_a_small_stack() {
         // Arrange
         let pattern = ["{a,".repeat(2_500), "}".repeat(2_500)].concat();
 
         // Act
-        let result = expand_braces(pattern.as_bytes());
+        let result = expand_on_small_stack(pattern);
 
         // Assert
-        assert_eq!(result, Err(BraceExpansionError::NestedTooDeeply));
+        assert_eq!(result, Ok(2_501));
+    }
+
+    #[test]
+    fn expands_a_group_inside_many_braces_on_a_small_stack() {
+        // Arrange
+        let pattern = ["{".repeat(1_500), "a,b".to_owned(), "}".repeat(1_500)].concat();
+
+        // Act
+        let result = expand_on_small_stack(pattern);
+
+        // Assert
+        assert_eq!(result, Ok(2));
+    }
+
+    #[test]
+    fn keeps_deeply_nested_braces_without_commas_on_a_small_stack() {
+        // Arrange
+        let pattern = ["{".repeat(50_000), "}".repeat(50_000)].concat();
+
+        // Act
+        let result = expand_on_small_stack(pattern);
+
+        // Assert
+        assert_eq!(result, Ok(1));
+    }
+
+    #[test]
+    fn fails_cleanly_on_a_small_stack_when_there_are_too_many_results() {
+        // Arrange
+        let level = [
+            "{".to_owned(),
+            "{a,b}".repeat(16),
+            "L".repeat(60),
+            ",".to_owned(),
+            "{a,b}".repeat(16),
+            "M".repeat(60),
+        ]
+        .concat();
+        let pattern = [level.repeat(35), "}".repeat(35)].concat();
+
+        // Act
+        let result = expand_on_small_stack(pattern);
+
+        // Assert
+        assert_eq!(result, Err(BraceExpansionError::TooManyResults));
     }
 
     #[test]

@@ -146,8 +146,6 @@ pub(super) struct BraceGroup {
 pub(crate) enum BraceExpansionError {
     /// The pattern is longer than `expand_braces` accepts.
     PatternTooLong,
-    /// The pattern's brace groups nest deeper than `expand_braces` accepts.
-    NestedTooDeeply,
     /// The expansion would hold more output at once than allowed.
     ///
     /// `take_brace_budget` sets the limits, counting every pattern and byte
@@ -162,4 +160,45 @@ pub(super) struct BraceBudget {
     pub(super) count: usize,
     /// How many bytes those patterns hold altogether.
     pub(super) bytes: usize,
+}
+
+/// What the next piece of a pattern being brace-expanded is.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(super) enum BracePiece {
+    /// Text kept as written, up to the given index.
+    Text(usize),
+    /// A brace group.
+    Group(BraceGroup),
+}
+
+/// A step of brace expansion still in progress, kept on a heap stack.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(super) enum BraceFrame {
+    /// Expanding a run of the pattern piece by piece.
+    Sequence {
+        /// The index just past the end of the run.
+        end: usize,
+        /// Where the next piece starts.
+        index: usize,
+        /// The expanded patterns so far.
+        results: Vec<Vec<u8>>,
+    },
+    /// Expanding a group's alternatives one after another.
+    ///
+    /// It holds the state of the run it's in, which carries on once the
+    /// group's alternatives are all expanded.
+    Group {
+        /// Where each alternative lies in the pattern.
+        alternatives: Vec<std::ops::Range<usize>>,
+        /// Which alternative to expand next.
+        next: usize,
+        /// The expanded alternatives so far, in order.
+        texts: Vec<Vec<u8>>,
+        /// The run's expanded patterns before the group.
+        results: Vec<Vec<u8>>,
+        /// The index just past the end of the run.
+        end: usize,
+        /// The index just past the group, where the run carries on.
+        resume: usize,
+    },
 }

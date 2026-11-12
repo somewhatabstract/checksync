@@ -1,18 +1,16 @@
-use super::combine_brace_texts::combine_brace_texts;
-use super::read_brace_piece::read_brace_piece;
-use super::take_brace_budget::take_brace_budget;
+use super::start_brace_sequence::start_brace_sequence;
+use super::step_brace_frame::step_brace_frame;
 use super::types::{BraceBudget, BraceExpansionError};
 
-/// Expand a pattern's brace groups piece by piece, within a shared budget.
+/// Expand a pattern's brace groups with a heap stack, within a budget.
 ///
-/// `expand_braces` checks the pattern's length and nesting first; this is
-/// also how alternatives of nested groups are expanded. The results are
-/// counted against `budget` and stay counted when returned, until the
-/// caller releases them.
+/// `expand_braces` checks the pattern's length first. Nested groups are
+/// expanded through frames on a stack kept on the heap rather than through
+/// recursion, so the call stack stays the same size whatever the input.
 ///
 /// # Arguments
 ///
-/// * `pattern` - The pattern, or one alternative of a group in it.
+/// * `pattern` - The pattern.
 /// * `budget` - The output the whole expansion holds at once.
 ///
 /// # Returns
@@ -26,15 +24,15 @@ pub(super) fn expand_brace_pieces(
     pattern: &[u8],
     budget: &mut BraceBudget,
 ) -> Result<Vec<Vec<u8>>, BraceExpansionError> {
-    take_brace_budget(budget, 1, 0)?;
-    let mut results = vec![Vec::new()];
-    let mut index = 0;
-    while index < pattern.len() {
-        let (texts, next) = read_brace_piece(pattern, index, budget)?;
-        combine_brace_texts(&mut results, &texts, budget)?;
-        index = next;
+    let mut stack = vec![start_brace_sequence(0..pattern.len(), budget)?];
+    let mut expanded = Vec::new();
+    // The stack empties just after the step that finishes the expansion.
+    while let Some(frame) = stack.pop() {
+        if let Some(results) = step_brace_frame(pattern, frame, &mut stack, budget)? {
+            expanded = results;
+        }
     }
-    Ok(results)
+    Ok(expanded)
 }
 
 #[cfg(test)]
@@ -52,6 +50,21 @@ mod tests {
 
         // Assert
         assert_eq!(result, Ok(vec![b"abd".to_vec(), b"acd".to_vec()]));
+    }
+
+    #[test]
+    fn expands_nested_groups() {
+        // Arrange
+        let pattern = b"x{a,b{c,d}}y";
+
+        // Act
+        let result = expand_brace_pieces(pattern, &mut BraceBudget::default());
+
+        // Assert
+        assert_eq!(
+            result,
+            Ok(vec![b"xay".to_vec(), b"xbcy".to_vec(), b"xbdy".to_vec()])
+        );
     }
 
     #[test]
@@ -97,18 +110,6 @@ mod tests {
     fn rejects_combined_results_that_do_not_fit() {
         // Arrange
         let pattern = b"{a,b}".repeat(17);
-
-        // Act
-        let result = expand_brace_pieces(&pattern, &mut BraceBudget::default());
-
-        // Assert
-        assert_eq!(result, Err(BraceExpansionError::TooManyResults));
-    }
-
-    #[test]
-    fn rejects_a_group_whose_alternatives_do_not_fit() {
-        // Arrange
-        let pattern = [b"x{y,".as_slice(), &b"{a,b}".repeat(17), b"}"].concat();
 
         // Act
         let result = expand_brace_pieces(&pattern, &mut BraceBudget::default());
