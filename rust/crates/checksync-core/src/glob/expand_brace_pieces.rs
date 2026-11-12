@@ -71,4 +71,16 @@ mod tests {
         // Assert
         assert_eq!(result, Err(BraceExpansionError::TooManyResults));
     }
+
+    #[test]
+    fn rejects_a_group_whose_alternatives_expand_too_far() {
+        // Arrange
+        let pattern = [b"x{y,".as_slice(), &b"{a,b}".repeat(17), b"}"].concat();
+
+        // Act
+        let result = expand_brace_pieces(&pattern);
+
+        // Assert
+        assert_eq!(result, Err(BraceExpansionError::TooManyResults));
+    }
 }
