@@ -97,6 +97,9 @@ mod tests {
         assert_eq!(result, "missing");
     }
 
+    // Windows doesn't allow `*` in a folder name, so only Unix can have a
+    // folder that a pattern with a star names exactly.
+    #[cfg(unix)]
     #[test]
     fn keeps_a_pattern_with_a_star() {
         // Arrange
