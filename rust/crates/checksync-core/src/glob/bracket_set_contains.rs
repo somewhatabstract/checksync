@@ -1,5 +1,5 @@
-use crate::bracket_item_matches::bracket_item_matches;
-use crate::types::BracketSet;
+use crate::glob::bracket_item_matches::bracket_item_matches;
+use crate::glob::types::BracketSet;
 
 /// Check whether a byte of the text matches a bracket set.
 ///
@@ -18,7 +18,7 @@ use crate::types::BracketSet;
 /// `true` if the byte matches a member of a plain set, or no member of a
 /// negated one.
 #[must_use]
-pub(crate) fn bracket_set_contains(set: &BracketSet, byte: u8, casefold: bool) -> bool {
+pub(super) fn bracket_set_contains(set: &BracketSet, byte: u8, casefold: bool) -> bool {
     let byte = if casefold {
         byte.to_ascii_lowercase()
     } else {
@@ -34,7 +34,7 @@ pub(crate) fn bracket_set_contains(set: &BracketSet, byte: u8, casefold: bool) -
 #[cfg(test)]
 mod tests {
     use super::bracket_set_contains;
-    use crate::types::{BracketItem, BracketSet};
+    use crate::glob::types::{BracketItem, BracketSet};
 
     fn set(negated: bool) -> BracketSet {
         BracketSet {

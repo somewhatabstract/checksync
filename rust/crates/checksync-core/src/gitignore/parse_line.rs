@@ -1,11 +1,10 @@
-use crate::bytes_before_nul::bytes_before_nul;
-use crate::compile_glob::compile_glob;
-use crate::gitignore_trim_trailing_spaces::gitignore_trim_trailing_spaces;
-use crate::types::{GitignorePattern, GlobOptions};
+use crate::gitignore::trim_trailing_spaces::trim_trailing_spaces;
+use crate::gitignore::types::GitignorePattern;
+use crate::glob::{GlobOptions, bytes_before_nul, compile_glob};
 
 /// The options every ignore-file glob is matched with: `/` separates
 /// folders, and ASCII case is always ignored.
-pub(crate) const GITIGNORE_GLOB_OPTIONS: GlobOptions = GlobOptions {
+pub(super) const GLOB_OPTIONS: GlobOptions = GlobOptions {
     pathname: true,
     casefold: true,
 };
@@ -28,12 +27,12 @@ pub(crate) const GITIGNORE_GLOB_OPTIONS: GlobOptions = GlobOptions {
 /// The pattern, or `None` if the line is a comment, holds no pattern, or
 /// holds one that can never match anything, which has no effect.
 #[must_use]
-pub(crate) fn gitignore_parse_line(line: &[u8]) -> Option<GitignorePattern> {
+pub(super) fn parse_line(line: &[u8]) -> Option<GitignorePattern> {
     let line = bytes_before_nul(line.strip_suffix(b"\r").unwrap_or(line));
     if line.first() == Some(&b'#') {
         return None;
     }
-    let line = gitignore_trim_trailing_spaces(line);
+    let line = trim_trailing_spaces(line);
     let negated = line.first() == Some(&b'!');
     let line = if negated { &line[1..] } else { line };
     let folders_only = line.last() == Some(&b'/');
@@ -48,7 +47,7 @@ pub(crate) fn gitignore_parse_line(line: &[u8]) -> Option<GitignorePattern> {
     let anchored = line.contains(&b'/');
     let glob = line.strip_prefix(b"/").unwrap_or(line);
     Some(GitignorePattern {
-        glob: compile_glob(glob, GITIGNORE_GLOB_OPTIONS)?,
+        glob: compile_glob(glob, GLOB_OPTIONS)?,
         negated,
         folders_only,
         anchored,
@@ -57,13 +56,13 @@ pub(crate) fn gitignore_parse_line(line: &[u8]) -> Option<GitignorePattern> {
 
 #[cfg(test)]
 mod tests {
-    use super::{GITIGNORE_GLOB_OPTIONS, gitignore_parse_line};
-    use crate::compile_glob::compile_glob;
-    use crate::types::GitignorePattern;
+    use super::{GLOB_OPTIONS, parse_line};
+    use crate::gitignore::types::GitignorePattern;
+    use crate::glob::compile_glob;
 
     fn pattern(glob: &[u8], negated: bool, folders_only: bool, anchored: bool) -> GitignorePattern {
         GitignorePattern {
-            glob: compile_glob(glob, GITIGNORE_GLOB_OPTIONS).unwrap(),
+            glob: compile_glob(glob, GLOB_OPTIONS).unwrap(),
             negated,
             folders_only,
             anchored,
@@ -76,7 +75,7 @@ mod tests {
         let line = b"*.log";
 
         // Act
-        let result = gitignore_parse_line(line);
+        let result = parse_line(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"*.log", false, false, false)));
@@ -88,7 +87,7 @@ mod tests {
         let line = b"";
 
         // Act
-        let result = gitignore_parse_line(line);
+        let result = parse_line(line);
 
         // Assert
         assert_eq!(result, None);
@@ -100,7 +99,7 @@ mod tests {
         let line = b"   ";
 
         // Act
-        let result = gitignore_parse_line(line);
+        let result = parse_line(line);
 
         // Assert
         assert_eq!(result, None);
@@ -112,7 +111,7 @@ mod tests {
         let line = b"# *.js";
 
         // Act
-        let result = gitignore_parse_line(line);
+        let result = parse_line(line);
 
         // Assert
         assert_eq!(result, None);
@@ -124,7 +123,7 @@ mod tests {
         let line = b"\\#a";
 
         // Act
-        let result = gitignore_parse_line(line);
+        let result = parse_line(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"\\#a", false, false, false)));
@@ -136,7 +135,7 @@ mod tests {
         let line = b" #a";
 
         // Act
-        let result = gitignore_parse_line(line);
+        let result = parse_line(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b" #a", false, false, false)));
@@ -148,7 +147,7 @@ mod tests {
         let line = b"a  ";
 
         // Act
-        let result = gitignore_parse_line(line);
+        let result = parse_line(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"a", false, false, false)));
@@ -160,7 +159,7 @@ mod tests {
         let line = b"a\r\r";
 
         // Act
-        let result = gitignore_parse_line(line);
+        let result = parse_line(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"a\r", false, false, false)));
@@ -172,7 +171,7 @@ mod tests {
         let line = b"a \r";
 
         // Act
-        let result = gitignore_parse_line(line);
+        let result = parse_line(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"a", false, false, false)));
@@ -184,7 +183,7 @@ mod tests {
         let line = b"a \0/b";
 
         // Act
-        let result = gitignore_parse_line(line);
+        let result = parse_line(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"a", false, false, false)));
@@ -196,7 +195,7 @@ mod tests {
         let line = b"a\0x\r";
 
         // Act
-        let result = gitignore_parse_line(line);
+        let result = parse_line(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"a", false, false, false)));
@@ -208,7 +207,7 @@ mod tests {
         let line = b"a\r\0x";
 
         // Act
-        let result = gitignore_parse_line(line);
+        let result = parse_line(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"a\r", false, false, false)));
@@ -220,7 +219,7 @@ mod tests {
         let line = b"!a";
 
         // Act
-        let result = gitignore_parse_line(line);
+        let result = parse_line(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"a", true, false, false)));
@@ -232,7 +231,7 @@ mod tests {
         let line = b"\\!a";
 
         // Act
-        let result = gitignore_parse_line(line);
+        let result = parse_line(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"\\!a", false, false, false)));
@@ -244,7 +243,7 @@ mod tests {
         let line = b"!";
 
         // Act
-        let result = gitignore_parse_line(line);
+        let result = parse_line(line);
 
         // Assert
         assert_eq!(result, None);
@@ -256,7 +255,7 @@ mod tests {
         let line = b"build/";
 
         // Act
-        let result = gitignore_parse_line(line);
+        let result = parse_line(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"build", false, true, false)));
@@ -268,7 +267,7 @@ mod tests {
         let line = b"/";
 
         // Act
-        let result = gitignore_parse_line(line);
+        let result = parse_line(line);
 
         // Assert
         assert_eq!(result, None);
@@ -280,7 +279,7 @@ mod tests {
         let line = b"foo[ab";
 
         // Act
-        let result = gitignore_parse_line(line);
+        let result = parse_line(line);
 
         // Assert
         assert_eq!(result, None);
@@ -292,7 +291,7 @@ mod tests {
         let line = b"/build";
 
         // Act
-        let result = gitignore_parse_line(line);
+        let result = parse_line(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"build", false, false, true)));
@@ -304,7 +303,7 @@ mod tests {
         let line = b"/**b";
 
         // Act
-        let result = gitignore_parse_line(line);
+        let result = parse_line(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"**b", false, false, true)));
@@ -316,7 +315,7 @@ mod tests {
         let line = b"doc/frotz/";
 
         // Act
-        let result = gitignore_parse_line(line);
+        let result = parse_line(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"doc/frotz", false, true, true)));

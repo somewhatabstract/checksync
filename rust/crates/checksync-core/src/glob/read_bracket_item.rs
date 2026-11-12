@@ -1,6 +1,6 @@
-use crate::read_bracket_class::read_bracket_class;
-use crate::read_glob_byte::read_glob_byte;
-use crate::types::{BracketItem, ClassSyntax};
+use crate::glob::read_bracket_class::read_bracket_class;
+use crate::glob::read_glob_byte::read_glob_byte;
+use crate::glob::types::{BracketItem, ClassSyntax};
 
 /// Read one member of a bracket set: a POSIX class, a range or a byte.
 ///
@@ -21,7 +21,7 @@ use crate::types::{BracketItem, ClassSyntax};
 /// The member and the index just past it, or `None` if the member is
 /// malformed: an unknown class name, or a `\` at the end of the pattern.
 #[must_use]
-pub(crate) fn read_bracket_item(pattern: &[u8], index: usize) -> Option<(BracketItem, usize)> {
+pub(super) fn read_bracket_item(pattern: &[u8], index: usize) -> Option<(BracketItem, usize)> {
     if pattern[index] == b'[' && pattern.get(index + 1) == Some(&b':') {
         match read_bracket_class(pattern, index) {
             ClassSyntax::Known(class, next) => return Some((BracketItem::Class(class), next)),
@@ -42,7 +42,7 @@ pub(crate) fn read_bracket_item(pattern: &[u8], index: usize) -> Option<(Bracket
 #[cfg(test)]
 mod tests {
     use super::read_bracket_item;
-    use crate::types::{BracketItem, PosixClass};
+    use crate::glob::types::{BracketItem, PosixClass};
 
     #[test]
     fn reads_a_byte() {

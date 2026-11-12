@@ -1,5 +1,5 @@
-use crate::posix_class_from_name::posix_class_from_name;
-use crate::types::ClassSyntax;
+use crate::glob::posix_class_from_name::posix_class_from_name;
+use crate::glob::types::ClassSyntax;
 
 /// Work out whether a `[:` inside a bracket set starts a POSIX class.
 ///
@@ -20,7 +20,7 @@ use crate::types::ClassSyntax;
 /// `ClassSyntax::NotAClass` if the `[` is just an ordinary member of the
 /// set.
 #[must_use]
-pub(crate) fn read_bracket_class(pattern: &[u8], index: usize) -> ClassSyntax {
+pub(super) fn read_bracket_class(pattern: &[u8], index: usize) -> ClassSyntax {
     let name_start = index + 2;
     let Some(offset) = pattern[name_start..].iter().position(|&byte| byte == b']') else {
         return ClassSyntax::NotAClass;
@@ -38,7 +38,7 @@ pub(crate) fn read_bracket_class(pattern: &[u8], index: usize) -> ClassSyntax {
 #[cfg(test)]
 mod tests {
     use super::read_bracket_class;
-    use crate::types::{ClassSyntax, PosixClass};
+    use crate::glob::types::{ClassSyntax, PosixClass};
 
     #[test]
     fn reads_a_known_class() {

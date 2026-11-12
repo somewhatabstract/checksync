@@ -1,5 +1,5 @@
-use crate::bracket_set_contains::bracket_set_contains;
-use crate::types::{ByteMatcher, GlobOptions};
+use crate::glob::bracket_set_contains::bracket_set_contains;
+use crate::glob::types::{ByteMatcher, GlobOptions};
 
 /// Check whether one byte of the text matches a single-byte glob token.
 ///
@@ -17,7 +17,7 @@ use crate::types::{ByteMatcher, GlobOptions};
 ///
 /// `true` if the byte matches.
 #[must_use]
-pub(crate) fn byte_matcher_matches(matcher: &ByteMatcher, byte: u8, options: GlobOptions) -> bool {
+pub(super) fn byte_matcher_matches(matcher: &ByteMatcher, byte: u8, options: GlobOptions) -> bool {
     let is_separator = options.pathname && byte == b'/';
     match matcher {
         ByteMatcher::Literal(expected) if options.casefold => expected.eq_ignore_ascii_case(&byte),
@@ -33,7 +33,7 @@ pub(crate) fn byte_matcher_matches(matcher: &ByteMatcher, byte: u8, options: Glo
 #[cfg(test)]
 mod tests {
     use super::byte_matcher_matches;
-    use crate::types::{BracketItem, BracketSet, ByteMatcher, GlobOptions};
+    use crate::glob::types::{BracketItem, BracketSet, ByteMatcher, GlobOptions};
 
     const PATHNAME: GlobOptions = GlobOptions {
         pathname: true,

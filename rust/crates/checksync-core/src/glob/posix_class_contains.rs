@@ -1,4 +1,4 @@
-use crate::types::PosixClass;
+use crate::glob::types::PosixClass;
 
 /// Check whether a byte belongs to a POSIX character class.
 ///
@@ -14,7 +14,7 @@ use crate::types::PosixClass;
 ///
 /// `true` if the byte is in the class.
 #[must_use]
-pub(crate) fn posix_class_contains(class: PosixClass, byte: u8) -> bool {
+pub(super) fn posix_class_contains(class: PosixClass, byte: u8) -> bool {
     match class {
         PosixClass::Alnum => byte.is_ascii_alphanumeric(),
         PosixClass::Alpha => byte.is_ascii_alphabetic(),
@@ -34,7 +34,7 @@ pub(crate) fn posix_class_contains(class: PosixClass, byte: u8) -> bool {
 #[cfg(test)]
 mod tests {
     use super::posix_class_contains;
-    use crate::types::PosixClass;
+    use crate::glob::types::PosixClass;
 
     /// List the bytes from 1 to 255 that belong to a class.
     fn members(class: PosixClass) -> Vec<u8> {

@@ -1,6 +1,6 @@
-use crate::advance_glob_positions::advance_glob_positions;
-use crate::bytes_before_nul::bytes_before_nul;
-use crate::types::CompiledGlob;
+use crate::glob::advance_glob_positions::advance_glob_positions;
+use crate::glob::bytes_before_nul::bytes_before_nul;
+use crate::glob::types::CompiledGlob;
 
 /// Check whether the whole of a text matches a compiled glob pattern.
 ///
@@ -39,8 +39,8 @@ mod tests {
     use serde::Deserialize;
 
     use super::compiled_glob_matches;
-    use crate::compile_glob::compile_glob;
-    use crate::types::GlobOptions;
+    use crate::glob::compile_glob::compile_glob;
+    use crate::glob::types::GlobOptions;
 
     /// The glob vector table: what it holds, and the vectors themselves.
     #[derive(Deserialize)]

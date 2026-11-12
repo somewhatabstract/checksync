@@ -1,5 +1,5 @@
-use crate::gitignore_parse_line::gitignore_parse_line;
-use crate::types::GitignorePattern;
+use crate::gitignore::parse_line::parse_line;
+use crate::gitignore::types::GitignorePattern;
 
 /// Read the patterns from the contents of a `.gitignore`-style file.
 ///
@@ -14,24 +14,24 @@ use crate::types::GitignorePattern;
 ///
 /// The patterns, in the order they appear.
 #[must_use]
-pub(crate) fn gitignore_parse(contents: &[u8]) -> Vec<GitignorePattern> {
+pub(super) fn parse(contents: &[u8]) -> Vec<GitignorePattern> {
     let contents = contents.strip_prefix(b"\xEF\xBB\xBF").unwrap_or(contents);
     contents
         .split(|&byte| byte == b'\n')
-        .filter_map(gitignore_parse_line)
+        .filter_map(parse_line)
         .collect()
 }
 
 #[cfg(test)]
 mod tests {
-    use super::gitignore_parse;
-    use crate::compile_glob::compile_glob;
-    use crate::gitignore_parse_line::GITIGNORE_GLOB_OPTIONS;
-    use crate::types::CompiledGlob;
+    use super::parse;
+    use crate::gitignore::parse_line::GLOB_OPTIONS;
+    use crate::glob::CompiledGlob;
+    use crate::glob::compile_glob;
 
     /// List the globs of the patterns read from `contents`.
     fn globs(contents: &[u8]) -> Vec<CompiledGlob> {
-        gitignore_parse(contents)
+        parse(contents)
             .into_iter()
             .map(|pattern| pattern.glob)
             .collect()
@@ -41,7 +41,7 @@ mod tests {
     fn compiled(patterns: &[&[u8]]) -> Vec<CompiledGlob> {
         patterns
             .iter()
-            .map(|pattern| compile_glob(pattern, GITIGNORE_GLOB_OPTIONS).unwrap())
+            .map(|pattern| compile_glob(pattern, GLOB_OPTIONS).unwrap())
             .collect()
     }
 

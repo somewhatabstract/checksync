@@ -1,5 +1,5 @@
-use crate::read_bracket_item::read_bracket_item;
-use crate::types::BracketSet;
+use crate::glob::read_bracket_item::read_bracket_item;
+use crate::glob::types::BracketSet;
 
 /// Parse a bracket expression, such as `[!a-z]`, from a glob pattern.
 ///
@@ -16,7 +16,7 @@ use crate::types::BracketSet;
 /// The set and the index just past its closing `]`, or `None` if the set is
 /// malformed: never closed, or holding a malformed member.
 #[must_use]
-pub(crate) fn parse_bracket_set(pattern: &[u8], index: usize) -> Option<(BracketSet, usize)> {
+pub(super) fn parse_bracket_set(pattern: &[u8], index: usize) -> Option<(BracketSet, usize)> {
     let mut next = index + 1;
     let negated = matches!(pattern.get(next), Some(b'!' | b'^'));
     if negated {
@@ -38,7 +38,7 @@ pub(crate) fn parse_bracket_set(pattern: &[u8], index: usize) -> Option<(Bracket
 #[cfg(test)]
 mod tests {
     use super::parse_bracket_set;
-    use crate::types::{BracketItem, BracketSet};
+    use crate::glob::types::{BracketItem, BracketSet};
 
     #[test]
     fn parses_the_members_of_a_set() {
