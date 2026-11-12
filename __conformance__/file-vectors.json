@@ -568,6 +568,96 @@
             "exclude": [],
             "ignoreFiles": [],
             "expected": []
+        },
+        {
+            "description": "An exclude that names a pattern's starting folder removes everything in it",
+            "cwd": "",
+            "include": [
+                "src/**"
+            ],
+            "exclude": [
+                "src"
+            ],
+            "ignoreFiles": [],
+            "expected": [
+                "src/nested/four.js",
+                "src/nested/keep.log",
+                "src/one.js",
+                "src/three.log",
+                "src/two.ts"
+            ],
+            "rust": {
+                "expected": [],
+                "reason": "An exclude that matches a folder removes everything in it, wherever the folder is. fast-glob doesn't apply excludes to a pattern's starting folder, so the result depends on how it groups patterns."
+            }
+        },
+        {
+            "description": "A wildcard exclude that matches a folder removes everything in it",
+            "cwd": "",
+            "include": [
+                "**"
+            ],
+            "exclude": [
+                "s*c",
+                "node_modules/**"
+            ],
+            "ignoreFiles": [],
+            "expected": [
+                "B.js",
+                "UPPER.JS",
+                "_under.js",
+                "a.js",
+                "build/out.js",
+                "c.ts",
+                "docs/readme.md",
+                "noignore/seven.js",
+                "other/five.js",
+                "other/six.txt",
+                "src/nested/four.js",
+                "src/nested/keep.log",
+                "src/one.js",
+                "src/three.log",
+                "src/two.ts",
+                "with space.js",
+                "é.js"
+            ],
+            "rust": {
+                "expected": [
+                    "B.js",
+                    "UPPER.JS",
+                    "_under.js",
+                    "a.js",
+                    "build/out.js",
+                    "c.ts",
+                    "docs/readme.md",
+                    "noignore/seven.js",
+                    "other/five.js",
+                    "other/six.txt",
+                    "with space.js",
+                    "é.js"
+                ],
+                "reason": "An exclude that matches a folder removes everything in it, with or without wildcards. fast-glob only prunes a folder for an exclude without wildcards."
+            }
+        },
+        {
+            "description": "A trailing double star doesn't match a file itself",
+            "cwd": "",
+            "include": [
+                "*.js/**"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                "B.js",
+                "_under.js",
+                "a.js",
+                "with space.js",
+                "é.js"
+            ],
+            "rust": {
+                "expected": [],
+                "reason": "`x/**` matches what's below x, not x itself. fast-glob's `*.js/**` also matches files named by `*.js`, though `*/**` doesn't match files."
+            }
         }
     ],
     "symlinks": {
