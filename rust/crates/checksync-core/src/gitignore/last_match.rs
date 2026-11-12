@@ -1,5 +1,6 @@
-use crate::gitignore_pattern_matches::gitignore_pattern_matches;
-use crate::types::{GitignorePattern, IgnoreDecision};
+use super::pattern_matches::pattern_matches;
+use super::types::GitignorePattern;
+use crate::types::IgnoreDecision;
 
 /// Find what the last ignore-file pattern matching a path says about it.
 ///
@@ -16,7 +17,7 @@ use crate::types::{GitignorePattern, IgnoreDecision};
 /// `IgnoreDecision::Ignored` if it isn't, or `IgnoreDecision::NoOpinion` if
 /// no pattern matches.
 #[must_use]
-pub(crate) fn gitignore_last_match(
+pub(super) fn last_match(
     patterns: &[GitignorePattern],
     path: &[u8],
     is_folder: bool,
@@ -25,7 +26,7 @@ pub(crate) fn gitignore_last_match(
     match patterns
         .iter()
         .rev()
-        .find(|pattern| gitignore_pattern_matches(pattern, path, name, is_folder))
+        .find(|pattern| pattern_matches(pattern, path, name, is_folder))
     {
         Some(pattern) if pattern.negated => IgnoreDecision::Unignored,
         Some(_) => IgnoreDecision::Ignored,
@@ -35,17 +36,17 @@ pub(crate) fn gitignore_last_match(
 
 #[cfg(test)]
 mod tests {
-    use super::gitignore_last_match;
-    use crate::gitignore_parse::gitignore_parse;
+    use super::super::parse::parse;
+    use super::last_match;
     use crate::types::IgnoreDecision;
 
     #[test]
     fn ignores_a_path_matching_a_plain_pattern() {
         // Arrange
-        let patterns = gitignore_parse(b"*.log\n");
+        let patterns = parse(b"*.log\n");
 
         // Act
-        let result = gitignore_last_match(&patterns, b"a.log", false);
+        let result = last_match(&patterns, b"a.log", false);
 
         // Assert
         assert_eq!(result, IgnoreDecision::Ignored);
@@ -54,10 +55,10 @@ mod tests {
     #[test]
     fn unignores_a_path_matching_a_negated_pattern() {
         // Arrange
-        let patterns = gitignore_parse(b"!a.log\n");
+        let patterns = parse(b"!a.log\n");
 
         // Act
-        let result = gitignore_last_match(&patterns, b"a.log", false);
+        let result = last_match(&patterns, b"a.log", false);
 
         // Assert
         assert_eq!(result, IgnoreDecision::Unignored);
@@ -66,10 +67,10 @@ mod tests {
     #[test]
     fn lets_the_last_matching_pattern_decide() {
         // Arrange
-        let patterns = gitignore_parse(b"*.log\n!a.log\nb.log\n");
+        let patterns = parse(b"*.log\n!a.log\nb.log\n");
 
         // Act
-        let result = gitignore_last_match(&patterns, b"a.log", false);
+        let result = last_match(&patterns, b"a.log", false);
 
         // Assert
         assert_eq!(result, IgnoreDecision::Unignored);
@@ -78,10 +79,10 @@ mod tests {
     #[test]
     fn matches_a_name_pattern_against_the_last_name() {
         // Arrange
-        let patterns = gitignore_parse(b"c.log\n");
+        let patterns = parse(b"c.log\n");
 
         // Act
-        let result = gitignore_last_match(&patterns, b"a/b/c.log", false);
+        let result = last_match(&patterns, b"a/b/c.log", false);
 
         // Assert
         assert_eq!(result, IgnoreDecision::Ignored);
@@ -90,10 +91,10 @@ mod tests {
     #[test]
     fn has_no_opinion_when_nothing_matches() {
         // Arrange
-        let patterns = gitignore_parse(b"*.log\n");
+        let patterns = parse(b"*.log\n");
 
         // Act
-        let result = gitignore_last_match(&patterns, b"a.js", false);
+        let result = last_match(&patterns, b"a.js", false);
 
         // Assert
         assert_eq!(result, IgnoreDecision::NoOpinion);

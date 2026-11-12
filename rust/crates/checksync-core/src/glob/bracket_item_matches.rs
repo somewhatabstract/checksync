@@ -1,5 +1,5 @@
-use crate::posix_class_contains::posix_class_contains;
-use crate::types::BracketItem;
+use super::posix_class_contains::posix_class_contains;
+use super::types::BracketItem;
 
 /// Check whether a byte of the text matches one member of a bracket set.
 ///
@@ -20,7 +20,7 @@ use crate::types::BracketItem;
 ///
 /// `true` if the byte matches the member.
 #[must_use]
-pub(crate) fn bracket_item_matches(item: BracketItem, byte: u8, casefold: bool) -> bool {
+pub(super) fn bracket_item_matches(item: BracketItem, byte: u8, casefold: bool) -> bool {
     let upper = byte.to_ascii_uppercase();
     match item {
         BracketItem::Byte(member) => byte == member,
@@ -36,8 +36,8 @@ pub(crate) fn bracket_item_matches(item: BracketItem, byte: u8, casefold: bool) 
 
 #[cfg(test)]
 mod tests {
+    use super::super::types::{BracketItem, PosixClass};
     use super::bracket_item_matches;
-    use crate::types::{BracketItem, PosixClass};
 
     #[test]
     fn matches_the_same_byte() {

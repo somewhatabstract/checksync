@@ -11,7 +11,7 @@
 ///
 /// The line without its trailing unescaped spaces.
 #[must_use]
-pub(crate) fn gitignore_trim_trailing_spaces(line: &[u8]) -> &[u8] {
+pub(super) fn trim_trailing_spaces(line: &[u8]) -> &[u8] {
     let mut kept = 0;
     let mut index = 0;
     while index < line.len() {
@@ -30,7 +30,7 @@ pub(crate) fn gitignore_trim_trailing_spaces(line: &[u8]) -> &[u8] {
 
 #[cfg(test)]
 mod tests {
-    use super::gitignore_trim_trailing_spaces;
+    use super::trim_trailing_spaces;
 
     #[test]
     fn drops_trailing_spaces() {
@@ -38,7 +38,7 @@ mod tests {
         let line = b"a.js   ";
 
         // Act
-        let result = gitignore_trim_trailing_spaces(line);
+        let result = trim_trailing_spaces(line);
 
         // Assert
         assert_eq!(result, b"a.js");
@@ -50,7 +50,7 @@ mod tests {
         let line = b" a b";
 
         // Act
-        let result = gitignore_trim_trailing_spaces(line);
+        let result = trim_trailing_spaces(line);
 
         // Assert
         assert_eq!(result, b" a b");
@@ -62,7 +62,7 @@ mod tests {
         let line = b"a\\  ";
 
         // Act
-        let result = gitignore_trim_trailing_spaces(line);
+        let result = trim_trailing_spaces(line);
 
         // Assert
         assert_eq!(result, b"a\\ ");
@@ -74,7 +74,7 @@ mod tests {
         let line = b"a\\\\  ";
 
         // Act
-        let result = gitignore_trim_trailing_spaces(line);
+        let result = trim_trailing_spaces(line);
 
         // Assert
         assert_eq!(result, b"a\\\\");
@@ -86,7 +86,7 @@ mod tests {
         let line = b"a\t";
 
         // Act
-        let result = gitignore_trim_trailing_spaces(line);
+        let result = trim_trailing_spaces(line);
 
         // Assert
         assert_eq!(result, b"a\t");
@@ -98,7 +98,7 @@ mod tests {
         let line = b"a\\";
 
         // Act
-        let result = gitignore_trim_trailing_spaces(line);
+        let result = trim_trailing_spaces(line);
 
         // Assert
         assert_eq!(result, b"a\\");

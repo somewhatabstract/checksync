@@ -2,10 +2,11 @@ use std::fs;
 use std::io;
 use std::path::{Path, PathBuf};
 
-use crate::gitignore_decide_path::gitignore_decide_path;
-use crate::gitignore_parse::gitignore_parse;
-use crate::gitignore_relative_path::gitignore_relative_path;
-use crate::types::{GitignorePattern, IgnoreDecision};
+use super::decide_path::decide_path;
+use super::parse::parse;
+use super::relative_path::relative_path;
+use super::types::GitignorePattern;
+use crate::types::IgnoreDecision;
 
 /// A loaded `.gitignore`-style file that decides about paths in its folder.
 ///
@@ -46,7 +47,7 @@ impl IgnoreFile {
         let contents = fs::read(path)?;
         Ok(Self {
             folder: path.parent().map(Path::to_path_buf).unwrap_or_default(),
-            patterns: gitignore_parse(&contents),
+            patterns: parse(&contents),
         })
     }
 
@@ -68,10 +69,9 @@ impl IgnoreFile {
     /// Whether the file is ignored, unignored, or neither.
     #[must_use]
     pub fn decide(&self, file_path: &Path) -> IgnoreDecision {
-        gitignore_relative_path(&self.folder, file_path)
-            .map_or(IgnoreDecision::NoOpinion, |relative| {
-                gitignore_decide_path(&self.patterns, &relative)
-            })
+        relative_path(&self.folder, file_path).map_or(IgnoreDecision::NoOpinion, |relative| {
+            decide_path(&self.patterns, &relative)
+        })
     }
 }
 

@@ -1,4 +1,4 @@
-use crate::types::PosixClass;
+use super::types::PosixClass;
 
 /// Look up a POSIX character class by the name written between `[:` and `:]`.
 ///
@@ -12,7 +12,7 @@ use crate::types::PosixClass;
 ///
 /// The class, or `None` if the name isn't one of the twelve known classes.
 #[must_use]
-pub(crate) fn posix_class_from_name(name: &[u8]) -> Option<PosixClass> {
+pub(super) fn posix_class_from_name(name: &[u8]) -> Option<PosixClass> {
     match name {
         b"alnum" => Some(PosixClass::Alnum),
         b"alpha" => Some(PosixClass::Alpha),
@@ -32,8 +32,8 @@ pub(crate) fn posix_class_from_name(name: &[u8]) -> Option<PosixClass> {
 
 #[cfg(test)]
 mod tests {
+    use super::super::types::PosixClass;
     use super::posix_class_from_name;
-    use crate::types::PosixClass;
 
     #[test]
     fn finds_every_known_class() {
