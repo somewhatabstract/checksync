@@ -69,11 +69,13 @@ fn make_link(link: &Path, target: &str) {
     std::os::unix::fs::symlink(target, link).expect("make link");
     #[cfg(windows)]
     {
-        let resolved = link.parent().expect("link folder").join(target);
+        // A Windows link's target needs Windows separators to be followed.
+        let target = target.replace('/', "\\");
+        let resolved = link.parent().expect("link folder").join(&target);
         if resolved.is_dir() {
-            std::os::windows::fs::symlink_dir(target, link).expect("make folder link");
+            std::os::windows::fs::symlink_dir(&target, link).expect("make folder link");
         } else {
-            std::os::windows::fs::symlink_file(target, link).expect("make file link");
+            std::os::windows::fs::symlink_file(&target, link).expect("make file link");
         }
     }
 }
