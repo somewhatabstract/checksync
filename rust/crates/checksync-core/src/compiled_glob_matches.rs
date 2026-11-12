@@ -392,33 +392,31 @@ mod tests {
         let table: Table = serde_json::from_str(VECTORS).unwrap();
 
         // Act
-        let mismatches: Vec<String> = table
+        let mismatches: Vec<(&str, &str, &str, GlobOptions, bool)> = table
             .vectors
             .iter()
             .flat_map(|vector| {
-                vector.cases.iter().filter_map(|case| {
+                vector.cases.iter().map(|case| {
                     let options = GlobOptions {
                         pathname: case.pathname,
                         casefold: case.casefold,
                     };
                     let actual = compile_glob(case.pattern.as_bytes(), options)
                         .is_some_and(|glob| compiled_glob_matches(&glob, case.text.as_bytes()));
-                    (actual != case.matches).then(|| {
-                        format!(
-                            "{}: {:?} against {:?} (pathname: {}, casefold: {}): expected {}, got {actual}",
-                            vector.description,
-                            case.pattern,
-                            case.text,
-                            case.pathname,
-                            case.casefold,
-                            case.matches
-                        )
-                    })
+                    let wrong = actual != case.matches;
+                    (
+                        vector.description.as_str(),
+                        case.pattern.as_str(),
+                        case.text.as_str(),
+                        options,
+                        wrong,
+                    )
                 })
             })
+            .filter(|&(.., wrong)| wrong)
             .collect();
 
         // Assert
-        assert_eq!(mismatches, Vec::<String>::new());
+        assert_eq!(mismatches, Vec::new());
     }
 }
