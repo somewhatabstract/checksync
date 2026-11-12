@@ -11,6 +11,8 @@ use crate::types::GitignorePattern;
 /// * `pattern` - The pattern.
 /// * `path` - The path relative to the ignore file's folder, with `/`
 ///   between names.
+/// * `name` - The last name in `path`, worked out once by the caller for
+///   all the patterns.
 /// * `is_folder` - Whether the path is a folder rather than a file.
 ///
 /// # Returns
@@ -20,16 +22,13 @@ use crate::types::GitignorePattern;
 pub(crate) fn gitignore_pattern_matches(
     pattern: &GitignorePattern,
     path: &[u8],
+    name: &[u8],
     is_folder: bool,
 ) -> bool {
     if pattern.folders_only && !is_folder {
         return false;
     }
-    let subject = if pattern.anchored {
-        path
-    } else {
-        path.rsplit(|&byte| byte == b'/').next().unwrap_or_default()
-    };
+    let subject = if pattern.anchored { path } else { name };
     compiled_glob_matches(&pattern.glob, subject)
 }
 
@@ -55,7 +54,7 @@ mod tests {
         let pattern = pattern(b"*.log", false, false);
 
         // Act
-        let result = gitignore_pattern_matches(&pattern, b"a/b/c.log", false);
+        let result = gitignore_pattern_matches(&pattern, b"a/b/c.log", b"c.log", false);
 
         // Assert
         assert!(result);
@@ -67,7 +66,7 @@ mod tests {
         let pattern = pattern(b"c.log", false, true);
 
         // Act
-        let result = gitignore_pattern_matches(&pattern, b"a/c.log", false);
+        let result = gitignore_pattern_matches(&pattern, b"a/c.log", b"c.log", false);
 
         // Assert
         assert!(!result);
@@ -79,7 +78,7 @@ mod tests {
         let pattern = pattern(b"a/*", false, true);
 
         // Act
-        let result = gitignore_pattern_matches(&pattern, b"a/b/c", false);
+        let result = gitignore_pattern_matches(&pattern, b"a/b/c", b"c", false);
 
         // Assert
         assert!(!result);
@@ -91,7 +90,7 @@ mod tests {
         let pattern = pattern(b"*.LOG", false, false);
 
         // Act
-        let result = gitignore_pattern_matches(&pattern, b"a.log", false);
+        let result = gitignore_pattern_matches(&pattern, b"a.log", b"a.log", false);
 
         // Assert
         assert!(result);
@@ -103,7 +102,7 @@ mod tests {
         let pattern = pattern(b"build", true, false);
 
         // Act
-        let result = gitignore_pattern_matches(&pattern, b"build", false);
+        let result = gitignore_pattern_matches(&pattern, b"build", b"build", false);
 
         // Assert
         assert!(!result);
@@ -115,7 +114,7 @@ mod tests {
         let pattern = pattern(b"build", true, false);
 
         // Act
-        let result = gitignore_pattern_matches(&pattern, b"build", true);
+        let result = gitignore_pattern_matches(&pattern, b"build", b"build", true);
 
         // Assert
         assert!(result);

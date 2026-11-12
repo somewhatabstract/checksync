@@ -21,10 +21,11 @@ pub(crate) fn gitignore_last_match(
     path: &[u8],
     is_folder: bool,
 ) -> IgnoreDecision {
+    let name = path.rsplit(|&byte| byte == b'/').next().unwrap_or_default();
     match patterns
         .iter()
         .rev()
-        .find(|pattern| gitignore_pattern_matches(pattern, path, is_folder))
+        .find(|pattern| gitignore_pattern_matches(pattern, path, name, is_folder))
     {
         Some(pattern) if pattern.negated => IgnoreDecision::Unignored,
         Some(_) => IgnoreDecision::Ignored,
@@ -72,6 +73,18 @@ mod tests {
 
         // Assert
         assert_eq!(result, IgnoreDecision::Unignored);
+    }
+
+    #[test]
+    fn matches_a_name_pattern_against_the_last_name() {
+        // Arrange
+        let patterns = gitignore_parse(b"c.log\n");
+
+        // Act
+        let result = gitignore_last_match(&patterns, b"a/b/c.log", false);
+
+        // Assert
+        assert_eq!(result, IgnoreDecision::Ignored);
     }
 
     #[test]
