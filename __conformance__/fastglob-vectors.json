@@ -401,7 +401,7 @@
                         "expanded": [
                             "\\{a,b}"
                         ],
-                        "reason": "The results keep the pattern's escapes, so each is still a glob pattern; micromatch drops them."
+                        "reason": "This matches fast-glob, which keeps escapes in the patterns it expands; micromatch's bare brace expansion, recorded here, removes them."
                     }
                 },
                 {
@@ -415,7 +415,7 @@
                             "a\\,b",
                             "c"
                         ],
-                        "reason": "The results keep the pattern's escapes, so each is still a glob pattern; micromatch drops them."
+                        "reason": "This matches fast-glob, which keeps escapes in the patterns it expands; micromatch's bare brace expansion, recorded here, removes them."
                     }
                 },
                 {
@@ -427,7 +427,7 @@
                         "expanded": [
                             "{a,b\\}"
                         ],
-                        "reason": "The results keep the pattern's escapes, so each is still a glob pattern; micromatch drops them."
+                        "reason": "This matches fast-glob, which keeps escapes in the patterns it expands; micromatch's bare brace expansion, recorded here, removes them."
                     }
                 },
                 {
@@ -439,7 +439,7 @@
                         "expanded": [
                             "a\\{b,c\\}"
                         ],
-                        "reason": "The results keep the pattern's escapes, so each is still a glob pattern; micromatch drops them."
+                        "reason": "This matches fast-glob, which keeps escapes in the patterns it expands; micromatch's bare brace expansion, recorded here, removes them."
                     }
                 },
                 {
@@ -453,7 +453,7 @@
                             "a\\}b",
                             "c"
                         ],
-                        "reason": "The results keep the pattern's escapes, so each is still a glob pattern; micromatch drops them."
+                        "reason": "This matches fast-glob, which keeps escapes in the patterns it expands; micromatch's bare brace expansion, recorded here, removes them."
                     }
                 },
                 {
@@ -465,7 +465,7 @@
                         "expanded": [
                             "{\\,}"
                         ],
-                        "reason": "The results keep the pattern's escapes, so each is still a glob pattern; micromatch drops them."
+                        "reason": "This matches fast-glob, which keeps escapes in the patterns it expands; micromatch's bare brace expansion, recorded here, removes them."
                     }
                 },
                 {
@@ -479,7 +479,7 @@
                             "a\\{c,d}",
                             "b\\{c,d}"
                         ],
-                        "reason": "The results keep the pattern's escapes, so each is still a glob pattern; micromatch drops them."
+                        "reason": "This matches fast-glob, which keeps escapes in the patterns it expands; micromatch's bare brace expansion, recorded here, removes them."
                     }
                 }
             ]
@@ -526,6 +526,69 @@
                             "x{1..2}y"
                         ],
                         "reason": "Ranges aren't expanded, a deliberate difference."
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Parentheses, quotes and a leading $ aren't special to brace expansion here",
+            "cases": [
+                {
+                    "pattern": "{a,@(b,c)}",
+                    "expanded": [
+                        "a",
+                        "@(b,c)"
+                    ],
+                    "rust": {
+                        "expanded": [
+                            "a",
+                            "@(b",
+                            "c)"
+                        ],
+                        "reason": "Every top-level comma splits an alternative here, quotes are kept as written, and `${` starts a group like any other `{`."
+                    }
+                },
+                {
+                    "pattern": "{a,(b,c)}",
+                    "expanded": [
+                        "a",
+                        "(b,c)"
+                    ],
+                    "rust": {
+                        "expanded": [
+                            "a",
+                            "(b",
+                            "c)"
+                        ],
+                        "reason": "Every top-level comma splits an alternative here, quotes are kept as written, and `${` starts a group like any other `{`."
+                    }
+                },
+                {
+                    "pattern": "{\"a,b\",c}",
+                    "expanded": [
+                        "a,b",
+                        "c"
+                    ],
+                    "rust": {
+                        "expanded": [
+                            "\"a",
+                            "b\"",
+                            "c"
+                        ],
+                        "reason": "Every top-level comma splits an alternative here, quotes are kept as written, and `${` starts a group like any other `{`."
+                    }
+                },
+                {
+                    "pattern": "${a,b}",
+                    "expanded": [
+                        "${a,b}"
+                    ],
+                    "rust": {
+                        "expanded": [
+                            "$a",
+                            "$b"
+                        ],
+                        "reason": "Every top-level comma splits an alternative here, quotes are kept as written, and `${` starts a group like any other `{`."
                     }
                 }
             ]
@@ -1369,6 +1432,105 @@
                         "matches": true,
                         "reason": "`*.*` is an ordinary pattern here, so its last `*` can match nothing."
                     }
+                }
+            ]
+        },
+        {
+            "description": "Both forms of negated set stay off a leading dot",
+            "cases": [
+                {
+                    "pattern": "[^a]b",
+                    "text": ".b",
+                    "dot": false,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "`[^...]` and `[!...]` are treated alike: with `dot` off, neither matches a `.` that starts a name, and with it on, both can, as in git."
+                    }
+                },
+                {
+                    "pattern": "[^a]b",
+                    "text": ".b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/[^a]*",
+                    "text": "a/.b",
+                    "dot": false,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "`[^...]` and `[!...]` are treated alike: with `dot` off, neither matches a `.` that starts a name, and with it on, both can, as in git."
+                    }
+                },
+                {
+                    "pattern": "a/[^a]*",
+                    "text": "a/.b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[!a]b",
+                    "text": ".b",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[!a]b",
+                    "text": ".b",
+                    "dot": true,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "`[^...]` and `[!...]` are treated alike: with `dot` off, neither matches a `.` that starts a name, and with it on, both can, as in git."
+                    }
+                }
+            ]
+        },
+        {
+            "description": "micromatch's [!.] matches a leading dot",
+            "cases": [
+                {
+                    "pattern": "[!.]b",
+                    "text": ".b",
+                    "dot": false,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "`[!.]` never matches `.` here; micromatch matching it looks like a quirk."
+                    }
+                },
+                {
+                    "pattern": "[!.]b",
+                    "text": ".b",
+                    "dot": true,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "`[!.]` never matches `.` here; micromatch matching it looks like a quirk."
+                    }
+                }
+            ]
+        },
+        {
+            "description": "micromatch's [[:punct:]] doesn't match a leading dot after **",
+            "cases": [
+                {
+                    "pattern": "**/[[:punct:]]a",
+                    "text": ".a",
+                    "dot": false,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "A bracket set that isn't negated can match a leading `.`, as `[.]` can in micromatch; micromatch refusing `[[:punct:]]` here looks like a quirk."
+                    }
+                },
+                {
+                    "pattern": "**/[[:punct:]]a",
+                    "text": ".a",
+                    "dot": true,
+                    "matches": true
                 }
             ]
         }
