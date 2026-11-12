@@ -658,6 +658,20 @@
                 "expected": [],
                 "reason": "`x/**` matches what's below x, not x itself. fast-glob's `*.js/**` also matches files named by `*.js`, though `*/**` doesn't match files."
             }
+        },
+        {
+            "description": "A question mark matches one whole character",
+            "cwd": "",
+            "include": [
+                "?.js"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                "B.js",
+                "a.js",
+                "é.js"
+            ]
         }
     ],
     "symlinks": {

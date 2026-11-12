@@ -31,13 +31,14 @@ use crate::glob::GlobOptions;
 pub use get_files::get_files;
 pub use types::GetFilesError;
 
-/// How include patterns match paths: by folder, case-sensitively, and without
-/// wildcards matching names that start with `.`, as fast-glob does by
-/// default.
+/// How include patterns match paths: by folder, case-sensitively, by whole
+/// characters, and without wildcards matching names that start with `.`, as
+/// fast-glob does by default.
 const INCLUDE_GLOB_OPTIONS: GlobOptions = GlobOptions {
     pathname: true,
     casefold: false,
     dot: false,
+    unicode: true,
 };
 
 /// How exclude patterns match paths: as include patterns do, except that
@@ -46,4 +47,5 @@ const EXCLUDE_GLOB_OPTIONS: GlobOptions = GlobOptions {
     pathname: true,
     casefold: false,
     dot: true,
+    unicode: true,
 };
