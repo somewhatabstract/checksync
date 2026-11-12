@@ -1,5 +1,5 @@
-use crate::types::GitignorePattern;
-use crate::wildmatch::wildmatch;
+use crate::glob_matches::glob_matches;
+use crate::types::{GitignorePattern, GlobOptions};
 
 /// Compare two byte strings, ignoring ASCII case when asked.
 fn same(a: &[u8], b: &[u8], casefold: bool) -> bool {
@@ -52,7 +52,14 @@ pub(crate) fn gitignore_pattern_matches(
             let tail = &glob[1..];
             tail.len() <= name.len() && same(tail, &name[name.len() - tail.len()..], casefold)
         } else {
-            wildmatch(glob, name, false, casefold)
+            glob_matches(
+                glob,
+                name,
+                GlobOptions {
+                    pathname: false,
+                    casefold,
+                },
+            )
         };
     }
     if let Some(rest) = glob.strip_prefix(b"/") {
@@ -63,7 +70,14 @@ pub(crate) fn gitignore_pattern_matches(
         return false;
     }
     let keep = prefix.saturating_sub(1);
-    wildmatch(&glob[keep..], &path[keep..], true, casefold)
+    glob_matches(
+        &glob[keep..],
+        &path[keep..],
+        GlobOptions {
+            pathname: true,
+            casefold,
+        },
+    )
 }
 
 #[cfg(test)]
