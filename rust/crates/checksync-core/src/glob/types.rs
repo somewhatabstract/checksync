@@ -118,3 +118,12 @@ pub(super) enum ClassSyntax {
     /// A class with a name that isn't recognized.
     Unknown,
 }
+
+/// A `{...}` group of comma-separated alternatives found in a pattern.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(super) struct BraceGroup {
+    /// Where each alternative lies in the pattern, in order.
+    pub(super) alternatives: Vec<std::ops::Range<usize>>,
+    /// The index just past the group's closing `}`.
+    pub(super) end: usize,
+}
