@@ -2,10 +2,10 @@ use std::fs;
 use std::io;
 use std::path::{Path, PathBuf};
 
-use crate::gitignore::decide_path::decide_path;
-use crate::gitignore::parse::parse;
-use crate::gitignore::relative_path::relative_path;
-use crate::gitignore::types::GitignorePattern;
+use super::decide_path::decide_path;
+use super::parse::parse;
+use super::relative_path::relative_path;
+use super::types::GitignorePattern;
 use crate::types::IgnoreDecision;
 
 /// A loaded `.gitignore`-style file that decides about paths in its folder.

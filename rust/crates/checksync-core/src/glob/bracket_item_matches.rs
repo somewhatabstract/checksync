@@ -1,5 +1,5 @@
-use crate::glob::posix_class_contains::posix_class_contains;
-use crate::glob::types::BracketItem;
+use super::posix_class_contains::posix_class_contains;
+use super::types::BracketItem;
 
 /// Check whether a byte of the text matches one member of a bracket set.
 ///
@@ -36,8 +36,8 @@ pub(super) fn bracket_item_matches(item: BracketItem, byte: u8, casefold: bool) 
 
 #[cfg(test)]
 mod tests {
+    use super::super::types::{BracketItem, PosixClass};
     use super::bracket_item_matches;
-    use crate::glob::types::{BracketItem, PosixClass};
 
     #[test]
     fn matches_the_same_byte() {

@@ -1,6 +1,6 @@
-use crate::glob::bytes_before_nul::bytes_before_nul;
-use crate::glob::tokenize_glob::tokenize_glob;
-use crate::glob::types::{CompiledGlob, GlobOptions};
+use super::bytes_before_nul::bytes_before_nul;
+use super::tokenize_glob::tokenize_glob;
+use super::types::{CompiledGlob, GlobOptions};
 
 /// Compile a glob pattern so it can be matched against many texts.
 ///
@@ -23,8 +23,8 @@ pub(crate) fn compile_glob(pattern: &[u8], options: GlobOptions) -> Option<Compi
 
 #[cfg(test)]
 mod tests {
+    use super::super::types::{ByteMatcher, CompiledGlob, GlobOptions, GlobToken};
     use super::compile_glob;
-    use crate::glob::types::{ByteMatcher, CompiledGlob, GlobOptions, GlobToken};
 
     #[test]
     fn compiles_the_pattern_with_its_options() {

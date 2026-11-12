@@ -1,5 +1,5 @@
-use crate::gitignore::pattern_matches::pattern_matches;
-use crate::gitignore::types::GitignorePattern;
+use super::pattern_matches::pattern_matches;
+use super::types::GitignorePattern;
 use crate::types::IgnoreDecision;
 
 /// Find what the last ignore-file pattern matching a path says about it.
@@ -36,8 +36,8 @@ pub(super) fn last_match(
 
 #[cfg(test)]
 mod tests {
+    use super::super::parse::parse;
     use super::last_match;
-    use crate::gitignore::parse::parse;
     use crate::types::IgnoreDecision;
 
     #[test]

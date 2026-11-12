@@ -1,5 +1,5 @@
-use crate::glob::bracket_set_contains::bracket_set_contains;
-use crate::glob::types::{ByteMatcher, GlobOptions};
+use super::bracket_set_contains::bracket_set_contains;
+use super::types::{ByteMatcher, GlobOptions};
 
 /// Check whether one byte of the text matches a single-byte glob token.
 ///
@@ -32,8 +32,8 @@ pub(super) fn byte_matcher_matches(matcher: &ByteMatcher, byte: u8, options: Glo
 
 #[cfg(test)]
 mod tests {
+    use super::super::types::{BracketItem, BracketSet, ByteMatcher, GlobOptions};
     use super::byte_matcher_matches;
-    use crate::glob::types::{BracketItem, BracketSet, ByteMatcher, GlobOptions};
 
     const PATHNAME: GlobOptions = GlobOptions {
         pathname: true,

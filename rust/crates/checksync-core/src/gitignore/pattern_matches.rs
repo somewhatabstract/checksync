@@ -1,4 +1,4 @@
-use crate::gitignore::types::GitignorePattern;
+use super::types::GitignorePattern;
 use crate::glob::compiled_glob_matches;
 
 /// Check whether one ignore-file pattern matches a path.
@@ -36,9 +36,9 @@ pub(super) fn pattern_matches(
 
 #[cfg(test)]
 mod tests {
+    use super::super::GLOB_OPTIONS;
+    use super::super::types::GitignorePattern;
     use super::pattern_matches;
-    use crate::gitignore::parse_line::GLOB_OPTIONS;
-    use crate::gitignore::types::GitignorePattern;
     use crate::glob::compile_glob;
 
     fn pattern(glob: &[u8], folders_only: bool, anchored: bool) -> GitignorePattern {

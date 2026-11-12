@@ -26,7 +26,6 @@ mod read_star_run;
 mod tokenize_glob;
 mod types;
 
-pub(crate) use bytes_before_nul::bytes_before_nul;
 pub(crate) use compile_glob::compile_glob;
 pub(crate) use compiled_glob_matches::compiled_glob_matches;
 pub(crate) use types::{CompiledGlob, GlobOptions};

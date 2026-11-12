@@ -1,5 +1,5 @@
-use crate::glob::posix_class_from_name::posix_class_from_name;
-use crate::glob::types::ClassSyntax;
+use super::posix_class_from_name::posix_class_from_name;
+use super::types::ClassSyntax;
 
 /// Work out whether a `[:` inside a bracket set starts a POSIX class.
 ///
@@ -37,8 +37,8 @@ pub(super) fn read_bracket_class(pattern: &[u8], index: usize) -> ClassSyntax {
 
 #[cfg(test)]
 mod tests {
+    use super::super::types::{ClassSyntax, PosixClass};
     use super::read_bracket_class;
-    use crate::glob::types::{ClassSyntax, PosixClass};
 
     #[test]
     fn reads_a_known_class() {

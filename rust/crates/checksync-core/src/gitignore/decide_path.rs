@@ -1,5 +1,5 @@
-use crate::gitignore::last_match::last_match;
-use crate::gitignore::types::GitignorePattern;
+use super::last_match::last_match;
+use super::types::GitignorePattern;
 use crate::types::IgnoreDecision;
 
 /// Decide what an ignore file's patterns say about a file inside its folder.
@@ -32,8 +32,8 @@ pub(super) fn decide_path(patterns: &[GitignorePattern], path: &[u8]) -> IgnoreD
 
 #[cfg(test)]
 mod tests {
+    use super::super::parse::parse;
     use super::decide_path;
-    use crate::gitignore::parse::parse;
     use crate::types::IgnoreDecision;
 
     #[test]

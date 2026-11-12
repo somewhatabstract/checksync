@@ -1,5 +1,5 @@
-use crate::glob::read_bracket_item::read_bracket_item;
-use crate::glob::types::BracketSet;
+use super::read_bracket_item::read_bracket_item;
+use super::types::BracketSet;
 
 /// Parse a bracket expression, such as `[!a-z]`, from a glob pattern.
 ///
@@ -37,8 +37,8 @@ pub(super) fn parse_bracket_set(pattern: &[u8], index: usize) -> Option<(Bracket
 
 #[cfg(test)]
 mod tests {
+    use super::super::types::{BracketItem, BracketSet};
     use super::parse_bracket_set;
-    use crate::glob::types::{BracketItem, BracketSet};
 
     #[test]
     fn parses_the_members_of_a_set() {

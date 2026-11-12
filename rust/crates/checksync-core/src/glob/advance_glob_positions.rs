@@ -1,7 +1,7 @@
-use crate::glob::advance_any_folders::advance_any_folders;
-use crate::glob::advance_one_byte::advance_one_byte;
-use crate::glob::advance_star::advance_star;
-use crate::glob::types::{GlobOptions, GlobToken};
+use super::advance_any_folders::advance_any_folders;
+use super::advance_one_byte::advance_one_byte;
+use super::advance_star::advance_star;
+use super::types::{GlobOptions, GlobToken};
 
 /// Move the reachable text positions past one glob token, in place.
 ///
@@ -33,8 +33,8 @@ pub(super) fn advance_glob_positions(
 
 #[cfg(test)]
 mod tests {
+    use super::super::types::{ByteMatcher, GlobOptions, GlobToken};
     use super::advance_glob_positions;
-    use crate::glob::types::{ByteMatcher, GlobOptions, GlobToken};
 
     const PATHNAME: GlobOptions = GlobOptions {
         pathname: true,

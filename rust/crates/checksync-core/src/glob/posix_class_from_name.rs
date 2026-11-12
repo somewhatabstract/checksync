@@ -1,4 +1,4 @@
-use crate::glob::types::PosixClass;
+use super::types::PosixClass;
 
 /// Look up a POSIX character class by the name written between `[:` and `:]`.
 ///
@@ -32,8 +32,8 @@ pub(super) fn posix_class_from_name(name: &[u8]) -> Option<PosixClass> {
 
 #[cfg(test)]
 mod tests {
+    use super::super::types::PosixClass;
     use super::posix_class_from_name;
-    use crate::glob::types::PosixClass;
 
     #[test]
     fn finds_every_known_class() {

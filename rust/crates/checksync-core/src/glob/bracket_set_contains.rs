@@ -1,5 +1,5 @@
-use crate::glob::bracket_item_matches::bracket_item_matches;
-use crate::glob::types::BracketSet;
+use super::bracket_item_matches::bracket_item_matches;
+use super::types::BracketSet;
 
 /// Check whether a byte of the text matches a bracket set.
 ///
@@ -33,8 +33,8 @@ pub(super) fn bracket_set_contains(set: &BracketSet, byte: u8, casefold: bool) -
 
 #[cfg(test)]
 mod tests {
+    use super::super::types::{BracketItem, BracketSet};
     use super::bracket_set_contains;
-    use crate::glob::types::{BracketItem, BracketSet};
 
     fn set(negated: bool) -> BracketSet {
         BracketSet {

@@ -1,4 +1,4 @@
-use crate::glob::types::PosixClass;
+use super::types::PosixClass;
 
 /// Check whether a byte belongs to a POSIX character class.
 ///
@@ -33,8 +33,8 @@ pub(super) fn posix_class_contains(class: PosixClass, byte: u8) -> bool {
 
 #[cfg(test)]
 mod tests {
+    use super::super::types::PosixClass;
     use super::posix_class_contains;
-    use crate::glob::types::PosixClass;
 
     /// List the bytes from 1 to 255 that belong to a class.
     fn members(class: PosixClass) -> Vec<u8> {

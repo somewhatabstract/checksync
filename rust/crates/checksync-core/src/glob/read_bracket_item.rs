@@ -1,6 +1,6 @@
-use crate::glob::read_bracket_class::read_bracket_class;
-use crate::glob::read_glob_byte::read_glob_byte;
-use crate::glob::types::{BracketItem, ClassSyntax};
+use super::read_bracket_class::read_bracket_class;
+use super::read_glob_byte::read_glob_byte;
+use super::types::{BracketItem, ClassSyntax};
 
 /// Read one member of a bracket set: a POSIX class, a range or a byte.
 ///
@@ -41,8 +41,8 @@ pub(super) fn read_bracket_item(pattern: &[u8], index: usize) -> Option<(Bracket
 
 #[cfg(test)]
 mod tests {
+    use super::super::types::{BracketItem, PosixClass};
     use super::read_bracket_item;
-    use crate::glob::types::{BracketItem, PosixClass};
 
     #[test]
     fn reads_a_byte() {

@@ -1,7 +1,7 @@
-use crate::glob::parse_bracket_set::parse_bracket_set;
-use crate::glob::read_glob_byte::read_glob_byte;
-use crate::glob::read_star_run::read_star_run;
-use crate::glob::types::{ByteMatcher, GlobOptions, GlobToken};
+use super::parse_bracket_set::parse_bracket_set;
+use super::read_glob_byte::read_glob_byte;
+use super::read_star_run::read_star_run;
+use super::types::{ByteMatcher, GlobOptions, GlobToken};
 
 /// Split a glob pattern into the tokens that each match part of the text.
 ///
@@ -40,8 +40,8 @@ pub(super) fn tokenize_glob(pattern: &[u8], options: GlobOptions) -> Option<Vec<
 
 #[cfg(test)]
 mod tests {
+    use super::super::types::{BracketItem, BracketSet, ByteMatcher, GlobOptions, GlobToken};
     use super::tokenize_glob;
-    use crate::glob::types::{BracketItem, BracketSet, ByteMatcher, GlobOptions, GlobToken};
 
     const PATHNAME: GlobOptions = GlobOptions {
         pathname: true,

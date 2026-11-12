@@ -1,5 +1,5 @@
-use crate::gitignore::parse_line::parse_line;
-use crate::gitignore::types::GitignorePattern;
+use super::parse_line::parse_line;
+use super::types::GitignorePattern;
 
 /// Read the patterns from the contents of a `.gitignore`-style file.
 ///
@@ -24,8 +24,8 @@ pub(super) fn parse(contents: &[u8]) -> Vec<GitignorePattern> {
 
 #[cfg(test)]
 mod tests {
+    use super::super::GLOB_OPTIONS;
     use super::parse;
-    use crate::gitignore::parse_line::GLOB_OPTIONS;
     use crate::glob::CompiledGlob;
     use crate::glob::compile_glob;
 

@@ -63,9 +63,9 @@ pub(super) enum ByteMatcher {
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(super) struct BracketSet {
     /// Whether the set was negated with a leading `!` or `^`.
-    pub negated: bool,
+    pub(super) negated: bool,
     /// The members of the set, in the order they were written.
-    pub items: Vec<BracketItem>,
+    pub(super) items: Vec<BracketItem>,
 }
 
 /// One member of a bracket set.

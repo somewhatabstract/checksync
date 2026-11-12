@@ -1,13 +1,8 @@
-use crate::gitignore::trim_trailing_spaces::trim_trailing_spaces;
-use crate::gitignore::types::GitignorePattern;
-use crate::glob::{GlobOptions, bytes_before_nul, compile_glob};
-
-/// The options every ignore-file glob is matched with: `/` separates
-/// folders, and ASCII case is always ignored.
-pub(super) const GLOB_OPTIONS: GlobOptions = GlobOptions {
-    pathname: true,
-    casefold: true,
-};
+use super::GLOB_OPTIONS;
+use super::bytes_before_nul::bytes_before_nul;
+use super::trim_trailing_spaces::trim_trailing_spaces;
+use super::types::GitignorePattern;
+use crate::glob::compile_glob;
 
 /// Read one line of a `.gitignore`-style file as a pattern.
 ///
@@ -56,8 +51,9 @@ pub(super) fn parse_line(line: &[u8]) -> Option<GitignorePattern> {
 
 #[cfg(test)]
 mod tests {
-    use super::{GLOB_OPTIONS, parse_line};
-    use crate::gitignore::types::GitignorePattern;
+    use super::super::GLOB_OPTIONS;
+    use super::super::types::GitignorePattern;
+    use super::parse_line;
     use crate::glob::compile_glob;
 
     fn pattern(glob: &[u8], negated: bool, folders_only: bool, anchored: bool) -> GitignorePattern {
