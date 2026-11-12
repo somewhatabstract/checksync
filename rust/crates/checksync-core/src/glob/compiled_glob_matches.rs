@@ -4,11 +4,11 @@ use super::types::CompiledGlob;
 
 /// Check whether the whole of a text matches a compiled glob pattern.
 ///
-/// Matching works on bytes, the way git matches its globs. `?` matches any
-/// one byte, `*` any run of bytes, `[...]` one byte from a set, and `\`
-/// makes the next byte literal. A NUL byte ends the text, as it would a C
-/// string. `GlobOptions` describes how `pathname`, `casefold` and `dot`
-/// change this.
+/// Matching works on bytes, the way git matches its globs, or with
+/// `unicode` on whole characters. `?` matches any one unit, `*` any run of
+/// them, `[...]` one unit from a set, and `\` makes the next unit literal.
+/// A NUL byte ends the text, as it would a C string. `GlobOptions`
+/// describes how `pathname`, `casefold`, `dot` and `unicode` change this.
 ///
 /// Rather than backtracking, matching tracks every position in the text
 /// that the pattern so far can reach, so it takes time proportional to the
@@ -126,12 +126,14 @@ mod tests {
         pathname: true,
         casefold: false,
         dot: false,
+        unicode: false,
     };
 
     const CASEFOLD: GlobOptions = GlobOptions {
         pathname: false,
         casefold: true,
         dot: true,
+        unicode: false,
     };
 
     #[test]
@@ -446,6 +448,7 @@ mod tests {
                         pathname: case.pathname,
                         casefold: case.casefold,
                         dot: true,
+                        unicode: false,
                     };
                     let actual = compile_glob(case.pattern.as_bytes(), options)
                         .is_some_and(|glob| compiled_glob_matches(&glob, case.text.as_bytes()));
@@ -589,6 +592,7 @@ mod tests {
                         pathname: true,
                         casefold: false,
                         dot: case.dot,
+                        unicode: true,
                     };
                     let wanted = case.rust.as_ref().map_or(case.matches, |rust| rust.matches);
                     let actual = matches(case.pattern.as_bytes(), case.text.as_bytes(), options);

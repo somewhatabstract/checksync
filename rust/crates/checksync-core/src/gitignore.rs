@@ -26,4 +26,5 @@ const GLOB_OPTIONS: GlobOptions = GlobOptions {
     pathname: true,
     casefold: true,
     dot: true,
+    unicode: false,
 };

@@ -1,14 +1,15 @@
 use super::parse_bracket_set::parse_bracket_set;
-use super::read_glob_byte::read_glob_byte;
+use super::read_glob_char::read_glob_char;
 use super::read_star_run::read_star_run;
-use super::types::{ByteMatcher, GlobOptions, GlobToken};
+use super::types::{GlobOptions, GlobToken, UnitMatcher};
 
 /// Split a glob pattern into the tokens that each match part of the text.
 ///
 /// # Arguments
 ///
 /// * `pattern` - The glob pattern, without any NUL byte.
-/// * `options` - How to treat slashes, which decides what `**` means.
+/// * `options` - How to treat slashes, which decides what `**` means, and
+///   whether literals and bracket sets work on characters or bytes.
 ///
 /// # Returns
 ///
@@ -20,17 +21,21 @@ pub(super) fn tokenize_glob(pattern: &[u8], options: GlobOptions) -> Option<Vec<
     let mut index = 0;
     while index < pattern.len() {
         let (token, next) = match pattern[index] {
-            b'?' => (GlobToken::One(ByteMatcher::Any), index + 1),
+            b'?' => (GlobToken::One(UnitMatcher::Any), index + 1),
             b'*' => read_star_run(pattern, index, options),
             b'[' => {
-                let (set, next) = parse_bracket_set(pattern, index)?;
-                (GlobToken::One(ByteMatcher::Set(set)), next)
+                let (set, next) = parse_bracket_set(pattern, index, options.unicode)?;
+                (GlobToken::One(UnitMatcher::Set(set)), next)
             }
-            b'\\' => {
-                let (byte, next) = read_glob_byte(pattern, index)?;
-                (GlobToken::One(ByteMatcher::Escaped(byte)), next)
+            first => {
+                let (_, unit) = read_glob_char(pattern, index, options.unicode)?;
+                let matcher = match &pattern[unit.clone()] {
+                    [byte] if first == b'\\' => UnitMatcher::Escaped(*byte),
+                    [byte] => UnitMatcher::Literal(*byte),
+                    bytes => UnitMatcher::Character(bytes.to_vec()),
+                };
+                (GlobToken::One(matcher), unit.end)
             }
-            byte => (GlobToken::One(ByteMatcher::Literal(byte)), index + 1),
         };
         tokens.push(token);
         index = next;
@@ -42,7 +47,8 @@ pub(super) fn tokenize_glob(pattern: &[u8], options: GlobOptions) -> Option<Vec<
 mod tests {
     use super::super::TEST_OPTIONS;
     use super::super::TEST_PATHNAME_OPTIONS;
-    use super::super::types::{BracketItem, BracketSet, ByteMatcher, GlobToken};
+    use super::super::TEST_UNICODE_OPTIONS;
+    use super::super::types::{BracketItem, BracketSet, GlobToken, UnitMatcher};
     use super::tokenize_glob;
 
     #[test]
@@ -57,8 +63,8 @@ mod tests {
         assert_eq!(
             result,
             Some(vec![
-                GlobToken::One(ByteMatcher::Literal(b'a')),
-                GlobToken::One(ByteMatcher::Literal(b'b')),
+                GlobToken::One(UnitMatcher::Literal(b'a')),
+                GlobToken::One(UnitMatcher::Literal(b'b')),
             ])
         );
     }
@@ -74,7 +80,7 @@ mod tests {
         // Assert
         assert_eq!(
             result,
-            Some(vec![GlobToken::One(ByteMatcher::Escaped(b'?'))])
+            Some(vec![GlobToken::One(UnitMatcher::Escaped(b'?'))])
         );
     }
 
@@ -87,7 +93,7 @@ mod tests {
         let result = tokenize_glob(pattern, TEST_OPTIONS);
 
         // Assert
-        assert_eq!(result, Some(vec![GlobToken::One(ByteMatcher::Any)]));
+        assert_eq!(result, Some(vec![GlobToken::One(UnitMatcher::Any)]));
     }
 
     #[test]
@@ -103,7 +109,7 @@ mod tests {
             result,
             Some(vec![
                 GlobToken::AnyFolders,
-                GlobToken::One(ByteMatcher::Literal(b'a')),
+                GlobToken::One(UnitMatcher::Literal(b'a')),
             ])
         );
     }
@@ -119,9 +125,79 @@ mod tests {
         // Assert
         assert_eq!(
             result,
-            Some(vec![GlobToken::One(ByteMatcher::Set(BracketSet {
+            Some(vec![GlobToken::One(UnitMatcher::Set(BracketSet {
                 negated: false,
-                items: vec![BracketItem::Byte(b'a')],
+                items: vec![BracketItem::Char(u32::from(b'a'))],
+            }))])
+        );
+    }
+
+    #[test]
+    fn reads_a_character_as_bytes_without_unicode() {
+        // Arrange
+        let pattern = "é".as_bytes();
+
+        // Act
+        let result = tokenize_glob(pattern, TEST_OPTIONS);
+
+        // Assert
+        assert_eq!(
+            result,
+            Some(vec![
+                GlobToken::One(UnitMatcher::Literal(0xC3)),
+                GlobToken::One(UnitMatcher::Literal(0xA9)),
+            ])
+        );
+    }
+
+    #[test]
+    fn reads_a_whole_character_with_unicode() {
+        // Arrange
+        let pattern = "é".as_bytes();
+
+        // Act
+        let result = tokenize_glob(pattern, TEST_UNICODE_OPTIONS);
+
+        // Assert
+        assert_eq!(
+            result,
+            Some(vec![GlobToken::One(UnitMatcher::Character(
+                "é".as_bytes().to_vec()
+            ))])
+        );
+    }
+
+    #[test]
+    fn reads_an_escaped_whole_character_with_unicode() {
+        // Arrange
+        let pattern = "\\é".as_bytes();
+
+        // Act
+        let result = tokenize_glob(pattern, TEST_UNICODE_OPTIONS);
+
+        // Assert
+        assert_eq!(
+            result,
+            Some(vec![GlobToken::One(UnitMatcher::Character(
+                "é".as_bytes().to_vec()
+            ))])
+        );
+    }
+
+    #[test]
+    fn reads_a_bracket_set_of_characters_with_unicode() {
+        // Arrange
+        let pattern = "[é]".as_bytes();
+
+        // Act
+        let result = tokenize_glob(pattern, TEST_UNICODE_OPTIONS);
+
+        // Assert
+        assert_eq!(
+            result,
+            Some(vec![GlobToken::One(UnitMatcher::Set(BracketSet {
+                negated: false,
+                items: vec![BracketItem::Char(u32::from('é'))],
             }))])
         );
     }

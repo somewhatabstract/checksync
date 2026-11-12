@@ -28,7 +28,7 @@ pub(crate) fn compile_glob(pattern: &[u8], options: GlobOptions) -> Option<Compi
 #[cfg(test)]
 mod tests {
     use super::super::TEST_OPTIONS;
-    use super::super::types::{ByteMatcher, CompiledGlob, GlobOptions, GlobToken};
+    use super::super::types::{CompiledGlob, GlobOptions, GlobToken, UnitMatcher};
     use super::compile_glob;
 
     /// Compile `?` with the given options and report whether dots are hidden.
@@ -37,6 +37,7 @@ mod tests {
             pathname,
             casefold: false,
             dot,
+            unicode: false,
         };
         compile_glob(b"?", options).map(|glob| glob.hides_dots)
     }
@@ -53,7 +54,7 @@ mod tests {
         assert_eq!(
             result,
             Some(CompiledGlob {
-                tokens: vec![GlobToken::One(ByteMatcher::Any)],
+                tokens: vec![GlobToken::One(UnitMatcher::Any)],
                 options: TEST_OPTIONS,
                 hides_dots: false,
             })
@@ -69,7 +70,7 @@ mod tests {
         let result = compile_glob(pattern, TEST_OPTIONS).map(|glob| glob.tokens);
 
         // Assert
-        assert_eq!(result, Some(vec![GlobToken::One(ByteMatcher::Any)]));
+        assert_eq!(result, Some(vec![GlobToken::One(UnitMatcher::Any)]));
     }
 
     #[test]

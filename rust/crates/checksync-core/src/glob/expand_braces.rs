@@ -111,7 +111,6 @@ mod tests {
         serde_json::from_str(VECTORS).expect("valid fast-glob vector table")
     }
 
-    /// Expand `pattern` and turn the results into strings for comparing.
     /// What `expand` gives: the expanded patterns as strings, or the error.
     type Expansion = Result<Vec<String>, BraceExpansionError>;
 
@@ -120,6 +119,7 @@ mod tests {
         items.iter().map(|&item| item.to_owned()).collect()
     }
 
+    /// Expand `pattern` and turn the results into strings for comparing.
     fn expand(pattern: &str) -> Expansion {
         expand_braces(pattern.as_bytes()).map(|results| {
             results

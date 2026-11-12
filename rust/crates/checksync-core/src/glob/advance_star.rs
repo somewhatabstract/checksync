@@ -1,3 +1,4 @@
+use super::decode_glob_char::decode_glob_char;
 use super::starts_hidden_name::starts_hidden_name;
 
 /// Move the reachable text positions past a `*`, in place.
@@ -5,7 +6,9 @@ use super::starts_hidden_name::starts_hidden_name;
 /// Every reachable position stays reachable, and so does every later one,
 /// provided the bytes in between include no `/` when `crosses_slash` isn't
 /// set. When `hides_dots` is set, the `*` can't start at a `.` that starts
-/// a name, not even to match nothing, and can't run over one.
+/// a name, not even to match nothing, and can't run over one. When `unicode`
+/// is set, the `*` only stops between whole characters, as
+/// `decode_glob_char` reads them.
 ///
 /// # Arguments
 ///
@@ -15,6 +18,7 @@ use super::starts_hidden_name::starts_hidden_name;
 ///   after the `*`.
 /// * `crosses_slash` - Whether the `*` may match `/`.
 /// * `hides_dots` - Whether a `.` starting a name is out of the `*`'s reach.
+/// * `unicode` - Whether the text is read as characters rather than bytes.
 ///
 /// # Returns
 ///
@@ -25,17 +29,28 @@ pub(super) fn advance_star(
     positions: &mut [bool],
     crosses_slash: bool,
     hides_dots: bool,
+    unicode: bool,
 ) -> bool {
     let blocked = |position| hides_dots && starts_hidden_name(text, position);
     let mut carried = positions[0] && !blocked(0);
     positions[0] = carried;
     let mut any = carried;
+    // Where the character being run over ends; every byte ends one without
+    // `unicode`.
+    let mut character_end = 0;
     for (index, slot) in positions[1..].iter_mut().enumerate() {
+        if index == character_end {
+            character_end += if unicode {
+                decode_glob_char(text, index).1
+            } else {
+                1
+            };
+        }
         let byte = text[index];
         let continues = carried && (crosses_slash || byte != b'/') && !blocked(index);
         carried = continues || (*slot && !blocked(index + 1));
-        *slot = carried;
-        any |= carried;
+        *slot = carried && index + 1 == character_end;
+        any |= *slot;
     }
     any
 }
@@ -50,7 +65,7 @@ mod tests {
         let mut positions = [false, true, false, false];
 
         // Act
-        let _ = advance_star(b"a/b", &mut positions, true, false);
+        let _ = advance_star(b"a/b", &mut positions, true, false, false);
 
         // Assert
         assert_eq!(positions, [false, true, true, true]);
@@ -62,7 +77,7 @@ mod tests {
         let mut positions = [true, false, false, false];
 
         // Act
-        let _ = advance_star(b"a/b", &mut positions, false, false);
+        let _ = advance_star(b"a/b", &mut positions, false, false, false);
 
         // Assert
         assert_eq!(positions, [true, true, false, false]);
@@ -74,7 +89,7 @@ mod tests {
         let mut positions = [true, false, true, false];
 
         // Act
-        let _ = advance_star(b"a/b", &mut positions, false, false);
+        let _ = advance_star(b"a/b", &mut positions, false, false, false);
 
         // Assert
         assert_eq!(positions, [true, true, true, true]);
@@ -86,7 +101,7 @@ mod tests {
         let mut positions = [true, false, false];
 
         // Act
-        let _ = advance_star(b".a", &mut positions, false, true);
+        let _ = advance_star(b".a", &mut positions, false, true, false);
 
         // Assert
         assert_eq!(positions, [false, false, false]);
@@ -98,7 +113,7 @@ mod tests {
         let mut positions = [false, false, true, false];
 
         // Act
-        let _ = advance_star(b"a/.", &mut positions, false, true);
+        let _ = advance_star(b"a/.", &mut positions, false, true, false);
 
         // Assert
         assert_eq!(positions, [false, false, false, false]);
@@ -110,7 +125,7 @@ mod tests {
         let mut positions = [true, false, false, false, false];
 
         // Act
-        let _ = advance_star(b"a/.b", &mut positions, true, true);
+        let _ = advance_star(b"a/.b", &mut positions, true, true, false);
 
         // Assert
         assert_eq!(positions, [true, true, true, false, false]);
@@ -122,7 +137,7 @@ mod tests {
         let mut positions = [true, false, false];
 
         // Act
-        let _ = advance_star(b"a.", &mut positions, false, true);
+        let _ = advance_star(b"a.", &mut positions, false, true, false);
 
         // Assert
         assert_eq!(positions, [true, true, true]);
@@ -134,7 +149,7 @@ mod tests {
         let mut positions = [true, false, false];
 
         // Act
-        let _ = advance_star(b".a", &mut positions, false, false);
+        let _ = advance_star(b".a", &mut positions, false, false, false);
 
         // Assert
         assert_eq!(positions, [true, true, true]);
@@ -146,7 +161,7 @@ mod tests {
         let mut positions = [false, true];
 
         // Act
-        let result = advance_star(b"a", &mut positions, false, false);
+        let result = advance_star(b"a", &mut positions, false, false, false);
 
         // Assert
         assert!(result);
@@ -158,9 +173,35 @@ mod tests {
         let mut positions = [false, false];
 
         // Act
-        let result = advance_star(b"a", &mut positions, false, false);
+        let result = advance_star(b"a", &mut positions, false, false, false);
 
         // Assert
         assert!(!result);
+    }
+
+    #[test]
+    fn stops_only_between_characters_with_unicode() {
+        // Arrange
+        let text = "aé".as_bytes();
+        let mut positions = [true, false, false, false];
+
+        // Act
+        let _ = advance_star(text, &mut positions, false, false, true);
+
+        // Assert
+        assert_eq!(positions, [true, true, false, true]);
+    }
+
+    #[test]
+    fn stops_inside_characters_without_unicode() {
+        // Arrange
+        let text = "aé".as_bytes();
+        let mut positions = [true, false, false, false];
+
+        // Act
+        let _ = advance_star(text, &mut positions, false, false, false);
+
+        // Assert
+        assert_eq!(positions, [true, true, true, true]);
     }
 }

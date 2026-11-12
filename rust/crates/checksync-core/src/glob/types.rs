@@ -4,6 +4,10 @@
 ///
 /// There's no default: callers choose every option.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[expect(
+    clippy::struct_excessive_bools,
+    reason = "each option is an independent switch callers set explicitly"
+)]
 pub(crate) struct GlobOptions {
     /// Whether `/` separates folders.
     ///
@@ -25,6 +29,14 @@ pub(crate) struct GlobOptions {
     /// `.`, and a `*` can't even match nothing in front of it. Without
     /// `pathname`, this has no effect. git's matching has it on.
     pub dot: bool,
+    /// Whether `?` and bracket sets match whole UTF-8 characters.
+    ///
+    /// When on, as in fast-glob, `?` and a bracket set match one character
+    /// of 1 to 4 bytes, bracket sets compare code points, and `*` never stops
+    /// inside a character. A byte that isn't part of valid UTF-8, in the
+    /// pattern or the text, counts as one character on its own. When off,
+    /// as in git, everything matches single bytes.
+    pub unicode: bool,
 }
 
 /// A glob pattern compiled once so it can be matched against many texts.
@@ -43,8 +55,8 @@ pub(crate) struct CompiledGlob {
 /// One step of a parsed glob pattern.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(super) enum GlobToken {
-    /// Exactly one byte of the text.
-    One(ByteMatcher),
+    /// Exactly one unit of the text: a byte, or a character in unicode mode.
+    One(UnitMatcher),
     /// Any run of bytes, including none.
     Star {
         /// Whether the run may include `/`.
@@ -56,9 +68,11 @@ pub(super) enum GlobToken {
     AnyFolders,
 }
 
-/// What a single byte of the text has to be to match one glob token.
+/// What one unit of the text has to be to match one glob token.
+///
+/// A unit is a byte, or a whole character in unicode mode.
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub(super) enum ByteMatcher {
+pub(super) enum UnitMatcher {
     /// This byte, in either case when folding case.
     Literal(u8),
     /// This byte, written after a `\`.
@@ -66,9 +80,11 @@ pub(super) enum ByteMatcher {
     /// When folding case, the text's byte is lowercased and then compared
     /// exactly, so an escaped uppercase letter matches nothing.
     Escaped(u8),
-    /// Any byte, written as `?`.
+    /// This character of several bytes, escaped or not, in unicode mode.
+    Character(Vec<u8>),
+    /// Any one unit, written as `?`.
     Any,
-    /// A byte from a bracket set, such as `[a-z]`.
+    /// A unit from a bracket set, such as `[a-z]`.
     Set(BracketSet),
 }
 
@@ -84,10 +100,10 @@ pub(super) struct BracketSet {
 /// One member of a bracket set.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub(super) enum BracketItem {
-    /// A single byte.
-    Byte(u8),
-    /// A range of bytes, from the first to the second, as written.
-    Range(u8, u8),
+    /// A single unit, by its code: a byte, or a code point in unicode mode.
+    Char(u32),
+    /// A range of units, from the first code to the second, as written.
+    Range(u32, u32),
     /// A POSIX character class, such as `[:alpha:]`.
     Class(PosixClass),
 }

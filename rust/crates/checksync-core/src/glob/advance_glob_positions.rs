@@ -1,5 +1,6 @@
 use super::advance_any_folders::advance_any_folders;
 use super::advance_one_byte::advance_one_byte;
+use super::advance_one_char::advance_one_char;
 use super::advance_star::advance_star;
 use super::types::{GlobOptions, GlobToken};
 
@@ -12,7 +13,8 @@ use super::types::{GlobOptions, GlobToken};
 /// * `positions` - For each position in the text, from 0 to its length,
 ///   whether matching can reach it. Updated to the positions reachable
 ///   after the token.
-/// * `options` - How to treat slashes and letter case.
+/// * `options` - How to treat slashes and letter case, and whether to read
+///   the text as characters rather than bytes.
 /// * `hides_dots` - Whether wildcards stay off a `.` that starts a name.
 ///
 /// # Returns
@@ -27,9 +29,12 @@ pub(super) fn advance_glob_positions(
     hides_dots: bool,
 ) -> bool {
     match token {
+        GlobToken::One(matcher) if options.unicode => {
+            advance_one_char(matcher, text, positions, options, hides_dots)
+        }
         GlobToken::One(matcher) => advance_one_byte(matcher, text, positions, options, hides_dots),
         GlobToken::Star { crosses_slash } => {
-            advance_star(text, positions, *crosses_slash, hides_dots)
+            advance_star(text, positions, *crosses_slash, hides_dots, options.unicode)
         }
         GlobToken::AnyFolders => advance_any_folders(text, positions, hides_dots),
     }
@@ -38,13 +43,14 @@ pub(super) fn advance_glob_positions(
 #[cfg(test)]
 mod tests {
     use super::super::TEST_PATHNAME_OPTIONS;
-    use super::super::types::{ByteMatcher, GlobToken};
+    use super::super::TEST_UNICODE_OPTIONS;
+    use super::super::types::{GlobToken, UnitMatcher};
     use super::advance_glob_positions;
 
     #[test]
     fn moves_one_byte_for_a_single_byte_token() {
         // Arrange
-        let token = GlobToken::One(ByteMatcher::Any);
+        let token = GlobToken::One(UnitMatcher::Any);
         let mut positions = [true, false, false];
 
         // Act
@@ -85,7 +91,7 @@ mod tests {
     #[test]
     fn reports_whether_any_position_is_reachable() {
         // Arrange
-        let token = GlobToken::One(ByteMatcher::Literal(b'x'));
+        let token = GlobToken::One(UnitMatcher::Literal(b'x'));
         let mut positions = [true, false];
 
         // Act
@@ -94,5 +100,24 @@ mod tests {
 
         // Assert
         assert!(!result);
+    }
+
+    #[test]
+    fn moves_one_character_for_a_single_unit_token_with_unicode() {
+        // Arrange
+        let token = GlobToken::One(UnitMatcher::Any);
+        let mut positions = [true, false, false];
+
+        // Act
+        let _ = advance_glob_positions(
+            &token,
+            "é".as_bytes(),
+            &mut positions,
+            TEST_UNICODE_OPTIONS,
+            false,
+        );
+
+        // Assert
+        assert_eq!(positions, [false, false, true]);
     }
 }

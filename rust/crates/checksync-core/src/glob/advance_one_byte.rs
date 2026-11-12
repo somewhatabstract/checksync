@@ -1,14 +1,15 @@
-use super::byte_matcher_matches::byte_matcher_matches;
-use super::byte_matcher_matches_hidden_dot::byte_matcher_matches_hidden_dot;
 use super::starts_hidden_name::starts_hidden_name;
-use super::types::{ByteMatcher, GlobOptions};
+use super::types::{GlobOptions, UnitMatcher};
+use super::unit_matcher_matches::unit_matcher_matches;
+use super::unit_matcher_matches_hidden_dot::unit_matcher_matches_hidden_dot;
 
 /// Move the reachable text positions past a single-byte token, in place.
 ///
-/// Each reachable position whose byte matches makes the position one byte
+/// This is the step for `?`, bracket sets and literals when not in unicode
+/// mode. Each reachable position whose byte matches makes the position one byte
 /// further on reachable; every other position becomes unreachable. When
 /// `hides_dots` is set, a `.` starting a name only matches a token that
-/// `byte_matcher_matches_hidden_dot` allows.
+/// `unit_matcher_matches_hidden_dot` allows.
 ///
 /// # Arguments
 ///
@@ -25,20 +26,25 @@ use super::types::{ByteMatcher, GlobOptions};
 /// `true` if any position is reachable after the token.
 #[must_use]
 pub(super) fn advance_one_byte(
-    matcher: &ByteMatcher,
+    matcher: &UnitMatcher,
     text: &[u8],
     positions: &mut [bool],
     options: GlobOptions,
     hides_dots: bool,
 ) -> bool {
-    let may_match_hidden_dot = byte_matcher_matches_hidden_dot(matcher);
+    let may_match_hidden_dot = unit_matcher_matches_hidden_dot(matcher);
     let mut any = false;
     // Going backwards reads each position before it's overwritten.
     for (position, &byte) in text.iter().enumerate().rev() {
         let hidden = hides_dots && starts_hidden_name(text, position);
         let reached = positions[position]
             && (may_match_hidden_dot || !hidden)
-            && byte_matcher_matches(matcher, byte, options);
+            && unit_matcher_matches(
+                matcher,
+                &text[position..=position],
+                u32::from(byte),
+                options,
+            );
         positions[position + 1] = reached;
         any |= reached;
     }
@@ -48,7 +54,7 @@ pub(super) fn advance_one_byte(
 
 #[cfg(test)]
 mod tests {
-    use super::super::types::ByteMatcher;
+    use super::super::types::UnitMatcher;
     use super::super::{TEST_OPTIONS, TEST_PATHNAME_OPTIONS};
     use super::advance_one_byte;
 
@@ -59,7 +65,7 @@ mod tests {
 
         // Act
         let _ = advance_one_byte(
-            &ByteMatcher::Literal(b'a'),
+            &UnitMatcher::Literal(b'a'),
             b"aaa",
             &mut positions,
             TEST_OPTIONS,
@@ -77,7 +83,7 @@ mod tests {
 
         // Act
         let _ = advance_one_byte(
-            &ByteMatcher::Literal(b'a'),
+            &UnitMatcher::Literal(b'a'),
             b"b",
             &mut positions,
             TEST_OPTIONS,
@@ -95,7 +101,7 @@ mod tests {
 
         // Act
         let _ = advance_one_byte(
-            &ByteMatcher::Any,
+            &UnitMatcher::Any,
             b"a/.",
             &mut positions,
             TEST_PATHNAME_OPTIONS,
@@ -113,7 +119,7 @@ mod tests {
 
         // Act
         let _ = advance_one_byte(
-            &ByteMatcher::Literal(b'.'),
+            &UnitMatcher::Literal(b'.'),
             b".",
             &mut positions,
             TEST_PATHNAME_OPTIONS,
@@ -131,7 +137,7 @@ mod tests {
 
         // Act
         let _ = advance_one_byte(
-            &ByteMatcher::Any,
+            &UnitMatcher::Any,
             b".",
             &mut positions,
             TEST_PATHNAME_OPTIONS,
@@ -149,7 +155,7 @@ mod tests {
 
         // Act
         let result = advance_one_byte(
-            &ByteMatcher::Literal(b'a'),
+            &UnitMatcher::Literal(b'a'),
             b"a",
             &mut positions,
             TEST_OPTIONS,
@@ -167,7 +173,7 @@ mod tests {
 
         // Act
         let result = advance_one_byte(
-            &ByteMatcher::Literal(b'a'),
+            &UnitMatcher::Literal(b'a'),
             b"b",
             &mut positions,
             TEST_OPTIONS,
