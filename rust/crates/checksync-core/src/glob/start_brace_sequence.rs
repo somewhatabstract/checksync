@@ -30,6 +30,7 @@ pub(super) fn start_brace_sequence(
 
 #[cfg(test)]
 mod tests {
+    use super::super::take_brace_budget::MAX_HELD;
     use super::super::types::{BraceBudget, BraceExpansionError, BraceFrame};
     use super::start_brace_sequence;
 
@@ -68,7 +69,7 @@ mod tests {
     fn rejects_a_start_that_does_not_fit() {
         // Arrange
         let mut budget = BraceBudget {
-            count: 100_000,
+            count: MAX_HELD,
             bytes: 0,
         };
 

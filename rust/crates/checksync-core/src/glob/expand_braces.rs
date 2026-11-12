@@ -4,7 +4,8 @@ use super::types::{BraceBudget, BraceExpansionError};
 
 /// The longest pattern with brace groups that `expand_braces` accepts.
 ///
-/// micromatch's braces has the same limit.
+/// micromatch's braces has a 10,000-byte limit too, but applies it to more
+/// patterns, including ones with braces that form no group.
 const MAX_PATTERN_LENGTH: usize = 10_000;
 
 /// Expand the `{a,b}` brace groups in a pattern into separate patterns.
@@ -24,10 +25,13 @@ const MAX_PATTERN_LENGTH: usize = 10_000;
 /// Duplicates, such as the two `a`s from `{a,a}`, are kept; callers that
 /// need unique patterns must remove them.
 ///
-/// A pattern with no brace group always gives just itself. To stay within
-/// time and memory, a pattern with groups may be at most 10,000 bytes long,
-/// and the expansion may hold at most what `take_brace_budget` allows at
-/// once, counting partial results: 100,000 patterns and 10,000,000 bytes.
+/// A pattern with no brace group always gives just itself, at any length.
+/// To stay within time and memory, a pattern with groups may be at most
+/// 10,000 bytes long, and its expansion may give at most what
+/// `brace_results_fit` allows: 100,000 patterns and 10,000,000 bytes. Any
+/// expansion within those limits is accepted, whatever order its groups
+/// come in, and while working it holds at most about twice its output, as
+/// `take_brace_budget` checks.
 /// Groups may nest to any depth: expansion keeps its work on the heap, so
 /// its use of the call stack doesn't grow with the nesting.
 ///
@@ -82,11 +86,12 @@ mod tests {
         cases: Vec<Case>,
     }
 
-    /// One pattern and what micromatch expands it to.
+    /// One pattern and what micromatch expands it to, or its error.
     #[derive(Deserialize)]
     struct Case {
         pattern: String,
-        expanded: Vec<String>,
+        expanded: Option<Vec<String>>,
+        error: Option<String>,
         rust: Option<Divergence>,
     }
 
@@ -437,18 +442,57 @@ mod tests {
     }
 
     #[test]
-    fn counts_partial_results_across_nesting_levels() {
+    fn expands_exactly_as_many_results_as_allowed() {
         // Arrange
-        let level = [
-            "{".to_owned(),
-            "{a,b}".repeat(16),
-            "L".repeat(60),
-            ",".to_owned(),
-            "{a,b}".repeat(16),
-            "M".repeat(60),
-        ]
-        .concat();
-        let pattern = [level.repeat(35), "}".repeat(35)].concat();
+        let pattern = "{0,1,2,3,4,5,6,7,8,9}".repeat(5);
+
+        // Act
+        let result = expand_braces(pattern.as_bytes()).map(|results| results.len());
+
+        // Assert
+        assert_eq!(result, Ok(100_000));
+    }
+
+    #[test]
+    fn rejects_one_group_more_than_allowed() {
+        // Arrange
+        let pattern = ["{0,1,2,3,4,5,6,7,8,9}".repeat(5), "{a,b}".to_owned()].concat();
+
+        // Act
+        let result = expand_braces(pattern.as_bytes());
+
+        // Assert
+        assert_eq!(result, Err(BraceExpansionError::TooManyResults));
+    }
+
+    #[test]
+    fn expands_large_results_with_the_groups_at_the_end() {
+        // Arrange
+        let pattern = ["x".repeat(9_000), "{a,b}".repeat(10)].concat();
+
+        // Act
+        let result = expand_braces(pattern.as_bytes()).map(|results| results.len());
+
+        // Assert
+        assert_eq!(result, Ok(1_024));
+    }
+
+    #[test]
+    fn expands_large_results_with_the_groups_at_the_start() {
+        // Arrange
+        let pattern = ["{a,b}".repeat(10), "x".repeat(9_000)].concat();
+
+        // Act
+        let result = expand_braces(pattern.as_bytes()).map(|results| results.len());
+
+        // Assert
+        assert_eq!(result, Ok(1_024));
+    }
+
+    #[test]
+    fn rejects_results_with_too_many_bytes() {
+        // Arrange
+        let pattern = ["x".repeat(9_800), "{a,b}".repeat(10)].concat();
 
         // Act
         let result = expand_braces(pattern.as_bytes());
@@ -485,7 +529,8 @@ mod tests {
             .flat_map(|vector| {
                 vector.cases.iter().map(move |case| {
                     let explained = case.rust.as_ref().is_none_or(|rust| {
-                        !rust.reason.trim().is_empty() && rust.expanded != case.expanded
+                        !rust.reason.trim().is_empty()
+                            && Some(&rust.expanded) != case.expanded.as_ref()
                     });
                     (
                         (vector.description.as_str(), case.pattern.as_str()),
@@ -515,9 +560,10 @@ mod tests {
                     let wanted = case
                         .rust
                         .as_ref()
-                        .map_or(&case.expanded, |rust| &rust.expanded);
+                        .map(|rust| &rust.expanded)
+                        .or(case.expanded.as_ref());
                     let actual = expand(&case.pattern);
-                    let wrong = actual != *wanted;
+                    let wrong = Some(&actual) != wanted;
                     (
                         (vector.description.as_str(), case.pattern.as_str(), actual),
                         wrong,
@@ -530,5 +576,24 @@ mod tests {
 
         // Assert
         assert_eq!(mismatches, Vec::new());
+    }
+
+    #[test]
+    fn records_either_an_expansion_or_an_error_for_each_vector() {
+        // Arrange
+        let table = load_table();
+
+        // Act
+        let unclear: Vec<&str> = table
+            .expansions
+            .iter()
+            .flat_map(|vector| vector.cases.iter())
+            .filter_map(|case| {
+                (case.expanded.is_some() == case.error.is_some()).then_some(case.pattern.as_str())
+            })
+            .collect();
+
+        // Assert
+        assert_eq!(unclear, Vec::<&str>::new());
     }
 }

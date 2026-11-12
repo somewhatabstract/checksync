@@ -1,16 +1,26 @@
+use super::brace_results_fit::{MAX_RESULT_BYTES, MAX_RESULTS};
 use super::types::{BraceBudget, BraceExpansionError};
 
-/// The most patterns a brace expansion may hold at once.
-const MAX_COUNT: usize = 100_000;
+/// The most patterns a brace expansion may hold at once while working.
+///
+/// An expansion whose final output fits `brace_results_fit` never holds
+/// more than twice its output, plus one pattern per nesting level, which
+/// the 10,000-byte pattern limit keeps below 10,000.
+pub(super) const MAX_HELD: usize = 2 * MAX_RESULTS + 10_000;
 
 /// The most bytes a brace expansion's patterns may hold at once.
-const MAX_BYTES: usize = 10_000_000;
-
-/// Count more output against a brace expansion's limits.
 ///
-/// An expansion may hold at most 100,000 patterns, and at most 10,000,000
-/// bytes of them, at any one time, counting partial results as well as
-/// finished ones, so no pattern can exhaust memory.
+/// An expansion whose final output fits `brace_results_fit` never holds
+/// more than twice its output's bytes.
+pub(super) const MAX_HELD_BYTES: usize = 2 * MAX_RESULT_BYTES;
+
+/// Count more output against what a brace expansion may hold at once.
+///
+/// This bounds memory while groups nest, counting partial results as well
+/// as finished ones: at most 210,000 patterns and 20,000,000 bytes at once.
+/// It never refuses an expansion whose final output fits, since everything
+/// held at once is either part of that output or about to be replaced by a
+/// larger part of it.
 ///
 /// # Arguments
 ///
@@ -34,7 +44,7 @@ pub(super) fn take_brace_budget(
 ) -> Result<(), BraceExpansionError> {
     let count = budget.count.saturating_add(count);
     let bytes = budget.bytes.saturating_add(bytes);
-    if count > MAX_COUNT || bytes > MAX_BYTES {
+    if count > MAX_HELD || bytes > MAX_HELD_BYTES {
         return Err(BraceExpansionError::TooManyResults);
     }
     *budget = BraceBudget { count, bytes };
@@ -44,7 +54,7 @@ pub(super) fn take_brace_budget(
 #[cfg(test)]
 mod tests {
     use super::super::types::{BraceBudget, BraceExpansionError};
-    use super::{MAX_BYTES, MAX_COUNT, take_brace_budget};
+    use super::{MAX_HELD, MAX_HELD_BYTES, take_brace_budget};
 
     #[test]
     fn counts_output_up_to_the_limits() {
@@ -52,14 +62,14 @@ mod tests {
         let mut budget = BraceBudget { count: 1, bytes: 1 };
 
         // Act
-        let _ = take_brace_budget(&mut budget, MAX_COUNT - 1, MAX_BYTES - 1);
+        let _ = take_brace_budget(&mut budget, MAX_HELD - 1, MAX_HELD_BYTES - 1);
 
         // Assert
         assert_eq!(
             budget,
             BraceBudget {
-                count: MAX_COUNT,
-                bytes: MAX_BYTES
+                count: MAX_HELD,
+                bytes: MAX_HELD_BYTES
             }
         );
     }
@@ -68,7 +78,7 @@ mod tests {
     fn rejects_too_many_patterns() {
         // Arrange
         let mut budget = BraceBudget {
-            count: MAX_COUNT,
+            count: MAX_HELD,
             bytes: 0,
         };
 
@@ -84,7 +94,7 @@ mod tests {
         // Arrange
         let mut budget = BraceBudget {
             count: 0,
-            bytes: MAX_BYTES,
+            bytes: MAX_HELD_BYTES,
         };
 
         // Act

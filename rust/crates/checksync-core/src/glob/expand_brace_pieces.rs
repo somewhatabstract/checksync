@@ -37,6 +37,7 @@ pub(super) fn expand_brace_pieces(
 
 #[cfg(test)]
 mod tests {
+    use super::super::take_brace_budget::MAX_HELD;
     use super::super::types::{BraceBudget, BraceExpansionError};
     use super::expand_brace_pieces;
 
@@ -95,7 +96,7 @@ mod tests {
     fn rejects_a_start_that_does_not_fit() {
         // Arrange
         let mut budget = BraceBudget {
-            count: 100_000,
+            count: MAX_HELD,
             bytes: 0,
         };
 
@@ -113,6 +114,32 @@ mod tests {
 
         // Act
         let result = expand_brace_pieces(&pattern, &mut BraceBudget::default());
+
+        // Assert
+        assert_eq!(result, Err(BraceExpansionError::TooManyResults));
+    }
+
+    #[test]
+    fn counts_the_output_held_by_enclosing_groups() {
+        // Arrange
+        let inner = b"{c,d}".repeat(4);
+        let pattern = [b"{".as_slice(), &b"{a,b}".repeat(4), b",", &inner, b"}"].concat();
+        let room_for_inner = (0..MAX_HELD)
+            .find(|room| {
+                let mut budget = BraceBudget {
+                    count: MAX_HELD - room,
+                    bytes: 0,
+                };
+                expand_brace_pieces(&inner, &mut budget).is_ok()
+            })
+            .unwrap();
+        let mut budget = BraceBudget {
+            count: MAX_HELD - room_for_inner,
+            bytes: 0,
+        };
+
+        // Act
+        let result = expand_brace_pieces(&pattern, &mut budget);
 
         // Assert
         assert_eq!(result, Err(BraceExpansionError::TooManyResults));

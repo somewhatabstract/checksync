@@ -103,8 +103,17 @@ pub(super) fn step_brace_frame(
 
 #[cfg(test)]
 mod tests {
+    use super::super::take_brace_budget::{MAX_HELD, MAX_HELD_BYTES};
     use super::super::types::{BraceBudget, BraceExpansionError, BraceFrame};
     use super::step_brace_frame;
+
+    /// A budget that already counts more than any frame in these tests holds.
+    fn counted() -> BraceBudget {
+        BraceBudget {
+            count: 100,
+            bytes: 100,
+        }
+    }
 
     fn sequence(end: usize, index: usize, results: &[&[u8]]) -> BraceFrame {
         BraceFrame::Sequence {
@@ -135,7 +144,7 @@ mod tests {
             b"ab{c,d}",
             sequence(7, 0, &[b"x"]),
             &mut stack,
-            &mut BraceBudget::default(),
+            &mut counted(),
         );
 
         // Assert
@@ -152,7 +161,7 @@ mod tests {
             b"{c,d}e",
             sequence(6, 0, &[b"x"]),
             &mut stack,
-            &mut BraceBudget::default(),
+            &mut counted(),
         );
 
         // Assert
@@ -165,12 +174,7 @@ mod tests {
         let mut stack = Vec::new();
 
         // Act
-        let _ = step_brace_frame(
-            b"{c,d}e",
-            group(1, &[b"c"]),
-            &mut stack,
-            &mut BraceBudget::default(),
-        );
+        let _ = step_brace_frame(b"{c,d}e", group(1, &[b"c"]), &mut stack, &mut counted());
 
         // Assert
         assert_eq!(stack, vec![group(2, &[b"c"]), sequence(4, 3, &[b""])]);
@@ -186,7 +190,7 @@ mod tests {
             b"{c,d}e",
             sequence(4, 4, &[b"d"]),
             &mut stack,
-            &mut BraceBudget::default(),
+            &mut counted(),
         );
 
         // Assert
@@ -203,7 +207,7 @@ mod tests {
             b"{c,d}e",
             group(2, &[b"c", b"d"]),
             &mut stack,
-            &mut BraceBudget::default(),
+            &mut counted(),
         );
 
         // Assert
@@ -216,12 +220,7 @@ mod tests {
         let mut stack = Vec::new();
 
         // Act
-        let result = step_brace_frame(
-            b"ab",
-            sequence(2, 0, &[b""]),
-            &mut stack,
-            &mut BraceBudget::default(),
-        );
+        let result = step_brace_frame(b"ab", sequence(2, 0, &[b""]), &mut stack, &mut counted());
 
         // Assert
         assert_eq!(result, Ok(None));
@@ -233,12 +232,7 @@ mod tests {
         let mut stack = Vec::new();
 
         // Act
-        let result = step_brace_frame(
-            b"ab",
-            sequence(2, 2, &[b"ab"]),
-            &mut stack,
-            &mut BraceBudget::default(),
-        );
+        let result = step_brace_frame(b"ab", sequence(2, 2, &[b"ab"]), &mut stack, &mut counted());
 
         // Assert
         assert_eq!(result, Ok(Some(vec![b"ab".to_vec()])));
@@ -248,7 +242,7 @@ mod tests {
     fn rejects_text_that_does_not_fit() {
         // Arrange
         let mut budget = BraceBudget {
-            count: 100_000,
+            count: MAX_HELD,
             bytes: 0,
         };
 
@@ -264,7 +258,7 @@ mod tests {
         // Arrange
         let mut budget = BraceBudget {
             count: 1,
-            bytes: 9_999_997,
+            bytes: MAX_HELD_BYTES - 3,
         };
 
         // Act
@@ -278,7 +272,7 @@ mod tests {
     fn rejects_an_alternative_that_does_not_fit() {
         // Arrange
         let mut budget = BraceBudget {
-            count: 100_000,
+            count: MAX_HELD,
             bytes: 0,
         };
 
@@ -293,7 +287,7 @@ mod tests {
     fn rejects_a_group_whose_combined_results_do_not_fit() {
         // Arrange
         let mut budget = BraceBudget {
-            count: 100_000,
+            count: MAX_HELD,
             bytes: 0,
         };
 

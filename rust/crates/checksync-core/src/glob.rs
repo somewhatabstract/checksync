@@ -11,6 +11,7 @@ mod advance_glob_positions;
 mod advance_one_byte;
 mod advance_star;
 mod brace_bracket_end;
+mod brace_results_fit;
 mod bracket_item_matches;
 mod bracket_set_contains;
 mod byte_matcher_matches;
