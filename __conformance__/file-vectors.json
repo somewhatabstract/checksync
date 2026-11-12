@@ -22,7 +22,10 @@
         "other/.gitignore": "*.js\n",
         "other/five.js": "",
         "other/six.txt": "",
-        "noignore/seven.js": ""
+        "noignore/seven.js": "",
+        ".lit/[slug]/page.tsx": "",
+        ".lit/[x].js": "",
+        ".lit/x.js": ""
     },
     "vectors": [
         {
@@ -672,6 +675,98 @@
                 "a.js",
                 "é.js"
             ]
+        },
+        {
+            "description": "A pattern matches a path that is exactly its text",
+            "cwd": "",
+            "include": [
+                ".lit/[slug]/page.tsx"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                ".lit/[slug]/page.tsx"
+            ]
+        },
+        {
+            "description": "A pattern matches by its text as well as a glob",
+            "cwd": "",
+            "include": [
+                ".lit/[x].js"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                ".lit/[x].js",
+                ".lit/x.js"
+            ]
+        },
+        {
+            "description": "An exclude matches a path that is exactly its text",
+            "cwd": "",
+            "include": [
+                ".lit/**"
+            ],
+            "exclude": [
+                ".lit/[slug]/page.tsx"
+            ],
+            "ignoreFiles": [],
+            "expected": [
+                ".lit/[x].js",
+                ".lit/x.js"
+            ]
+        },
+        {
+            "description": "An exclude starting with ! excludes all the same",
+            "cwd": "",
+            "include": [
+                "src/*.js"
+            ],
+            "exclude": [
+                "!src/one.js"
+            ],
+            "ignoreFiles": [],
+            "expected": []
+        },
+        {
+            "description": "Repeated slashes in a pattern act as one",
+            "cwd": "",
+            "include": [
+                "src//*.js"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                "src/one.js"
+            ]
+        },
+        {
+            "description": "A bracket set at the start of a name can match a hidden folder",
+            "cwd": "",
+            "include": [
+                "[.]dotdir/*.js"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                ".dotdir/x.js"
+            ]
+        },
+        {
+            "description": "A question mark in a folder name is a wildcard",
+            "cwd": "",
+            "include": [
+                "?rc/*.js"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [],
+            "rust": {
+                "expected": [
+                    "src/one.js"
+                ],
+                "reason": "`?` is a wildcard wherever it is. fast-glob treats it literally in a folder name before the last, so `?rc/*.js` finds nothing there."
+            }
         }
     ],
     "symlinks": {

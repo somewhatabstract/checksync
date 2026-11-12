@@ -1,6 +1,5 @@
-use crate::glob::CompiledGlob;
-
-use super::is_excluded::is_excluded;
+use super::matches_pattern_set::matches_pattern_set;
+use super::types::PatternSet;
 
 /// Check whether an exclude pattern prunes a task's folder or one above it.
 ///
@@ -18,27 +17,31 @@ use super::is_excluded::is_excluded;
 ///
 /// Whether the task's folder is pruned.
 #[must_use]
-pub(super) fn is_base_excluded(base: &str, excludes: &[CompiledGlob]) -> bool {
+pub(super) fn is_base_excluded(base: &str, excludes: &PatternSet) -> bool {
     base != "."
         && base
             .match_indices('/')
             .map(|(slash, _)| &base[..slash])
             .chain(std::iter::once(base))
             .filter(|folder| !folder.is_empty())
-            .any(|folder| is_excluded(excludes, folder.as_bytes()))
+            .any(|folder| matches_pattern_set(excludes, folder.as_bytes()))
 }
 
 #[cfg(test)]
 mod tests {
     use super::is_base_excluded;
-    use crate::file_search::compile_folder_exclude::compile_folder_exclude;
-    use crate::glob::CompiledGlob;
+    use crate::file_search::EXCLUDE_GLOB_OPTIONS;
+    use crate::file_search::compile_pattern_set::compile_pattern_set;
+    use crate::file_search::folder_exclude_forms::folder_exclude_forms;
+    use crate::file_search::types::PatternSet;
 
-    fn excludes(patterns: &[&str]) -> Vec<CompiledGlob> {
-        patterns
-            .iter()
-            .flat_map(|pattern| compile_folder_exclude(pattern))
-            .collect()
+    fn excludes(patterns: &[&str]) -> PatternSet {
+        compile_pattern_set(
+            patterns
+                .iter()
+                .flat_map(|pattern| folder_exclude_forms(pattern)),
+            EXCLUDE_GLOB_OPTIONS,
+        )
     }
 
     #[test]

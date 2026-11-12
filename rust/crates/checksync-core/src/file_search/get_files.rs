@@ -59,9 +59,9 @@ pub fn get_files(
         .iter()
         .map(|pattern| expand_folder_pattern(pattern, cwd))
         .collect();
-    let plan = plan_glob_tasks(&includes, exclude_globs)?;
     let ignore_files = load_ignore_files(ignore_file_globs, cwd)?;
-    let mut files = find_files(&plan, cwd).map_err(GetFilesError::Io)?;
+    let plan = plan_glob_tasks(&includes, exclude_globs, cwd)?;
+    let mut files = find_files(&plan, cwd)?;
     files.retain(|file| is_allowed_by_ignore_files(&ignore_files, file));
     Ok(files)
 }
@@ -74,8 +74,6 @@ mod tests {
     use tempfile::TempDir;
 
     use super::get_files;
-    use std::error::Error;
-
     fn too_many_message(pattern: &str) -> String {
         format!("pattern's braces expand to too many patterns: {pattern}")
     }
@@ -186,6 +184,6 @@ mod tests {
         let result = get_files(&[too_long], &[], &[], cwd.path()).map(|_| ());
 
         // Assert
-        assert!(result.unwrap_err().source().is_some());
+        assert!(result.unwrap_err().to_string().starts_with("cannot read "));
     }
 }

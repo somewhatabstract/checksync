@@ -1,5 +1,6 @@
 use std::fmt;
 use std::io;
+use std::path::PathBuf;
 
 use crate::glob::CompiledGlob;
 
@@ -23,14 +24,28 @@ pub(super) struct GlobPlan {
     pub excludes: Vec<String>,
 }
 
+/// Patterns that a path matches either as globs or as its literal text.
+///
+/// As in fast-glob, a pattern also matches a path whose text is exactly the
+/// pattern, so `app/[slug]/page.tsx` finds that file even though `[slug]` is
+/// a bracket set.
+#[derive(Debug, Clone, Default)]
+pub(super) struct PatternSet {
+    /// The patterns compiled as globs; those that can never match are left
+    /// out.
+    pub globs: Vec<CompiledGlob>,
+    /// The patterns as literal text.
+    pub literals: Vec<Vec<u8>>,
+}
+
 /// The compiled exclude patterns, for checking files and for checking folders.
 #[derive(Debug, Clone, Default)]
 pub(super) struct ExcludeGlobs {
     /// The patterns as given, which remove a file whose path they match.
-    pub files: Vec<CompiledGlob>,
+    pub files: PatternSet,
     /// The patterns, plus the folder before each trailing `/**`, which prune
     /// a folder whose path they match, with everything in it.
-    pub folders: Vec<CompiledGlob>,
+    pub folders: PatternSet,
 }
 
 /// Why `get_files` couldn't find files.
@@ -47,7 +62,12 @@ pub enum GetFilesError {
         pattern: String,
     },
     /// A folder or ignore file couldn't be read.
-    Io(io::Error),
+    Io {
+        /// The folder or file.
+        path: PathBuf,
+        /// What went wrong.
+        error: io::Error,
+    },
 }
 
 impl fmt::Display for GetFilesError {
@@ -59,7 +79,7 @@ impl fmt::Display for GetFilesError {
             Self::TooManyPatterns { pattern } => {
                 write!(f, "pattern's braces expand to too many patterns: {pattern}")
             }
-            Self::Io(error) => write!(f, "{error}"),
+            Self::Io { path, error } => write!(f, "cannot read {}: {error}", path.display()),
         }
     }
 }
@@ -67,7 +87,7 @@ impl fmt::Display for GetFilesError {
 impl std::error::Error for GetFilesError {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         match self {
-            Self::Io(error) => Some(error),
+            Self::Io { error, .. } => Some(error),
             Self::PatternTooLong { .. } | Self::TooManyPatterns { .. } => None,
         }
     }
@@ -77,8 +97,16 @@ impl std::error::Error for GetFilesError {
 mod tests {
     use std::error::Error;
     use std::io;
+    use std::path::PathBuf;
 
     use super::GetFilesError;
+
+    fn io_error() -> GetFilesError {
+        GetFilesError::Io {
+            path: PathBuf::from("src"),
+            error: io::Error::other("disk on fire"),
+        }
+    }
 
     #[test]
     fn describes_a_pattern_that_is_too_long() {
@@ -112,21 +140,21 @@ mod tests {
     }
 
     #[test]
-    fn describes_an_io_error_by_its_message() {
+    fn describes_an_io_error_with_its_path() {
         // Arrange
-        let error = GetFilesError::Io(io::Error::other("disk on fire"));
+        let error = io_error();
 
         // Act
         let result = error.to_string();
 
         // Assert
-        assert_eq!(result, "disk on fire");
+        assert_eq!(result, "cannot read src: disk on fire");
     }
 
     #[test]
     fn gives_the_io_error_as_its_source() {
         // Arrange
-        let error = GetFilesError::Io(io::Error::other("disk on fire"));
+        let error = io_error();
 
         // Act
         let result = error.source().map(ToString::to_string);

@@ -3,6 +3,7 @@ use std::path::Path;
 use crate::gitignore::IgnoreFile;
 
 use super::find_files::find_files;
+use super::load_found_ignore_files::load_found_ignore_files;
 use super::plan_glob_tasks::plan_glob_tasks;
 use super::types::GetFilesError;
 
@@ -30,13 +31,8 @@ pub(super) fn load_ignore_files(
     ignore_file_globs: &[String],
     cwd: &Path,
 ) -> Result<Vec<IgnoreFile>, GetFilesError> {
-    let plan = plan_glob_tasks(ignore_file_globs, &[])?;
-    let files = find_files(&plan, cwd).map_err(GetFilesError::Io)?;
-    files
-        .iter()
-        .map(|file| IgnoreFile::load(file))
-        .collect::<Result<Vec<_>, _>>()
-        .map_err(GetFilesError::Io)
+    let plan = plan_glob_tasks(ignore_file_globs, &[], cwd)?;
+    load_found_ignore_files(&find_files(&plan, cwd)?)
 }
 
 #[cfg(test)]
@@ -47,8 +43,6 @@ mod tests {
     use tempfile::TempDir;
 
     use super::load_ignore_files;
-    use std::error::Error;
-
     use crate::types::IgnoreDecision;
 
     fn write(root: &Path, file: &str, contents: &str) {
@@ -122,6 +116,6 @@ mod tests {
         let result = load_ignore_files(&[too_long], cwd.path()).map(|_| ());
 
         // Assert
-        assert!(result.unwrap_err().source().is_some());
+        assert!(result.unwrap_err().to_string().starts_with("cannot read "));
     }
 }

@@ -1,6 +1,5 @@
-use crate::glob::CompiledGlob;
-
-use super::is_excluded::is_excluded;
+use super::matches_pattern_set::matches_pattern_set;
+use super::types::PatternSet;
 
 /// Decide whether a folder found while walking could hold matching files.
 ///
@@ -24,27 +23,31 @@ use super::is_excluded::is_excluded;
 pub(super) fn should_walk_folder(
     text: &[u8],
     name: &[u8],
-    excludes: &[CompiledGlob],
+    excludes: &PatternSet,
     name_limit: Option<usize>,
     enter_hidden: bool,
 ) -> bool {
     let can_enter = enter_hidden || !name.starts_with(b".");
     let too_deep =
         name_limit.is_some_and(|limit| text.split(|&byte| byte == b'/').count() >= limit);
-    can_enter && !too_deep && !is_excluded(excludes, text)
+    can_enter && !too_deep && !matches_pattern_set(excludes, text)
 }
 
 #[cfg(test)]
 mod tests {
     use super::should_walk_folder;
-    use crate::file_search::compile_folder_exclude::compile_folder_exclude;
-    use crate::glob::CompiledGlob;
+    use crate::file_search::EXCLUDE_GLOB_OPTIONS;
+    use crate::file_search::compile_pattern_set::compile_pattern_set;
+    use crate::file_search::folder_exclude_forms::folder_exclude_forms;
+    use crate::file_search::types::PatternSet;
 
-    fn excludes(patterns: &[&str]) -> Vec<CompiledGlob> {
-        patterns
-            .iter()
-            .flat_map(|pattern| compile_folder_exclude(pattern))
-            .collect()
+    fn excludes(patterns: &[&str]) -> PatternSet {
+        compile_pattern_set(
+            patterns
+                .iter()
+                .flat_map(|pattern| folder_exclude_forms(pattern)),
+            EXCLUDE_GLOB_OPTIONS,
+        )
     }
 
     #[test]
