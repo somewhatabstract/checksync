@@ -545,7 +545,7 @@
                             "@(b",
                             "c)"
                         ],
-                        "reason": "Every top-level comma splits an alternative here, quotes are kept as written, and `${` starts a group like any other `{`."
+                        "reason": "Extglobs like `@(...)` aren't supported here, so their parentheses don't protect commas."
                     }
                 },
                 {
@@ -560,7 +560,7 @@
                             "(b",
                             "c)"
                         ],
-                        "reason": "Every top-level comma splits an alternative here, quotes are kept as written, and `${` starts a group like any other `{`."
+                        "reason": "Parentheses aren't special here, so a comma inside them still splits alternatives."
                     }
                 },
                 {
@@ -575,7 +575,7 @@
                             "b\"",
                             "c"
                         ],
-                        "reason": "Every top-level comma splits an alternative here, quotes are kept as written, and `${` starts a group like any other `{`."
+                        "reason": "Quotes aren't special here: a comma inside them still splits alternatives, and they're kept as written."
                     }
                 },
                 {
@@ -588,7 +588,7 @@
                             "$a",
                             "$b"
                         ],
-                        "reason": "Every top-level comma splits an alternative here, quotes are kept as written, and `${` starts a group like any other `{`."
+                        "reason": "A `$` before `{` isn't special here, so `${a,b}` is expanded like any other group."
                     }
                 }
             ]
