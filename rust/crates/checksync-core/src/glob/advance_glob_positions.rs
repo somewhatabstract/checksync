@@ -12,7 +12,8 @@ use super::types::{GlobOptions, GlobToken};
 /// * `positions` - For each position in the text, from 0 to its length,
 ///   whether matching can reach it. Updated to the positions reachable
 ///   after the token.
-/// * `options` - How to treat slashes, letter case and hidden names.
+/// * `options` - How to treat slashes and letter case.
+/// * `hides_dots` - Whether wildcards stay off a `.` that starts a name.
 ///
 /// # Returns
 ///
@@ -23,10 +24,10 @@ pub(super) fn advance_glob_positions(
     text: &[u8],
     positions: &mut [bool],
     options: GlobOptions,
+    hides_dots: bool,
 ) -> bool {
-    let hides_dots = options.pathname && !options.dot;
     match token {
-        GlobToken::One(matcher) => advance_one_byte(matcher, text, positions, options),
+        GlobToken::One(matcher) => advance_one_byte(matcher, text, positions, options, hides_dots),
         GlobToken::Star { crosses_slash } => {
             advance_star(text, positions, *crosses_slash, hides_dots)
         }
@@ -52,7 +53,7 @@ mod tests {
         let mut positions = [true, false, false];
 
         // Act
-        let _ = advance_glob_positions(&token, b"ab", &mut positions, PATHNAME);
+        let _ = advance_glob_positions(&token, b"ab", &mut positions, PATHNAME, false);
 
         // Assert
         assert_eq!(positions, [false, true, false]);
@@ -67,7 +68,7 @@ mod tests {
         let mut positions = [true, false, false];
 
         // Act
-        let _ = advance_glob_positions(&token, b"a/", &mut positions, PATHNAME);
+        let _ = advance_glob_positions(&token, b"a/", &mut positions, PATHNAME, false);
 
         // Assert
         assert_eq!(positions, [true, true, false]);
@@ -80,7 +81,7 @@ mod tests {
         let mut positions = [true, false, false];
 
         // Act
-        let _ = advance_glob_positions(&token, b"a/", &mut positions, PATHNAME);
+        let _ = advance_glob_positions(&token, b"a/", &mut positions, PATHNAME, false);
 
         // Assert
         assert_eq!(positions, [true, false, true]);
@@ -93,7 +94,7 @@ mod tests {
         let mut positions = [true, false];
 
         // Act
-        let result = advance_glob_positions(&token, b"a", &mut positions, PATHNAME);
+        let result = advance_glob_positions(&token, b"a", &mut positions, PATHNAME, false);
 
         // Assert
         assert!(!result);

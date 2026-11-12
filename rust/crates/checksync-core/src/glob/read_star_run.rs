@@ -50,6 +50,12 @@ mod tests {
     use super::super::types::{GlobOptions, GlobToken};
     use super::read_star_run;
 
+    const PLAIN: GlobOptions = GlobOptions {
+        pathname: false,
+        casefold: false,
+        dot: true,
+    };
+
     const PATHNAME: GlobOptions = GlobOptions {
         pathname: true,
         casefold: false,
@@ -70,7 +76,7 @@ mod tests {
         let pattern = b"a*b";
 
         // Act
-        let result = read_star_run(pattern, 1, GlobOptions::default());
+        let result = read_star_run(pattern, 1, PLAIN);
 
         // Assert
         assert_eq!(result, (CROSSING, 2));
@@ -82,7 +88,7 @@ mod tests {
         let pattern = b"a***b";
 
         // Act
-        let result = read_star_run(pattern, 1, GlobOptions::default());
+        let result = read_star_run(pattern, 1, PLAIN);
 
         // Assert
         assert_eq!(result, (CROSSING, 4));

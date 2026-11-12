@@ -7,8 +7,8 @@ use super::types::CompiledGlob;
 /// Matching works on bytes, the way git matches its globs. `?` matches any
 /// one byte, `*` any run of bytes, `[...]` one byte from a set, and `\`
 /// makes the next byte literal. A NUL byte ends the text, as it would a C
-/// string. `GlobOptions` describes how `pathname` and `casefold` change
-/// this.
+/// string. `GlobOptions` describes how `pathname`, `casefold` and `dot`
+/// change this.
 ///
 /// Rather than backtracking, matching tracks every position in the text
 /// that the pattern so far can reach, so it takes time proportional to the
@@ -28,10 +28,9 @@ pub(crate) fn compiled_glob_matches(glob: &CompiledGlob, text: &[u8]) -> bool {
     let text = bytes_before_nul(text);
     let mut positions = vec![false; text.len() + 1];
     positions[0] = true;
-    glob.tokens
-        .iter()
-        .all(|token| advance_glob_positions(token, text, &mut positions, glob.options))
-        && positions[text.len()]
+    glob.tokens.iter().all(|token| {
+        advance_glob_positions(token, text, &mut positions, glob.options, glob.hides_dots)
+    }) && positions[text.len()]
 }
 
 #[cfg(test)]

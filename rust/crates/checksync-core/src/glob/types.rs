@@ -2,8 +2,8 @@
 
 /// How a glob pattern treats slashes, letter case and hidden names.
 ///
-/// All default to off.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+/// There's no default: callers choose every option.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub(crate) struct GlobOptions {
     /// Whether `/` separates folders.
     ///
@@ -33,8 +33,11 @@ pub(crate) struct GlobOptions {
 pub(crate) struct CompiledGlob {
     /// The pattern's tokens, in order.
     pub(super) tokens: Vec<GlobToken>,
-    /// How the pattern treats slashes and letter case.
+    /// How the pattern treats slashes, letter case and hidden names.
     pub(super) options: GlobOptions,
+    /// Whether wildcards stay off a `.` that starts a name, worked out once
+    /// from `options`: in pathname mode without `dot`.
+    pub(super) hides_dots: bool,
 }
 
 /// One step of a parsed glob pattern.

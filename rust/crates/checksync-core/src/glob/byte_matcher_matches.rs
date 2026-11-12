@@ -35,6 +35,12 @@ mod tests {
     use super::super::types::{BracketItem, BracketSet, ByteMatcher, GlobOptions};
     use super::byte_matcher_matches;
 
+    const PLAIN: GlobOptions = GlobOptions {
+        pathname: false,
+        casefold: false,
+        dot: true,
+    };
+
     const PATHNAME: GlobOptions = GlobOptions {
         pathname: true,
         casefold: false,
@@ -60,7 +66,7 @@ mod tests {
         let matcher = ByteMatcher::Literal(b'a');
 
         // Act
-        let result = byte_matcher_matches(&matcher, b'a', GlobOptions::default());
+        let result = byte_matcher_matches(&matcher, b'a', PLAIN);
 
         // Assert
         assert!(result);
@@ -72,7 +78,7 @@ mod tests {
         let matcher = ByteMatcher::Literal(b'a');
 
         // Act
-        let result = byte_matcher_matches(&matcher, b'A', GlobOptions::default());
+        let result = byte_matcher_matches(&matcher, b'A', PLAIN);
 
         // Assert
         assert!(!result);
@@ -96,7 +102,7 @@ mod tests {
         let matcher = ByteMatcher::Escaped(b'A');
 
         // Act
-        let result = byte_matcher_matches(&matcher, b'A', GlobOptions::default());
+        let result = byte_matcher_matches(&matcher, b'A', PLAIN);
 
         // Assert
         assert!(result);
@@ -144,7 +150,7 @@ mod tests {
         let matcher = ByteMatcher::Any;
 
         // Act
-        let result = byte_matcher_matches(&matcher, b'/', GlobOptions::default());
+        let result = byte_matcher_matches(&matcher, b'/', PLAIN);
 
         // Assert
         assert!(result);
@@ -168,7 +174,7 @@ mod tests {
         let matcher = slash_set();
 
         // Act
-        let result = byte_matcher_matches(&matcher, b'/', GlobOptions::default());
+        let result = byte_matcher_matches(&matcher, b'/', PLAIN);
 
         // Assert
         assert!(result);

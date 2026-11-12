@@ -43,6 +43,12 @@ mod tests {
     use super::super::types::{BracketItem, BracketSet, ByteMatcher, GlobOptions, GlobToken};
     use super::tokenize_glob;
 
+    const PLAIN: GlobOptions = GlobOptions {
+        pathname: false,
+        casefold: false,
+        dot: true,
+    };
+
     const PATHNAME: GlobOptions = GlobOptions {
         pathname: true,
         casefold: false,
@@ -55,7 +61,7 @@ mod tests {
         let pattern = b"ab";
 
         // Act
-        let result = tokenize_glob(pattern, GlobOptions::default());
+        let result = tokenize_glob(pattern, PLAIN);
 
         // Assert
         assert_eq!(
@@ -73,7 +79,7 @@ mod tests {
         let pattern = b"\\?";
 
         // Act
-        let result = tokenize_glob(pattern, GlobOptions::default());
+        let result = tokenize_glob(pattern, PLAIN);
 
         // Assert
         assert_eq!(
@@ -88,7 +94,7 @@ mod tests {
         let pattern = b"?";
 
         // Act
-        let result = tokenize_glob(pattern, GlobOptions::default());
+        let result = tokenize_glob(pattern, PLAIN);
 
         // Assert
         assert_eq!(result, Some(vec![GlobToken::One(ByteMatcher::Any)]));
@@ -118,7 +124,7 @@ mod tests {
         let pattern = b"[a]";
 
         // Act
-        let result = tokenize_glob(pattern, GlobOptions::default());
+        let result = tokenize_glob(pattern, PLAIN);
 
         // Assert
         assert_eq!(
@@ -136,7 +142,7 @@ mod tests {
         let pattern = b"a\\";
 
         // Act
-        let result = tokenize_glob(pattern, GlobOptions::default());
+        let result = tokenize_glob(pattern, PLAIN);
 
         // Assert
         assert_eq!(result, None);
@@ -148,7 +154,7 @@ mod tests {
         let pattern = b"a[b";
 
         // Act
-        let result = tokenize_glob(pattern, GlobOptions::default());
+        let result = tokenize_glob(pattern, PLAIN);
 
         // Assert
         assert_eq!(result, None);
