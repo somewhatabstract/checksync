@@ -145,9 +145,20 @@ pub(super) struct BraceGroup {
 pub(crate) enum BraceExpansionError {
     /// The pattern is longer than `expand_braces` accepts.
     PatternTooLong,
-    /// The pattern's braces nest deeper than `expand_braces` accepts.
+    /// The pattern's brace groups nest deeper than `expand_braces` accepts.
     NestedTooDeeply,
-    /// The expansion would give more patterns, or more bytes of them, than
-    /// `expand_braces` allows.
+    /// The expansion would hold more output at once than allowed.
+    ///
+    /// `take_brace_budget` sets the limits, counting every pattern and byte
+    /// held at once, including partial results while groups nest.
     TooManyResults,
+}
+
+/// The output a brace expansion holds at once, counted against its limits.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub(super) struct BraceBudget {
+    /// How many patterns, finished or partial, are held at once.
+    pub(super) count: usize,
+    /// How many bytes those patterns hold altogether.
+    pub(super) bytes: usize,
 }

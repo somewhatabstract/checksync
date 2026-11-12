@@ -1,8 +1,8 @@
 use super::brace_bracket_end::brace_bracket_end;
-use super::brace_output_fits::brace_output_fits;
 use super::expand_brace_pieces::expand_brace_pieces;
 use super::find_brace_group::find_brace_group;
-use super::types::BraceExpansionError;
+use super::take_brace_budget::take_brace_budget;
+use super::types::{BraceBudget, BraceExpansionError};
 
 /// Read the next piece of a pattern being brace-expanded.
 ///
@@ -10,12 +10,14 @@ use super::types::BraceExpansionError;
 /// expanded in turn; a `\` and the byte after it; a `[...]` region, or the
 /// rest of the pattern if the region is never closed; a `{` that starts no
 /// group; or a run of other bytes. Everything but a brace group is kept
-/// exactly as written.
+/// exactly as written. The texts are counted against `budget` as they're
+/// made, so a group's alternatives are checked before they're kept.
 ///
 /// # Arguments
 ///
 /// * `pattern` - The pattern.
 /// * `index` - Where the piece starts. Must be within the pattern.
+/// * `budget` - The output the whole expansion holds at once.
 ///
 /// # Returns
 ///
@@ -23,11 +25,11 @@ use super::types::BraceExpansionError;
 ///
 /// # Errors
 ///
-/// `BraceExpansionError::TooManyResults` if a group's alternatives expand
-/// to too large an output.
+/// `BraceExpansionError::TooManyResults` if the texts don't fit.
 pub(super) fn read_brace_piece(
     pattern: &[u8],
     index: usize,
+    budget: &mut BraceBudget,
 ) -> Result<(Vec<Vec<u8>>, usize), BraceExpansionError> {
     let end = match pattern[index] {
         b'\\' => (index + 2).min(pattern.len()),
@@ -35,14 +37,8 @@ pub(super) fn read_brace_piece(
         b'{' => match find_brace_group(pattern, index) {
             Some(group) => {
                 let mut texts = Vec::new();
-                let mut bytes = 0_usize;
                 for alternative in group.alternatives {
-                    let expanded = expand_brace_pieces(&pattern[alternative])?;
-                    bytes += expanded.iter().map(Vec::len).sum::<usize>();
-                    texts.extend(expanded);
-                    if !brace_output_fits(texts.len(), bytes) {
-                        return Err(BraceExpansionError::TooManyResults);
-                    }
+                    texts.extend(expand_brace_pieces(&pattern[alternative], budget)?);
                 }
                 return Ok((texts, group.end));
             }
@@ -53,13 +49,19 @@ pub(super) fn read_brace_piece(
             .position(|byte| matches!(byte, b'\\' | b'[' | b'{'))
             .map_or(pattern.len(), |offset| index + offset),
     };
+    take_brace_budget(budget, 1, end - index)?;
     Ok((vec![pattern[index..end].to_vec()], end))
 }
 
 #[cfg(test)]
 mod tests {
-    use super::super::types::BraceExpansionError;
+    use super::super::types::{BraceBudget, BraceExpansionError};
     use super::read_brace_piece;
+
+    /// Read the piece at `index` with nothing else held.
+    fn read(pattern: &[u8], index: usize) -> Result<(Vec<Vec<u8>>, usize), BraceExpansionError> {
+        read_brace_piece(pattern, index, &mut BraceBudget::default())
+    }
 
     #[test]
     fn reads_a_run_of_ordinary_bytes() {
@@ -67,7 +69,7 @@ mod tests {
         let pattern = b"ab,}{c,d}";
 
         // Act
-        let result = read_brace_piece(pattern, 0);
+        let result = read(pattern, 0);
 
         // Assert
         assert_eq!(result, Ok((vec![b"ab,}".to_vec()], 4)));
@@ -79,7 +81,7 @@ mod tests {
         let pattern = b"ab";
 
         // Act
-        let result = read_brace_piece(pattern, 0);
+        let result = read(pattern, 0);
 
         // Assert
         assert_eq!(result, Ok((vec![b"ab".to_vec()], 2)));
@@ -91,7 +93,7 @@ mod tests {
         let pattern = b"\\{a";
 
         // Act
-        let result = read_brace_piece(pattern, 0);
+        let result = read(pattern, 0);
 
         // Assert
         assert_eq!(result, Ok((vec![b"\\{".to_vec()], 2)));
@@ -103,7 +105,7 @@ mod tests {
         let pattern = b"a\\";
 
         // Act
-        let result = read_brace_piece(pattern, 1);
+        let result = read(pattern, 1);
 
         // Assert
         assert_eq!(result, Ok((vec![b"\\".to_vec()], 2)));
@@ -115,7 +117,7 @@ mod tests {
         let pattern = b"[{a,b}]c";
 
         // Act
-        let result = read_brace_piece(pattern, 0);
+        let result = read(pattern, 0);
 
         // Assert
         assert_eq!(result, Ok((vec![b"[{a,b}]".to_vec()], 7)));
@@ -127,7 +129,7 @@ mod tests {
         let pattern = b"[{a,b}";
 
         // Act
-        let result = read_brace_piece(pattern, 0);
+        let result = read(pattern, 0);
 
         // Assert
         assert_eq!(result, Ok((vec![b"[{a,b}".to_vec()], 6)));
@@ -139,7 +141,7 @@ mod tests {
         let pattern = b"{a,b{c,d}}e";
 
         // Act
-        let result = read_brace_piece(pattern, 0);
+        let result = read(pattern, 0);
 
         // Assert
         assert_eq!(
@@ -154,19 +156,34 @@ mod tests {
         let pattern = b"{a}";
 
         // Act
-        let result = read_brace_piece(pattern, 0);
+        let result = read(pattern, 0);
 
         // Assert
         assert_eq!(result, Ok((vec![b"{".to_vec()], 1)));
     }
 
     #[test]
-    fn rejects_an_alternative_that_expands_too_far() {
+    fn counts_the_texts_against_the_budget() {
         // Arrange
-        let pattern = [b"{x,".as_slice(), &b"{a,b}".repeat(17), b"}"].concat();
+        let mut budget = BraceBudget { count: 1, bytes: 1 };
 
         // Act
-        let result = read_brace_piece(&pattern, 0);
+        let _ = read_brace_piece(b"{ab,c}", 0, &mut budget);
+
+        // Assert
+        assert_eq!(budget, BraceBudget { count: 3, bytes: 4 });
+    }
+
+    #[test]
+    fn rejects_a_text_that_does_not_fit() {
+        // Arrange
+        let mut budget = BraceBudget {
+            count: 100_000,
+            bytes: 0,
+        };
+
+        // Act
+        let result = read_brace_piece(b"ab", 0, &mut budget);
 
         // Assert
         assert_eq!(result, Err(BraceExpansionError::TooManyResults));
@@ -179,7 +196,7 @@ mod tests {
         let pattern = [b"{".as_slice(), &alternative, b",", &alternative, b"}"].concat();
 
         // Act
-        let result = read_brace_piece(&pattern, 0);
+        let result = read(&pattern, 0);
 
         // Assert
         assert_eq!(result, Err(BraceExpansionError::TooManyResults));

@@ -1,11 +1,13 @@
-use super::brace_nesting_depth::brace_nesting_depth;
+use super::brace_group_depth::brace_group_depth;
 use super::expand_brace_pieces::expand_brace_pieces;
-use super::types::BraceExpansionError;
+use super::types::{BraceBudget, BraceExpansionError};
 
-/// The longest pattern `expand_braces` accepts, as in micromatch's braces.
+/// The longest pattern with brace groups that `expand_braces` accepts.
+///
+/// micromatch's braces has the same limit.
 const MAX_PATTERN_LENGTH: usize = 10_000;
 
-/// The deepest brace nesting `expand_braces` accepts.
+/// The deepest nesting of brace groups `expand_braces` accepts.
 const MAX_NESTING: usize = 64;
 
 /// Expand the `{a,b}` brace groups in a pattern into separate patterns.
@@ -25,10 +27,11 @@ const MAX_NESTING: usize = 64;
 /// Duplicates, such as the two `a`s from `{a,a}`, are kept; callers that
 /// need unique patterns must remove them.
 ///
-/// To stay within time and memory, a pattern may be at most 10,000 bytes
-/// long, its braces may nest at most 64 deep (counting every `{`, as
-/// `brace_nesting_depth` does), and the expansion may give at most what
-/// `brace_output_fits` allows: 100,000 patterns and 10,000,000 bytes.
+/// A pattern with no brace group always gives just itself. To stay within
+/// time and memory, a pattern with groups may be at most 10,000 bytes long,
+/// its groups may nest at most 64 deep (as `brace_group_depth` counts them),
+/// and the expansion may hold at most what `take_brace_budget` allows at
+/// once, counting partial results: 100,000 patterns and 10,000,000 bytes.
 ///
 /// # Arguments
 ///
@@ -52,13 +55,17 @@ const MAX_NESTING: usize = 64;
     )
 )]
 pub(crate) fn expand_braces(pattern: &[u8]) -> Result<Vec<Vec<u8>>, BraceExpansionError> {
+    let depth = brace_group_depth(pattern);
+    if depth == 0 {
+        return Ok(vec![pattern.to_vec()]);
+    }
     if pattern.len() > MAX_PATTERN_LENGTH {
         return Err(BraceExpansionError::PatternTooLong);
     }
-    if brace_nesting_depth(pattern) > MAX_NESTING {
+    if depth > MAX_NESTING {
         return Err(BraceExpansionError::NestedTooDeeply);
     }
-    expand_brace_pieces(pattern)
+    expand_brace_pieces(pattern, &mut BraceBudget::default())
 }
 
 #[cfg(test)]
@@ -273,9 +280,9 @@ mod tests {
     }
 
     #[test]
-    fn rejects_a_pattern_that_is_too_long() {
+    fn rejects_a_pattern_with_groups_that_is_too_long() {
         // Arrange
-        let pattern = vec![b'a'; MAX_PATTERN_LENGTH + 1];
+        let pattern = ["{a,b}".as_bytes(), &vec![b'x'; MAX_PATTERN_LENGTH - 4]].concat();
 
         // Act
         let result = expand_braces(&pattern);
@@ -285,7 +292,67 @@ mod tests {
     }
 
     #[test]
-    fn rejects_braces_nested_too_deeply() {
+    fn expands_a_pattern_with_groups_as_long_as_allowed() {
+        // Arrange
+        let pattern = ["{a,b}".as_bytes(), &vec![b'x'; MAX_PATTERN_LENGTH - 5]].concat();
+
+        // Act
+        let result = expand_braces(&pattern).map(|results| results.len());
+
+        // Assert
+        assert_eq!(result, Ok(2));
+    }
+
+    #[test]
+    fn keeps_a_long_pattern_without_groups() {
+        // Arrange
+        let pattern = vec![b'x'; MAX_PATTERN_LENGTH * 10];
+
+        // Act
+        let result = expand_braces(&pattern);
+
+        // Assert
+        assert_eq!(result, Ok(vec![pattern]));
+    }
+
+    #[test]
+    fn keeps_many_unmatched_braces() {
+        // Arrange
+        let pattern = "x{".repeat(100_000);
+
+        // Act
+        let result = expand_braces(pattern.as_bytes());
+
+        // Assert
+        assert_eq!(result, Ok(vec![pattern.into_bytes()]));
+    }
+
+    #[test]
+    fn keeps_braces_hidden_by_brackets() {
+        // Arrange
+        let pattern = "[]{]".repeat(30);
+
+        // Act
+        let result = expand_braces(pattern.as_bytes());
+
+        // Assert
+        assert_eq!(result, Ok(vec![pattern.into_bytes()]));
+    }
+
+    #[test]
+    fn keeps_deeply_nested_braces_without_commas() {
+        // Arrange
+        let pattern = ["{".repeat(50_000), "}".repeat(50_000)].concat();
+
+        // Act
+        let result = expand_braces(pattern.as_bytes());
+
+        // Assert
+        assert_eq!(result, Ok(vec![pattern.into_bytes()]));
+    }
+
+    #[test]
+    fn rejects_groups_nested_too_deeply() {
         // Arrange
         let depth = MAX_NESTING + 1;
         let pattern = ["{a,".repeat(depth), "}".repeat(depth)].concat();
@@ -298,12 +365,29 @@ mod tests {
     }
 
     #[test]
-    fn expands_braces_nested_as_deeply_as_allowed() {
+    fn expands_groups_nested_as_deeply_as_allowed() {
         // Arrange
         let pattern = ["{a,".repeat(MAX_NESTING), "}".repeat(MAX_NESTING)].concat();
 
         // Act
         let result = expand_braces(pattern.as_bytes()).map(|results| results.len());
+
+        // Assert
+        assert_eq!(result, Ok(MAX_NESTING + 1));
+    }
+
+    #[test]
+    fn expands_groups_as_deeply_as_allowed_on_a_small_stack() {
+        // Arrange
+        let pattern = ["{a,".repeat(MAX_NESTING), "}".repeat(MAX_NESTING)].concat();
+        let thread = std::thread::Builder::new().stack_size(128 * 1024);
+
+        // Act
+        let result = thread
+            .spawn(move || expand_braces(pattern.as_bytes()).map(|results| results.len()))
+            .unwrap()
+            .join()
+            .unwrap();
 
         // Assert
         assert_eq!(result, Ok(MAX_NESTING + 1));
@@ -325,6 +409,27 @@ mod tests {
     fn rejects_an_expansion_with_too_many_results() {
         // Arrange
         let pattern = "{a,b}".repeat(30);
+
+        // Act
+        let result = expand_braces(pattern.as_bytes());
+
+        // Assert
+        assert_eq!(result, Err(BraceExpansionError::TooManyResults));
+    }
+
+    #[test]
+    fn counts_partial_results_across_nesting_levels() {
+        // Arrange
+        let level = [
+            "{".to_owned(),
+            "{a,b}".repeat(16),
+            "L".repeat(60),
+            ",".to_owned(),
+            "{a,b}".repeat(16),
+            "M".repeat(60),
+        ]
+        .concat();
+        let pattern = [level.repeat(35), "}".repeat(35)].concat();
 
         // Act
         let result = expand_braces(pattern.as_bytes());
