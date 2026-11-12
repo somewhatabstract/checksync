@@ -1,8 +1,8 @@
 //! Types used by the glob matcher.
 
-/// How a glob pattern treats slashes and letter case.
+/// How a glob pattern treats slashes, letter case and hidden names.
 ///
-/// Both default to off.
+/// All default to off.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub(crate) struct GlobOptions {
     /// Whether `/` separates folders.
@@ -17,6 +17,15 @@ pub(crate) struct GlobOptions {
     /// nothing, though ranges and classes such as `[A-Z]` and `[:upper:]`
     /// still match lowercase letters.
     pub casefold: bool,
+    /// Whether wildcards may match a `.` that starts a name, in pathname
+    /// mode.
+    ///
+    /// When off, as in fast-glob, a name starting with `.` can only be
+    /// matched by a pattern name starting with a literal `.` or a bracket set
+    /// that isn't negated: `?`, `*`, `**` and negated sets don't match its
+    /// `.`, and a `*` can't even match nothing in front of it. Without
+    /// `pathname`, this has no effect. git's matching has it on.
+    pub dot: bool,
 }
 
 /// A glob pattern compiled once so it can be matched against many texts.

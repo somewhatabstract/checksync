@@ -12,7 +12,7 @@ use super::types::{GlobOptions, GlobToken};
 /// * `positions` - For each position in the text, from 0 to its length,
 ///   whether matching can reach it. Updated to the positions reachable
 ///   after the token.
-/// * `options` - How to treat slashes and letter case.
+/// * `options` - How to treat slashes, letter case and hidden names.
 ///
 /// # Returns
 ///
@@ -24,10 +24,13 @@ pub(super) fn advance_glob_positions(
     positions: &mut [bool],
     options: GlobOptions,
 ) -> bool {
+    let hides_dots = options.pathname && !options.dot;
     match token {
         GlobToken::One(matcher) => advance_one_byte(matcher, text, positions, options),
-        GlobToken::Star { crosses_slash } => advance_star(text, positions, *crosses_slash),
-        GlobToken::AnyFolders => advance_any_folders(text, positions),
+        GlobToken::Star { crosses_slash } => {
+            advance_star(text, positions, *crosses_slash, hides_dots)
+        }
+        GlobToken::AnyFolders => advance_any_folders(text, positions, hides_dots),
     }
 }
 
@@ -39,6 +42,7 @@ mod tests {
     const PATHNAME: GlobOptions = GlobOptions {
         pathname: true,
         casefold: false,
+        dot: true,
     };
 
     #[test]

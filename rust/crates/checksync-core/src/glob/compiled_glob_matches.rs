@@ -74,6 +74,48 @@ mod tests {
         "/../../../__conformance__/glob-vectors.json"
     ));
 
+    /// The fast-glob vector table, of which these tests read the matches.
+    #[derive(Deserialize)]
+    struct FastGlobTable {
+        description: String,
+        matches: Vec<FastGlobVector>,
+    }
+
+    /// A group of fast-glob match cases exercising one feature.
+    #[derive(Deserialize)]
+    struct FastGlobVector {
+        description: String,
+        cases: Vec<FastGlobCase>,
+    }
+
+    /// One pattern and path, the `dot` option, and micromatch's answer.
+    #[derive(Deserialize)]
+    struct FastGlobCase {
+        pattern: String,
+        text: String,
+        dot: bool,
+        matches: bool,
+        rust: Option<FastGlobDivergence>,
+    }
+
+    /// A match this implementation decides differently on purpose.
+    #[derive(Deserialize)]
+    struct FastGlobDivergence {
+        matches: bool,
+        reason: String,
+    }
+
+    /// Match cases recorded from fast-glob's micromatch, in pathname mode.
+    const FAST_GLOB_VECTORS: &str = include_str!(concat!(
+        env!("CARGO_MANIFEST_DIR"),
+        "/../../../__conformance__/fastglob-vectors.json"
+    ));
+
+    /// Read the fast-glob vector table.
+    fn load_fast_glob_table() -> FastGlobTable {
+        serde_json::from_str(FAST_GLOB_VECTORS).expect("valid fast-glob vector table")
+    }
+
     /// Compile `pattern` and match `text` against it.
     fn matches(pattern: &[u8], text: &[u8], options: GlobOptions) -> bool {
         compiled_glob_matches(&compile_glob(pattern, options).unwrap(), text)
@@ -82,16 +124,25 @@ mod tests {
     const PLAIN: GlobOptions = GlobOptions {
         pathname: false,
         casefold: false,
+        dot: true,
     };
 
     const PATHNAME: GlobOptions = GlobOptions {
         pathname: true,
         casefold: false,
+        dot: true,
+    };
+
+    const HIDING_DOTS: GlobOptions = GlobOptions {
+        pathname: true,
+        casefold: false,
+        dot: false,
     };
 
     const CASEFOLD: GlobOptions = GlobOptions {
         pathname: false,
         casefold: true,
+        dot: true,
     };
 
     #[test]
@@ -405,6 +456,7 @@ mod tests {
                     let options = GlobOptions {
                         pathname: case.pathname,
                         casefold: case.casefold,
+                        dot: true,
                     };
                     let actual = compile_glob(case.pattern.as_bytes(), options)
                         .is_some_and(|glob| compiled_glob_matches(&glob, case.text.as_bytes()));
@@ -419,6 +471,149 @@ mod tests {
                 })
             })
             .filter(|&((.., expected), actual)| expected != actual)
+            .map(|(entry, _)| entry)
+            .collect();
+
+        // Assert
+        assert_eq!(mismatches, Vec::new());
+    }
+
+    #[test]
+    fn does_not_match_a_hidden_name_with_a_star_when_hiding_dots() {
+        // Arrange
+        let pattern = b"a/*";
+
+        // Act
+        let result = matches(pattern, b"a/.b", HIDING_DOTS);
+
+        // Assert
+        assert!(!result);
+    }
+
+    #[test]
+    fn matches_a_hidden_name_with_a_literal_dot_when_hiding_dots() {
+        // Arrange
+        let pattern = b"a/.*";
+
+        // Act
+        let result = matches(pattern, b"a/.b", HIDING_DOTS);
+
+        // Assert
+        assert!(result);
+    }
+
+    #[test]
+    fn does_not_enter_a_hidden_folder_with_a_double_star_when_hiding_dots() {
+        // Arrange
+        let pattern = b"**/c";
+
+        // Act
+        let result = matches(pattern, b"a/.b/c", HIDING_DOTS);
+
+        // Assert
+        assert!(!result);
+    }
+
+    #[test]
+    fn matches_inside_a_named_hidden_folder_when_hiding_dots() {
+        // Arrange
+        let pattern = b".b/**";
+
+        // Act
+        let result = matches(pattern, b".b/c", HIDING_DOTS);
+
+        // Assert
+        assert!(result);
+    }
+
+    #[test]
+    fn says_where_the_fast_glob_vectors_come_from() {
+        // Arrange
+        let table = load_fast_glob_table();
+
+        // Act
+        let result = table.description.contains("micromatch");
+
+        // Assert
+        assert!(result);
+    }
+
+    #[test]
+    fn has_fast_glob_match_vectors_to_check() {
+        // Arrange
+        let table = load_fast_glob_table();
+
+        // Act
+        let result = table
+            .matches
+            .iter()
+            .map(|vector| vector.cases.len())
+            .sum::<usize>();
+
+        // Assert
+        assert_ne!(result, 0);
+    }
+
+    #[test]
+    fn explains_every_fast_glob_match_divergence_and_differs_from_micromatch() {
+        // Arrange
+        let table = load_fast_glob_table();
+
+        // Act
+        let unexplained: Vec<(&str, &str, &str, bool)> = table
+            .matches
+            .iter()
+            .flat_map(|vector| {
+                vector.cases.iter().map(move |case| {
+                    let explained = case.rust.as_ref().is_none_or(|rust| {
+                        !rust.reason.trim().is_empty() && rust.matches != case.matches
+                    });
+                    let entry = (
+                        vector.description.as_str(),
+                        case.pattern.as_str(),
+                        case.text.as_str(),
+                        case.dot,
+                    );
+                    (entry, explained)
+                })
+            })
+            .filter(|&(_, explained)| !explained)
+            .map(|(entry, _)| entry)
+            .collect();
+
+        // Assert
+        assert_eq!(unexplained, Vec::new());
+    }
+
+    #[test]
+    fn matches_every_fast_glob_vector_as_micromatch_does_apart_from_divergences() {
+        // Arrange
+        let table = load_fast_glob_table();
+
+        // Act
+        let mismatches: Vec<(&str, &str, &str, bool, bool)> = table
+            .matches
+            .iter()
+            .flat_map(|vector| {
+                vector.cases.iter().map(move |case| {
+                    let options = GlobOptions {
+                        pathname: true,
+                        casefold: false,
+                        dot: case.dot,
+                    };
+                    let wanted = case.rust.as_ref().map_or(case.matches, |rust| rust.matches);
+                    let actual = matches(case.pattern.as_bytes(), case.text.as_bytes(), options);
+                    let entry = (
+                        vector.description.as_str(),
+                        case.pattern.as_str(),
+                        case.text.as_str(),
+                        case.dot,
+                        wanted,
+                    );
+                    (entry, actual)
+                })
+            })
+            .filter(|&((.., wanted), actual)| wanted != actual)
             .map(|(entry, _)| entry)
             .collect();
 

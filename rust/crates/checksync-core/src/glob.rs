@@ -14,6 +14,7 @@ mod brace_bracket_end;
 mod bracket_item_matches;
 mod bracket_set_contains;
 mod byte_matcher_matches;
+mod byte_matcher_matches_hidden_dot;
 mod bytes_before_nul;
 mod compile_glob;
 mod compiled_glob_matches;
@@ -27,6 +28,7 @@ mod read_bracket_class;
 mod read_bracket_item;
 mod read_glob_byte;
 mod read_star_run;
+mod starts_hidden_name;
 mod tokenize_glob;
 mod types;
 

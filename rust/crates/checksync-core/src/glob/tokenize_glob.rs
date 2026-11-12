@@ -46,6 +46,7 @@ mod tests {
     const PATHNAME: GlobOptions = GlobOptions {
         pathname: true,
         casefold: false,
+        dot: true,
     };
 
     #[test]

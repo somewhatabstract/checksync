@@ -530,5 +530,847 @@
                 }
             ]
         }
+    ],
+    "matches": [
+        {
+            "description": "Without dot, a wildcard doesn't match a name's leading dot",
+            "cases": [
+                {
+                    "pattern": "*",
+                    "text": ".a",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "*",
+                    "text": ".a",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*",
+                    "text": "a",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*",
+                    "text": "a",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "?a",
+                    "text": ".a",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "?a",
+                    "text": ".a",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*a",
+                    "text": ".a",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "*a",
+                    "text": ".a",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/*",
+                    "text": "a/.b",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/*",
+                    "text": "a/.b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*.js",
+                    "text": ".a.js",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "*.js",
+                    "text": ".a.js",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*/x",
+                    "text": ".a/x",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "*/x",
+                    "text": ".a/x",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/?",
+                    "text": "a/.b",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/?",
+                    "text": "a/.b",
+                    "dot": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/*/c",
+                    "text": "a/.b/c",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/*/c",
+                    "text": "a/.b/c",
+                    "dot": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "Without dot, a * in front of a hidden name can't even match nothing",
+            "cases": [
+                {
+                    "pattern": "*.*",
+                    "text": ".ab",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "*.*",
+                    "text": ".ab",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*.a",
+                    "text": ".a",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "*.a",
+                    "text": ".a",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*.a",
+                    "text": "x.a",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*.a",
+                    "text": "x.a",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*[.]a",
+                    "text": ".a",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "*[.]a",
+                    "text": ".a",
+                    "dot": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "A literal dot matches a name's leading dot",
+            "cases": [
+                {
+                    "pattern": ".*",
+                    "text": ".a",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": ".*",
+                    "text": ".a",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/.*",
+                    "text": "a/.b",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/.*",
+                    "text": "a/.b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": ".b/**",
+                    "text": ".b/c",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": ".b/**",
+                    "text": ".b/c",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/.b",
+                    "text": "a/.b",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/.b",
+                    "text": "a/.b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*/.b",
+                    "text": "a/.b",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*/.b",
+                    "text": "a/.b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": ".b",
+                    "text": ".b",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": ".b",
+                    "text": ".b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": ".?",
+                    "text": ".a",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": ".?",
+                    "text": ".a",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/.a/**",
+                    "text": "x/.a/y",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/.a/**",
+                    "text": "x/.a/y",
+                    "dot": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "A dot inside a name is matched by wildcards",
+            "cases": [
+                {
+                    "pattern": "a*",
+                    "text": "a.b",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*",
+                    "text": "a.b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*/b",
+                    "text": "a.x/b",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*/b",
+                    "text": "a.x/b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*.js",
+                    "text": "a.js",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*.js",
+                    "text": "a.js",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a?b",
+                    "text": "a.b",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a?b",
+                    "text": "a.b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*",
+                    "text": "a.",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*",
+                    "text": "a.",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*.*",
+                    "text": "a.b",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*.*",
+                    "text": "a.b",
+                    "dot": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "Without dot, ** doesn't enter or match hidden folders and files",
+            "cases": [
+                {
+                    "pattern": "**",
+                    "text": "a/.b/c",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "**",
+                    "text": "a/.b/c",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**",
+                    "text": ".a",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "**",
+                    "text": ".a",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**",
+                    "text": "a/.b",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "**",
+                    "text": "a/.b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/x",
+                    "text": ".a/x",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "**/x",
+                    "text": ".a/x",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**/x",
+                    "text": "a/.b/x",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**/x",
+                    "text": "a/.b/x",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a/.b",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a/.b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a/b/.c",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a/b/.c",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/*",
+                    "text": "a/.b",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "**/*",
+                    "text": "a/.b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "a/x/y/b",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "a/x/y/b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**",
+                    "text": "a/b/c",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**",
+                    "text": "a/b/c",
+                    "dot": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "A bracket set that isn't negated can match a leading dot",
+            "cases": [
+                {
+                    "pattern": "[.]a",
+                    "text": ".a",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[.]a",
+                    "text": ".a",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a.]",
+                    "text": ".a",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a.]",
+                    "text": ".a",
+                    "dot": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a.]",
+                    "text": ".",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a.]",
+                    "text": ".",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[ab]",
+                    "text": ".",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[ab]",
+                    "text": ".",
+                    "dot": true,
+                    "matches": false
+                }
+            ]
+        },
+        {
+            "description": "Empty names don't count as hidden",
+            "cases": [
+                {
+                    "pattern": "a/*/b",
+                    "text": "a//b",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/*/b",
+                    "text": "a//b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*/",
+                    "text": "a/",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*/",
+                    "text": "a/",
+                    "dot": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "A trailing /** matches the folder itself in micromatch, but not here",
+            "cases": [
+                {
+                    "pattern": "x/**",
+                    "text": "x",
+                    "dot": false,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "This keeps git's meaning of a trailing `/**`, which matches only what's inside the folder."
+                    }
+                },
+                {
+                    "pattern": "x/**",
+                    "text": "x",
+                    "dot": true,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "This keeps git's meaning of a trailing `/**`, which matches only what's inside the folder."
+                    }
+                },
+                {
+                    "pattern": "a/b/**",
+                    "text": "a/b",
+                    "dot": false,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "This keeps git's meaning of a trailing `/**`, which matches only what's inside the folder."
+                    }
+                },
+                {
+                    "pattern": "a/b/**",
+                    "text": "a/b",
+                    "dot": true,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "This keeps git's meaning of a trailing `/**`, which matches only what's inside the folder."
+                    }
+                }
+            ]
+        },
+        {
+            "description": "A leading ./ in the pattern is skipped by micromatch, but not here",
+            "cases": [
+                {
+                    "pattern": "./a",
+                    "text": "a",
+                    "dot": false,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "Patterns are matched as written; a leading `./` isn't skipped."
+                    }
+                },
+                {
+                    "pattern": "./a",
+                    "text": "a",
+                    "dot": true,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "Patterns are matched as written; a leading `./` isn't skipped."
+                    }
+                },
+                {
+                    "pattern": "./**",
+                    "text": "b",
+                    "dot": false,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "Patterns are matched as written; a leading `./` isn't skipped."
+                    }
+                },
+                {
+                    "pattern": "./**",
+                    "text": "b",
+                    "dot": true,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "Patterns are matched as written; a leading `./` isn't skipped."
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Wildcards never match . or .. names in micromatch",
+            "cases": [
+                {
+                    "pattern": "*",
+                    "text": ".",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "*",
+                    "text": ".",
+                    "dot": true,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
+                    }
+                },
+                {
+                    "pattern": "*",
+                    "text": "..",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "*",
+                    "text": "..",
+                    "dot": true,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
+                    }
+                },
+                {
+                    "pattern": "a/*/b",
+                    "text": "a/./b",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/*/b",
+                    "text": "a/./b",
+                    "dot": true,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
+                    }
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "a/../b",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "a/../b",
+                    "dot": true,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
+                    }
+                },
+                {
+                    "pattern": ".*",
+                    "text": ".",
+                    "dot": false,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
+                    }
+                },
+                {
+                    "pattern": ".*",
+                    "text": ".",
+                    "dot": true,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
+                    }
+                },
+                {
+                    "pattern": "a/.*/b",
+                    "text": "a/../b",
+                    "dot": false,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
+                    }
+                },
+                {
+                    "pattern": "a/.*/b",
+                    "text": "a/../b",
+                    "dot": true,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
+                    }
+                }
+            ]
+        },
+        {
+            "description": "A trailing slash in the text is ignored by micromatch",
+            "cases": [
+                {
+                    "pattern": "a/*",
+                    "text": "a/b/",
+                    "dot": false,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "The text is matched as written; file paths never end with `/`."
+                    }
+                },
+                {
+                    "pattern": "a/*",
+                    "text": "a/b/",
+                    "dot": true,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "The text is matched as written; file paths never end with `/`."
+                    }
+                },
+                {
+                    "pattern": "*",
+                    "text": "a/",
+                    "dot": false,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "The text is matched as written; file paths never end with `/`."
+                    }
+                },
+                {
+                    "pattern": "*",
+                    "text": "a/",
+                    "dot": true,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "The text is matched as written; file paths never end with `/`."
+                    }
+                }
+            ]
+        },
+        {
+            "description": "micromatch's *.* needs something after the dot",
+            "cases": [
+                {
+                    "pattern": "*.*",
+                    "text": "a.",
+                    "dot": false,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "`*.*` is an ordinary pattern here, so its last `*` can match nothing."
+                    }
+                },
+                {
+                    "pattern": "*.*",
+                    "text": "a.",
+                    "dot": true,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "`*.*` is an ordinary pattern here, so its last `*` can match nothing."
+                    }
+                },
+                {
+                    "pattern": "**/*.*",
+                    "text": "b/a.",
+                    "dot": false,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "`*.*` is an ordinary pattern here, so its last `*` can match nothing."
+                    }
+                },
+                {
+                    "pattern": "**/*.*",
+                    "text": "b/a.",
+                    "dot": true,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "`*.*` is an ordinary pattern here, so its last `*` can match nothing."
+                    }
+                }
+            ]
+        }
     ]
 }

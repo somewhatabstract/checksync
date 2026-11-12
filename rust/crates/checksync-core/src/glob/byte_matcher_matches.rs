@@ -38,11 +38,13 @@ mod tests {
     const PATHNAME: GlobOptions = GlobOptions {
         pathname: true,
         casefold: false,
+        dot: true,
     };
 
     const CASEFOLD: GlobOptions = GlobOptions {
         pathname: false,
         casefold: true,
+        dot: true,
     };
 
     fn slash_set() -> ByteMatcher {

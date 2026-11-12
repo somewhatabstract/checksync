@@ -32,6 +32,7 @@ mod tests {
         let options = GlobOptions {
             pathname: true,
             casefold: true,
+            dot: true,
         };
 
         // Act

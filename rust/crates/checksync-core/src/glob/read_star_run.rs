@@ -53,6 +53,7 @@ mod tests {
     const PATHNAME: GlobOptions = GlobOptions {
         pathname: true,
         casefold: false,
+        dot: true,
     };
 
     const CROSSING: GlobToken = GlobToken::Star {
