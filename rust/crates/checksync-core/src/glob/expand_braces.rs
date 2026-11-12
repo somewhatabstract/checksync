@@ -53,13 +53,6 @@ const MAX_PATTERN_LENGTH: usize = 10_000;
 /// `BraceExpansionError::PatternTooLong` or
 /// `BraceExpansionError::TooManyResults` if the pattern is beyond one of the
 /// limits.
-#[cfg_attr(
-    not(test),
-    expect(
-        dead_code,
-        reason = "the file finder calls this, through the re-export"
-    )
-)]
 pub(crate) fn expand_braces(pattern: &[u8]) -> Result<Vec<Vec<u8>>, BraceExpansionError> {
     let pattern = bytes_before_nul(pattern);
     if !contains_brace_group(pattern) {
