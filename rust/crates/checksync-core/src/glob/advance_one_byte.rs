@@ -48,8 +48,8 @@ pub(super) fn advance_one_byte(
 
 #[cfg(test)]
 mod tests {
-    use super::super::TEST_OPTIONS;
     use super::super::types::ByteMatcher;
+    use super::super::{TEST_OPTIONS, TEST_PATHNAME_OPTIONS};
     use super::advance_one_byte;
 
     #[test]
@@ -98,7 +98,7 @@ mod tests {
             &ByteMatcher::Any,
             b"a/.",
             &mut positions,
-            TEST_OPTIONS,
+            TEST_PATHNAME_OPTIONS,
             true,
         );
 
@@ -116,7 +116,7 @@ mod tests {
             &ByteMatcher::Literal(b'.'),
             b".",
             &mut positions,
-            TEST_OPTIONS,
+            TEST_PATHNAME_OPTIONS,
             true,
         );
 
@@ -130,7 +130,13 @@ mod tests {
         let mut positions = [true, false];
 
         // Act
-        let _ = advance_one_byte(&ByteMatcher::Any, b".", &mut positions, TEST_OPTIONS, false);
+        let _ = advance_one_byte(
+            &ByteMatcher::Any,
+            b".",
+            &mut positions,
+            TEST_PATHNAME_OPTIONS,
+            false,
+        );
 
         // Assert
         assert_eq!(positions, [false, true]);
