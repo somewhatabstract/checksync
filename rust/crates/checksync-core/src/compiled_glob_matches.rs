@@ -358,10 +358,15 @@ mod tests {
         assert!(!result);
     }
 
+    /// Read the glob vector table.
+    fn load_table() -> Table {
+        serde_json::from_str(VECTORS).expect("valid glob vector table")
+    }
+
     #[test]
     fn says_where_the_glob_vectors_come_from() {
         // Arrange
-        let table: Table = serde_json::from_str(VECTORS).unwrap();
+        let table = load_table();
 
         // Act
         let result = table.description.contains("git");
@@ -373,7 +378,7 @@ mod tests {
     #[test]
     fn has_glob_vectors_to_check() {
         // Arrange
-        let table: Table = serde_json::from_str(VECTORS).unwrap();
+        let table = load_table();
 
         // Act
         let result = table
@@ -389,7 +394,7 @@ mod tests {
     #[test]
     fn matches_every_glob_vector_as_git_does() {
         // Arrange
-        let table: Table = serde_json::from_str(VECTORS).unwrap();
+        let table = load_table();
 
         // Act
         let mismatches: Vec<(&str, &str, &str, GlobOptions, bool)> = table
@@ -403,17 +408,18 @@ mod tests {
                     };
                     let actual = compile_glob(case.pattern.as_bytes(), options)
                         .is_some_and(|glob| compiled_glob_matches(&glob, case.text.as_bytes()));
-                    let wrong = actual != case.matches;
-                    (
+                    let entry = (
                         vector.description.as_str(),
                         case.pattern.as_str(),
                         case.text.as_str(),
                         options,
-                        wrong,
-                    )
+                        case.matches,
+                    );
+                    (entry, actual)
                 })
             })
-            .filter(|&(.., wrong)| wrong)
+            .filter(|&((.., expected), actual)| expected != actual)
+            .map(|(entry, _)| entry)
             .collect();
 
         // Assert

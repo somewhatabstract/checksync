@@ -13,8 +13,9 @@ pub(crate) const GITIGNORE_GLOB_OPTIONS: GlobOptions = GlobOptions {
 /// Read one line of a `.gitignore`-style file as a pattern.
 ///
 /// One `\r` directly before the line feed is dropped, and then a NUL byte
-/// ends the line, so a `\r` just before a NUL is kept. A line starting with `#` is a comment, and trailing unescaped spaces are
-/// dropped. A leading `!` negates the pattern and one trailing `/` limits it
+/// ends the line, so a `\r` just before a NUL is kept. A line starting
+/// with `#` is a comment, and trailing unescaped spaces are dropped. A
+/// leading `!` negates the pattern and one trailing `/` limits it
 /// to folders. A `/` anywhere else anchors the pattern to the ignore file's
 /// folder, and a leading `/` is then dropped.
 ///

@@ -12,7 +12,8 @@ use crate::types::GitignorePattern;
 /// * `path` - The path relative to the ignore file's folder, with `/`
 ///   between names.
 /// * `name` - The last name in `path`, worked out once by the caller for
-///   all the patterns.
+///   all the patterns. It must be exactly what follows the last `/` in
+///   `path`, or all of `path` if it has no `/`; debug builds check this.
 /// * `is_folder` - Whether the path is a folder rather than a file.
 ///
 /// # Returns
@@ -25,6 +26,7 @@ pub(crate) fn gitignore_pattern_matches(
     name: &[u8],
     is_folder: bool,
 ) -> bool {
+    debug_assert_eq!(path.rsplit(|&byte| byte == b'/').next(), Some(name));
     if pattern.folders_only && !is_folder {
         return false;
     }
@@ -106,6 +108,20 @@ mod tests {
 
         // Assert
         assert!(!result);
+    }
+
+    #[test]
+    #[cfg(debug_assertions)]
+    #[should_panic(expected = "assertion")]
+    fn rejects_a_name_that_is_not_the_last_name_in_debug_builds() {
+        // Arrange
+        let pattern = pattern(b"a", false, false);
+
+        // Act
+        let _ = gitignore_pattern_matches(&pattern, b"a/b", b"a", false);
+
+        // Assert
+        // The call panics.
     }
 
     #[test]
