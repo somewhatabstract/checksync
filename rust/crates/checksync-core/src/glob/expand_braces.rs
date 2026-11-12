@@ -1,3 +1,4 @@
+use super::bytes_before_nul::bytes_before_nul;
 use super::contains_brace_group::contains_brace_group;
 use super::expand_brace_pieces::expand_brace_pieces;
 use super::types::{BraceBudget, BraceExpansionError};
@@ -24,6 +25,9 @@ const MAX_PATTERN_LENGTH: usize = 10_000;
 ///
 /// Duplicates, such as the two `a`s from `{a,a}`, are kept; callers that
 /// need unique patterns must remove them.
+///
+/// A NUL byte ends the pattern, as it does for `compile_glob`, so nothing
+/// after it is expanded or counted against the limits.
 ///
 /// A pattern with no brace group always gives just itself, at any length.
 /// To stay within time and memory, a pattern with groups may be at most
@@ -53,10 +57,11 @@ const MAX_PATTERN_LENGTH: usize = 10_000;
     not(test),
     expect(
         dead_code,
-        reason = "the file finder will call this, through a re-export added then"
+        reason = "the file finder calls this, through the re-export"
     )
 )]
 pub(crate) fn expand_braces(pattern: &[u8]) -> Result<Vec<Vec<u8>>, BraceExpansionError> {
+    let pattern = bytes_before_nul(pattern);
     if !contains_brace_group(pattern) {
         return Ok(vec![pattern.to_vec()]);
     }
@@ -114,12 +119,21 @@ mod tests {
     }
 
     /// Expand `pattern` and turn the results into strings for comparing.
-    fn expand(pattern: &str) -> Vec<String> {
-        expand_braces(pattern.as_bytes())
-            .unwrap()
-            .into_iter()
-            .map(|result| String::from_utf8(result).unwrap())
-            .collect()
+    /// What `expand` gives: the expanded patterns as strings, or the error.
+    type Expansion = Result<Vec<String>, BraceExpansionError>;
+
+    /// Turn string slices into owned strings, for comparing with `expand`.
+    fn strings(items: &[&str]) -> Vec<String> {
+        items.iter().map(|&item| item.to_owned()).collect()
+    }
+
+    fn expand(pattern: &str) -> Expansion {
+        expand_braces(pattern.as_bytes()).map(|results| {
+            results
+                .iter()
+                .map(|result| String::from_utf8_lossy(result).into_owned())
+                .collect()
+        })
     }
 
     #[test]
@@ -131,7 +145,7 @@ mod tests {
         let result = expand(pattern);
 
         // Assert
-        assert_eq!(result, vec!["a*b"]);
+        assert_eq!(result, Ok(strings(&["a*b"])));
     }
 
     #[test]
@@ -143,7 +157,7 @@ mod tests {
         let result = expand(pattern);
 
         // Assert
-        assert_eq!(result, vec![""]);
+        assert_eq!(result, Ok(strings(&[""])));
     }
 
     #[test]
@@ -155,7 +169,7 @@ mod tests {
         let result = expand(pattern);
 
         // Assert
-        assert_eq!(result, vec!["abd", "acd"]);
+        assert_eq!(result, Ok(strings(&["abd", "acd"])));
     }
 
     #[test]
@@ -167,7 +181,7 @@ mod tests {
         let result = expand(pattern);
 
         // Assert
-        assert_eq!(result, vec!["abf", "acdf", "acef"]);
+        assert_eq!(result, Ok(strings(&["abf", "acdf", "acef"])));
     }
 
     #[test]
@@ -179,7 +193,7 @@ mod tests {
         let result = expand(pattern);
 
         // Assert
-        assert_eq!(result, vec!["ac", "ad", "bc", "bd"]);
+        assert_eq!(result, Ok(strings(&["ac", "ad", "bc", "bd"])));
     }
 
     #[test]
@@ -191,7 +205,7 @@ mod tests {
         let result = expand(pattern);
 
         // Assert
-        assert_eq!(result, vec!["ac", "abc"]);
+        assert_eq!(result, Ok(strings(&["ac", "abc"])));
     }
 
     #[test]
@@ -203,7 +217,7 @@ mod tests {
         let result = expand(pattern);
 
         // Assert
-        assert_eq!(result, vec!["\\{a,b}"]);
+        assert_eq!(result, Ok(strings(&["\\{a,b}"])));
     }
 
     #[test]
@@ -215,7 +229,7 @@ mod tests {
         let result = expand(pattern);
 
         // Assert
-        assert_eq!(result, vec!["a\\,b", "c"]);
+        assert_eq!(result, Ok(strings(&["a\\,b", "c"])));
     }
 
     #[test]
@@ -227,7 +241,7 @@ mod tests {
         let result = expand(pattern);
 
         // Assert
-        assert_eq!(result, vec!["{a}b", "{a}c"]);
+        assert_eq!(result, Ok(strings(&["{a}b", "{a}c"])));
     }
 
     #[test]
@@ -239,7 +253,7 @@ mod tests {
         let result = expand(pattern);
 
         // Assert
-        assert_eq!(result, vec!["x{ab", "x{ac"]);
+        assert_eq!(result, Ok(strings(&["x{ab", "x{ac"])));
     }
 
     #[test]
@@ -251,7 +265,7 @@ mod tests {
         let result = expand(pattern);
 
         // Assert
-        assert_eq!(result, vec!["ac}", "bc}"]);
+        assert_eq!(result, Ok(strings(&["ac}", "bc}"])));
     }
 
     #[test]
@@ -263,7 +277,7 @@ mod tests {
         let result = expand(pattern);
 
         // Assert
-        assert_eq!(result, vec!["[a,b]", "c"]);
+        assert_eq!(result, Ok(strings(&["[a,b]", "c"])));
     }
 
     #[test]
@@ -275,7 +289,7 @@ mod tests {
         let result = expand(pattern);
 
         // Assert
-        assert_eq!(result, vec!["{1..3}"]);
+        assert_eq!(result, Ok(strings(&["{1..3}"])));
     }
 
     #[test]
@@ -502,6 +516,30 @@ mod tests {
     }
 
     #[test]
+    fn ends_the_pattern_at_a_nul_byte() {
+        // Arrange
+        let pattern = "a\0{b,c}";
+
+        // Act
+        let result = expand(pattern);
+
+        // Assert
+        assert_eq!(result, Ok(strings(&["a"])));
+    }
+
+    #[test]
+    fn does_not_count_groups_after_a_nul_byte_against_the_limits() {
+        // Arrange
+        let pattern = ["\0".to_owned(), "{a,b}".repeat(20)].concat();
+
+        // Act
+        let result = expand(&pattern);
+
+        // Assert
+        assert_eq!(result, Ok(strings(&[""])));
+    }
+
+    #[test]
     fn has_expansion_vectors_to_check() {
         // Arrange
         let table = load_table();
@@ -552,18 +590,20 @@ mod tests {
         let table = load_table();
 
         // Act
-        let mismatches: Vec<(&str, &str, Vec<String>)> = table
+        let mismatches: Vec<(&str, &str, Expansion)> = table
             .expansions
             .iter()
             .flat_map(|vector| {
                 vector.cases.iter().map(move |case| {
+                    // A case with no expansion to follow expects an error.
                     let wanted = case
                         .rust
                         .as_ref()
                         .map(|rust| &rust.expanded)
                         .or(case.expanded.as_ref());
                     let actual = expand(&case.pattern);
-                    let wrong = Some(&actual) != wanted;
+                    // An error matches exactly when no expansion is wanted.
+                    let wrong = actual.as_ref().ok() != wanted;
                     (
                         (vector.description.as_str(), case.pattern.as_str(), actual),
                         wrong,

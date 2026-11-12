@@ -42,6 +42,10 @@ mod types;
 
 pub(crate) use compile_glob::compile_glob;
 pub(crate) use compiled_glob_matches::compiled_glob_matches;
+#[expect(unused_imports, reason = "the file finder calls this")]
+pub(crate) use expand_braces::expand_braces;
+#[expect(unused_imports, reason = "the file finder calls this")]
+pub(crate) use types::BraceExpansionError;
 pub(crate) use types::{CompiledGlob, GlobOptions};
 
 /// The options for tests whose results don't depend on them.
