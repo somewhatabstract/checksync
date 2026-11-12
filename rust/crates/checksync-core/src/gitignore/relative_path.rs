@@ -2,8 +2,7 @@ use std::path::{Component, Path};
 
 use crate::node_relative::node_relative;
 
-/// Find a file's path inside an ignore file's folder, as an ignore file
-/// matches it.
+/// Find a file's path inside an ignore file's folder, as patterns see it.
 ///
 /// Both paths are normalized first, so `..` segments are resolved. On Unix
 /// the result is the path's raw bytes, so names that aren't valid UTF-8 are

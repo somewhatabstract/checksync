@@ -1,10 +1,14 @@
 use super::byte_matcher_matches::byte_matcher_matches;
+use super::byte_matcher_matches_hidden_dot::byte_matcher_matches_hidden_dot;
+use super::starts_hidden_name::starts_hidden_name;
 use super::types::{ByteMatcher, GlobOptions};
 
 /// Move the reachable text positions past a single-byte token, in place.
 ///
 /// Each reachable position whose byte matches makes the position one byte
-/// further on reachable; every other position becomes unreachable.
+/// further on reachable; every other position becomes unreachable. When
+/// `hides_dots` is set, a `.` starting a name only matches a token that
+/// `byte_matcher_matches_hidden_dot` allows.
 ///
 /// # Arguments
 ///
@@ -14,6 +18,7 @@ use super::types::{ByteMatcher, GlobOptions};
 ///   whether matching can reach it. Updated to the positions reachable
 ///   after the token.
 /// * `options` - How to treat slashes and letter case.
+/// * `hides_dots` - Whether wildcards stay off a `.` that starts a name.
 ///
 /// # Returns
 ///
@@ -24,11 +29,16 @@ pub(super) fn advance_one_byte(
     text: &[u8],
     positions: &mut [bool],
     options: GlobOptions,
+    hides_dots: bool,
 ) -> bool {
+    let may_match_hidden_dot = byte_matcher_matches_hidden_dot(matcher);
     let mut any = false;
     // Going backwards reads each position before it's overwritten.
     for (position, &byte) in text.iter().enumerate().rev() {
-        let reached = positions[position] && byte_matcher_matches(matcher, byte, options);
+        let hidden = hides_dots && starts_hidden_name(text, position);
+        let reached = positions[position]
+            && (may_match_hidden_dot || !hidden)
+            && byte_matcher_matches(matcher, byte, options);
         positions[position + 1] = reached;
         any |= reached;
     }
@@ -38,7 +48,8 @@ pub(super) fn advance_one_byte(
 
 #[cfg(test)]
 mod tests {
-    use super::super::types::{ByteMatcher, GlobOptions};
+    use super::super::types::ByteMatcher;
+    use super::super::{TEST_OPTIONS, TEST_PATHNAME_OPTIONS};
     use super::advance_one_byte;
 
     #[test]
@@ -51,7 +62,8 @@ mod tests {
             &ByteMatcher::Literal(b'a'),
             b"aaa",
             &mut positions,
-            GlobOptions::default(),
+            TEST_OPTIONS,
+            false,
         );
 
         // Assert
@@ -68,11 +80,66 @@ mod tests {
             &ByteMatcher::Literal(b'a'),
             b"b",
             &mut positions,
-            GlobOptions::default(),
+            TEST_OPTIONS,
+            false,
         );
 
         // Assert
         assert_eq!(positions, [false, false]);
+    }
+
+    #[test]
+    fn does_not_match_a_hidden_dot_with_a_question_mark_when_hiding_dots() {
+        // Arrange
+        let mut positions = [false, false, true, false];
+
+        // Act
+        let _ = advance_one_byte(
+            &ByteMatcher::Any,
+            b"a/.",
+            &mut positions,
+            TEST_PATHNAME_OPTIONS,
+            true,
+        );
+
+        // Assert
+        assert_eq!(positions, [false, false, false, false]);
+    }
+
+    #[test]
+    fn matches_a_hidden_dot_with_a_literal_when_hiding_dots() {
+        // Arrange
+        let mut positions = [true, false];
+
+        // Act
+        let _ = advance_one_byte(
+            &ByteMatcher::Literal(b'.'),
+            b".",
+            &mut positions,
+            TEST_PATHNAME_OPTIONS,
+            true,
+        );
+
+        // Assert
+        assert_eq!(positions, [false, true]);
+    }
+
+    #[test]
+    fn matches_a_hidden_dot_with_a_question_mark_when_not_hiding_dots() {
+        // Arrange
+        let mut positions = [true, false];
+
+        // Act
+        let _ = advance_one_byte(
+            &ByteMatcher::Any,
+            b".",
+            &mut positions,
+            TEST_PATHNAME_OPTIONS,
+            false,
+        );
+
+        // Assert
+        assert_eq!(positions, [false, true]);
     }
 
     #[test]
@@ -85,7 +152,8 @@ mod tests {
             &ByteMatcher::Literal(b'a'),
             b"a",
             &mut positions,
-            GlobOptions::default(),
+            TEST_OPTIONS,
+            false,
         );
 
         // Assert
@@ -102,7 +170,8 @@ mod tests {
             &ByteMatcher::Literal(b'a'),
             b"b",
             &mut positions,
-            GlobOptions::default(),
+            TEST_OPTIONS,
+            false,
         );
 
         // Assert

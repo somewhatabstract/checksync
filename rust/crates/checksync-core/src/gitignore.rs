@@ -18,9 +18,12 @@ pub use ignore_file::IgnoreFile;
 
 use crate::glob::GlobOptions;
 
-/// The options every ignore-file glob is matched with: `/` separates
-/// folders, and ASCII case is always ignored.
+/// The options every ignore-file glob is matched with.
+///
+/// `/` separates folders, ASCII case is always ignored, and wildcards match
+/// names starting with `.`, as in git.
 const GLOB_OPTIONS: GlobOptions = GlobOptions {
     pathname: true,
     casefold: true,
+    dot: true,
 };
