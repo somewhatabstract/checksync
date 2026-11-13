@@ -22,7 +22,10 @@
         "other/.gitignore": "*.js\n",
         "other/five.js": "",
         "other/six.txt": "",
-        "noignore/seven.js": ""
+        "noignore/seven.js": "",
+        ".lit/[slug]/page.tsx": "",
+        ".lit/[x].js": "",
+        ".lit/x.js": ""
     },
     "vectors": [
         {
@@ -568,6 +571,258 @@
             "exclude": [],
             "ignoreFiles": [],
             "expected": []
+        },
+        {
+            "description": "An exclude that names a pattern's starting folder removes everything in it",
+            "cwd": "",
+            "include": [
+                "src/**"
+            ],
+            "exclude": [
+                "src"
+            ],
+            "ignoreFiles": [],
+            "expected": [
+                "src/nested/four.js",
+                "src/nested/keep.log",
+                "src/one.js",
+                "src/three.log",
+                "src/two.ts"
+            ],
+            "rust": {
+                "expected": [],
+                "reason": "An exclude that matches a folder removes everything in it, wherever the folder is. fast-glob doesn't apply excludes to a pattern's starting folder, so the result depends on how it groups patterns."
+            }
+        },
+        {
+            "description": "A wildcard exclude that matches a folder removes everything in it",
+            "cwd": "",
+            "include": [
+                "**"
+            ],
+            "exclude": [
+                "s*c",
+                "node_modules/**"
+            ],
+            "ignoreFiles": [],
+            "expected": [
+                "B.js",
+                "UPPER.JS",
+                "_under.js",
+                "a.js",
+                "build/out.js",
+                "c.ts",
+                "docs/readme.md",
+                "noignore/seven.js",
+                "other/five.js",
+                "other/six.txt",
+                "src/nested/four.js",
+                "src/nested/keep.log",
+                "src/one.js",
+                "src/three.log",
+                "src/two.ts",
+                "with space.js",
+                "é.js"
+            ],
+            "rust": {
+                "expected": [
+                    "B.js",
+                    "UPPER.JS",
+                    "_under.js",
+                    "a.js",
+                    "build/out.js",
+                    "c.ts",
+                    "docs/readme.md",
+                    "noignore/seven.js",
+                    "other/five.js",
+                    "other/six.txt",
+                    "with space.js",
+                    "é.js"
+                ],
+                "reason": "An exclude that matches a folder removes everything in it, with or without wildcards. fast-glob only prunes a folder for an exclude without wildcards."
+            }
+        },
+        {
+            "description": "A trailing double star doesn't match a file itself",
+            "cwd": "",
+            "include": [
+                "*.js/**"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                "B.js",
+                "_under.js",
+                "a.js",
+                "with space.js",
+                "é.js"
+            ],
+            "rust": {
+                "expected": [],
+                "reason": "`x/**` matches what's below x, not x itself. fast-glob's `*.js/**` also matches files named by `*.js`, though `*/**` doesn't match files."
+            }
+        },
+        {
+            "description": "A question mark matches one whole character",
+            "cwd": "",
+            "include": [
+                "?.js"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                "B.js",
+                "a.js",
+                "é.js"
+            ]
+        },
+        {
+            "description": "A pattern matches a path that is exactly its text",
+            "cwd": "",
+            "include": [
+                ".lit/[slug]/page.tsx"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                ".lit/[slug]/page.tsx"
+            ]
+        },
+        {
+            "description": "A pattern matches by its text as well as a glob",
+            "cwd": "",
+            "include": [
+                ".lit/[x].js"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                ".lit/[x].js",
+                ".lit/x.js"
+            ]
+        },
+        {
+            "description": "An exclude matches a path that is exactly its text",
+            "cwd": "",
+            "include": [
+                ".lit/**"
+            ],
+            "exclude": [
+                ".lit/[slug]/page.tsx"
+            ],
+            "ignoreFiles": [],
+            "expected": [
+                ".lit/[x].js",
+                ".lit/x.js"
+            ]
+        },
+        {
+            "description": "An exclude starting with ! excludes all the same",
+            "cwd": "",
+            "include": [
+                "src/*.js"
+            ],
+            "exclude": [
+                "!src/one.js"
+            ],
+            "ignoreFiles": [],
+            "expected": []
+        },
+        {
+            "description": "Repeated slashes in a pattern act as one",
+            "cwd": "",
+            "include": [
+                "src//*.js"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                "src/one.js"
+            ]
+        },
+        {
+            "description": "A bracket set at the start of a name can match a hidden folder",
+            "cwd": "",
+            "include": [
+                "[.]dotdir/*.js"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                ".dotdir/x.js"
+            ]
+        },
+        {
+            "description": "A question mark in a folder name is a wildcard",
+            "cwd": "",
+            "include": [
+                "?rc/*.js"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [],
+            "rust": {
+                "expected": [
+                    "src/one.js"
+                ],
+                "reason": "`?` is a wildcard wherever it is. fast-glob treats it literally in a folder name before the last, so `?rc/*.js` finds nothing there."
+            }
+        },
+        {
+            "description": "A wildcard exclude doesn't match a .. folder",
+            "cwd": "src",
+            "include": [
+                "../src/*.js"
+            ],
+            "exclude": [
+                "**/one.js"
+            ],
+            "ignoreFiles": [],
+            "expected": [
+                "src/one.js"
+            ]
+        },
+        {
+            "description": "A step up on the way to a folder isn't one of its folders",
+            "cwd": "src/nested",
+            "include": [
+                "../../other/*.js"
+            ],
+            "exclude": [
+                ".."
+            ],
+            "ignoreFiles": [],
+            "expected": [
+                "other/five.js"
+            ]
+        },
+        {
+            "description": "An escaped dot at the start of a folder name can match a hidden folder",
+            "cwd": "",
+            "include": [
+                "\\.d*/*.js"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                ".dotdir/x.js"
+            ]
+        },
+        {
+            "description": "A negated bracket set can match the dot that starts a hidden folder",
+            "cwd": "",
+            "include": [
+                "[!a]dotdir/*.js"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                ".dotdir/x.js"
+            ],
+            "rust": {
+                "expected": [],
+                "reason": "Only a literal or escaped `.`, or a bracket set that lists one, matches the dot that starts a hidden name. micromatch lets a negated set match it too."
+            }
         }
     ],
     "symlinks": {

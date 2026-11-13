@@ -1252,7 +1252,7 @@
             ]
         },
         {
-            "description": "Wildcards never match . or .. names in micromatch",
+            "description": "Wildcards don't match . or .. names, but literal dots do",
             "cases": [
                 {
                     "pattern": "*",
@@ -1264,11 +1264,7 @@
                     "pattern": "*",
                     "text": ".",
                     "dot": true,
-                    "matches": false,
-                    "rust": {
-                        "matches": true,
-                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
-                    }
+                    "matches": false
                 },
                 {
                     "pattern": "*",
@@ -1280,11 +1276,7 @@
                     "pattern": "*",
                     "text": "..",
                     "dot": true,
-                    "matches": false,
-                    "rust": {
-                        "matches": true,
-                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
-                    }
+                    "matches": false
                 },
                 {
                     "pattern": "a/*/b",
@@ -1296,11 +1288,7 @@
                     "pattern": "a/*/b",
                     "text": "a/./b",
                     "dot": true,
-                    "matches": false,
-                    "rust": {
-                        "matches": true,
-                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
-                    }
+                    "matches": false
                 },
                 {
                     "pattern": "a/**/b",
@@ -1312,12 +1300,121 @@
                     "pattern": "a/**/b",
                     "text": "a/../b",
                     "dot": true,
-                    "matches": false,
-                    "rust": {
-                        "matches": true,
-                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
-                    }
+                    "matches": false
                 },
+                {
+                    "pattern": "a/.*/b",
+                    "text": "a/../b",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/.*/b",
+                    "text": "a/../b",
+                    "dot": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "**/a.js",
+                    "text": "../src/a.js",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "**/a.js",
+                    "text": "../src/a.js",
+                    "dot": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "**",
+                    "text": "a/..",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "**",
+                    "text": "a/..",
+                    "dot": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "../*",
+                    "text": "../a",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "../*",
+                    "text": "../a",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "../**/a.js",
+                    "text": "../src/a.js",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "../**/a.js",
+                    "text": "../src/a.js",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "..",
+                    "text": "..",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "..",
+                    "text": "..",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/../b",
+                    "text": "a/../b",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/../b",
+                    "text": "a/../b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "?",
+                    "text": ".",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "?",
+                    "text": ".",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[.][.]",
+                    "text": "..",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[.][.]",
+                    "text": "..",
+                    "dot": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "micromatch's .* needs something after the dot",
+            "cases": [
                 {
                     "pattern": ".*",
                     "text": ".",
@@ -1325,7 +1422,7 @@
                     "matches": false,
                     "rust": {
                         "matches": true,
-                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
+                        "reason": "A `*` may match nothing here, so `.*` matches the name `.`; micromatch's `.*` needs at least one more character."
                     }
                 },
                 {
@@ -1335,27 +1432,7 @@
                     "matches": false,
                     "rust": {
                         "matches": true,
-                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
-                    }
-                },
-                {
-                    "pattern": "a/.*/b",
-                    "text": "a/../b",
-                    "dot": false,
-                    "matches": false,
-                    "rust": {
-                        "matches": true,
-                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
-                    }
-                },
-                {
-                    "pattern": "a/.*/b",
-                    "text": "a/../b",
-                    "dot": true,
-                    "matches": false,
-                    "rust": {
-                        "matches": true,
-                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
+                        "reason": "A `*` may match nothing here, so `.*` matches the name `.`; micromatch's `.*` needs at least one more character."
                     }
                 }
             ]
@@ -1546,6 +1623,358 @@
                     "text": ".a",
                     "dot": true,
                     "matches": true
+                }
+            ]
+        },
+        {
+            "description": "? matches one whole character",
+            "cases": [
+                {
+                    "pattern": "?.js",
+                    "text": "é.js",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "?.js",
+                    "text": "é.js",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "??.js",
+                    "text": "é.js",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "??.js",
+                    "text": "é.js",
+                    "dot": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "?",
+                    "text": "中",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "?",
+                    "text": "中",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "??",
+                    "text": "中",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "??",
+                    "text": "中",
+                    "dot": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a?b",
+                    "text": "a中b",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a?b",
+                    "text": "a中b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/?",
+                    "text": "a/é",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/?",
+                    "text": "a/é",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "?/?",
+                    "text": "é/中",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "?/?",
+                    "text": "é/中",
+                    "dot": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "A bracket set matches one whole character, by code point",
+            "cases": [
+                {
+                    "pattern": "[é]",
+                    "text": "é",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[é]",
+                    "text": "é",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[à-ÿ]",
+                    "text": "é",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[à-ÿ]",
+                    "text": "é",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-é]",
+                    "text": "é",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-é]",
+                    "text": "é",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-é]",
+                    "text": "b",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-é]",
+                    "text": "b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a-é]",
+                    "text": "ê",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a-é]",
+                    "text": "ê",
+                    "dot": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[^a]",
+                    "text": "中",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[^a]",
+                    "text": "中",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[éa]",
+                    "text": "a",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[éa]",
+                    "text": "a",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[中文]",
+                    "text": "文",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[中文]",
+                    "text": "文",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[[:alpha:]]",
+                    "text": "é",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[[:alpha:]]",
+                    "text": "é",
+                    "dot": true,
+                    "matches": false
+                }
+            ]
+        },
+        {
+            "description": "* runs over whole characters",
+            "cases": [
+                {
+                    "pattern": "*",
+                    "text": "é",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*",
+                    "text": "é",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*.js",
+                    "text": "é.js",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*.js",
+                    "text": "é.js",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*b",
+                    "text": "a中b",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*b",
+                    "text": "a中b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "é*",
+                    "text": "éa",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "é*",
+                    "text": "éa",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*?",
+                    "text": "中x",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*?",
+                    "text": "中x",
+                    "dot": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "micromatch counts the two UTF-16 halves of a character beyond U+FFFF separately",
+            "cases": [
+                {
+                    "pattern": "?",
+                    "text": "😀",
+                    "dot": false,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "Characters are whole code points here, so `?` and a bracket set match an emoji as one character, as they do any other."
+                    }
+                },
+                {
+                    "pattern": "?",
+                    "text": "😀",
+                    "dot": true,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "Characters are whole code points here, so `?` and a bracket set match an emoji as one character, as they do any other."
+                    }
+                },
+                {
+                    "pattern": "??",
+                    "text": "😀",
+                    "dot": false,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "Characters are whole code points here, so `?` and a bracket set match an emoji as one character, as they do any other."
+                    }
+                },
+                {
+                    "pattern": "??",
+                    "text": "😀",
+                    "dot": true,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "Characters are whole code points here, so `?` and a bracket set match an emoji as one character, as they do any other."
+                    }
+                },
+                {
+                    "pattern": "[😀]",
+                    "text": "😀",
+                    "dot": false,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "Characters are whole code points here, so `?` and a bracket set match an emoji as one character, as they do any other."
+                    }
+                },
+                {
+                    "pattern": "[😀]",
+                    "text": "😀",
+                    "dot": true,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "Characters are whole code points here, so `?` and a bracket set match an emoji as one character, as they do any other."
+                    }
+                },
+                {
+                    "pattern": "x?y",
+                    "text": "x😀y",
+                    "dot": false,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "Characters are whole code points here, so `?` and a bracket set match an emoji as one character, as they do any other."
+                    }
+                },
+                {
+                    "pattern": "x?y",
+                    "text": "x😀y",
+                    "dot": true,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "Characters are whole code points here, so `?` and a bracket set match an emoji as one character, as they do any other."
+                    }
                 }
             ]
         }

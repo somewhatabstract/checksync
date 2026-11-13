@@ -17,14 +17,18 @@ pub(crate) struct GlobOptions {
     /// nothing, though ranges and classes such as `[A-Z]` and `[:upper:]`
     /// still match lowercase letters.
     pub casefold: bool,
-    /// Whether wildcards may match a `.` that starts a name.
+    /// Which hidden names wildcards may match, in pathname mode.
     ///
-    /// When off, as in fast-glob, a name starting with `.` can only be
-    /// matched by a pattern name starting with a literal `.` or a bracket set
-    /// that isn't negated: `?`, `*`, `**` and negated sets don't match its
-    /// `.`, and a `*` can't even match nothing in front of it. Without
-    /// `pathname`, this has no effect. git's matching has it on.
-    pub dot: bool,
+    /// Without `pathname`, this has no effect: wildcards match everything.
+    pub hidden: HiddenNames,
+    /// Whether `?` and bracket sets match whole UTF-8 characters.
+    ///
+    /// When on, as in fast-glob, `?` and a bracket set match one character
+    /// of 1 to 4 bytes, bracket sets compare code points, and `*` never stops
+    /// inside a character. A byte that isn't part of valid UTF-8, in the
+    /// pattern or the text, counts as one character on its own. When off,
+    /// as in git, everything matches single bytes.
+    pub unicode: bool,
 }
 
 /// A glob pattern compiled once so it can be matched against many texts.
@@ -34,17 +38,42 @@ pub(crate) struct CompiledGlob {
     pub(super) tokens: Vec<GlobToken>,
     /// How the pattern treats slashes, letter case and hidden names.
     pub(super) options: GlobOptions,
-    /// Whether wildcards stay off a `.` that starts a name.
+    /// Which hidden names wildcards may match.
     ///
-    /// Worked out once from `options`: in pathname mode without `dot`.
-    pub(super) hides_dots: bool,
+    /// Worked out once from `options`: `options.hidden` in pathname mode, and
+    /// `HiddenNames::MatchAll` otherwise.
+    pub(super) hidden: HiddenNames,
+}
+
+/// Which names starting with `.` a glob's wildcards may match.
+///
+/// A literal `.` in the pattern always matches, so `.git/**` and `../*`
+/// still match names starting with `.`, whichever is chosen.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) enum HiddenNames {
+    /// Wildcards match every name, as in git.
+    MatchAll,
+    /// Wildcards match names starting with `.`, but not `.` or `..`.
+    ///
+    /// As in fast-glob with `dot: true`, a `*` or `**` can't run over any
+    /// part of a name that is exactly `.` or `..`, or start at one. `?` and
+    /// bracket sets still match a `.`.
+    SkipDotSegments,
+    /// Wildcards match no name starting with `.`, as in fast-glob's default.
+    ///
+    /// A name starting with `.` can only be matched by a pattern name
+    /// starting with a literal `.` or a bracket set that isn't negated: `?`,
+    /// `*`, `**` and negated sets don't match its `.`, and a `*` can't even
+    /// match nothing in front of it. As with `SkipDotSegments`, a `*` or
+    /// `**` can't touch a name that is exactly `.` or `..`.
+    SkipDotNames,
 }
 
 /// One step of a parsed glob pattern.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(super) enum GlobToken {
-    /// Exactly one byte of the text.
-    One(ByteMatcher),
+    /// Exactly one unit of the text: a byte, or a character in unicode mode.
+    One(UnitMatcher),
     /// Any run of bytes, including none.
     Star {
         /// Whether the run may include `/`.
@@ -56,9 +85,11 @@ pub(super) enum GlobToken {
     AnyFolders,
 }
 
-/// What a single byte of the text has to be to match one glob token.
+/// What one unit of the text has to be to match one glob token.
+///
+/// A unit is a byte, or a whole character in unicode mode.
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub(super) enum ByteMatcher {
+pub(super) enum UnitMatcher {
     /// This byte, in either case when folding case.
     Literal(u8),
     /// This byte, written after a `\`.
@@ -66,9 +97,11 @@ pub(super) enum ByteMatcher {
     /// When folding case, the text's byte is lowercased and then compared
     /// exactly, so an escaped uppercase letter matches nothing.
     Escaped(u8),
-    /// Any byte, written as `?`.
+    /// This character of several bytes, escaped or not, in unicode mode.
+    Character(Vec<u8>),
+    /// Any one unit, written as `?`.
     Any,
-    /// A byte from a bracket set, such as `[a-z]`.
+    /// A unit from a bracket set, such as `[a-z]`.
     Set(BracketSet),
 }
 
@@ -84,10 +117,10 @@ pub(super) struct BracketSet {
 /// One member of a bracket set.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub(super) enum BracketItem {
-    /// A single byte.
-    Byte(u8),
-    /// A range of bytes, from the first to the second, as written.
-    Range(u8, u8),
+    /// A single unit, by its code: a byte, or a code point in unicode mode.
+    Char(u32),
+    /// A range of units, from the first code to the second, as written.
+    Range(u32, u32),
     /// A POSIX character class, such as `[:alpha:]`.
     Class(PosixClass),
 }

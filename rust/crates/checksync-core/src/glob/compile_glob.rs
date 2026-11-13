@@ -1,6 +1,6 @@
 use super::bytes_before_nul::bytes_before_nul;
 use super::tokenize_glob::tokenize_glob;
-use super::types::{CompiledGlob, GlobOptions};
+use super::types::{CompiledGlob, GlobOptions, HiddenNames};
 
 /// Compile a glob pattern so it can be matched against many texts.
 ///
@@ -21,24 +21,29 @@ pub(crate) fn compile_glob(pattern: &[u8], options: GlobOptions) -> Option<Compi
     Some(CompiledGlob {
         tokens,
         options,
-        hides_dots: options.pathname && !options.dot,
+        hidden: if options.pathname {
+            options.hidden
+        } else {
+            HiddenNames::MatchAll
+        },
     })
 }
 
 #[cfg(test)]
 mod tests {
     use super::super::TEST_OPTIONS;
-    use super::super::types::{ByteMatcher, CompiledGlob, GlobOptions, GlobToken};
+    use super::super::types::{CompiledGlob, GlobOptions, GlobToken, HiddenNames, UnitMatcher};
     use super::compile_glob;
 
-    /// Compile `?` with the given options and report whether dots are hidden.
-    fn hides_dots(pathname: bool, dot: bool) -> Option<bool> {
+    /// Compile `?` with the given options and report the hidden names kept.
+    fn hidden(pathname: bool, hidden: HiddenNames) -> Option<HiddenNames> {
         let options = GlobOptions {
             pathname,
             casefold: false,
-            dot,
+            hidden,
+            unicode: false,
         };
-        compile_glob(b"?", options).map(|glob| glob.hides_dots)
+        compile_glob(b"?", options).map(|glob| glob.hidden)
     }
 
     #[test]
@@ -53,9 +58,9 @@ mod tests {
         assert_eq!(
             result,
             Some(CompiledGlob {
-                tokens: vec![GlobToken::One(ByteMatcher::Any)],
+                tokens: vec![GlobToken::One(UnitMatcher::Any)],
                 options: TEST_OPTIONS,
-                hides_dots: false,
+                hidden: HiddenNames::MatchAll,
             })
         );
     }
@@ -69,7 +74,7 @@ mod tests {
         let result = compile_glob(pattern, TEST_OPTIONS).map(|glob| glob.tokens);
 
         // Assert
-        assert_eq!(result, Some(vec![GlobToken::One(ByteMatcher::Any)]));
+        assert_eq!(result, Some(vec![GlobToken::One(UnitMatcher::Any)]));
     }
 
     #[test]
@@ -85,38 +90,26 @@ mod tests {
     }
 
     #[test]
-    fn hides_dots_in_pathname_mode_without_dot() {
+    fn keeps_the_hidden_names_option_in_pathname_mode() {
         // Arrange
-        let (pathname, dot) = (true, false);
+        let option = HiddenNames::SkipDotSegments;
 
         // Act
-        let result = hides_dots(pathname, dot);
+        let result = hidden(true, option);
 
         // Assert
-        assert_eq!(result, Some(true));
+        assert_eq!(result, Some(HiddenNames::SkipDotSegments));
     }
 
     #[test]
-    fn does_not_hide_dots_with_dot() {
+    fn matches_all_hidden_names_without_pathname_mode() {
         // Arrange
-        let (pathname, dot) = (true, true);
+        let option = HiddenNames::SkipDotNames;
 
         // Act
-        let result = hides_dots(pathname, dot);
+        let result = hidden(false, option);
 
         // Assert
-        assert_eq!(result, Some(false));
-    }
-
-    #[test]
-    fn does_not_hide_dots_without_pathname_mode() {
-        // Arrange
-        let (pathname, dot) = (false, false);
-
-        // Act
-        let result = hides_dots(pathname, dot);
-
-        // Assert
-        assert_eq!(result, Some(false));
+        assert_eq!(result, Some(HiddenNames::MatchAll));
     }
 }
