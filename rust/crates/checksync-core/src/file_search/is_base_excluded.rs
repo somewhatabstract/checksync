@@ -5,7 +5,9 @@ use super::types::ExcludeGlobs;
 ///
 /// Walking starts at the task's folder, so the folders on the way to it are
 /// never visited and checked. If an exclude pattern prunes any of them, as
-/// `lib` does for a task walking `lib/src`, nothing below can be found.
+/// `lib` does for a task walking `lib/src`, nothing below can be found. A
+/// step up or a `.` on the way doesn't name a folder the files are in, so
+/// `..` isn't checked for a task walking `../other`.
 ///
 /// # Arguments
 ///
@@ -23,7 +25,10 @@ pub(super) fn is_base_excluded(base: &str, excludes: &ExcludeGlobs) -> bool {
             .match_indices('/')
             .map(|(slash, _)| &base[..slash])
             .chain(std::iter::once(base))
-            .filter(|folder| !folder.is_empty())
+            .filter(|folder| {
+                let name = folder.rsplit('/').next().unwrap_or(folder);
+                !matches!(name, "" | "." | "..")
+            })
             .any(|folder| is_excluded(excludes, folder.as_bytes(), true))
 }
 
@@ -95,6 +100,44 @@ mod tests {
 
         // Act
         let result = is_base_excluded("/a/b", &excludes);
+
+        // Assert
+        assert!(result);
+    }
+
+    #[test]
+    fn does_not_check_steps_up_on_the_way() {
+        // Arrange
+        let excludes = excludes(&[".."]);
+
+        // Act
+        let result = is_base_excluded("../other", &excludes);
+
+        // Assert
+        assert!(!result);
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn does_not_check_the_absolute_folder_a_step_up_names() {
+        // Arrange
+        let excludes = excludes(&["/"]);
+
+        // Act
+        let result = is_base_excluded("../../other", &excludes);
+
+        // Assert
+        assert!(!result);
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn prunes_a_folder_an_absolute_exclude_names_after_a_step_up() {
+        // Arrange
+        let excludes = excludes(&["/other"]);
+
+        // Act
+        let result = is_base_excluded("../../other", &excludes);
 
         // Assert
         assert!(result);

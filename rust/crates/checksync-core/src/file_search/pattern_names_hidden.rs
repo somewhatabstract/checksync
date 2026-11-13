@@ -3,8 +3,8 @@ use super::bracket_may_match_dot::bracket_may_match_dot;
 /// Check whether a pattern names a hidden folder, so hidden folders matter.
 ///
 /// Wildcards never match a `.` that starts a name, so only a folder name in
-/// the pattern that starts with a literal `.`, or with a bracket set that may
-/// match one, can match a hidden folder. The last name is a file's, so it
+/// the pattern that starts with a literal or escaped `.`, or with a bracket
+/// set that may match one, can match a hidden folder. The last name is a file's, so it
 /// doesn't count, and nor do the names `.` and `..`, which never name a
 /// hidden folder.
 ///
@@ -19,7 +19,9 @@ use super::bracket_may_match_dot::bracket_may_match_dot;
 pub(super) fn pattern_names_hidden(pattern: &str) -> bool {
     let folders = pattern.rsplit_once('/').map_or("", |(folders, _)| folders);
     folders.split('/').any(|name| {
-        (name.starts_with('.') && name != "." && name != "..") || bracket_may_match_dot(name)
+        (name.starts_with('.') && name != "." && name != "..")
+            || name.starts_with("\\.")
+            || bracket_may_match_dot(name)
     })
 }
 
@@ -121,5 +123,17 @@ mod tests {
 
         // Assert
         assert!(!result);
+    }
+
+    #[test]
+    fn finds_an_escaped_dot_at_the_start_of_a_folder_name() {
+        // Arrange
+        let pattern = "\\.c*/*.js";
+
+        // Act
+        let result = pattern_names_hidden(pattern);
+
+        // Assert
+        assert!(result);
     }
 }

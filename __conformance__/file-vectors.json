@@ -781,6 +781,48 @@
             "expected": [
                 "src/one.js"
             ]
+        },
+        {
+            "description": "A step up on the way to a folder isn't one of its folders",
+            "cwd": "src/nested",
+            "include": [
+                "../../other/*.js"
+            ],
+            "exclude": [
+                ".."
+            ],
+            "ignoreFiles": [],
+            "expected": [
+                "other/five.js"
+            ]
+        },
+        {
+            "description": "An escaped dot at the start of a folder name can match a hidden folder",
+            "cwd": "",
+            "include": [
+                "\\.d*/*.js"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                ".dotdir/x.js"
+            ]
+        },
+        {
+            "description": "A negated bracket set can match the dot that starts a hidden folder",
+            "cwd": "",
+            "include": [
+                "[!a]dotdir/*.js"
+            ],
+            "exclude": [],
+            "ignoreFiles": [],
+            "expected": [
+                ".dotdir/x.js"
+            ],
+            "rust": {
+                "expected": [],
+                "reason": "Only a literal or escaped `.`, or a bracket set that lists one, matches the dot that starts a hidden name. micromatch lets a negated set match it too."
+            }
         }
     ],
     "symlinks": {

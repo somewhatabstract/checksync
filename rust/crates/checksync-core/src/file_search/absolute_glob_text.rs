@@ -45,12 +45,13 @@ fn text_path(text: &[u8]) -> PathBuf {
     }
 }
 
-#[cfg(all(test, unix))]
+#[cfg(test)]
 mod tests {
     use std::path::Path;
 
     use super::absolute_glob_text;
 
+    #[cfg(unix)]
     #[test]
     fn joins_a_relative_text_to_the_working_folder() {
         // Arrange
@@ -63,6 +64,7 @@ mod tests {
         assert_eq!(result, b"/repo/src/a.js");
     }
 
+    #[cfg(unix)]
     #[test]
     fn works_out_parent_folders() {
         // Arrange
@@ -75,6 +77,7 @@ mod tests {
         assert_eq!(result, b"/repo/lib/a.js");
     }
 
+    #[cfg(unix)]
     #[test]
     fn keeps_an_absolute_text() {
         // Arrange
@@ -85,5 +88,18 @@ mod tests {
 
         // Assert
         assert_eq!(result, b"/other/a.js");
+    }
+
+    #[cfg(windows)]
+    #[test]
+    fn uses_forward_slashes_on_windows() {
+        // Arrange
+        let text = b"../lib/a.js";
+
+        // Act
+        let result = absolute_glob_text(Path::new("C:\\repo\\src"), text);
+
+        // Assert
+        assert_eq!(result, b"C:/repo/lib/a.js");
     }
 }
