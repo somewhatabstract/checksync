@@ -1,11 +1,9 @@
 use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
 
-use super::EXCLUDE_GLOB_OPTIONS;
-use super::compile_pattern_set::compile_pattern_set;
-use super::folder_exclude_forms::folder_exclude_forms;
+use super::compile_exclude_globs::compile_exclude_globs;
 use super::sort_paths_like_javascript::sort_paths_like_javascript;
-use super::types::{ExcludeGlobs, GetFilesError, GlobPlan};
+use super::types::{GetFilesError, GlobPlan};
 use super::walk_glob_folder::walk_glob_folder;
 
 /// Find the files a search plan matches.
@@ -30,18 +28,7 @@ use super::walk_glob_folder::walk_glob_folder;
 ///
 /// Any error reading a folder, other than its not existing.
 pub(super) fn find_files(plan: &GlobPlan, cwd: &Path) -> Result<Vec<PathBuf>, GetFilesError> {
-    let excludes = ExcludeGlobs {
-        files: compile_pattern_set(
-            plan.excludes.iter().map(String::as_str),
-            EXCLUDE_GLOB_OPTIONS,
-        ),
-        folders: compile_pattern_set(
-            plan.excludes
-                .iter()
-                .flat_map(|exclude| folder_exclude_forms(exclude)),
-            EXCLUDE_GLOB_OPTIONS,
-        ),
-    };
+    let excludes = compile_exclude_globs(&plan.excludes, cwd);
     let mut patterns_by_base: BTreeMap<&str, Vec<&str>> = BTreeMap::new();
     for task in &plan.tasks {
         patterns_by_base
@@ -155,6 +142,25 @@ mod tests {
 
         // Assert
         assert!(result.is_empty());
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn applies_an_absolute_wildcard_exclude_to_relative_paths() {
+        // Arrange
+        let root = TempDir::new().unwrap();
+        write(root.path(), "src/x/gen/a.js");
+        write(root.path(), "src/x/b.js");
+        let plan = GlobPlan {
+            tasks: vec![task(".", "**/*.js")],
+            excludes: vec![format!("{}/**/gen/**", root.path().display())],
+        };
+
+        // Act
+        let result = find_files(&plan, &root.path().join("src")).unwrap();
+
+        // Assert
+        assert_eq!(result, vec![root.path().join("src/x/b.js")]);
     }
 
     #[test]

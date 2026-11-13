@@ -34,8 +34,9 @@ pub(super) fn advance_any_folders(
         let arrived = started && position > 0 && text[position - 1] == b'/';
         *slot = here || arrived;
         any |= here;
-        // A folder starting with a hidden dot can't be passed over, so only
-        // a later reachable position can start again.
+        // A folder starting with a hidden dot, or one named `.` or `..`, can't
+        // be passed over when the options say so, so only a later reachable
+        // position can start again.
         let blocked = (hidden == HiddenNames::SkipDotNames && starts_hidden_name(text, position))
             || (hidden != HiddenNames::MatchAll && in_dot_segment(text, position));
         started = (started || here) && !blocked;

@@ -1,9 +1,12 @@
-/// Check whether a pattern names something hidden, so hidden folders matter.
+use super::bracket_may_match_dot::bracket_may_match_dot;
+
+/// Check whether a pattern names a hidden folder, so hidden folders matter.
 ///
-/// Wildcards never match a `.` that starts a name, so only a name in the
-/// pattern that starts with a literal `.`, or with a bracket set that isn't
-/// negated and so may hold one, can match inside a hidden folder. The names
-/// `.` and `..` don't count, since they never name a hidden one.
+/// Wildcards never match a `.` that starts a name, so only a folder name in
+/// the pattern that starts with a literal `.`, or with a bracket set that may
+/// match one, can match a hidden folder. The last name is a file's, so it
+/// doesn't count, and nor do the names `.` and `..`, which never name a
+/// hidden folder.
 ///
 /// # Arguments
 ///
@@ -14,9 +17,9 @@
 /// Whether walking needs to look inside hidden folders.
 #[must_use]
 pub(super) fn pattern_names_hidden(pattern: &str) -> bool {
-    pattern.split('/').any(|name| {
-        (name.starts_with('.') && name != "." && name != "..")
-            || (name.starts_with('[') && !name.starts_with("[!") && !name.starts_with("[^"))
+    let folders = pattern.rsplit_once('/').map_or("", |(folders, _)| folders);
+    folders.split('/').any(|name| {
+        (name.starts_with('.') && name != "." && name != "..") || bracket_may_match_dot(name)
     })
 }
 
@@ -37,7 +40,7 @@ mod tests {
     }
 
     #[test]
-    fn finds_a_hidden_name_after_a_folder() {
+    fn ignores_a_hidden_file_name() {
         // Arrange
         let pattern = "**/.gitignore";
 
@@ -45,7 +48,7 @@ mod tests {
         let result = pattern_names_hidden(pattern);
 
         // Assert
-        assert!(result);
+        assert!(!result);
     }
 
     #[test]
@@ -88,6 +91,30 @@ mod tests {
     fn does_not_count_a_negated_bracket_set() {
         // Arrange
         let pattern = "[!a]dotdir/*.js";
+
+        // Act
+        let result = pattern_names_hidden(pattern);
+
+        // Assert
+        assert!(!result);
+    }
+
+    #[test]
+    fn ignores_a_bracket_set_in_a_file_name() {
+        // Arrange
+        let pattern = "**/[.]x.js";
+
+        // Act
+        let result = pattern_names_hidden(pattern);
+
+        // Assert
+        assert!(!result);
+    }
+
+    #[test]
+    fn ignores_a_bracket_set_that_cannot_match_a_dot() {
+        // Arrange
+        let pattern = "[A-Z]*/x.js";
 
         // Act
         let result = pattern_names_hidden(pattern);

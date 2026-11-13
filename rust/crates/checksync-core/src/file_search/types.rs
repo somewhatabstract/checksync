@@ -38,14 +38,28 @@ pub(super) struct PatternSet {
     pub literals: Vec<Vec<u8>>,
 }
 
-/// The compiled exclude patterns, for checking files and for checking folders.
+/// Exclude patterns compiled for checking files and folders.
+#[derive(Debug, Clone, Default)]
+pub(super) struct ExcludePatterns {
+    /// The patterns as given, which remove a file or prune a folder whose
+    /// path they match.
+    pub paths: PatternSet,
+    /// The folder before each trailing `/**`, which prunes a folder whose
+    /// path it matches, with everything in it.
+    pub folders: PatternSet,
+}
+
+/// The compiled exclude patterns, with absolute ones kept apart.
 #[derive(Debug, Clone, Default)]
 pub(super) struct ExcludeGlobs {
-    /// The patterns as given, which remove a file whose path they match.
-    pub files: PatternSet,
-    /// The patterns, plus the folder before each trailing `/**`, which prune
-    /// a folder whose path they match, with everything in it.
-    pub folders: PatternSet,
+    /// The relative patterns, matched against paths relative to the working
+    /// folder.
+    pub relative: ExcludePatterns,
+    /// The absolute patterns, matched against absolute paths, if there are
+    /// any.
+    pub absolute: Option<ExcludePatterns>,
+    /// The absolute working folder, for making paths absolute.
+    pub cwd: PathBuf,
 }
 
 /// Why `get_files` couldn't find files.

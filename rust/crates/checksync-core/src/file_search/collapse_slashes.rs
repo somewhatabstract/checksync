@@ -18,7 +18,7 @@ pub(super) fn collapse_slashes(pattern: &str) -> String {
     };
     let mut collapsed = lead.to_owned();
     for character in rest.chars() {
-        if !(character == '/' && collapsed.ends_with('/') && collapsed.len() > lead.len()) {
+        if !(character == '/' && collapsed.ends_with('/')) {
             collapsed.push(character);
         }
     }
@@ -75,5 +75,17 @@ mod tests {
 
         // Assert
         assert_eq!(result, "/a/b");
+    }
+
+    #[test]
+    fn collapses_more_than_two_leading_slashes_to_two() {
+        // Arrange
+        let pattern = "///a/*.js";
+
+        // Act
+        let result = collapse_slashes(pattern);
+
+        // Assert
+        assert_eq!(result, "//a/*.js");
     }
 }

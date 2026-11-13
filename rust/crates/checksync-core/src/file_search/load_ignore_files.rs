@@ -31,7 +31,7 @@ pub(super) fn load_ignore_files(
     ignore_file_globs: &[String],
     cwd: &Path,
 ) -> Result<Vec<IgnoreFile>, GetFilesError> {
-    let plan = plan_glob_tasks(ignore_file_globs, &[], cwd)?;
+    let plan = plan_glob_tasks(ignore_file_globs, &[])?;
     load_found_ignore_files(&find_files(&plan, cwd)?)
 }
 

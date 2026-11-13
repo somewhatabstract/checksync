@@ -1,9 +1,6 @@
-use std::path::Path;
-
 use super::collapse_slashes::collapse_slashes;
 use super::expand_pattern_braces::expand_pattern_braces;
 use super::glob_base::glob_base;
-use super::relative_exclude_pattern::relative_exclude_pattern;
 use super::strip_leading_dot_slash::strip_leading_dot_slash;
 use super::types::{GetFilesError, GlobPlan, GlobTask};
 
@@ -13,15 +10,12 @@ use super::types::{GetFilesError, GlobPlan, GlobTask};
 /// a task that walks the folder before its first glob character. An include
 /// pattern starting with `!` excludes instead, and an exclude pattern
 /// starting with `!` excludes all the same, as in fast-glob. Every pattern
-/// has its repeated slashes collapsed and leading `./`s dropped. An absolute
-/// exclude pattern is also kept in a form relative to the working folder, so
-/// it matches paths found from relative include patterns.
+/// has its repeated slashes collapsed and leading `./`s dropped.
 ///
 /// # Arguments
 ///
-/// * `includes` - The include patterns, relative to `cwd`.
-/// * `excludes` - The exclude patterns, relative to `cwd`.
-/// * `cwd` - The absolute working folder.
+/// * `includes` - The include patterns, relative to the working folder.
+/// * `excludes` - The exclude patterns, relative to the working folder or absolute.
 ///
 /// # Returns
 ///
@@ -34,7 +28,6 @@ use super::types::{GetFilesError, GlobPlan, GlobTask};
 pub(super) fn plan_glob_tasks(
     includes: &[String],
     excludes: &[String],
-    cwd: &Path,
 ) -> Result<GlobPlan, GetFilesError> {
     let mut plan = GlobPlan {
         tasks: Vec::new(),
@@ -61,11 +54,7 @@ pub(super) fn plan_glob_tasks(
     );
     for source in exclude_sources {
         for pattern in expand_pattern_braces(source)? {
-            let pattern = tidy(&pattern);
-            if Path::new(&pattern).is_absolute() {
-                plan.excludes.push(relative_exclude_pattern(&pattern, cwd));
-            }
-            plan.excludes.push(pattern);
+            plan.excludes.push(tidy(&pattern));
         }
     }
     Ok(plan)
@@ -78,8 +67,6 @@ fn tidy(pattern: &str) -> String {
 
 #[cfg(test)]
 mod tests {
-    use std::path::Path;
-
     use super::plan_glob_tasks;
     use crate::file_search::types::{GlobPlan, GlobTask};
 
@@ -98,15 +85,13 @@ mod tests {
         format!("pattern's braces expand to too many patterns: {pattern}")
     }
 
-    const CWD: &str = "/repo";
-
     #[test]
     fn plans_a_task_for_each_include_pattern() {
         // Arrange
         let includes = strings(&["src/*.js", "**/*.ts"]);
 
         // Act
-        let result = plan_glob_tasks(&includes, &[], Path::new(CWD)).unwrap();
+        let result = plan_glob_tasks(&includes, &[]).unwrap();
 
         // Assert
         assert_eq!(
@@ -124,7 +109,7 @@ mod tests {
         let includes = strings(&["{src,lib}/*.js"]);
 
         // Act
-        let result = plan_glob_tasks(&includes, &[], Path::new(CWD)).unwrap();
+        let result = plan_glob_tasks(&includes, &[]).unwrap();
 
         // Assert
         assert_eq!(
@@ -139,7 +124,7 @@ mod tests {
         let includes = strings(&[".//src//a.js"]);
 
         // Act
-        let result = plan_glob_tasks(&includes, &[], Path::new(CWD)).unwrap();
+        let result = plan_glob_tasks(&includes, &[]).unwrap();
 
         // Assert
         assert_eq!(result.tasks, vec![task("src", "src/a.js")]);
@@ -151,7 +136,7 @@ mod tests {
         let includes = strings(&["src/**", "!./src/nested/**"]);
 
         // Act
-        let result = plan_glob_tasks(&includes, &[], Path::new(CWD)).unwrap();
+        let result = plan_glob_tasks(&includes, &[]).unwrap();
 
         // Assert
         assert_eq!(
@@ -169,7 +154,7 @@ mod tests {
         let excludes = strings(&["./{a,b}//**"]);
 
         // Act
-        let result = plan_glob_tasks(&[], &excludes, Path::new(CWD)).unwrap();
+        let result = plan_glob_tasks(&[], &excludes).unwrap();
 
         // Assert
         assert_eq!(result.excludes, strings(&["a/**", "b/**"]));
@@ -181,23 +166,10 @@ mod tests {
         let excludes = strings(&["!src/a.js"]);
 
         // Act
-        let result = plan_glob_tasks(&[], &excludes, Path::new(CWD)).unwrap();
+        let result = plan_glob_tasks(&[], &excludes).unwrap();
 
         // Assert
         assert_eq!(result.excludes, strings(&["src/a.js"]));
-    }
-
-    #[cfg(unix)]
-    #[test]
-    fn keeps_a_relative_form_of_an_absolute_exclude() {
-        // Arrange
-        let excludes = strings(&["/repo/src/**"]);
-
-        // Act
-        let result = plan_glob_tasks(&[], &excludes, Path::new(CWD)).unwrap();
-
-        // Assert
-        assert_eq!(result.excludes, strings(&["src/**", "/repo/src/**"]));
     }
 
     #[test]
@@ -206,7 +178,7 @@ mod tests {
         let includes = vec!["{a,b}".repeat(20)];
 
         // Act
-        let result = plan_glob_tasks(&includes, &[], Path::new(CWD)).map(|_| ());
+        let result = plan_glob_tasks(&includes, &[]).map(|_| ());
 
         // Assert
         assert_eq!(
@@ -221,7 +193,7 @@ mod tests {
         let includes = vec![format!("!{}", "{a,b}".repeat(20))];
 
         // Act
-        let result = plan_glob_tasks(&includes, &[], Path::new(CWD)).map(|_| ());
+        let result = plan_glob_tasks(&includes, &[]).map(|_| ());
 
         // Assert
         assert_eq!(
@@ -236,7 +208,7 @@ mod tests {
         let excludes = vec!["{a,b}".repeat(20)];
 
         // Act
-        let result = plan_glob_tasks(&[], &excludes, Path::new(CWD)).map(|_| ());
+        let result = plan_glob_tasks(&[], &excludes).map(|_| ());
 
         // Assert
         assert_eq!(

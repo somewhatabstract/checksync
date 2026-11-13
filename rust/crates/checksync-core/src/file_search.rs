@@ -6,16 +6,19 @@
 //! patterns and `.gitignore`-style files. Matching uses the crate's `glob`
 //! module, and ignore files use its `gitignore` module.
 
+mod absolute_glob_text;
+mod bracket_may_match_dot;
 mod collapse_slashes;
+mod compile_exclude_globs;
 mod compile_pattern_set;
 mod expand_folder_pattern;
 mod expand_pattern_braces;
 mod find_files;
-mod folder_exclude_forms;
 mod get_files;
 mod glob_base;
 mod glob_text;
 mod is_base_excluded;
+mod is_excluded;
 mod join_glob_text;
 mod load_found_ignore_files;
 mod load_ignore_files;
@@ -23,7 +26,6 @@ mod matches_pattern_set;
 mod pattern_name_limit;
 mod pattern_names_hidden;
 mod plan_glob_tasks;
-mod relative_exclude_pattern;
 mod should_walk_folder;
 mod sort_paths_like_javascript;
 mod strip_leading_dot_slash;

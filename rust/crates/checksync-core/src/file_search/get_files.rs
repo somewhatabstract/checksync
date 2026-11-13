@@ -60,7 +60,7 @@ pub fn get_files(
         .map(|pattern| expand_folder_pattern(pattern, cwd))
         .collect();
     let ignore_files = load_ignore_files(ignore_file_globs, cwd)?;
-    let plan = plan_glob_tasks(&includes, exclude_globs, cwd)?;
+    let plan = plan_glob_tasks(&includes, exclude_globs)?;
     let mut files = find_files(&plan, cwd)?;
     files.retain(|file| is_allowed_by_ignore_files(&ignore_files, file));
     Ok(files)
