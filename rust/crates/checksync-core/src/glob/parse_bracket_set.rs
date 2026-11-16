@@ -10,13 +10,18 @@ use super::types::BracketSet;
 ///
 /// * `pattern` - The glob pattern.
 /// * `index` - Where the opening `[` is in the pattern.
+/// * `unicode` - Whether members are characters rather than bytes.
 ///
 /// # Returns
 ///
 /// The set and the index just past its closing `]`, or `None` if the set is
 /// malformed: never closed, or holding a malformed member.
 #[must_use]
-pub(super) fn parse_bracket_set(pattern: &[u8], index: usize) -> Option<(BracketSet, usize)> {
+pub(super) fn parse_bracket_set(
+    pattern: &[u8],
+    index: usize,
+    unicode: bool,
+) -> Option<(BracketSet, usize)> {
     let mut next = index + 1;
     let negated = matches!(pattern.get(next), Some(b'!' | b'^'));
     if negated {
@@ -29,7 +34,7 @@ pub(super) fn parse_bracket_set(pattern: &[u8], index: usize) -> Option<(Bracket
         if byte == b']' && next != first {
             return Some((BracketSet { negated, items }, next + 1));
         }
-        let (item, after) = read_bracket_item(pattern, next)?;
+        let (item, after) = read_bracket_item(pattern, next, unicode)?;
         items.push(item);
         next = after;
     }
@@ -46,7 +51,7 @@ mod tests {
         let pattern = b"[a-cx]y";
 
         // Act
-        let result = parse_bracket_set(pattern, 0);
+        let result = parse_bracket_set(pattern, 0, false);
 
         // Assert
         assert_eq!(
@@ -54,7 +59,10 @@ mod tests {
             Some((
                 BracketSet {
                     negated: false,
-                    items: vec![BracketItem::Range(b'a', b'c'), BracketItem::Byte(b'x')],
+                    items: vec![
+                        BracketItem::Range(u32::from(b'a'), u32::from(b'c')),
+                        BracketItem::Char(u32::from(b'x'))
+                    ],
                 },
                 6
             ))
@@ -67,7 +75,7 @@ mod tests {
         let pattern = b"[!a]";
 
         // Act
-        let result = parse_bracket_set(pattern, 0);
+        let result = parse_bracket_set(pattern, 0, false);
 
         // Assert
         assert_eq!(
@@ -75,7 +83,7 @@ mod tests {
             Some((
                 BracketSet {
                     negated: true,
-                    items: vec![BracketItem::Byte(b'a')],
+                    items: vec![BracketItem::Char(u32::from(b'a'))],
                 },
                 4
             ))
@@ -88,7 +96,7 @@ mod tests {
         let pattern = b"[^a]";
 
         // Act
-        let result = parse_bracket_set(pattern, 0);
+        let result = parse_bracket_set(pattern, 0, false);
 
         // Assert
         assert_eq!(
@@ -96,7 +104,7 @@ mod tests {
             Some((
                 BracketSet {
                     negated: true,
-                    items: vec![BracketItem::Byte(b'a')],
+                    items: vec![BracketItem::Char(u32::from(b'a'))],
                 },
                 4
             ))
@@ -109,7 +117,7 @@ mod tests {
         let pattern = b"[]]";
 
         // Act
-        let result = parse_bracket_set(pattern, 0);
+        let result = parse_bracket_set(pattern, 0, false);
 
         // Assert
         assert_eq!(
@@ -117,7 +125,7 @@ mod tests {
             Some((
                 BracketSet {
                     negated: false,
-                    items: vec![BracketItem::Byte(b']')],
+                    items: vec![BracketItem::Char(u32::from(b']'))],
                 },
                 3
             ))
@@ -130,7 +138,7 @@ mod tests {
         let pattern = b"[!]]";
 
         // Act
-        let result = parse_bracket_set(pattern, 0);
+        let result = parse_bracket_set(pattern, 0, false);
 
         // Assert
         assert_eq!(
@@ -138,7 +146,7 @@ mod tests {
             Some((
                 BracketSet {
                     negated: true,
-                    items: vec![BracketItem::Byte(b']')],
+                    items: vec![BracketItem::Char(u32::from(b']'))],
                 },
                 4
             ))
@@ -151,7 +159,7 @@ mod tests {
         let pattern = b"[ab";
 
         // Act
-        let result = parse_bracket_set(pattern, 0);
+        let result = parse_bracket_set(pattern, 0, false);
 
         // Assert
         assert_eq!(result, None);
@@ -163,7 +171,7 @@ mod tests {
         let pattern = b"[a[:foo:]]";
 
         // Act
-        let result = parse_bracket_set(pattern, 0);
+        let result = parse_bracket_set(pattern, 0, false);
 
         // Assert
         assert_eq!(result, None);

@@ -4,11 +4,11 @@ use super::types::CompiledGlob;
 
 /// Check whether the whole of a text matches a compiled glob pattern.
 ///
-/// Matching works on bytes, the way git matches its globs. `?` matches any
-/// one byte, `*` any run of bytes, `[...]` one byte from a set, and `\`
-/// makes the next byte literal. A NUL byte ends the text, as it would a C
-/// string. `GlobOptions` describes how `pathname`, `casefold` and `dot`
-/// change this.
+/// Matching works on bytes, the way git matches its globs, or with
+/// `unicode` on whole characters. `?` matches any one unit, `*` any run of
+/// them, `[...]` one unit from a set, and `\` makes the next unit literal.
+/// A NUL byte ends the text, as it would a C string. `GlobOptions`
+/// describes how `pathname`, `casefold`, `hidden` and `unicode` change this.
 ///
 /// Rather than backtracking, matching tracks every position in the text
 /// that the pattern so far can reach, so it takes time proportional to the
@@ -28,9 +28,10 @@ pub(crate) fn compiled_glob_matches(glob: &CompiledGlob, text: &[u8]) -> bool {
     let text = bytes_before_nul(text);
     let mut positions = vec![false; text.len() + 1];
     positions[0] = true;
-    glob.tokens.iter().all(|token| {
-        advance_glob_positions(token, text, &mut positions, glob.options, glob.hides_dots)
-    }) && positions[text.len()]
+    glob.tokens
+        .iter()
+        .all(|token| advance_glob_positions(token, text, &mut positions, glob.options, glob.hidden))
+        && positions[text.len()]
 }
 
 #[cfg(test)]
@@ -40,7 +41,7 @@ mod tests {
     use serde::Deserialize;
 
     use super::super::compile_glob::compile_glob;
-    use super::super::types::GlobOptions;
+    use super::super::types::{GlobOptions, HiddenNames};
     use super::compiled_glob_matches;
 
     /// The glob vector table: what it holds, and the vectors themselves.
@@ -89,7 +90,7 @@ mod tests {
         cases: Vec<FastGlobCase>,
     }
 
-    /// One pattern and path, the `dot` option, and micromatch's answer.
+    /// One pattern and path, fast-glob's `dot` option, and micromatch's answer.
     #[derive(Deserialize)]
     struct FastGlobCase {
         pattern: String,
@@ -125,13 +126,15 @@ mod tests {
     const HIDING_DOTS: GlobOptions = GlobOptions {
         pathname: true,
         casefold: false,
-        dot: false,
+        hidden: HiddenNames::SkipDotNames,
+        unicode: false,
     };
 
     const CASEFOLD: GlobOptions = GlobOptions {
         pathname: false,
         casefold: true,
-        dot: true,
+        hidden: HiddenNames::MatchAll,
+        unicode: false,
     };
 
     #[test]
@@ -445,7 +448,8 @@ mod tests {
                     let options = GlobOptions {
                         pathname: case.pathname,
                         casefold: case.casefold,
-                        dot: true,
+                        hidden: HiddenNames::MatchAll,
+                        unicode: false,
                     };
                     let actual = compile_glob(case.pattern.as_bytes(), options)
                         .is_some_and(|glob| compiled_glob_matches(&glob, case.text.as_bytes()));
@@ -588,7 +592,12 @@ mod tests {
                     let options = GlobOptions {
                         pathname: true,
                         casefold: false,
-                        dot: case.dot,
+                        hidden: if case.dot {
+                            HiddenNames::SkipDotSegments
+                        } else {
+                            HiddenNames::SkipDotNames
+                        },
+                        unicode: true,
                     };
                     let wanted = case.rust.as_ref().map_or(case.matches, |rust| rust.matches);
                     let actual = matches(case.pattern.as_bytes(), case.text.as_bytes(), options);

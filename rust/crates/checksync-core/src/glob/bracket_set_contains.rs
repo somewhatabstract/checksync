@@ -1,33 +1,33 @@
 use super::bracket_item_matches::bracket_item_matches;
 use super::types::BracketSet;
 
-/// Check whether a byte of the text matches a bracket set.
+/// Check whether a unit of the text matches a bracket set.
 ///
-/// When folding case, the byte is lowercased before it's compared with the
-/// members; `bracket_item_matches` describes what that means for each kind
-/// of member.
+/// The unit is given by its code: a byte, or a code point in unicode mode.
+/// When folding case, an ASCII letter is lowercased before it's compared
+/// with the members; `bracket_item_matches` describes what that means for
+/// each kind of member.
 ///
 /// # Arguments
 ///
 /// * `set` - The bracket set.
-/// * `byte` - The byte of the text.
+/// * `code` - The unit's code.
 /// * `casefold` - Whether ASCII letters match regardless of case.
 ///
 /// # Returns
 ///
-/// `true` if the byte matches a member of a plain set, or no member of a
+/// `true` if the unit matches a member of a plain set, or no member of a
 /// negated one.
 #[must_use]
-pub(super) fn bracket_set_contains(set: &BracketSet, byte: u8, casefold: bool) -> bool {
-    let byte = if casefold {
-        byte.to_ascii_lowercase()
-    } else {
-        byte
+pub(super) fn bracket_set_contains(set: &BracketSet, code: u32, casefold: bool) -> bool {
+    let code = match u8::try_from(code) {
+        Ok(byte) if casefold => u32::from(byte.to_ascii_lowercase()),
+        _ => code,
     };
     let found = set
         .items
         .iter()
-        .any(|&item| bracket_item_matches(item, byte, casefold));
+        .any(|&item| bracket_item_matches(item, code, casefold));
     found != set.negated
 }
 
@@ -39,7 +39,10 @@ mod tests {
     fn set(negated: bool) -> BracketSet {
         BracketSet {
             negated,
-            items: vec![BracketItem::Byte(b'a'), BracketItem::Byte(b'b')],
+            items: vec![
+                BracketItem::Char(u32::from(b'a')),
+                BracketItem::Char(u32::from(b'b')),
+            ],
         }
     }
 
@@ -49,7 +52,7 @@ mod tests {
         let set = set(false);
 
         // Act
-        let result = bracket_set_contains(&set, b'b', false);
+        let result = bracket_set_contains(&set, u32::from(b'b'), false);
 
         // Assert
         assert!(result);
@@ -61,7 +64,7 @@ mod tests {
         let set = set(false);
 
         // Act
-        let result = bracket_set_contains(&set, b'c', false);
+        let result = bracket_set_contains(&set, u32::from(b'c'), false);
 
         // Assert
         assert!(!result);
@@ -73,7 +76,7 @@ mod tests {
         let set = set(true);
 
         // Act
-        let result = bracket_set_contains(&set, b'a', false);
+        let result = bracket_set_contains(&set, u32::from(b'a'), false);
 
         // Assert
         assert!(!result);
@@ -85,7 +88,7 @@ mod tests {
         let set = set(true);
 
         // Act
-        let result = bracket_set_contains(&set, b'c', false);
+        let result = bracket_set_contains(&set, u32::from(b'c'), false);
 
         // Assert
         assert!(result);
@@ -97,7 +100,7 @@ mod tests {
         let set = set(false);
 
         // Act
-        let result = bracket_set_contains(&set, b'A', true);
+        let result = bracket_set_contains(&set, u32::from(b'A'), true);
 
         // Assert
         assert!(result);
@@ -109,7 +112,7 @@ mod tests {
         let set = set(false);
 
         // Act
-        let result = bracket_set_contains(&set, b'A', false);
+        let result = bracket_set_contains(&set, u32::from(b'A'), false);
 
         // Assert
         assert!(!result);

@@ -16,7 +16,7 @@ mod types;
 
 pub use ignore_file::IgnoreFile;
 
-use crate::glob::GlobOptions;
+use crate::glob::{GlobOptions, HiddenNames};
 
 /// The options every ignore-file glob is matched with.
 ///
@@ -25,5 +25,6 @@ use crate::glob::GlobOptions;
 const GLOB_OPTIONS: GlobOptions = GlobOptions {
     pathname: true,
     casefold: true,
-    dot: true,
+    hidden: HiddenNames::MatchAll,
+    unicode: false,
 };
