@@ -33,6 +33,8 @@ pub(super) fn bracket_may_match_dot(name: &str) -> bool {
         if matches!(character, '.' | '[' | '\\') {
             return true;
         }
+        // A range such as `a-z` is three characters: its start, `-` and its
+        // end. Anything else is one character.
         if body.get(index + 1) == Some(&'-')
             && let Some(&end) = body.get(index + 2)
         {
