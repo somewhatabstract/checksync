@@ -1,5 +1,5 @@
-use crate::byte_matcher_matches::byte_matcher_matches;
-use crate::types::{ByteMatcher, GlobOptions};
+use super::byte_matcher_matches::byte_matcher_matches;
+use super::types::{ByteMatcher, GlobOptions};
 
 /// Move the reachable text positions past a single-byte token, in place.
 ///
@@ -19,7 +19,7 @@ use crate::types::{ByteMatcher, GlobOptions};
 ///
 /// `true` if any position is reachable after the token.
 #[must_use]
-pub(crate) fn advance_one_byte(
+pub(super) fn advance_one_byte(
     matcher: &ByteMatcher,
     text: &[u8],
     positions: &mut [bool],
@@ -38,8 +38,8 @@ pub(crate) fn advance_one_byte(
 
 #[cfg(test)]
 mod tests {
+    use super::super::types::{ByteMatcher, GlobOptions};
     use super::advance_one_byte;
-    use crate::types::{ByteMatcher, GlobOptions};
 
     #[test]
     fn moves_one_byte_past_each_reachable_matching_position() {

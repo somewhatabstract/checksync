@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use crate::ignore_file::IgnoreFile;
+use crate::gitignore::IgnoreFile;
 use crate::types::IgnoreDecision;
 
 /// Decide whether a set of ignore files lets checksync process a file.
@@ -37,7 +37,7 @@ mod tests {
     use tempfile::TempDir;
 
     use super::is_allowed_by_ignore_files;
-    use crate::ignore_file::IgnoreFile;
+    use crate::gitignore::IgnoreFile;
 
     /// Write `contents` to `.gitignore` in `folder` and load it.
     fn ignore_file(folder: &Path, contents: &str) -> IgnoreFile {

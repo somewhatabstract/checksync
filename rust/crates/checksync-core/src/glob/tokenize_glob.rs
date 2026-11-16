@@ -1,7 +1,7 @@
-use crate::parse_bracket_set::parse_bracket_set;
-use crate::read_glob_byte::read_glob_byte;
-use crate::read_star_run::read_star_run;
-use crate::types::{ByteMatcher, GlobOptions, GlobToken};
+use super::parse_bracket_set::parse_bracket_set;
+use super::read_glob_byte::read_glob_byte;
+use super::read_star_run::read_star_run;
+use super::types::{ByteMatcher, GlobOptions, GlobToken};
 
 /// Split a glob pattern into the tokens that each match part of the text.
 ///
@@ -15,7 +15,7 @@ use crate::types::{ByteMatcher, GlobOptions, GlobToken};
 /// The tokens, in order, or `None` if the pattern can never match anything:
 /// it ends with a `\`, or has a malformed bracket set.
 #[must_use]
-pub(crate) fn tokenize_glob(pattern: &[u8], options: GlobOptions) -> Option<Vec<GlobToken>> {
+pub(super) fn tokenize_glob(pattern: &[u8], options: GlobOptions) -> Option<Vec<GlobToken>> {
     let mut tokens = Vec::new();
     let mut index = 0;
     while index < pattern.len() {
@@ -40,8 +40,8 @@ pub(crate) fn tokenize_glob(pattern: &[u8], options: GlobOptions) -> Option<Vec<
 
 #[cfg(test)]
 mod tests {
+    use super::super::types::{BracketItem, BracketSet, ByteMatcher, GlobOptions, GlobToken};
     use super::tokenize_glob;
-    use crate::types::{BracketItem, BracketSet, ByteMatcher, GlobOptions, GlobToken};
 
     const PATHNAME: GlobOptions = GlobOptions {
         pathname: true,

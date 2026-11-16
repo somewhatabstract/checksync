@@ -15,7 +15,7 @@
 ///
 /// `true` if any position is reachable after the `**/`.
 #[must_use]
-pub(crate) fn advance_any_folders(text: &[u8], positions: &mut [bool]) -> bool {
+pub(super) fn advance_any_folders(text: &[u8], positions: &mut [bool]) -> bool {
     let mut started = positions[0];
     for (&byte, slot) in text.iter().zip(&mut positions[1..]) {
         let here = *slot;

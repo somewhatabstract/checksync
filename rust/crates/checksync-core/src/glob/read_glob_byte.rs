@@ -14,7 +14,7 @@
 /// The byte and the index just past it, or `None` if the pattern ends with
 /// the `\`.
 #[must_use]
-pub(crate) fn read_glob_byte(pattern: &[u8], index: usize) -> Option<(u8, usize)> {
+pub(super) fn read_glob_byte(pattern: &[u8], index: usize) -> Option<(u8, usize)> {
     if pattern[index] == b'\\' {
         pattern.get(index + 1).map(|&byte| (byte, index + 2))
     } else {

@@ -8,7 +8,7 @@
 ///
 /// The bytes before the first NUL, or all of them if there is none.
 #[must_use]
-pub(crate) fn bytes_before_nul(bytes: &[u8]) -> &[u8] {
+pub(super) fn bytes_before_nul(bytes: &[u8]) -> &[u8] {
     bytes
         .iter()
         .position(|&byte| byte == 0)

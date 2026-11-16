@@ -16,7 +16,7 @@
 ///
 /// `true` if any position is reachable after the `*`.
 #[must_use]
-pub(crate) fn advance_star(text: &[u8], positions: &mut [bool], crosses_slash: bool) -> bool {
+pub(super) fn advance_star(text: &[u8], positions: &mut [bool], crosses_slash: bool) -> bool {
     let mut carried = positions[0];
     let mut any = carried;
     for (&byte, slot) in text.iter().zip(&mut positions[1..]) {

@@ -15,7 +15,11 @@ Nothing here ships in the npm package yet.
 
 - Each public function lives in its own module file, named after the function
   (e.g. `calc_checksum.rs` for `calc_checksum`).
-- Shared types live in the crate's `types.rs`.
+- Shared types live in the nearest `types.rs`: a submodule's own (such as
+  `glob/types.rs`) for types only it uses, otherwise the crate's.
+- A submodule that could become its own crate (such as `glob` or
+  `gitignore`) refers to its own files with `super::`, uses other modules
+  only through what they expose, and exposes only what code outside it uses.
 - Unit tests live in a `#[cfg(test)] mod tests` block at the bottom of the
   module they test.
 

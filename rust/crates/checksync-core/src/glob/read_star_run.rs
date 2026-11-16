@@ -1,4 +1,4 @@
-use crate::types::{GlobOptions, GlobToken};
+use super::types::{GlobOptions, GlobToken};
 
 /// Read a run of `*` from a glob pattern and work out what it matches.
 ///
@@ -24,7 +24,7 @@ use crate::types::{GlobOptions, GlobToken};
 ///
 /// The token the run stands for and the index just past what it used up.
 #[must_use]
-pub(crate) fn read_star_run(
+pub(super) fn read_star_run(
     pattern: &[u8],
     index: usize,
     options: GlobOptions,
@@ -47,8 +47,8 @@ pub(crate) fn read_star_run(
 
 #[cfg(test)]
 mod tests {
+    use super::super::types::{GlobOptions, GlobToken};
     use super::read_star_run;
-    use crate::types::{GlobOptions, GlobToken};
 
     const PATHNAME: GlobOptions = GlobOptions {
         pathname: true,

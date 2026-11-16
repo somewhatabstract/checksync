@@ -20,7 +20,7 @@ use crate::node_relative::node_relative;
 /// `None` if the file isn't inside the folder (including when it is the
 /// folder itself).
 #[must_use]
-pub(crate) fn gitignore_relative_path(folder: &Path, file_path: &Path) -> Option<Vec<u8>> {
+pub(super) fn relative_path(folder: &Path, file_path: &Path) -> Option<Vec<u8>> {
     let relative = node_relative(folder, folder, file_path);
     let outside = matches!(
         relative.components().next(),
@@ -46,7 +46,7 @@ fn path_bytes(path: &Path) -> Vec<u8> {
 mod tests {
     use std::path::{Path, PathBuf};
 
-    use super::gitignore_relative_path;
+    use super::relative_path;
 
     fn root() -> PathBuf {
         std::env::temp_dir().join("root")
@@ -58,7 +58,7 @@ mod tests {
         let file = root().join("a").join("b.js");
 
         // Act
-        let result = gitignore_relative_path(&root(), &file);
+        let result = relative_path(&root(), &file);
 
         // Assert
         assert_eq!(result, Some(b"a/b.js".to_vec()));
@@ -70,7 +70,7 @@ mod tests {
         let file = root().join("a").join("..").join("b.js");
 
         // Act
-        let result = gitignore_relative_path(&root(), &file);
+        let result = relative_path(&root(), &file);
 
         // Assert
         assert_eq!(result, Some(b"b.js".to_vec()));
@@ -82,7 +82,7 @@ mod tests {
         let file = root().join("..").join("b.js");
 
         // Act
-        let result = gitignore_relative_path(&root(), &file);
+        let result = relative_path(&root(), &file);
 
         // Assert
         assert_eq!(result, None);
@@ -95,7 +95,7 @@ mod tests {
         let file = root().join("ab").join("x.log");
 
         // Act
-        let result = gitignore_relative_path(&folder, &file);
+        let result = relative_path(&folder, &file);
 
         // Assert
         assert_eq!(result, None);
@@ -107,7 +107,7 @@ mod tests {
         let folder = root();
 
         // Act
-        let result = gitignore_relative_path(&folder, &folder);
+        let result = relative_path(&folder, &folder);
 
         // Assert
         assert_eq!(result, None);
@@ -119,7 +119,7 @@ mod tests {
         let file = root().join("..b");
 
         // Act
-        let result = gitignore_relative_path(&root(), &file);
+        let result = relative_path(&root(), &file);
 
         // Assert
         assert_eq!(result, Some(b"..b".to_vec()));
@@ -134,7 +134,7 @@ mod tests {
         let file = root().join(OsStr::from_bytes(b"caf\xE9"));
 
         // Act
-        let result = gitignore_relative_path(Path::new(&root()), &file);
+        let result = relative_path(Path::new(&root()), &file);
 
         // Assert
         assert_eq!(result, Some(b"caf\xE9".to_vec()));
