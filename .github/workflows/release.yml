@@ -40,7 +40,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
-      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
         name: Install pnpm
         with:
           run_install: false
@@ -85,9 +85,11 @@ jobs:
           publish: pnpm publish:ci
         env:
           # We use a Personal Access Token here rather than the GITHUB_TOKEN
-          # so that it will trigger our other actions. The token has to be on
-          # the account of someone with appropriate access levels and given the
-          # repo scope.
+          # so that it will trigger our other actions. It's a fine-grained
+          # token, on the account of someone with write access, limited to
+          # this repository with read and write access to Contents and Pull
+          # requests. The same token is also a Dependabot secret, for
+          # auto-merging Dependabot PRs.
           GITHUB_TOKEN: ${{ secrets.BOT_PA_TOKEN }}
           # This is used for the bundle analysis
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
