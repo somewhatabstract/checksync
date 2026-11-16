@@ -47,13 +47,10 @@ pub(super) fn read_star_run(
 
 #[cfg(test)]
 mod tests {
-    use super::super::types::{GlobOptions, GlobToken};
+    use super::super::TEST_OPTIONS;
+    use super::super::TEST_PATHNAME_OPTIONS;
+    use super::super::types::GlobToken;
     use super::read_star_run;
-
-    const PATHNAME: GlobOptions = GlobOptions {
-        pathname: true,
-        casefold: false,
-    };
 
     const CROSSING: GlobToken = GlobToken::Star {
         crosses_slash: true,
@@ -69,7 +66,7 @@ mod tests {
         let pattern = b"a*b";
 
         // Act
-        let result = read_star_run(pattern, 1, GlobOptions::default());
+        let result = read_star_run(pattern, 1, TEST_OPTIONS);
 
         // Assert
         assert_eq!(result, (CROSSING, 2));
@@ -81,7 +78,7 @@ mod tests {
         let pattern = b"a***b";
 
         // Act
-        let result = read_star_run(pattern, 1, GlobOptions::default());
+        let result = read_star_run(pattern, 1, TEST_OPTIONS);
 
         // Assert
         assert_eq!(result, (CROSSING, 4));
@@ -93,7 +90,7 @@ mod tests {
         let pattern = b"a/*";
 
         // Act
-        let result = read_star_run(pattern, 2, PATHNAME);
+        let result = read_star_run(pattern, 2, TEST_PATHNAME_OPTIONS);
 
         // Assert
         assert_eq!(result, (IN_FOLDER, 3));
@@ -105,7 +102,7 @@ mod tests {
         let pattern = b"a/**";
 
         // Act
-        let result = read_star_run(pattern, 2, PATHNAME);
+        let result = read_star_run(pattern, 2, TEST_PATHNAME_OPTIONS);
 
         // Assert
         assert_eq!(result, (CROSSING, 4));
@@ -117,7 +114,7 @@ mod tests {
         let pattern = b"**";
 
         // Act
-        let result = read_star_run(pattern, 0, PATHNAME);
+        let result = read_star_run(pattern, 0, TEST_PATHNAME_OPTIONS);
 
         // Assert
         assert_eq!(result, (CROSSING, 2));
@@ -129,7 +126,7 @@ mod tests {
         let pattern = b"**/x";
 
         // Act
-        let result = read_star_run(pattern, 0, PATHNAME);
+        let result = read_star_run(pattern, 0, TEST_PATHNAME_OPTIONS);
 
         // Assert
         assert_eq!(result, (GlobToken::AnyFolders, 3));
@@ -141,7 +138,7 @@ mod tests {
         let pattern = b"a/***/b";
 
         // Act
-        let result = read_star_run(pattern, 2, PATHNAME);
+        let result = read_star_run(pattern, 2, TEST_PATHNAME_OPTIONS);
 
         // Assert
         assert_eq!(result, (GlobToken::AnyFolders, 6));
@@ -153,7 +150,7 @@ mod tests {
         let pattern = b"a/**\\/b";
 
         // Act
-        let result = read_star_run(pattern, 2, PATHNAME);
+        let result = read_star_run(pattern, 2, TEST_PATHNAME_OPTIONS);
 
         // Assert
         assert_eq!(result, (CROSSING, 4));
@@ -165,7 +162,7 @@ mod tests {
         let pattern = b"a/**\\b";
 
         // Act
-        let result = read_star_run(pattern, 2, PATHNAME);
+        let result = read_star_run(pattern, 2, TEST_PATHNAME_OPTIONS);
 
         // Assert
         assert_eq!(result, (IN_FOLDER, 4));
@@ -177,7 +174,7 @@ mod tests {
         let pattern = b"a**/b";
 
         // Act
-        let result = read_star_run(pattern, 1, PATHNAME);
+        let result = read_star_run(pattern, 1, TEST_PATHNAME_OPTIONS);
 
         // Assert
         assert_eq!(result, (IN_FOLDER, 3));
@@ -189,7 +186,7 @@ mod tests {
         let pattern = b"a**";
 
         // Act
-        let result = read_star_run(pattern, 1, PATHNAME);
+        let result = read_star_run(pattern, 1, TEST_PATHNAME_OPTIONS);
 
         // Assert
         assert_eq!(result, (IN_FOLDER, 3));
@@ -201,7 +198,7 @@ mod tests {
         let pattern = b"a/**b";
 
         // Act
-        let result = read_star_run(pattern, 2, PATHNAME);
+        let result = read_star_run(pattern, 2, TEST_PATHNAME_OPTIONS);
 
         // Assert
         assert_eq!(result, (IN_FOLDER, 4));
@@ -213,7 +210,7 @@ mod tests {
         let pattern = b"a/*/b";
 
         // Act
-        let result = read_star_run(pattern, 2, PATHNAME);
+        let result = read_star_run(pattern, 2, TEST_PATHNAME_OPTIONS);
 
         // Assert
         assert_eq!(result, (IN_FOLDER, 3));

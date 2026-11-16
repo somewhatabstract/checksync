@@ -1,0 +1,1553 @@
+{
+    "description": "Brace expansion and dotfile cases for checksync's Rust glob module. Unlike glob-vectors.json, the expected values come from the micromatch build that fast-glob uses, not from git or checksync's TypeScript. A `rust` entry records a deliberate difference, with the reason.",
+    "expansions": [
+        {
+            "description": "A comma list stands for each alternative in turn",
+            "cases": [
+                {
+                    "pattern": "a{b,c}d",
+                    "expanded": [
+                        "abd",
+                        "acd"
+                    ]
+                },
+                {
+                    "pattern": "{a,b,c}",
+                    "expanded": [
+                        "a",
+                        "b",
+                        "c"
+                    ]
+                },
+                {
+                    "pattern": "x{a,bc,def}y",
+                    "expanded": [
+                        "xay",
+                        "xbcy",
+                        "xdefy"
+                    ]
+                },
+                {
+                    "pattern": "{a,b}/c",
+                    "expanded": [
+                        "a/c",
+                        "b/c"
+                    ]
+                },
+                {
+                    "pattern": "a/{b,c}/d",
+                    "expanded": [
+                        "a/b/d",
+                        "a/c/d"
+                    ]
+                }
+            ]
+        },
+        {
+            "description": "Empty alternatives are kept, as are duplicates",
+            "cases": [
+                {
+                    "pattern": "a{,b}c",
+                    "expanded": [
+                        "ac",
+                        "abc"
+                    ]
+                },
+                {
+                    "pattern": "{a,}",
+                    "expanded": [
+                        "a",
+                        ""
+                    ]
+                },
+                {
+                    "pattern": "{,}",
+                    "expanded": [
+                        "",
+                        ""
+                    ]
+                },
+                {
+                    "pattern": "{a,,b}",
+                    "expanded": [
+                        "a",
+                        "",
+                        "b"
+                    ]
+                },
+                {
+                    "pattern": "{a,a}",
+                    "expanded": [
+                        "a",
+                        "a"
+                    ]
+                }
+            ]
+        },
+        {
+            "description": "Groups nest",
+            "cases": [
+                {
+                    "pattern": "a{b,c{d,e}}f",
+                    "expanded": [
+                        "abf",
+                        "acdf",
+                        "acef"
+                    ]
+                },
+                {
+                    "pattern": "{a,{b,c}}",
+                    "expanded": [
+                        "a",
+                        "b",
+                        "c"
+                    ]
+                },
+                {
+                    "pattern": "{{a,b},c}",
+                    "expanded": [
+                        "a",
+                        "b",
+                        "c"
+                    ]
+                },
+                {
+                    "pattern": "{a,b{c,d}}",
+                    "expanded": [
+                        "a",
+                        "bc",
+                        "bd"
+                    ]
+                },
+                {
+                    "pattern": "{a,{b,c}d,e}",
+                    "expanded": [
+                        "a",
+                        "bd",
+                        "cd",
+                        "e"
+                    ]
+                },
+                {
+                    "pattern": "{,{,}}",
+                    "expanded": [
+                        "",
+                        "",
+                        ""
+                    ]
+                }
+            ]
+        },
+        {
+            "description": "With several groups, the earlier one varies slowest",
+            "cases": [
+                {
+                    "pattern": "{a,b}{c,d}",
+                    "expanded": [
+                        "ac",
+                        "ad",
+                        "bc",
+                        "bd"
+                    ]
+                },
+                {
+                    "pattern": "{a,b}/{c,d}",
+                    "expanded": [
+                        "a/c",
+                        "a/d",
+                        "b/c",
+                        "b/d"
+                    ]
+                },
+                {
+                    "pattern": "{a,b}{c,d}{e,f}",
+                    "expanded": [
+                        "ace",
+                        "acf",
+                        "ade",
+                        "adf",
+                        "bce",
+                        "bcf",
+                        "bde",
+                        "bdf"
+                    ]
+                },
+                {
+                    "pattern": "x{a,b}y{c,d}z",
+                    "expanded": [
+                        "xaycz",
+                        "xaydz",
+                        "xbycz",
+                        "xbydz"
+                    ]
+                }
+            ]
+        },
+        {
+            "description": "A brace group without a comma stays literal",
+            "cases": [
+                {
+                    "pattern": "{a}",
+                    "expanded": [
+                        "{a}"
+                    ]
+                },
+                {
+                    "pattern": "{}",
+                    "expanded": [
+                        "{}"
+                    ]
+                },
+                {
+                    "pattern": "{a}{b,c}",
+                    "expanded": [
+                        "{a}b",
+                        "{a}c"
+                    ]
+                },
+                {
+                    "pattern": "{{a,b}}",
+                    "expanded": [
+                        "{a}",
+                        "{b}"
+                    ]
+                },
+                {
+                    "pattern": "{a{,}b}",
+                    "expanded": [
+                        "{ab}",
+                        "{ab}"
+                    ]
+                },
+                {
+                    "pattern": "{a,{b}}",
+                    "expanded": [
+                        "a",
+                        "{b}"
+                    ]
+                }
+            ]
+        },
+        {
+            "description": "An unclosed brace or a stray closing brace stays literal",
+            "cases": [
+                {
+                    "pattern": "{a",
+                    "expanded": [
+                        "{a"
+                    ]
+                },
+                {
+                    "pattern": "a}",
+                    "expanded": [
+                        "a}"
+                    ]
+                },
+                {
+                    "pattern": "{a,b",
+                    "expanded": [
+                        "{a,b"
+                    ]
+                },
+                {
+                    "pattern": "a{b,c",
+                    "expanded": [
+                        "a{b,c"
+                    ]
+                },
+                {
+                    "pattern": "x{a{b,c}",
+                    "expanded": [
+                        "x{ab",
+                        "x{ac"
+                    ]
+                },
+                {
+                    "pattern": "{a,b}c}",
+                    "expanded": [
+                        "ac}",
+                        "bc}"
+                    ]
+                },
+                {
+                    "pattern": "}{a,b}{",
+                    "expanded": [
+                        "}a{",
+                        "}b{"
+                    ]
+                },
+                {
+                    "pattern": "{a,b{c}",
+                    "expanded": [
+                        "{a,b{c}"
+                    ]
+                },
+                {
+                    "pattern": "{a,b}}",
+                    "expanded": [
+                        "a}",
+                        "b}"
+                    ]
+                }
+            ]
+        },
+        {
+            "description": "Glob characters pass through expansion",
+            "cases": [
+                {
+                    "pattern": "*{a,b}?",
+                    "expanded": [
+                        "*a?",
+                        "*b?"
+                    ]
+                },
+                {
+                    "pattern": "{*,?}",
+                    "expanded": [
+                        "*",
+                        "?"
+                    ]
+                },
+                {
+                    "pattern": "{a,b}/**",
+                    "expanded": [
+                        "a/**",
+                        "b/**"
+                    ]
+                },
+                {
+                    "pattern": "**/{a,b}.js",
+                    "expanded": [
+                        "**/a.js",
+                        "**/b.js"
+                    ]
+                },
+                {
+                    "pattern": "{a*,b?}",
+                    "expanded": [
+                        "a*",
+                        "b?"
+                    ]
+                }
+            ]
+        },
+        {
+            "description": "Commas and braces inside brackets don't count",
+            "cases": [
+                {
+                    "pattern": "{[a,b],c}",
+                    "expanded": [
+                        "[a,b]",
+                        "c"
+                    ]
+                },
+                {
+                    "pattern": "{a,[b,c]}",
+                    "expanded": [
+                        "a",
+                        "[b,c]"
+                    ]
+                },
+                {
+                    "pattern": "[{a,b}]",
+                    "expanded": [
+                        "[{a,b}]"
+                    ]
+                },
+                {
+                    "pattern": "x[a]{b,c}[d]",
+                    "expanded": [
+                        "x[a]b[d]",
+                        "x[a]c[d]"
+                    ]
+                },
+                {
+                    "pattern": "{a,[}b,c]}",
+                    "expanded": [
+                        "a",
+                        "[}b,c]"
+                    ]
+                },
+                {
+                    "pattern": "{a,[b,c}",
+                    "expanded": [
+                        "{a,[b,c}"
+                    ]
+                },
+                {
+                    "pattern": "{[a,b]}",
+                    "expanded": [
+                        "{[a,b]}"
+                    ]
+                },
+                {
+                    "pattern": "{a,[b[c,d]e]}",
+                    "expanded": [
+                        "a",
+                        "[b[c,d]e]"
+                    ]
+                }
+            ]
+        },
+        {
+            "description": "A backslash escapes a brace or comma",
+            "cases": [
+                {
+                    "pattern": "\\{a,b}",
+                    "expanded": [
+                        "{a,b}"
+                    ],
+                    "rust": {
+                        "expanded": [
+                            "\\{a,b}"
+                        ],
+                        "reason": "This matches fast-glob, which keeps escapes in the patterns it expands; micromatch's bare brace expansion, recorded here, removes them."
+                    }
+                },
+                {
+                    "pattern": "{a\\,b,c}",
+                    "expanded": [
+                        "a,b",
+                        "c"
+                    ],
+                    "rust": {
+                        "expanded": [
+                            "a\\,b",
+                            "c"
+                        ],
+                        "reason": "This matches fast-glob, which keeps escapes in the patterns it expands; micromatch's bare brace expansion, recorded here, removes them."
+                    }
+                },
+                {
+                    "pattern": "{a,b\\}",
+                    "expanded": [
+                        "{a,b}"
+                    ],
+                    "rust": {
+                        "expanded": [
+                            "{a,b\\}"
+                        ],
+                        "reason": "This matches fast-glob, which keeps escapes in the patterns it expands; micromatch's bare brace expansion, recorded here, removes them."
+                    }
+                },
+                {
+                    "pattern": "a\\{b,c\\}",
+                    "expanded": [
+                        "a{b,c}"
+                    ],
+                    "rust": {
+                        "expanded": [
+                            "a\\{b,c\\}"
+                        ],
+                        "reason": "This matches fast-glob, which keeps escapes in the patterns it expands; micromatch's bare brace expansion, recorded here, removes them."
+                    }
+                },
+                {
+                    "pattern": "{a\\}b,c}",
+                    "expanded": [
+                        "a}b",
+                        "c"
+                    ],
+                    "rust": {
+                        "expanded": [
+                            "a\\}b",
+                            "c"
+                        ],
+                        "reason": "This matches fast-glob, which keeps escapes in the patterns it expands; micromatch's bare brace expansion, recorded here, removes them."
+                    }
+                },
+                {
+                    "pattern": "{\\,}",
+                    "expanded": [
+                        "{,}"
+                    ],
+                    "rust": {
+                        "expanded": [
+                            "{\\,}"
+                        ],
+                        "reason": "This matches fast-glob, which keeps escapes in the patterns it expands; micromatch's bare brace expansion, recorded here, removes them."
+                    }
+                },
+                {
+                    "pattern": "{a,b}\\{c,d}",
+                    "expanded": [
+                        "a{c,d}",
+                        "b{c,d}"
+                    ],
+                    "rust": {
+                        "expanded": [
+                            "a\\{c,d}",
+                            "b\\{c,d}"
+                        ],
+                        "reason": "This matches fast-glob, which keeps escapes in the patterns it expands; micromatch's bare brace expansion, recorded here, removes them."
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Ranges aren't expanded",
+            "cases": [
+                {
+                    "pattern": "{1..3}",
+                    "expanded": [
+                        "1",
+                        "2",
+                        "3"
+                    ],
+                    "rust": {
+                        "expanded": [
+                            "{1..3}"
+                        ],
+                        "reason": "Ranges aren't expanded, a deliberate difference."
+                    }
+                },
+                {
+                    "pattern": "{a..c}",
+                    "expanded": [
+                        "a",
+                        "b",
+                        "c"
+                    ],
+                    "rust": {
+                        "expanded": [
+                            "{a..c}"
+                        ],
+                        "reason": "Ranges aren't expanded, a deliberate difference."
+                    }
+                },
+                {
+                    "pattern": "x{1..2}y",
+                    "expanded": [
+                        "x1y",
+                        "x2y"
+                    ],
+                    "rust": {
+                        "expanded": [
+                            "x{1..2}y"
+                        ],
+                        "reason": "Ranges aren't expanded, a deliberate difference."
+                    }
+                }
+            ]
+        },
+        {
+            "description": "A pattern with no brace group is never too long here",
+            "cases": [
+                {
+                    "pattern": "{a}xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                    "error": "Input length (10003), exceeds max characters (10000)",
+                    "rust": {
+                        "expanded": [
+                            "{a}xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+                        ],
+                        "reason": "Only a pattern with a brace group is limited to 10,000 bytes here; this one has none, so it's kept as it is, where micromatch refuses it."
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Parentheses, quotes and a leading $ aren't special to brace expansion here",
+            "cases": [
+                {
+                    "pattern": "{a,@(b,c)}",
+                    "expanded": [
+                        "a",
+                        "@(b,c)"
+                    ],
+                    "rust": {
+                        "expanded": [
+                            "a",
+                            "@(b",
+                            "c)"
+                        ],
+                        "reason": "Extglobs like `@(...)` aren't supported here, so their parentheses don't protect commas."
+                    }
+                },
+                {
+                    "pattern": "{a,(b,c)}",
+                    "expanded": [
+                        "a",
+                        "(b,c)"
+                    ],
+                    "rust": {
+                        "expanded": [
+                            "a",
+                            "(b",
+                            "c)"
+                        ],
+                        "reason": "Parentheses aren't special here, so a comma inside them still splits alternatives."
+                    }
+                },
+                {
+                    "pattern": "{\"a,b\",c}",
+                    "expanded": [
+                        "a,b",
+                        "c"
+                    ],
+                    "rust": {
+                        "expanded": [
+                            "\"a",
+                            "b\"",
+                            "c"
+                        ],
+                        "reason": "Quotes aren't special here: a comma inside them still splits alternatives, and they're kept as written."
+                    }
+                },
+                {
+                    "pattern": "${a,b}",
+                    "expanded": [
+                        "${a,b}"
+                    ],
+                    "rust": {
+                        "expanded": [
+                            "$a",
+                            "$b"
+                        ],
+                        "reason": "A `$` before `{` isn't special here, so `${a,b}` is expanded like any other group."
+                    }
+                }
+            ]
+        }
+    ],
+    "matches": [
+        {
+            "description": "Without dot, a wildcard doesn't match a name's leading dot",
+            "cases": [
+                {
+                    "pattern": "*",
+                    "text": ".a",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "*",
+                    "text": ".a",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*",
+                    "text": "a",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*",
+                    "text": "a",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "?a",
+                    "text": ".a",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "?a",
+                    "text": ".a",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*a",
+                    "text": ".a",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "*a",
+                    "text": ".a",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/*",
+                    "text": "a/.b",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/*",
+                    "text": "a/.b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*.js",
+                    "text": ".a.js",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "*.js",
+                    "text": ".a.js",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*/x",
+                    "text": ".a/x",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "*/x",
+                    "text": ".a/x",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/?",
+                    "text": "a/.b",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/?",
+                    "text": "a/.b",
+                    "dot": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/*/c",
+                    "text": "a/.b/c",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/*/c",
+                    "text": "a/.b/c",
+                    "dot": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "Without dot, a * in front of a hidden name can't even match nothing",
+            "cases": [
+                {
+                    "pattern": "*.*",
+                    "text": ".ab",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "*.*",
+                    "text": ".ab",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*.a",
+                    "text": ".a",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "*.a",
+                    "text": ".a",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*.a",
+                    "text": "x.a",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*.a",
+                    "text": "x.a",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*[.]a",
+                    "text": ".a",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "*[.]a",
+                    "text": ".a",
+                    "dot": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "A literal dot matches a name's leading dot",
+            "cases": [
+                {
+                    "pattern": ".*",
+                    "text": ".a",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": ".*",
+                    "text": ".a",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/.*",
+                    "text": "a/.b",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/.*",
+                    "text": "a/.b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": ".b/**",
+                    "text": ".b/c",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": ".b/**",
+                    "text": ".b/c",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/.b",
+                    "text": "a/.b",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/.b",
+                    "text": "a/.b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*/.b",
+                    "text": "a/.b",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*/.b",
+                    "text": "a/.b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": ".b",
+                    "text": ".b",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": ".b",
+                    "text": ".b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": ".?",
+                    "text": ".a",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": ".?",
+                    "text": ".a",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/.a/**",
+                    "text": "x/.a/y",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/.a/**",
+                    "text": "x/.a/y",
+                    "dot": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "A dot inside a name is matched by wildcards",
+            "cases": [
+                {
+                    "pattern": "a*",
+                    "text": "a.b",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*",
+                    "text": "a.b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*/b",
+                    "text": "a.x/b",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a*/b",
+                    "text": "a.x/b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*.js",
+                    "text": "a.js",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*.js",
+                    "text": "a.js",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a?b",
+                    "text": "a.b",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a?b",
+                    "text": "a.b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*",
+                    "text": "a.",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*",
+                    "text": "a.",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*.*",
+                    "text": "a.b",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*.*",
+                    "text": "a.b",
+                    "dot": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "Without dot, ** doesn't enter or match hidden folders and files",
+            "cases": [
+                {
+                    "pattern": "**",
+                    "text": "a/.b/c",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "**",
+                    "text": "a/.b/c",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**",
+                    "text": ".a",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "**",
+                    "text": ".a",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**",
+                    "text": "a/.b",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "**",
+                    "text": "a/.b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/x",
+                    "text": ".a/x",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "**/x",
+                    "text": ".a/x",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**/x",
+                    "text": "a/.b/x",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**/x",
+                    "text": "a/.b/x",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a/.b",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a/.b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a/b/.c",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**",
+                    "text": "a/b/.c",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**/*",
+                    "text": "a/.b",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "**/*",
+                    "text": "a/.b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "a/x/y/b",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "a/x/y/b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "**",
+                    "text": "a/b/c",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "**",
+                    "text": "a/b/c",
+                    "dot": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "A bracket set that isn't negated can match a leading dot",
+            "cases": [
+                {
+                    "pattern": "[.]a",
+                    "text": ".a",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[.]a",
+                    "text": ".a",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a.]",
+                    "text": ".a",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a.]",
+                    "text": ".a",
+                    "dot": true,
+                    "matches": false
+                },
+                {
+                    "pattern": "[a.]",
+                    "text": ".",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "[a.]",
+                    "text": ".",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[ab]",
+                    "text": ".",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[ab]",
+                    "text": ".",
+                    "dot": true,
+                    "matches": false
+                }
+            ]
+        },
+        {
+            "description": "Empty names don't count as hidden",
+            "cases": [
+                {
+                    "pattern": "a/*/b",
+                    "text": "a//b",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/*/b",
+                    "text": "a//b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "*/",
+                    "text": "a/",
+                    "dot": false,
+                    "matches": true
+                },
+                {
+                    "pattern": "*/",
+                    "text": "a/",
+                    "dot": true,
+                    "matches": true
+                }
+            ]
+        },
+        {
+            "description": "A trailing /** matches the folder itself in micromatch, but not here",
+            "cases": [
+                {
+                    "pattern": "x/**",
+                    "text": "x",
+                    "dot": false,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "This keeps git's meaning of a trailing `/**`, which matches only what's inside the folder."
+                    }
+                },
+                {
+                    "pattern": "x/**",
+                    "text": "x",
+                    "dot": true,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "This keeps git's meaning of a trailing `/**`, which matches only what's inside the folder."
+                    }
+                },
+                {
+                    "pattern": "a/b/**",
+                    "text": "a/b",
+                    "dot": false,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "This keeps git's meaning of a trailing `/**`, which matches only what's inside the folder."
+                    }
+                },
+                {
+                    "pattern": "a/b/**",
+                    "text": "a/b",
+                    "dot": true,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "This keeps git's meaning of a trailing `/**`, which matches only what's inside the folder."
+                    }
+                }
+            ]
+        },
+        {
+            "description": "A leading ./ in the pattern is skipped by micromatch, but not here",
+            "cases": [
+                {
+                    "pattern": "./a",
+                    "text": "a",
+                    "dot": false,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "Patterns are matched as written; a leading `./` isn't skipped."
+                    }
+                },
+                {
+                    "pattern": "./a",
+                    "text": "a",
+                    "dot": true,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "Patterns are matched as written; a leading `./` isn't skipped."
+                    }
+                },
+                {
+                    "pattern": "./**",
+                    "text": "b",
+                    "dot": false,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "Patterns are matched as written; a leading `./` isn't skipped."
+                    }
+                },
+                {
+                    "pattern": "./**",
+                    "text": "b",
+                    "dot": true,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "Patterns are matched as written; a leading `./` isn't skipped."
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Wildcards never match . or .. names in micromatch",
+            "cases": [
+                {
+                    "pattern": "*",
+                    "text": ".",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "*",
+                    "text": ".",
+                    "dot": true,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
+                    }
+                },
+                {
+                    "pattern": "*",
+                    "text": "..",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "*",
+                    "text": "..",
+                    "dot": true,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
+                    }
+                },
+                {
+                    "pattern": "a/*/b",
+                    "text": "a/./b",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/*/b",
+                    "text": "a/./b",
+                    "dot": true,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
+                    }
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "a/../b",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "a/**/b",
+                    "text": "a/../b",
+                    "dot": true,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
+                    }
+                },
+                {
+                    "pattern": ".*",
+                    "text": ".",
+                    "dot": false,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
+                    }
+                },
+                {
+                    "pattern": ".*",
+                    "text": ".",
+                    "dot": true,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
+                    }
+                },
+                {
+                    "pattern": "a/.*/b",
+                    "text": "a/../b",
+                    "dot": false,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
+                    }
+                },
+                {
+                    "pattern": "a/.*/b",
+                    "text": "a/../b",
+                    "dot": true,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "`.` and `..` are ordinary names here; file listings never contain them."
+                    }
+                }
+            ]
+        },
+        {
+            "description": "A trailing slash in the text is ignored by micromatch",
+            "cases": [
+                {
+                    "pattern": "a/*",
+                    "text": "a/b/",
+                    "dot": false,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "The text is matched as written; file paths never end with `/`."
+                    }
+                },
+                {
+                    "pattern": "a/*",
+                    "text": "a/b/",
+                    "dot": true,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "The text is matched as written; file paths never end with `/`."
+                    }
+                },
+                {
+                    "pattern": "*",
+                    "text": "a/",
+                    "dot": false,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "The text is matched as written; file paths never end with `/`."
+                    }
+                },
+                {
+                    "pattern": "*",
+                    "text": "a/",
+                    "dot": true,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "The text is matched as written; file paths never end with `/`."
+                    }
+                }
+            ]
+        },
+        {
+            "description": "micromatch's *.* needs something after the dot",
+            "cases": [
+                {
+                    "pattern": "*.*",
+                    "text": "a.",
+                    "dot": false,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "`*.*` is an ordinary pattern here, so its last `*` can match nothing."
+                    }
+                },
+                {
+                    "pattern": "*.*",
+                    "text": "a.",
+                    "dot": true,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "`*.*` is an ordinary pattern here, so its last `*` can match nothing."
+                    }
+                },
+                {
+                    "pattern": "**/*.*",
+                    "text": "b/a.",
+                    "dot": false,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "`*.*` is an ordinary pattern here, so its last `*` can match nothing."
+                    }
+                },
+                {
+                    "pattern": "**/*.*",
+                    "text": "b/a.",
+                    "dot": true,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "`*.*` is an ordinary pattern here, so its last `*` can match nothing."
+                    }
+                }
+            ]
+        },
+        {
+            "description": "Both forms of negated set stay off a leading dot",
+            "cases": [
+                {
+                    "pattern": "[^a]b",
+                    "text": ".b",
+                    "dot": false,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "`[^...]` and `[!...]` are treated alike: with `dot` off, neither matches a `.` that starts a name, and with it on, both can, as in git."
+                    }
+                },
+                {
+                    "pattern": "[^a]b",
+                    "text": ".b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "a/[^a]*",
+                    "text": "a/.b",
+                    "dot": false,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "`[^...]` and `[!...]` are treated alike: with `dot` off, neither matches a `.` that starts a name, and with it on, both can, as in git."
+                    }
+                },
+                {
+                    "pattern": "a/[^a]*",
+                    "text": "a/.b",
+                    "dot": true,
+                    "matches": true
+                },
+                {
+                    "pattern": "[!a]b",
+                    "text": ".b",
+                    "dot": false,
+                    "matches": false
+                },
+                {
+                    "pattern": "[!a]b",
+                    "text": ".b",
+                    "dot": true,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "`[^...]` and `[!...]` are treated alike: with `dot` off, neither matches a `.` that starts a name, and with it on, both can, as in git."
+                    }
+                }
+            ]
+        },
+        {
+            "description": "micromatch's [!.] matches a leading dot",
+            "cases": [
+                {
+                    "pattern": "[!.]b",
+                    "text": ".b",
+                    "dot": false,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "`[!.]` never matches `.` here; micromatch matching it looks like a quirk."
+                    }
+                },
+                {
+                    "pattern": "[!.]b",
+                    "text": ".b",
+                    "dot": true,
+                    "matches": true,
+                    "rust": {
+                        "matches": false,
+                        "reason": "`[!.]` never matches `.` here; micromatch matching it looks like a quirk."
+                    }
+                }
+            ]
+        },
+        {
+            "description": "micromatch's [[:punct:]] doesn't match a leading dot after **",
+            "cases": [
+                {
+                    "pattern": "**/[[:punct:]]a",
+                    "text": ".a",
+                    "dot": false,
+                    "matches": false,
+                    "rust": {
+                        "matches": true,
+                        "reason": "A bracket set that isn't negated can match a leading `.`, as `[.]` can in micromatch; micromatch refusing `[[:punct:]]` here looks like a quirk."
+                    }
+                },
+                {
+                    "pattern": "**/[[:punct:]]a",
+                    "text": ".a",
+                    "dot": true,
+                    "matches": true
+                }
+            ]
+        }
+    ]
+}

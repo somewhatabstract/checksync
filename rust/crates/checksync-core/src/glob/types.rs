@@ -1,9 +1,9 @@
 //! Types used by the glob matcher.
 
-/// How a glob pattern treats slashes and letter case.
+/// How a glob pattern treats slashes, letter case and hidden names.
 ///
-/// Both default to off.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+/// There's no default: callers choose every option.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub(crate) struct GlobOptions {
     /// Whether `/` separates folders.
     ///
@@ -17,6 +17,14 @@ pub(crate) struct GlobOptions {
     /// nothing, though ranges and classes such as `[A-Z]` and `[:upper:]`
     /// still match lowercase letters.
     pub casefold: bool,
+    /// Whether wildcards may match a `.` that starts a name.
+    ///
+    /// When off, as in fast-glob, a name starting with `.` can only be
+    /// matched by a pattern name starting with a literal `.` or a bracket set
+    /// that isn't negated: `?`, `*`, `**` and negated sets don't match its
+    /// `.`, and a `*` can't even match nothing in front of it. Without
+    /// `pathname`, this has no effect. git's matching has it on.
+    pub dot: bool,
 }
 
 /// A glob pattern compiled once so it can be matched against many texts.
@@ -24,8 +32,12 @@ pub(crate) struct GlobOptions {
 pub(crate) struct CompiledGlob {
     /// The pattern's tokens, in order.
     pub(super) tokens: Vec<GlobToken>,
-    /// How the pattern treats slashes and letter case.
+    /// How the pattern treats slashes, letter case and hidden names.
     pub(super) options: GlobOptions,
+    /// Whether wildcards stay off a `.` that starts a name.
+    ///
+    /// Worked out once from `options`: in pathname mode without `dot`.
+    pub(super) hides_dots: bool,
 }
 
 /// One step of a parsed glob pattern.
@@ -38,8 +50,9 @@ pub(super) enum GlobToken {
         /// Whether the run may include `/`.
         crosses_slash: bool,
     },
-    /// Any number of whole folders, including none: either nothing, or any
-    /// run of bytes that ends with `/`.
+    /// Any number of whole folders, including none.
+    ///
+    /// That's either nothing, or any run of bytes that ends with `/`.
     AnyFolders,
 }
 
@@ -117,4 +130,75 @@ pub(super) enum ClassSyntax {
     Known(PosixClass, usize),
     /// A class with a name that isn't recognized.
     Unknown,
+}
+
+/// A `{...}` group of comma-separated alternatives found in a pattern.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(super) struct BraceGroup {
+    /// Where each alternative lies in the pattern, in order.
+    pub(super) alternatives: Vec<std::ops::Range<usize>>,
+    /// The index just past the group's closing `}`.
+    pub(super) end: usize,
+}
+
+/// Why a pattern's brace groups couldn't be expanded.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) enum BraceExpansionError {
+    /// The pattern is longer than `expand_braces` accepts.
+    PatternTooLong,
+    /// The expansion would hold more output at once than allowed.
+    ///
+    /// `take_brace_budget` sets the limits, counting every pattern and byte
+    /// held at once, including partial results while groups nest.
+    TooManyResults,
+}
+
+/// The output a brace expansion holds at once, counted against its limits.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+pub(super) struct BraceBudget {
+    /// How many patterns, finished or partial, are held at once.
+    pub(super) count: usize,
+    /// How many bytes those patterns hold altogether.
+    pub(super) bytes: usize,
+}
+
+/// What the next piece of a pattern being brace-expanded is.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(super) enum BracePiece {
+    /// Text kept as written, up to the given index.
+    Text(usize),
+    /// A brace group.
+    Group(BraceGroup),
+}
+
+/// A step of brace expansion still in progress, kept on a heap stack.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(super) enum BraceFrame {
+    /// Expanding a run of the pattern piece by piece.
+    Sequence {
+        /// The index just past the end of the run.
+        end: usize,
+        /// Where the next piece starts.
+        index: usize,
+        /// The expanded patterns so far.
+        results: Vec<Vec<u8>>,
+    },
+    /// Expanding a group's alternatives one after another.
+    ///
+    /// It holds the state of the run it's in, which carries on once the
+    /// group's alternatives are all expanded.
+    Group {
+        /// Where each alternative lies in the pattern.
+        alternatives: Vec<std::ops::Range<usize>>,
+        /// Which alternative to expand next.
+        next: usize,
+        /// The expanded alternatives so far, in order.
+        texts: Vec<Vec<u8>>,
+        /// The run's expanded patterns before the group.
+        results: Vec<Vec<u8>>,
+        /// The index just past the end of the run.
+        end: usize,
+        /// The index just past the group, where the run carries on.
+        resume: usize,
+    },
 }
