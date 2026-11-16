@@ -31,6 +31,12 @@ updates:
   cooldown:
     default-days: 7
     # semver-major-days isn't supported for GitHub Actions.
+  # Every CodeQL step in a workflow must run the same version, so its
+  # actions are updated together in one pull request.
+  groups:
+    codeql-action:
+      patterns:
+      - "github/codeql-action/*"
   reviewers:
   - somewhatabstract
 
