@@ -1,15 +1,7 @@
-/// Check whether a position in a text is a `.` that starts a name.
+/// Checks whether a position in a text is a `.` that starts a name.
 ///
-/// A name starts at the beginning of the text or just after a `/`.
-///
-/// # Arguments
-///
-/// * `text` - The text being matched.
-/// * `position` - The position to check, which may be the text's length.
-///
-/// # Returns
-///
-/// `true` if the byte at the position is a `.` starting a name.
+/// A name starts at the beginning of the text or just after a `/`. `position` may
+/// be the text's length, which never starts a name.
 #[must_use]
 pub(super) fn starts_hidden_name(text: &[u8], position: usize) -> bool {
     text.get(position) == Some(&b'.') && (position == 0 || text[position - 1] == b'/')

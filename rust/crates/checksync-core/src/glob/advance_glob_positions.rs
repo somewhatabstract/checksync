@@ -4,22 +4,15 @@ use super::advance_one_char::advance_one_char;
 use super::advance_star::advance_star;
 use super::types::{GlobOptions, GlobToken, HiddenNames};
 
-/// Move the reachable text positions past one glob token, in place.
+/// Moves the reachable text positions past one glob token, in place.
 ///
-/// # Arguments
+/// `positions` holds, for each position in `text` from 0 to its length, whether
+/// matching can reach it, and is updated to the positions reachable after
+/// `token`. `options` says how to treat slashes and letter case, and whether to
+/// read the text as characters rather than bytes; `hidden` says which hidden
+/// names wildcards may match.
 ///
-/// * `token` - The token to match.
-/// * `text` - The text being matched.
-/// * `positions` - For each position in the text, from 0 to its length,
-///   whether matching can reach it. Updated to the positions reachable
-///   after the token.
-/// * `options` - How to treat slashes and letter case, and whether to read
-///   the text as characters rather than bytes.
-/// * `hidden` - Which hidden names wildcards may match.
-///
-/// # Returns
-///
-/// `true` if any position is reachable after the token.
+/// Returns whether any position is reachable afterwards.
 #[must_use]
 pub(super) fn advance_glob_positions(
     token: &GlobToken,

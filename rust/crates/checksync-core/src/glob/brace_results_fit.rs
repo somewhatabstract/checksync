@@ -4,21 +4,14 @@ pub(super) const MAX_RESULTS: usize = 100_000;
 /// The most bytes, across all its patterns, one brace expansion may give.
 pub(super) const MAX_RESULT_BYTES: usize = 10_000_000;
 
-/// Check whether a set of brace expansion results is within the limits.
+/// Checks whether a set of brace expansion results is within the limits.
 ///
-/// Every set of results built during an expansion becomes part of the
-/// final output, so checking each set as it's built refuses exactly the
-/// expansions whose final output would be too large, whatever order their
+/// The set holds `count` patterns of `bytes` bytes altogether, and fits when
+/// those are at most [`MAX_RESULTS`] and [`MAX_RESULT_BYTES`]: 100,000 patterns
+/// and 10,000,000 bytes. Every set of results built during an expansion becomes
+/// part of the final output, so checking each set as it's built refuses exactly
+/// the expansions whose final output would be too large, whatever order their
 /// groups come in.
-///
-/// # Arguments
-///
-/// * `count` - How many patterns the set holds.
-/// * `bytes` - How many bytes those patterns hold altogether.
-///
-/// # Returns
-///
-/// `true` if the set holds at most 100,000 patterns and 10,000,000 bytes.
 #[must_use]
 pub(super) fn brace_results_fit(count: usize, bytes: usize) -> bool {
     count <= MAX_RESULTS && bytes <= MAX_RESULT_BYTES

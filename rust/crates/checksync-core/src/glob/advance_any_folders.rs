@@ -2,25 +2,17 @@ use super::in_dot_segment::in_dot_segment;
 use super::starts_hidden_name::starts_hidden_name;
 use super::types::HiddenNames;
 
-/// Move the reachable text positions past a whole-folder `**/`, in place.
+/// Moves the reachable text positions past a whole-folder `**/`, in place.
 ///
-/// Every reachable position stays reachable, where the `**/` matches no
+/// `positions` holds, for each position in `text` from 0 to its length, whether
+/// matching can reach it, and is updated to the positions reachable after the
+/// `**/`. Every reachable position stays reachable, where the `**/` matches no
 /// folders, and so does every later position just past a `/`. With
-/// `HiddenNames::SkipDotNames`, the `**/` can't match a folder whose name
-/// starts with `.`; with `HiddenNames::SkipDotSegments`, it can't match a
-/// folder named `.` or `..`.
+/// [`HiddenNames::SkipDotNames`], the `**/` can't match a folder whose name starts
+/// with `.`; with [`HiddenNames::SkipDotSegments`], it can't match a folder named
+/// `.` or `..`.
 ///
-/// # Arguments
-///
-/// * `text` - The text being matched.
-/// * `positions` - For each position in the text, from 0 to its length,
-///   whether matching can reach it. Updated to the positions reachable
-///   after the `**/`.
-/// * `hidden` - Which hidden folders are out of the `**/`'s reach.
-///
-/// # Returns
-///
-/// `true` if any position is reachable after the `**/`.
+/// Returns whether any position is reachable afterwards.
 #[must_use]
 pub(super) fn advance_any_folders(
     text: &[u8],

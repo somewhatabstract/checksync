@@ -4,23 +4,16 @@ use super::trim_trailing_spaces::trim_trailing_spaces;
 use super::types::GitignorePattern;
 use crate::glob::compile_glob;
 
-/// Read one line of a `.gitignore`-style file as a pattern.
+/// Reads one line of a `.gitignore`-style file, without its line feed, as a pattern.
 ///
-/// One `\r` directly before the line feed is dropped, and then a NUL byte
-/// ends the line, so a `\r` just before a NUL is kept. A line starting
-/// with `#` is a comment, and trailing unescaped spaces are dropped. A
-/// leading `!` negates the pattern and one trailing `/` limits it
-/// to folders. A `/` anywhere else anchors the pattern to the ignore file's
-/// folder, and a leading `/` is then dropped.
+/// One `\r` directly before the line feed is dropped, and then a NUL byte ends
+/// the line, so a `\r` just before a NUL is kept. A line starting with `#` is a
+/// comment, and trailing unescaped spaces are dropped. A leading `!` negates the
+/// pattern and one trailing `/` limits it to folders. A `/` anywhere else anchors
+/// the pattern to the ignore file's folder, and a leading `/` is then dropped.
 ///
-/// # Arguments
-///
-/// * `line` - The line, without its line feed.
-///
-/// # Returns
-///
-/// The pattern, or `None` if the line is a comment, holds no pattern, or
-/// holds one that can never match anything, which has no effect.
+/// Returns `None` if the line is a comment, holds no pattern, or holds one that
+/// can never match anything, which has no effect.
 #[must_use]
 pub(super) fn parse_line(line: &[u8]) -> Option<GitignorePattern> {
     let line = bytes_before_nul(line.strip_suffix(b"\r").unwrap_or(line));

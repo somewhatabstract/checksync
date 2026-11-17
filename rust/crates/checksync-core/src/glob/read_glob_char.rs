@@ -2,24 +2,13 @@ use std::ops::Range;
 
 use super::decode_glob_char::decode_glob_char;
 
-/// Read one literal unit of a glob pattern, following a `\` escape.
+/// Reads one literal unit of a glob pattern, following a `\` escape.
 ///
-/// A unit is a byte, or with `unicode` a whole character as
-/// `decode_glob_char` reads it. A `\` makes the unit after it literal; a `\`
-/// with nothing after it can't stand for anything.
-///
-/// # Arguments
-///
-/// * `pattern` - The glob pattern.
-/// * `index` - Where the unit, or the `\` escaping it, is. Must be within
-///   the pattern.
-/// * `unicode` - Whether units are characters rather than bytes.
-///
-/// # Returns
-///
-/// The unit's code (the byte, or the character's code point) and where its
-/// bytes lie in the pattern, not counting any `\`, or `None` if the pattern
-/// ends with the `\`.
+/// `index`, where the unit or the `\` escaping it is, must be within `pattern`. A
+/// unit is a byte, or with `unicode` a whole character as [`decode_glob_char`]
+/// reads it. Returns the unit's code (the byte, or the character's code point)
+/// and where its bytes lie in the pattern, not counting any `\`, or `None` if the
+/// pattern ends with the `\`, which can't stand for anything.
 #[must_use]
 pub(super) fn read_glob_char(
     pattern: &[u8],

@@ -1,23 +1,13 @@
 use super::bracket_item_matches::bracket_item_matches;
 use super::types::BracketSet;
 
-/// Check whether a unit of the text matches a bracket set.
+/// Checks whether a unit of the text matches a bracket set.
 ///
-/// The unit is given by its code: a byte, or a code point in unicode mode.
-/// When folding case, an ASCII letter is lowercased before it's compared
-/// with the members; `bracket_item_matches` describes what that means for
-/// each kind of member.
-///
-/// # Arguments
-///
-/// * `set` - The bracket set.
-/// * `code` - The unit's code.
-/// * `casefold` - Whether ASCII letters match regardless of case.
-///
-/// # Returns
-///
-/// `true` if the unit matches a member of a plain set, or no member of a
-/// negated one.
+/// The unit is given by its `code`: a byte, or a code point in unicode mode. It
+/// matches a plain set when it matches a member, and a negated set when it
+/// matches none. When `casefold` is set, an ASCII letter is lowercased before
+/// it's compared with the members; [`bracket_item_matches`] describes what that
+/// means for each kind of member.
 #[must_use]
 pub(super) fn bracket_set_contains(set: &BracketSet, code: u32, casefold: bool) -> bool {
     let code = match u8::try_from(code) {

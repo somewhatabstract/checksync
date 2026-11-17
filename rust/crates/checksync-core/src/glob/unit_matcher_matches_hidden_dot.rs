@@ -1,19 +1,10 @@
 use super::types::UnitMatcher;
 
-/// Check whether a single-unit token may match a hidden name's leading `.`.
+/// Checks whether a single-unit token may match a hidden name's leading `.`.
 ///
-/// This applies when hidden names are protected.
-///
-/// A literal or escaped unit and a bracket set that isn't negated may, so
-/// they match it if they match a `.` at all; `?` and negated sets may not.
-///
-/// # Arguments
-///
-/// * `matcher` - What the byte has to be.
-///
-/// # Returns
-///
-/// `true` if the token may match a `.` starting a name.
+/// This applies when hidden names are protected. A literal or escaped unit and a
+/// bracket set that isn't negated may, so they match it if they match a `.` at
+/// all; `?` and negated sets may not.
 #[must_use]
 pub(super) fn unit_matcher_matches_hidden_dot(matcher: &UnitMatcher) -> bool {
     match matcher {

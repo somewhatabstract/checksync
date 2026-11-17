@@ -1,24 +1,15 @@
 use super::posix_class_from_name::posix_class_from_name;
 use super::types::ClassSyntax;
 
-/// Work out whether a `[:` inside a bracket set starts a POSIX class.
+/// Works out whether the `[:` at `index`, inside a bracket set, starts a POSIX class.
 ///
-/// It does when the first `]` after the `[:` comes straight after a `:`
-/// that isn't part of the `[:` itself. The name is whatever lies between,
-/// so `[:a]b:]` isn't a class (its first `]` follows `a`), while `[::]` is a
-/// class with an empty, unknown name.
-///
-/// # Arguments
-///
-/// * `pattern` - The glob pattern.
-/// * `index` - Where the `[` of the `[:` is in the pattern.
-///
-/// # Returns
-///
-/// `ClassSyntax::Known` with the class and the index just past its `:]`,
-/// `ClassSyntax::Unknown` if the name isn't a known class, or
-/// `ClassSyntax::NotAClass` if the `[` is just an ordinary member of the
-/// set.
+/// It does when the first `]` after the `[:` comes straight after a `:` that
+/// isn't part of the `[:` itself. The name is whatever lies between, so `[:a]b:]`
+/// isn't a class (its first `]` follows `a`), while `[::]` is a class with an
+/// empty, unknown name. Returns [`ClassSyntax::Known`] with the class and the
+/// index just past its `:]`, [`ClassSyntax::Unknown`] if the name isn't a known
+/// class, or [`ClassSyntax::NotAClass`] if the `[` is just an ordinary member of
+/// the set.
 #[must_use]
 pub(super) fn read_bracket_class(pattern: &[u8], index: usize) -> ClassSyntax {
     let name_start = index + 2;

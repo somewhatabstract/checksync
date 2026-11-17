@@ -2,26 +2,17 @@ use super::read_bracket_class::read_bracket_class;
 use super::read_glob_char::read_glob_char;
 use super::types::{BracketItem, ClassSyntax};
 
-/// Read one member of a bracket set: a POSIX class, a range or a unit.
+/// Reads one member of a bracket set: a POSIX class, a range or a unit.
 ///
-/// A unit is a byte, or with `unicode` a whole character, as
-/// `read_glob_char` reads it. A `[:` starts a class only if
-/// `read_bracket_class` says so; otherwise its `[` is an ordinary unit. A
-/// unit followed by `-` and then anything but
-/// `]` starts a range, and either end of a range can be escaped with `\`. A
-/// class can't start or end a range, so a `-` after a class is literal, and
-/// a `[` after a `-` is just the end of the range.
+/// `index`, where the member starts, must be within `pattern`. A unit is a byte,
+/// or with `unicode` a whole character, as [`read_glob_char`] reads it. A `[:`
+/// starts a class only if [`read_bracket_class`] says so; otherwise its `[` is an
+/// ordinary unit. A unit followed by `-` and then anything but `]` starts a
+/// range, and either end of a range can be escaped with `\`. A class can't start
+/// or end a range, so a `-` after a class is literal, and a `[` after a `-` is
+/// just the end of the range.
 ///
-/// # Arguments
-///
-/// * `pattern` - The glob pattern.
-/// * `index` - Where the member starts in the pattern. Must be within the
-///   pattern.
-/// * `unicode` - Whether units are characters rather than bytes.
-///
-/// # Returns
-///
-/// The member and the index just past it, or `None` if the member is
+/// Returns the member and the index just past it, or `None` if the member is
 /// malformed: an unknown class name, or a `\` at the end of the pattern.
 #[must_use]
 pub(super) fn read_bracket_item(

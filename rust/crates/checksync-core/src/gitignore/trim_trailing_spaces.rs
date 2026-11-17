@@ -1,15 +1,7 @@
-/// Drop the unescaped spaces from the end of a line of an ignore file.
+/// Returns a line of an ignore file without its trailing unescaped spaces.
 ///
-/// A space escaped with `\` is kept, along with everything before it. Only
-/// spaces are dropped, not tabs.
-///
-/// # Arguments
-///
-/// * `line` - The line, without its line ending.
-///
-/// # Returns
-///
-/// The line without its trailing unescaped spaces.
+/// The line has no line ending. A space escaped with `\` is kept, along with
+/// everything before it. Only spaces are dropped, not tabs.
 #[must_use]
 pub(super) fn trim_trailing_spaces(line: &[u8]) -> &[u8] {
     let mut kept = 0;

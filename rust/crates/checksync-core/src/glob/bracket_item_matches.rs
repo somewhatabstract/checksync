@@ -1,27 +1,15 @@
 use super::posix_class_contains::posix_class_contains;
 use super::types::BracketItem;
 
-/// Check whether a unit of the text matches one member of a bracket set.
+/// Checks whether a unit of the text matches one member of a bracket set.
 ///
-/// Units are compared by code: a byte, or a code point in unicode mode. A
-/// range always matches its first code, even when it's written backwards
-/// (so `[z-a]` matches only `z`), and otherwise matches the codes from its
-/// first to its last. When folding case, the caller passes an ASCII letter
-/// already lowercased; a single member then matches only as written, while
-/// a range or class also matches if the letter's uppercase form is inside
-/// it, so `[A-Z]` and `[:upper:]` match `a` but `[A]` doesn't. Classes only
-/// ever hold ASCII.
-///
-/// # Arguments
-///
-/// * `item` - The member of the set.
-/// * `code` - The unit's code, with an ASCII letter lowercased if
-///   `casefold` is set.
-/// * `casefold` - Whether ASCII letters match regardless of case.
-///
-/// # Returns
-///
-/// `true` if the unit matches the member.
+/// Units are compared by `code`: a byte, or a code point in unicode mode. A range
+/// always matches its first code, even when it's written backwards (so `[z-a]`
+/// matches only `z`), and otherwise matches the codes from its first to its last.
+/// When `casefold` is set, the caller passes an ASCII letter already lowercased; a
+/// single member then matches only as written, while a range or class also
+/// matches if the letter's uppercase form is inside it, so `[A-Z]` and
+/// `[:upper:]` match `a` but `[A]` doesn't. Classes only ever hold ASCII.
 #[must_use]
 pub(super) fn bracket_item_matches(item: BracketItem, code: u32, casefold: bool) -> bool {
     let upper = u8::try_from(code).map_or(code, |byte| u32::from(byte.to_ascii_uppercase()));

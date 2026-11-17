@@ -1,18 +1,10 @@
 use super::types::PosixClass;
 
-/// Check whether a byte belongs to a POSIX character class.
+/// Checks whether a byte belongs to a POSIX character class.
 ///
-/// Only ASCII bytes belong to any class. Space counts only space, tab, line
-/// feed and carriage return, not vertical tab or form feed.
-///
-/// # Arguments
-///
-/// * `class` - The class to check.
-/// * `byte` - The byte to look for, compared exactly, without folding case.
-///
-/// # Returns
-///
-/// `true` if the byte is in the class.
+/// The byte is compared exactly, without folding case. Only ASCII bytes belong to
+/// any class. Space counts only space, tab, line feed and carriage return, not
+/// vertical tab or form feed.
 #[must_use]
 pub(super) fn posix_class_contains(class: PosixClass, byte: u8) -> bool {
     match class {
@@ -36,7 +28,7 @@ mod tests {
     use super::super::types::PosixClass;
     use super::posix_class_contains;
 
-    /// List the bytes from 1 to 255 that belong to a class.
+    /// Returns the bytes from 1 to 255 that belong to a class.
     fn members(class: PosixClass) -> Vec<u8> {
         (1..=255)
             .filter(|&byte| posix_class_contains(class, byte))

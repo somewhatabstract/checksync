@@ -3,27 +3,16 @@ use super::types::{GlobOptions, UnitMatcher};
 use super::unit_matcher_matches::unit_matcher_matches;
 use super::unit_matcher_matches_hidden_dot::unit_matcher_matches_hidden_dot;
 
-/// Move the reachable text positions past a single-byte token, in place.
+/// Moves the reachable text positions past a single-byte token, in place.
 ///
-/// This is the step for `?`, bracket sets and literals when not in unicode
-/// mode. Each reachable position whose byte matches makes the position one byte
-/// further on reachable; every other position becomes unreachable. When
-/// `hides_dots` is set, a `.` starting a name only matches a token that
-/// `unit_matcher_matches_hidden_dot` allows.
+/// This is the step for `?`, bracket sets and literals when not in unicode mode.
+/// `positions` holds, for each position in `text` from 0 to its length, whether
+/// matching can reach it. Each reachable position whose byte matches `matcher`
+/// makes the position one byte further on reachable; every other position becomes
+/// unreachable. When `hides_dots` is set, a `.` starting a name only matches a
+/// token that [`unit_matcher_matches_hidden_dot`] allows.
 ///
-/// # Arguments
-///
-/// * `matcher` - What the byte has to be.
-/// * `text` - The text being matched.
-/// * `positions` - For each position in the text, from 0 to its length,
-///   whether matching can reach it. Updated to the positions reachable
-///   after the token.
-/// * `options` - How to treat slashes and letter case.
-/// * `hides_dots` - Whether wildcards stay off a `.` that starts a name.
-///
-/// # Returns
-///
-/// `true` if any position is reachable after the token.
+/// Returns whether any position is reachable afterwards.
 #[must_use]
 pub(super) fn advance_one_byte(
     matcher: &UnitMatcher,

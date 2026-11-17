@@ -1,18 +1,9 @@
-/// Find the end of a `[...]` region while looking for brace groups.
+/// Returns the index just past a `[...]` region, while looking for brace groups.
 ///
-/// Inside such a region, braces and commas don't take part in brace
-/// expansion. Regions nest, so each `[` needs its own `]`, a `]` straight
-/// after a `[` closes it, and a `\` escapes the byte after it.
-///
-/// # Arguments
-///
-/// * `pattern` - The pattern.
-/// * `open` - Where the opening `[` is in the pattern.
-///
-/// # Returns
-///
-/// The index just past the region's closing `]`, or `None` if it's never
-/// closed.
+/// `open` is where the region's `[` is in `pattern`. Inside such a region, braces
+/// and commas don't take part in brace expansion. Regions nest, so each `[` needs
+/// its own `]`, a `]` straight after a `[` closes it, and a `\` escapes the byte
+/// after it. Returns `None` if the region is never closed.
 #[must_use]
 pub(super) fn brace_bracket_end(pattern: &[u8], open: usize) -> Option<usize> {
     let mut depth = 0_usize;

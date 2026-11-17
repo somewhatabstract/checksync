@@ -2,21 +2,13 @@ use super::last_match::last_match;
 use super::types::GitignorePattern;
 use crate::types::IgnoreDecision;
 
-/// Decide what an ignore file's patterns say about a file inside its folder.
+/// Decides what an ignore file's patterns say about a file inside its folder.
 ///
-/// Each folder above the file is checked first, from the top down; if any
-/// of them is ignored, so is the file, whatever the patterns say about the
-/// file itself. Otherwise the last pattern matching the file decides.
-///
-/// # Arguments
-///
-/// * `patterns` - The ignore file's patterns, in order.
-/// * `path` - The file's path relative to the ignore file's folder, with
-///   `/` between names.
-///
-/// # Returns
-///
-/// Whether the file is ignored, unignored, or neither.
+/// `patterns` are the ignore file's patterns, in order, and `path` is the file's
+/// path relative to the ignore file's folder, with `/` between names. Each folder
+/// above the file is checked first, from the top down; if any of them is ignored,
+/// so is the file, whatever the patterns say about the file itself. Otherwise the
+/// last pattern matching the file decides.
 #[must_use]
 pub(super) fn decide_path(patterns: &[GitignorePattern], path: &[u8]) -> IgnoreDecision {
     let folder_ignored = path

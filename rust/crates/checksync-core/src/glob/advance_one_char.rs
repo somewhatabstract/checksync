@@ -4,28 +4,17 @@ use super::types::{GlobOptions, UnitMatcher};
 use super::unit_matcher_matches::unit_matcher_matches;
 use super::unit_matcher_matches_hidden_dot::unit_matcher_matches_hidden_dot;
 
-/// Move the reachable text positions past a single-character token, in place.
+/// Moves the reachable text positions past a single-character token, in place.
 ///
-/// This is the unicode-mode step for `?`, bracket sets and literals. Each
-/// reachable position starts a character, as `decode_glob_char` reads
-/// it; if the character matches, the position just past it becomes
-/// reachable, and every other position becomes unreachable. When
-/// `hides_dots` is set, a `.` starting a name only matches a token that
-/// `unit_matcher_matches_hidden_dot` allows.
+/// This is the unicode-mode step for `?`, bracket sets and literals. `positions`
+/// holds, for each position in `text` from 0 to its length, whether matching can
+/// reach it, which is only ever the start of a character, as
+/// [`decode_glob_char`] reads it. If the character at a reachable position matches
+/// `matcher`, the position just past it becomes reachable, and every other
+/// position becomes unreachable. When `hides_dots` is set, a `.` starting a name
+/// only matches a token that [`unit_matcher_matches_hidden_dot`] allows.
 ///
-/// # Arguments
-///
-/// * `matcher` - What the character has to be.
-/// * `text` - The text being matched.
-/// * `positions` - For each position in the text, from 0 to its length,
-///   whether matching can reach it, which is only ever the start of a
-///   character. Updated to the positions reachable after the token.
-/// * `options` - How to treat slashes and letter case.
-/// * `hides_dots` - Whether wildcards stay off a `.` that starts a name.
-///
-/// # Returns
-///
-/// `true` if any position is reachable after the token.
+/// Returns whether any position is reachable afterwards.
 #[must_use]
 pub(super) fn advance_one_char(
     matcher: &UnitMatcher,

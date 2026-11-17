@@ -3,30 +3,19 @@ use super::in_dot_segment::in_dot_segment;
 use super::starts_hidden_name::starts_hidden_name;
 use super::types::HiddenNames;
 
-/// Move the reachable text positions past a `*`, in place.
+/// Moves the reachable text positions past a `*`, in place.
 ///
-/// Every reachable position stays reachable, and so does every later one,
-/// provided the bytes in between include no `/` when `crosses_slash` isn't
-/// set. With `HiddenNames::SkipDotNames`, the `*` can't start at a `.` that
-/// starts a name, not even to match nothing, and can't run over one. With
-/// either `HiddenNames::SkipDotSegments` or `HiddenNames::SkipDotNames`, it
-/// can't start at or run over any `.` of a name that is `.` or `..`. When `unicode`
-/// is set, the `*` only stops between whole characters, as
-/// `decode_glob_char` reads them.
+/// `positions` holds, for each position in `text` from 0 to its length, whether
+/// matching can reach it. Every reachable position stays reachable, and so does
+/// every later one, provided the bytes in between include no `/` when
+/// `crosses_slash` isn't set. With [`HiddenNames::SkipDotNames`], the `*` can't
+/// start at a `.` that starts a name, not even to match nothing, and can't run
+/// over one. With either [`HiddenNames::SkipDotSegments`] or
+/// [`HiddenNames::SkipDotNames`], it can't start at or run over any `.` of a name
+/// that is `.` or `..`. When `unicode` is set, the `*` only stops between whole
+/// characters, as [`decode_glob_char`] reads them.
 ///
-/// # Arguments
-///
-/// * `text` - The text being matched.
-/// * `positions` - For each position in the text, from 0 to its length,
-///   whether matching can reach it. Updated to the positions reachable
-///   after the `*`.
-/// * `crosses_slash` - Whether the `*` may match `/`.
-/// * `hidden` - Which hidden names are out of the `*`'s reach.
-/// * `unicode` - Whether the text is read as characters rather than bytes.
-///
-/// # Returns
-///
-/// `true` if any position is reachable after the `*`.
+/// Returns whether any position is reachable afterwards.
 #[must_use]
 pub(super) fn advance_star(
     text: &[u8],
@@ -42,8 +31,9 @@ pub(super) fn advance_star(
     let mut carried = positions[0] && !blocked(0);
     positions[0] = carried;
     let mut any = carried;
-    // Where the character being run over ends; every byte ends one without
-    // `unicode`.
+    // The index just after the character the `*` is stepping over. With
+    // `unicode`, a character can be several bytes, and the `*` may only stop
+    // at the end of one; without it, every byte is a character of its own.
     let mut character_end = 0;
     for (index, slot) in positions[1..].iter_mut().enumerate() {
         if index == character_end {

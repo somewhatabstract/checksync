@@ -1,23 +1,15 @@
 /// The code given to a byte that isn't part of valid UTF-8, plus the byte.
 ///
-/// It lies beyond every Unicode code point, so such a byte never equals a
-/// real character, but it still has a well-defined place in ranges.
+/// It lies beyond every Unicode code point, so such a byte never equals a real
+/// character, but it still has a well-defined place in ranges.
 const INVALID_BYTE_BASE: u32 = 0x11_0000;
 
-/// Read the character that starts at a position, for unicode matching.
+/// Returns the code and byte length of the character at `index`, for unicode matching.
 ///
-/// A valid UTF-8 character of 1 to 4 bytes gives its code point. A byte
-/// that doesn't start a valid character counts as one character on its own,
-/// with a code beyond every Unicode code point.
-///
-/// # Arguments
-///
-/// * `bytes` - The pattern or text.
-/// * `index` - Where the character starts. Must be within `bytes`.
-///
-/// # Returns
-///
-/// The character's code and its length in bytes.
+/// `index` must be within `bytes`, which is a pattern or text. A valid UTF-8
+/// character of 1 to 4 bytes gives its code point. A byte that doesn't start a
+/// valid character counts as one character on its own, with a code beyond every
+/// Unicode code point, [`INVALID_BYTE_BASE`] plus the byte.
 #[must_use]
 pub(super) fn decode_glob_char(bytes: &[u8], index: usize) -> (u32, usize) {
     let window = &bytes[index..bytes.len().min(index + 4)];

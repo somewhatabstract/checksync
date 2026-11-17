@@ -1,7 +1,9 @@
-//! Reading `.gitignore`-style files and deciding about paths as git does.
+//! Reads `.gitignore`-style files and decides about paths as git does.
 //!
-//! `IgnoreFile` is the only thing the rest of the crate uses. Patterns are
-//! matched with the `glob` module, through what that module exposes.
+//! [`IgnoreFile`] is the only thing the rest of the crate uses. Patterns are
+//! matched with the [`glob`] module, through what that module exposes.
+//!
+//! [`glob`]: crate::glob
 
 mod bytes_before_nul;
 mod decide_path;
@@ -20,8 +22,8 @@ use crate::glob::{GlobOptions, HiddenNames};
 
 /// The options every ignore-file glob is matched with.
 ///
-/// `/` separates folders, ASCII case is always ignored, and wildcards match
-/// names starting with `.`, as in git.
+/// `/` separates folders, ASCII case is always ignored, and wildcards match names
+/// starting with `.`, as in git.
 const GLOB_OPTIONS: GlobOptions = GlobOptions {
     pathname: true,
     casefold: true,

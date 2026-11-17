@@ -1,24 +1,18 @@
 use super::types::GitignorePattern;
 use crate::glob::compiled_glob_matches;
 
-/// Check whether one ignore-file pattern matches a path.
+/// Checks whether one ignore-file pattern matches a path.
 ///
-/// An anchored pattern is matched against the whole path, and any other
-/// pattern against the last name in it.
+/// `path` is relative to the ignore file's folder, with `/` between names, and
+/// `is_folder` says whether it's a folder rather than a file. `name` is the last
+/// name in `path`, worked out once by the caller for all the patterns: exactly
+/// what follows the last `/` in `path`, or all of `path` if it has no `/`. An
+/// anchored pattern is matched against the whole path, and any other pattern
+/// against `name`.
 ///
-/// # Arguments
+/// # Panics
 ///
-/// * `pattern` - The pattern.
-/// * `path` - The path relative to the ignore file's folder, with `/`
-///   between names.
-/// * `name` - The last name in `path`, worked out once by the caller for
-///   all the patterns. It must be exactly what follows the last `/` in
-///   `path`, or all of `path` if it has no `/`; debug builds check this.
-/// * `is_folder` - Whether the path is a folder rather than a file.
-///
-/// # Returns
-///
-/// `true` if the pattern matches the path.
+/// In debug builds, panics if `name` isn't the last name in `path`.
 #[must_use]
 pub(super) fn pattern_matches(
     pattern: &GitignorePattern,

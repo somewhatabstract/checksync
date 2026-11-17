@@ -3,39 +3,33 @@ use super::types::{BraceBudget, BraceExpansionError};
 
 /// The most patterns a brace expansion may hold at once while working.
 ///
-/// An expansion whose final output fits `brace_results_fit` never holds
-/// more than twice its output, plus one pattern per nesting level, which
-/// the 10,000-byte pattern limit keeps below 10,000.
+/// An expansion whose final output fits [`brace_results_fit`] never holds more
+/// than twice its output, plus one pattern per nesting level, which the
+/// 10,000-byte pattern limit keeps below 10,000.
+///
+/// [`brace_results_fit`]: super::brace_results_fit::brace_results_fit
 pub(super) const MAX_HELD: usize = 2 * MAX_RESULTS + 10_000;
 
 /// The most bytes a brace expansion's patterns may hold at once.
 ///
-/// An expansion whose final output fits `brace_results_fit` never holds
-/// more than twice its output's bytes.
+/// An expansion whose final output fits [`brace_results_fit`] never holds more
+/// than twice its output's bytes.
+///
+/// [`brace_results_fit`]: super::brace_results_fit::brace_results_fit
 pub(super) const MAX_HELD_BYTES: usize = 2 * MAX_RESULT_BYTES;
 
-/// Count more output against what a brace expansion may hold at once.
+/// Counts more output against what a brace expansion may hold at once.
 ///
-/// This bounds memory while groups nest, counting partial results as well
-/// as finished ones: at most 210,000 patterns and 20,000,000 bytes at once.
-/// It never refuses an expansion whose final output fits, since everything
-/// held at once is either part of that output or about to be replaced by a
-/// larger part of it.
-///
-/// # Arguments
-///
-/// * `budget` - The output held so far, increased by the new output when
-///   it fits.
-/// * `count` - How many more patterns are about to be held.
-/// * `bytes` - How many more bytes they hold.
-///
-/// # Returns
-///
-/// Nothing, once the output has been counted.
+/// `budget` is the output held so far, and grows by `count` patterns of `bytes`
+/// bytes when they fit. This bounds memory while groups nest, counting partial
+/// results as well as finished ones: at most [`MAX_HELD`] (210,000) patterns and
+/// [`MAX_HELD_BYTES`] (20,000,000) bytes at once. It never refuses an expansion
+/// whose final output fits, since everything held at once is either part of that
+/// output or about to be replaced by a larger part of it.
 ///
 /// # Errors
 ///
-/// `BraceExpansionError::TooManyResults` if the new output doesn't fit,
+/// Returns [`BraceExpansionError::TooManyResults`] if the new output doesn't fit,
 /// leaving `budget` as it was.
 pub(super) fn take_brace_budget(
     budget: &mut BraceBudget,
