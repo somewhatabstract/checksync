@@ -1,5 +1,28 @@
-use super::bracket_set_contains::bracket_set_contains;
-use super::types::{GlobOptions, UnitMatcher};
+//! Matching one unit of a text, a byte or a character, against a single-unit
+//! token.
+
+use super::bracket_set::{BracketSet, bracket_set_contains};
+use super::compiled_glob::GlobOptions;
+
+/// What one unit of the text has to be to match one glob token.
+///
+/// A unit is a byte, or a whole character in unicode mode.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(super) enum UnitMatcher {
+    /// This byte, in either case when folding case.
+    Literal(u8),
+    /// This byte, written after a `\`.
+    ///
+    /// When folding case, the text's byte is lowercased and then compared exactly, so
+    /// an escaped uppercase letter matches nothing.
+    Escaped(u8),
+    /// This character of several bytes, escaped or not, in unicode mode.
+    Character(Vec<u8>),
+    /// Any one unit, written as `?`.
+    Any,
+    /// A unit from a bracket set, such as `[a-z]`.
+    Set(BracketSet),
+}
 
 /// Checks whether one unit of the text matches a single-unit glob token.
 ///
@@ -35,12 +58,28 @@ pub(super) fn unit_matcher_matches(
     }
 }
 
+/// Checks whether a single-unit token may match a hidden name's leading `.`.
+///
+/// This applies when hidden names are protected. A literal or escaped unit and a
+/// bracket set that isn't negated may, so they match it if they match a `.` at
+/// all; `?` and negated sets may not.
+#[must_use]
+pub(super) fn unit_matcher_matches_hidden_dot(matcher: &UnitMatcher) -> bool {
+    match matcher {
+        UnitMatcher::Literal(_) | UnitMatcher::Escaped(_) | UnitMatcher::Character(_) => true,
+        UnitMatcher::Any => false,
+        UnitMatcher::Set(set) => !set.negated,
+    }
+}
+
 #[cfg(test)]
 mod tests {
-    use super::super::TEST_OPTIONS;
-    use super::super::TEST_PATHNAME_OPTIONS;
-    use super::super::types::{BracketItem, BracketSet, GlobOptions, HiddenNames, UnitMatcher};
-    use super::unit_matcher_matches;
+    use super::super::bracket_item::BracketItem;
+    use super::super::bracket_set::BracketSet;
+    use super::super::compiled_glob::GlobOptions;
+    use super::super::hidden_names::HiddenNames;
+    use super::super::{TEST_OPTIONS, TEST_PATHNAME_OPTIONS};
+    use super::{UnitMatcher, unit_matcher_matches, unit_matcher_matches_hidden_dot};
 
     const CASEFOLD: GlobOptions = GlobOptions {
         pathname: false,
@@ -237,5 +276,72 @@ mod tests {
 
         // Assert
         assert!(result);
+    }
+
+    fn set(negated: bool) -> UnitMatcher {
+        UnitMatcher::Set(BracketSet {
+            negated,
+            items: vec![BracketItem::Char(u32::from(b'.'))],
+        })
+    }
+
+    #[test]
+    fn allows_a_literal() {
+        // Arrange
+        let matcher = UnitMatcher::Literal(b'.');
+
+        // Act
+        let result = unit_matcher_matches_hidden_dot(&matcher);
+
+        // Assert
+        assert!(result);
+    }
+
+    #[test]
+    fn allows_an_escaped_byte() {
+        // Arrange
+        let matcher = UnitMatcher::Escaped(b'.');
+
+        // Act
+        let result = unit_matcher_matches_hidden_dot(&matcher);
+
+        // Assert
+        assert!(result);
+    }
+
+    #[test]
+    fn refuses_a_question_mark() {
+        // Arrange
+        let matcher = UnitMatcher::Any;
+
+        // Act
+        let result = unit_matcher_matches_hidden_dot(&matcher);
+
+        // Assert
+        assert!(!result);
+    }
+
+    #[test]
+    fn allows_a_set() {
+        // Arrange
+        let matcher = set(false);
+
+        // Act
+        let result = unit_matcher_matches_hidden_dot(&matcher);
+
+        // Assert
+        assert!(result);
+    }
+
+    #[test]
+    fn refuses_a_negated_set() {
+        // Arrange
+        let matcher = set(true);
+
+        // Act
+        let result = unit_matcher_matches_hidden_dot(&matcher);
+
+        // Assert
+        assert!(!result);
     }
 }

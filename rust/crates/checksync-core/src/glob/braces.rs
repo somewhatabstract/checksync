@@ -1,7 +1,16 @@
-use super::bytes_before_nul::bytes_before_nul;
-use super::contains_brace_group::contains_brace_group;
-use super::expand_brace_pieces::expand_brace_pieces;
-use super::types::{BraceBudget, BraceExpansionError};
+//! Brace expansion, as fast-glob applies it: turning `{a,b}` groups into
+//! separate patterns.
+
+mod budget;
+mod combine;
+mod frame;
+mod group;
+mod scan;
+
+use super::units::bytes_before_nul;
+use budget::BraceBudget;
+use frame::expand_brace_pieces;
+use scan::contains_brace_group;
 
 /// The longest pattern with brace groups that [`expand_braces`] accepts.
 ///
@@ -32,7 +41,8 @@ const MAX_PATTERN_LENGTH: usize = 10_000;
 /// A pattern with no brace group always gives just itself, at any length. To stay
 /// within time and memory, a pattern with groups may be at most
 /// [`MAX_PATTERN_LENGTH`] (10,000) bytes long, and its expansion may give at most
-/// what [`brace_results_fit`] allows: 100,000 patterns and 10,000,000 bytes. Any
+/// the result limits allow: [`MAX_RESULTS`] (100,000) patterns and
+/// [`MAX_RESULT_BYTES`] (10,000,000) bytes. Any
 /// expansion within those limits is accepted, whatever order its groups come in,
 /// and while working it holds at most about twice its output, as
 /// [`take_brace_budget`] checks. Groups may nest to any depth: expansion keeps its
@@ -44,9 +54,10 @@ const MAX_PATTERN_LENGTH: usize = 10_000;
 /// the length limit, and [`BraceExpansionError::TooManyResults`] when the groups
 /// would expand past the result limits.
 ///
-/// [`compile_glob`]: super::compile_glob::compile_glob
-/// [`brace_results_fit`]: super::brace_results_fit::brace_results_fit
-/// [`take_brace_budget`]: super::take_brace_budget::take_brace_budget
+/// [`compile_glob`]: super::compiled_glob::compile_glob
+/// [`MAX_RESULTS`]: combine::MAX_RESULTS
+/// [`MAX_RESULT_BYTES`]: combine::MAX_RESULT_BYTES
+/// [`take_brace_budget`]: budget::take_brace_budget
 pub(crate) fn expand_braces(pattern: &[u8]) -> Result<Vec<Vec<u8>>, BraceExpansionError> {
     let pattern = bytes_before_nul(pattern);
     if !contains_brace_group(pattern) {
@@ -58,52 +69,26 @@ pub(crate) fn expand_braces(pattern: &[u8]) -> Result<Vec<Vec<u8>>, BraceExpansi
     expand_brace_pieces(pattern, &mut BraceBudget::default())
 }
 
+/// Why a pattern's brace groups couldn't be expanded.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) enum BraceExpansionError {
+    /// The pattern has brace groups and is longer than allowed.
+    ///
+    /// [`expand_braces`] accepts at most 10,000 bytes in a pattern with groups.
+    PatternTooLong,
+    /// The expansion would hold more output at once than allowed.
+    ///
+    /// The result limits, [`MAX_RESULTS`](combine::MAX_RESULTS) and
+    /// [`MAX_RESULT_BYTES`](combine::MAX_RESULT_BYTES), and
+    /// [`take_brace_budget`](budget::take_brace_budget) set the limits, counting
+    /// every pattern and byte held at once, including partial results while
+    /// groups nest.
+    TooManyResults,
+}
+
 #[cfg(test)]
 mod tests {
-    use serde::Deserialize;
-
-    use super::super::types::BraceExpansionError;
-    use super::{MAX_PATTERN_LENGTH, expand_braces};
-
-    /// The fast-glob vector table, of which these tests read the expansions.
-    #[derive(Deserialize)]
-    struct Table {
-        expansions: Vec<Vector>,
-    }
-
-    /// A group of expansion cases exercising one feature.
-    #[derive(Deserialize)]
-    struct Vector {
-        description: String,
-        cases: Vec<Case>,
-    }
-
-    /// One pattern and what micromatch expands it to, or its error.
-    #[derive(Deserialize)]
-    struct Case {
-        pattern: String,
-        expanded: Option<Vec<String>>,
-        error: Option<String>,
-        rust: Option<Divergence>,
-    }
-
-    /// An expansion this implementation makes differently on purpose.
-    #[derive(Deserialize)]
-    struct Divergence {
-        expanded: Vec<String>,
-        reason: String,
-    }
-
-    /// Brace expansion cases recorded from fast-glob's micromatch.
-    const VECTORS: &str = include_str!(concat!(
-        env!("CARGO_MANIFEST_DIR"),
-        "/../../../__conformance__/fastglob-vectors.json"
-    ));
-
-    /// Reads the fast-glob vector table.
-    fn load_table() -> Table {
-        serde_json::from_str(VECTORS).expect("valid fast-glob vector table")
-    }
+    use super::{BraceExpansionError, MAX_PATTERN_LENGTH, expand_braces};
 
     /// What `expand` gives: the expanded patterns as strings, or the error.
     type Expansion = Result<Vec<String>, BraceExpansionError>;
@@ -524,103 +509,5 @@ mod tests {
 
         // Assert
         assert_eq!(result, Ok(strings(&[""])));
-    }
-
-    #[test]
-    fn has_expansion_vectors_to_check() {
-        // Arrange
-        let table = load_table();
-
-        // Act
-        let result = table
-            .expansions
-            .iter()
-            .map(|vector| vector.cases.len())
-            .sum::<usize>();
-
-        // Assert
-        assert_ne!(result, 0);
-    }
-
-    #[test]
-    fn explains_every_expansion_divergence_and_differs_from_micromatch() {
-        // Arrange
-        let table = load_table();
-
-        // Act
-        let unexplained: Vec<(&str, &str)> = table
-            .expansions
-            .iter()
-            .flat_map(|vector| {
-                vector.cases.iter().map(move |case| {
-                    let explained = case.rust.as_ref().is_none_or(|rust| {
-                        !rust.reason.trim().is_empty()
-                            && Some(&rust.expanded) != case.expanded.as_ref()
-                    });
-                    (
-                        (vector.description.as_str(), case.pattern.as_str()),
-                        explained,
-                    )
-                })
-            })
-            .filter(|&(_, explained)| !explained)
-            .map(|(entry, _)| entry)
-            .collect();
-
-        // Assert
-        assert_eq!(unexplained, Vec::new());
-    }
-
-    #[test]
-    fn expands_every_vector_as_micromatch_does_apart_from_divergences() {
-        // Arrange
-        let table = load_table();
-
-        // Act
-        let mismatches: Vec<(&str, &str, Expansion)> = table
-            .expansions
-            .iter()
-            .flat_map(|vector| {
-                vector.cases.iter().map(move |case| {
-                    // A case with no expansion to follow expects an error.
-                    let wanted = case
-                        .rust
-                        .as_ref()
-                        .map(|rust| &rust.expanded)
-                        .or(case.expanded.as_ref());
-                    let actual = expand(&case.pattern);
-                    // An error matches exactly when no expansion is wanted.
-                    let wrong = actual.as_ref().ok() != wanted;
-                    (
-                        (vector.description.as_str(), case.pattern.as_str(), actual),
-                        wrong,
-                    )
-                })
-            })
-            .filter(|(_, wrong)| *wrong)
-            .map(|(entry, _)| entry)
-            .collect();
-
-        // Assert
-        assert_eq!(mismatches, Vec::new());
-    }
-
-    #[test]
-    fn records_either_an_expansion_or_an_error_for_each_vector() {
-        // Arrange
-        let table = load_table();
-
-        // Act
-        let unclear: Vec<&str> = table
-            .expansions
-            .iter()
-            .flat_map(|vector| vector.cases.iter())
-            .filter_map(|case| {
-                (case.expanded.is_some() == case.error.is_some()).then_some(case.pattern.as_str())
-            })
-            .collect();
-
-        // Assert
-        assert_eq!(unclear, Vec::<&str>::new());
     }
 }

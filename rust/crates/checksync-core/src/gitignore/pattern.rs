@@ -1,8 +1,36 @@
-use super::GLOB_OPTIONS;
-use super::bytes_before_nul::bytes_before_nul;
-use super::trim_trailing_spaces::trim_trailing_spaces;
-use super::types::GitignorePattern;
-use crate::glob::compile_glob;
+//! Ignore-file patterns: the glob options they use and reading them from lines.
+
+use crate::glob::{CompiledGlob, GlobOptions, HiddenNames, compile_glob};
+
+/// One pattern read from a `.gitignore`-style file.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(super) struct GitignorePattern {
+    /// The compiled glob to match.
+    ///
+    /// It's compiled from the pattern without any leading `!`, leading `/` or
+    /// trailing `/`.
+    pub(super) glob: CompiledGlob,
+    /// Whether the pattern started with `!`, so a match unignores.
+    pub(super) negated: bool,
+    /// Whether the pattern ended with `/`, so it matches only folders.
+    pub(super) folders_only: bool,
+    /// Whether the pattern is anchored to the ignore file's folder.
+    ///
+    /// It is when it held a `/` before any trailing one, and it then matches the whole
+    /// path from the folder rather than just the last name in it.
+    pub(super) anchored: bool,
+}
+
+/// The options every ignore-file glob is matched with.
+///
+/// `/` separates folders, ASCII case is always ignored, and wildcards match names
+/// starting with `.`, as in git.
+pub(super) const GLOB_OPTIONS: GlobOptions = GlobOptions {
+    pathname: true,
+    casefold: true,
+    hidden: HiddenNames::MatchAll,
+    unicode: false,
+};
 
 /// Reads one line of a `.gitignore`-style file, without its line feed, as a pattern.
 ///
@@ -42,11 +70,42 @@ pub(super) fn parse_line(line: &[u8]) -> Option<GitignorePattern> {
     })
 }
 
+/// Returns a line of an ignore file without its trailing unescaped spaces.
+///
+/// The line has no line ending. A space escaped with `\` is kept, along with
+/// everything before it. Only spaces are dropped, not tabs.
+#[must_use]
+fn trim_trailing_spaces(line: &[u8]) -> &[u8] {
+    let mut kept = 0;
+    let mut index = 0;
+    while index < line.len() {
+        match line[index] {
+            b'\\' if index + 1 < line.len() => index += 2,
+            b' ' => {
+                index += 1;
+                continue;
+            }
+            _ => index += 1,
+        }
+        kept = index;
+    }
+    &line[..kept]
+}
+
+/// Returns the bytes before the first NUL, as a C string would end there.
+///
+/// Bytes with no NUL are returned whole.
+#[must_use]
+fn bytes_before_nul(bytes: &[u8]) -> &[u8] {
+    bytes
+        .iter()
+        .position(|&byte| byte == 0)
+        .map_or(bytes, |end| &bytes[..end])
+}
+
 #[cfg(test)]
 mod tests {
-    use super::super::GLOB_OPTIONS;
-    use super::super::types::GitignorePattern;
-    use super::parse_line;
+    use super::{GLOB_OPTIONS, GitignorePattern, bytes_before_nul, parse_line};
     use crate::glob::compile_glob;
 
     fn pattern(glob: &[u8], negated: bool, folders_only: bool, anchored: bool) -> GitignorePattern {
@@ -308,5 +367,106 @@ mod tests {
 
         // Assert
         assert_eq!(result, Some(pattern(b"doc/frotz", false, true, true)));
+    }
+
+    #[test]
+    fn cuts_at_the_first_nul() {
+        // Arrange
+        let bytes = b"ab\0c\0d";
+
+        // Act
+        let result = bytes_before_nul(bytes);
+
+        // Assert
+        assert_eq!(result, b"ab");
+    }
+
+    #[test]
+    fn keeps_bytes_without_a_nul() {
+        // Arrange
+        let bytes = b"abc";
+
+        // Act
+        let result = bytes_before_nul(bytes);
+
+        // Assert
+        assert_eq!(result, b"abc");
+    }
+}
+
+#[cfg(test)]
+mod trim_trailing_spaces_tests {
+    use super::trim_trailing_spaces;
+
+    #[test]
+    fn drops_trailing_spaces() {
+        // Arrange
+        let line = b"a.js   ";
+
+        // Act
+        let result = trim_trailing_spaces(line);
+
+        // Assert
+        assert_eq!(result, b"a.js");
+    }
+
+    #[test]
+    fn keeps_spaces_before_other_bytes() {
+        // Arrange
+        let line = b" a b";
+
+        // Act
+        let result = trim_trailing_spaces(line);
+
+        // Assert
+        assert_eq!(result, b" a b");
+    }
+
+    #[test]
+    fn keeps_an_escaped_trailing_space() {
+        // Arrange
+        let line = b"a\\  ";
+
+        // Act
+        let result = trim_trailing_spaces(line);
+
+        // Assert
+        assert_eq!(result, b"a\\ ");
+    }
+
+    #[test]
+    fn drops_spaces_after_an_escaped_backslash() {
+        // Arrange
+        let line = b"a\\\\  ";
+
+        // Act
+        let result = trim_trailing_spaces(line);
+
+        // Assert
+        assert_eq!(result, b"a\\\\");
+    }
+
+    #[test]
+    fn keeps_trailing_tabs() {
+        // Arrange
+        let line = b"a\t";
+
+        // Act
+        let result = trim_trailing_spaces(line);
+
+        // Assert
+        assert_eq!(result, b"a\t");
+    }
+
+    #[test]
+    fn keeps_a_backslash_at_the_end() {
+        // Arrange
+        let line = b"a\\";
+
+        // Act
+        let result = trim_trailing_spaces(line);
+
+        // Assert
+        assert_eq!(result, b"a\\");
     }
 }

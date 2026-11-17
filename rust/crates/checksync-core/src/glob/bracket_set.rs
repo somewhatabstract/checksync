@@ -1,5 +1,15 @@
-use super::read_bracket_item::read_bracket_item;
-use super::types::BracketSet;
+//! Bracket sets such as `[!a-z]`: parsing them and matching units against them.
+
+use super::bracket_item::{BracketItem, bracket_item_matches, read_bracket_item};
+
+/// A parsed bracket expression, such as `[!a-z]`.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(super) struct BracketSet {
+    /// Whether the set was negated with a leading `!` or `^`.
+    pub(super) negated: bool,
+    /// The members of the set, in the order they were written.
+    pub(super) items: Vec<BracketItem>,
+}
 
 /// Parses the bracket expression, such as `[!a-z]`, whose `[` is at `index`.
 ///
@@ -32,10 +42,30 @@ pub(super) fn parse_bracket_set(
     }
 }
 
+/// Checks whether a unit of the text matches a bracket set.
+///
+/// The unit is given by its `code`: a byte, or a code point in unicode mode. It
+/// matches a plain set when it matches a member, and a negated set when it
+/// matches none. When `casefold` is set, an ASCII letter is lowercased before
+/// it's compared with the members; [`bracket_item_matches`] describes what that
+/// means for each kind of member.
+#[must_use]
+pub(super) fn bracket_set_contains(set: &BracketSet, code: u32, casefold: bool) -> bool {
+    let code = match u8::try_from(code) {
+        Ok(byte) if casefold => u32::from(byte.to_ascii_lowercase()),
+        _ => code,
+    };
+    let found = set
+        .items
+        .iter()
+        .any(|&item| bracket_item_matches(item, code, casefold));
+    found != set.negated
+}
+
 #[cfg(test)]
 mod tests {
-    use super::super::types::{BracketItem, BracketSet};
-    use super::parse_bracket_set;
+    use super::super::bracket_item::BracketItem;
+    use super::{BracketSet, bracket_set_contains, parse_bracket_set};
 
     #[test]
     fn parses_the_members_of_a_set() {
@@ -167,5 +197,87 @@ mod tests {
 
         // Assert
         assert_eq!(result, None);
+    }
+
+    fn set(negated: bool) -> BracketSet {
+        BracketSet {
+            negated,
+            items: vec![
+                BracketItem::Char(u32::from(b'a')),
+                BracketItem::Char(u32::from(b'b')),
+            ],
+        }
+    }
+
+    #[test]
+    fn matches_a_member() {
+        // Arrange
+        let set = set(false);
+
+        // Act
+        let result = bracket_set_contains(&set, u32::from(b'b'), false);
+
+        // Assert
+        assert!(result);
+    }
+
+    #[test]
+    fn does_not_match_a_non_member() {
+        // Arrange
+        let set = set(false);
+
+        // Act
+        let result = bracket_set_contains(&set, u32::from(b'c'), false);
+
+        // Assert
+        assert!(!result);
+    }
+
+    #[test]
+    fn does_not_match_a_member_of_a_negated_set() {
+        // Arrange
+        let set = set(true);
+
+        // Act
+        let result = bracket_set_contains(&set, u32::from(b'a'), false);
+
+        // Assert
+        assert!(!result);
+    }
+
+    #[test]
+    fn matches_a_non_member_of_a_negated_set() {
+        // Arrange
+        let set = set(true);
+
+        // Act
+        let result = bracket_set_contains(&set, u32::from(b'c'), false);
+
+        // Assert
+        assert!(result);
+    }
+
+    #[test]
+    fn lowercases_the_byte_when_folding_case() {
+        // Arrange
+        let set = set(false);
+
+        // Act
+        let result = bracket_set_contains(&set, u32::from(b'A'), true);
+
+        // Assert
+        assert!(result);
+    }
+
+    #[test]
+    fn keeps_the_case_of_the_byte_without_folding_case() {
+        // Arrange
+        let set = set(false);
+
+        // Act
+        let result = bracket_set_contains(&set, u32::from(b'A'), false);
+
+        // Assert
+        assert!(!result);
     }
 }

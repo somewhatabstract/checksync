@@ -5,28 +5,8 @@
 //!
 //! [`glob`]: crate::glob
 
-mod bytes_before_nul;
-mod decide_path;
+mod decide;
 mod ignore_file;
-mod last_match;
-mod parse;
-mod parse_line;
-mod pattern_matches;
-mod relative_path;
-mod trim_trailing_spaces;
-mod types;
+mod pattern;
 
 pub use ignore_file::IgnoreFile;
-
-use crate::glob::{GlobOptions, HiddenNames};
-
-/// The options every ignore-file glob is matched with.
-///
-/// `/` separates folders, ASCII case is always ignored, and wildcards match names
-/// starting with `.`, as in git.
-const GLOB_OPTIONS: GlobOptions = GlobOptions {
-    pathname: true,
-    casefold: true,
-    hidden: HiddenNames::MatchAll,
-    unicode: false,
-};

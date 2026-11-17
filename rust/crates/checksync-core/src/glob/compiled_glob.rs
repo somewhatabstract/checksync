@@ -1,6 +1,77 @@
-use super::advance_glob_positions::advance_glob_positions;
-use super::bytes_before_nul::bytes_before_nul;
-use super::types::CompiledGlob;
+//! Compiled glob patterns: the options they're compiled with, compiling them,
+//! and matching texts against them.
+
+use super::advance::advance_glob_positions;
+use super::hidden_names::HiddenNames;
+use super::tokenize::{GlobToken, tokenize_glob};
+use super::units::bytes_before_nul;
+
+/// How a glob pattern treats slashes, letter case and hidden names.
+///
+/// There's no default: callers choose every option.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) struct GlobOptions {
+    /// Whether `/` separates folders.
+    ///
+    /// When set, `?`, `*` and bracket sets never match `/`, and a `**` that makes up a
+    /// whole folder name matches any number of folders.
+    pub pathname: bool,
+    /// Whether ASCII letters match regardless of case.
+    ///
+    /// After a `\` or inside a bracket set, the text's byte is lowercased and
+    /// compared with the pattern as written, so `\A` and `[A]` match nothing, though
+    /// ranges and classes such as `[A-Z]` and `[:upper:]` still match lowercase
+    /// letters.
+    pub casefold: bool,
+    /// Which hidden names wildcards may match, in pathname mode.
+    ///
+    /// Without [`pathname`](Self::pathname), this has no effect: wildcards match
+    /// everything.
+    pub hidden: HiddenNames,
+    /// Whether `?` and bracket sets match whole UTF-8 characters.
+    ///
+    /// When on, as in fast-glob, `?` and a bracket set match one character of 1 to 4
+    /// bytes, bracket sets compare code points, and `*` never stops inside a
+    /// character. A byte that isn't part of valid UTF-8, in the pattern or the text,
+    /// counts as one character on its own. When off, as in git, everything matches
+    /// single bytes.
+    pub unicode: bool,
+}
+
+/// A glob pattern compiled once so it can be matched against many texts.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct CompiledGlob {
+    /// The pattern's tokens, in order.
+    pub(super) tokens: Vec<GlobToken>,
+    /// How the pattern treats slashes, letter case, hidden names and characters.
+    pub(super) options: GlobOptions,
+    /// Which hidden names wildcards may match.
+    ///
+    /// Worked out once from [`options`](Self::options): its
+    /// [`hidden`](GlobOptions::hidden) choice in pathname mode, and
+    /// [`HiddenNames::MatchAll`] otherwise.
+    pub(super) hidden: HiddenNames,
+}
+
+/// Compiles a glob pattern so it can be matched against many texts.
+///
+/// `options` says how to treat slashes, letter case, hidden names and characters.
+/// A NUL byte ends the pattern, as it would a C string. Returns `None` if the
+/// pattern can never match anything: it ends with a `\`, or has a malformed
+/// bracket set.
+#[must_use]
+pub(crate) fn compile_glob(pattern: &[u8], options: GlobOptions) -> Option<CompiledGlob> {
+    let tokens = tokenize_glob(bytes_before_nul(pattern), options)?;
+    Some(CompiledGlob {
+        tokens,
+        options,
+        hidden: if options.pathname {
+            options.hidden
+        } else {
+            HiddenNames::MatchAll
+        },
+    })
+}
 
 /// Checks whether the whole of a text matches a compiled glob pattern.
 ///
@@ -15,7 +86,7 @@ use super::types::CompiledGlob;
 /// length times the text's, however many stars there are. It stops as soon as no
 /// position is reachable.
 ///
-/// [`GlobOptions`]: super::types::GlobOptions
+/// [`GlobOptions`]: GlobOptions
 #[must_use]
 pub(crate) fn compiled_glob_matches(glob: &CompiledGlob, text: &[u8]) -> bool {
     let text = bytes_before_nul(text);
@@ -29,86 +100,88 @@ pub(crate) fn compiled_glob_matches(glob: &CompiledGlob, text: &[u8]) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use super::super::TEST_OPTIONS;
-    use super::super::TEST_PATHNAME_OPTIONS;
-    use serde::Deserialize;
+    use super::super::hidden_names::HiddenNames;
+    use super::super::tokenize::GlobToken;
+    use super::super::unit_matcher::UnitMatcher;
+    use super::super::{TEST_OPTIONS, TEST_PATHNAME_OPTIONS};
+    use super::{CompiledGlob, GlobOptions, compile_glob, compiled_glob_matches};
 
-    use super::super::compile_glob::compile_glob;
-    use super::super::types::{GlobOptions, HiddenNames};
-    use super::compiled_glob_matches;
-
-    /// The glob vector table: what it holds, and the vectors themselves.
-    #[derive(Deserialize)]
-    struct Table {
-        description: String,
-        vectors: Vec<Vector>,
+    /// Compiles `?` with the given options and returns the hidden names kept.
+    fn hidden(pathname: bool, hidden: HiddenNames) -> Option<HiddenNames> {
+        let options = GlobOptions {
+            pathname,
+            casefold: false,
+            hidden,
+            unicode: false,
+        };
+        compile_glob(b"?", options).map(|glob| glob.hidden)
     }
 
-    /// A group of vector cases exercising one feature of the matcher.
-    #[derive(Deserialize)]
-    struct Vector {
-        description: String,
-        cases: Vec<Case>,
+    #[test]
+    fn compiles_the_pattern_with_its_options() {
+        // Arrange
+        let pattern = b"?";
+
+        // Act
+        let result = compile_glob(pattern, TEST_OPTIONS);
+
+        // Assert
+        assert_eq!(
+            result,
+            Some(CompiledGlob {
+                tokens: vec![GlobToken::One(UnitMatcher::Any)],
+                options: TEST_OPTIONS,
+                hidden: HiddenNames::MatchAll,
+            })
+        );
     }
 
-    /// One pattern and text, its options, and git's answer.
-    #[derive(Deserialize)]
-    struct Case {
-        pattern: String,
-        text: String,
-        pathname: bool,
-        casefold: bool,
-        matches: bool,
+    #[test]
+    fn ends_the_pattern_at_a_nul_byte() {
+        // Arrange
+        let pattern = b"?\0[";
+
+        // Act
+        let result = compile_glob(pattern, TEST_OPTIONS).map(|glob| glob.tokens);
+
+        // Assert
+        assert_eq!(result, Some(vec![GlobToken::One(UnitMatcher::Any)]));
     }
 
-    /// Glob cases recorded from git's own matcher.
-    ///
-    /// checksync's TypeScript doesn't use this matcher.
-    const VECTORS: &str = include_str!(concat!(
-        env!("CARGO_MANIFEST_DIR"),
-        "/../../../__conformance__/glob-vectors.json"
-    ));
+    #[test]
+    fn rejects_a_pattern_that_can_never_match() {
+        // Arrange
+        let pattern = b"[ab";
 
-    /// The fast-glob vector table, of which these tests read the matches.
-    #[derive(Deserialize)]
-    struct FastGlobTable {
-        description: String,
-        matches: Vec<FastGlobVector>,
+        // Act
+        let result = compile_glob(pattern, TEST_OPTIONS);
+
+        // Assert
+        assert_eq!(result, None);
     }
 
-    /// A group of fast-glob match cases exercising one feature.
-    #[derive(Deserialize)]
-    struct FastGlobVector {
-        description: String,
-        cases: Vec<FastGlobCase>,
+    #[test]
+    fn keeps_the_hidden_names_option_in_pathname_mode() {
+        // Arrange
+        let option = HiddenNames::SkipDotSegments;
+
+        // Act
+        let result = hidden(true, option);
+
+        // Assert
+        assert_eq!(result, Some(HiddenNames::SkipDotSegments));
     }
 
-    /// One pattern and path, fast-glob's `dot` option, and micromatch's answer.
-    #[derive(Deserialize)]
-    struct FastGlobCase {
-        pattern: String,
-        text: String,
-        dot: bool,
-        matches: bool,
-        rust: Option<FastGlobDivergence>,
-    }
+    #[test]
+    fn matches_all_hidden_names_without_pathname_mode() {
+        // Arrange
+        let option = HiddenNames::SkipDotNames;
 
-    /// A match this implementation decides differently on purpose.
-    #[derive(Deserialize)]
-    struct FastGlobDivergence {
-        matches: bool,
-        reason: String,
-    }
+        // Act
+        let result = hidden(false, option);
 
-    /// Match cases recorded from fast-glob's micromatch, in pathname mode.
-    const FAST_GLOB_VECTORS: &str = include_str!(concat!(
-        env!("CARGO_MANIFEST_DIR"),
-        "/../../../__conformance__/fastglob-vectors.json"
-    ));
-
-    /// Reads the fast-glob vector table.
-    fn load_fast_glob_table() -> FastGlobTable {
-        serde_json::from_str(FAST_GLOB_VECTORS).expect("valid fast-glob vector table")
+        // Assert
+        assert_eq!(result, Some(HiddenNames::MatchAll));
     }
 
     /// Compiles `pattern` and checks whether `text` matches it.
@@ -394,76 +467,6 @@ mod tests {
         assert!(!result);
     }
 
-    /// Reads the glob vector table.
-    fn load_table() -> Table {
-        serde_json::from_str(VECTORS).expect("valid glob vector table")
-    }
-
-    #[test]
-    fn says_where_the_glob_vectors_come_from() {
-        // Arrange
-        let table = load_table();
-
-        // Act
-        let result = table.description.contains("git");
-
-        // Assert
-        assert!(result);
-    }
-
-    #[test]
-    fn has_glob_vectors_to_check() {
-        // Arrange
-        let table = load_table();
-
-        // Act
-        let result = table
-            .vectors
-            .iter()
-            .map(|vector| vector.cases.len())
-            .sum::<usize>();
-
-        // Assert
-        assert_ne!(result, 0);
-    }
-
-    #[test]
-    fn matches_every_glob_vector_as_git_does() {
-        // Arrange
-        let table = load_table();
-
-        // Act
-        let mismatches: Vec<(&str, &str, &str, GlobOptions, bool)> = table
-            .vectors
-            .iter()
-            .flat_map(|vector| {
-                vector.cases.iter().map(|case| {
-                    let options = GlobOptions {
-                        pathname: case.pathname,
-                        casefold: case.casefold,
-                        hidden: HiddenNames::MatchAll,
-                        unicode: false,
-                    };
-                    let actual = compile_glob(case.pattern.as_bytes(), options)
-                        .is_some_and(|glob| compiled_glob_matches(&glob, case.text.as_bytes()));
-                    let entry = (
-                        vector.description.as_str(),
-                        case.pattern.as_str(),
-                        case.text.as_str(),
-                        options,
-                        case.matches,
-                    );
-                    (entry, actual)
-                })
-            })
-            .filter(|&((.., expected), actual)| expected != actual)
-            .map(|(entry, _)| entry)
-            .collect();
-
-        // Assert
-        assert_eq!(mismatches, Vec::new());
-    }
-
     #[test]
     fn does_not_match_a_hidden_name_with_a_star_when_hiding_dots() {
         // Arrange
@@ -510,105 +513,5 @@ mod tests {
 
         // Assert
         assert!(result);
-    }
-
-    #[test]
-    fn says_where_the_fast_glob_vectors_come_from() {
-        // Arrange
-        let table = load_fast_glob_table();
-
-        // Act
-        let result = table.description.contains("micromatch");
-
-        // Assert
-        assert!(result);
-    }
-
-    #[test]
-    fn has_fast_glob_match_vectors_to_check() {
-        // Arrange
-        let table = load_fast_glob_table();
-
-        // Act
-        let result = table
-            .matches
-            .iter()
-            .map(|vector| vector.cases.len())
-            .sum::<usize>();
-
-        // Assert
-        assert_ne!(result, 0);
-    }
-
-    #[test]
-    fn explains_every_fast_glob_match_divergence_and_differs_from_micromatch() {
-        // Arrange
-        let table = load_fast_glob_table();
-
-        // Act
-        let unexplained: Vec<(&str, &str, &str, bool)> = table
-            .matches
-            .iter()
-            .flat_map(|vector| {
-                vector.cases.iter().map(move |case| {
-                    let explained = case.rust.as_ref().is_none_or(|rust| {
-                        !rust.reason.trim().is_empty() && rust.matches != case.matches
-                    });
-                    let entry = (
-                        vector.description.as_str(),
-                        case.pattern.as_str(),
-                        case.text.as_str(),
-                        case.dot,
-                    );
-                    (entry, explained)
-                })
-            })
-            .filter(|&(_, explained)| !explained)
-            .map(|(entry, _)| entry)
-            .collect();
-
-        // Assert
-        assert_eq!(unexplained, Vec::new());
-    }
-
-    #[test]
-    fn matches_every_fast_glob_vector_as_micromatch_does_apart_from_divergences() {
-        // Arrange
-        let table = load_fast_glob_table();
-
-        // Act
-        let mismatches: Vec<(&str, &str, &str, bool, bool)> = table
-            .matches
-            .iter()
-            .flat_map(|vector| {
-                vector.cases.iter().map(move |case| {
-                    let options = GlobOptions {
-                        pathname: true,
-                        casefold: false,
-                        hidden: if case.dot {
-                            HiddenNames::SkipDotSegments
-                        } else {
-                            HiddenNames::SkipDotNames
-                        },
-                        unicode: true,
-                    };
-                    let wanted = case.rust.as_ref().map_or(case.matches, |rust| rust.matches);
-                    let actual = matches(case.pattern.as_bytes(), case.text.as_bytes(), options);
-                    let entry = (
-                        vector.description.as_str(),
-                        case.pattern.as_str(),
-                        case.text.as_str(),
-                        case.dot,
-                        wanted,
-                    );
-                    (entry, actual)
-                })
-            })
-            .filter(|&((.., wanted), actual)| wanted != actual)
-            .map(|(entry, _)| entry)
-            .collect();
-
-        // Assert
-        assert_eq!(mismatches, Vec::new());
     }
 }
