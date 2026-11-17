@@ -4,7 +4,7 @@ use crate::glob::{BraceExpansionError, expand_braces};
 
 use super::GetFilesError;
 use super::glob_base::glob_base;
-use super::tidy_pattern::{collapse_slashes, strip_leading_dot_slash};
+use super::tidy_pattern::tidy_pattern;
 
 /// An include pattern and the folder to start walking from to find its files.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -58,7 +58,7 @@ pub(super) fn plan_glob_tasks(
             continue;
         }
         for pattern in expand_pattern_braces(include)? {
-            let pattern = tidy(&pattern);
+            let pattern = tidy_pattern(&pattern);
             plan.tasks.push(GlobTask {
                 base: glob_base(&pattern),
                 pattern,
@@ -72,15 +72,10 @@ pub(super) fn plan_glob_tasks(
     );
     for source in exclude_sources {
         for pattern in expand_pattern_braces(source)? {
-            plan.excludes.push(tidy(&pattern));
+            plan.excludes.push(tidy_pattern(&pattern));
         }
     }
     Ok(plan)
-}
-
-/// Collapses a pattern's repeated slashes and drops its leading `./`s.
-fn tidy(pattern: &str) -> String {
-    strip_leading_dot_slash(&collapse_slashes(pattern)).to_owned()
 }
 
 /// Expands a pattern's brace groups into the patterns they stand for.

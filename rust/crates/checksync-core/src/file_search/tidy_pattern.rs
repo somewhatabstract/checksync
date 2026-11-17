@@ -1,10 +1,16 @@
 //! Tidying patterns into the form paths have.
 
+/// Collapses a pattern's repeated slashes and drops its leading `./`s.
+#[must_use]
+pub(super) fn tidy_pattern(pattern: &str) -> String {
+    strip_leading_dot_slash(&collapse_slashes(pattern)).to_owned()
+}
+
 /// Turns runs of `/` inside a pattern into one, as paths have.
 ///
 /// A leading `//`, which names a network share on Windows, is kept.
 #[must_use]
-pub(super) fn collapse_slashes(pattern: &str) -> String {
+fn collapse_slashes(pattern: &str) -> String {
     let (lead, rest) = if pattern.starts_with("//") {
         pattern.split_at(2)
     } else {
@@ -24,7 +30,7 @@ pub(super) fn collapse_slashes(pattern: &str) -> String {
 /// A pattern relative to the working folder may start with `./`, or several,
 /// which name the working folder itself and so change nothing.
 #[must_use]
-pub(super) fn strip_leading_dot_slash(pattern: &str) -> &str {
+fn strip_leading_dot_slash(pattern: &str) -> &str {
     let mut rest = pattern;
     while let Some(after) = rest.strip_prefix("./") {
         rest = after;
@@ -34,7 +40,19 @@ pub(super) fn strip_leading_dot_slash(pattern: &str) -> &str {
 
 #[cfg(test)]
 mod tests {
-    use super::{collapse_slashes, strip_leading_dot_slash};
+    use super::{collapse_slashes, strip_leading_dot_slash, tidy_pattern};
+
+    #[test]
+    fn collapses_slashes_before_dropping_a_leading_dot_slash() {
+        // Arrange
+        let pattern = ".//.//src//*.js";
+
+        // Act
+        let result = tidy_pattern(pattern);
+
+        // Assert
+        assert_eq!(result, "src/*.js");
+    }
 
     #[test]
     fn collapses_repeated_slashes() {
