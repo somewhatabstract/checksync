@@ -1,17 +1,9 @@
 use std::path::MAIN_SEPARATOR;
 
-/// Replace `/` with the platform's path separator.
+/// Replaces `/` with the platform's path separator.
 ///
 /// On Windows this turns `/` into `\`; elsewhere the separator is already
 /// `/`, so the text is unchanged.
-///
-/// # Arguments
-///
-/// * `path` - The path to convert.
-///
-/// # Returns
-///
-/// The path with the platform's separators.
 #[must_use]
 pub fn os_separators(path: &str) -> String {
     path.replace('/', MAIN_SEPARATOR.encode_utf8(&mut [0; 4]))

@@ -1,16 +1,10 @@
 use crate::types::{ErrorCode, ErrorDetails, ErrorLocation, FixAction};
 
-/// Create the error for a marker that names the same target twice.
+/// Creates the error for a marker that names the same target twice.
 ///
-/// # Arguments
-///
-/// * `marker_id` - The id of the marker the error belongs to.
-/// * `line` - The 1-based line of the tag.
-/// * `declaration` - The whole line of the repeated sync-start tag, which the fix deletes.
-///
-/// # Returns
-///
-/// The error details.
+/// The error is located at `line`, the 1-based line of the repeated
+/// sync-start tag, and its fix deletes that line, whose whole text is
+/// `declaration`.
 #[must_use]
 pub fn duplicate_target(marker_id: &str, line: usize, declaration: &str) -> ErrorDetails {
     ErrorDetails {

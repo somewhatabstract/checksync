@@ -1,4 +1,4 @@
-//! Check `IgnoreFile` against the ignore-file vectors shared with TypeScript.
+//! Checks [`IgnoreFile`] against the ignore-file vectors shared with TypeScript.
 //!
 //! Both implementations apply ignore files the same way, apart from the
 //! deliberate differences recorded in the vectors' `rust` fields.
@@ -24,7 +24,7 @@ struct RustDivergence {
 }
 
 impl ExpectedPath {
-    /// The decision the Rust implementation should make.
+    /// Returns the decision the Rust implementation should make.
     fn rust_result(&self) -> &str {
         self.rust
             .as_ref()
@@ -55,7 +55,7 @@ fn load_vectors() -> Vec<Vector> {
     vectors
 }
 
-/// Write a decision in the vector table's terms.
+/// Writes a decision in the vector table's terms.
 fn decision_name(decision: IgnoreDecision) -> &'static str {
     match decision {
         IgnoreDecision::Ignored => "ignored",

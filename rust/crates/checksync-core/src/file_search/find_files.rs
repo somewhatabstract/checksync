@@ -6,27 +6,20 @@ use super::sort_paths_like_javascript::sort_paths_like_javascript;
 use super::types::{GetFilesError, GlobPlan};
 use super::walk_glob_folder::walk_glob_folder;
 
-/// Find the files a search plan matches.
+/// Finds the files a search plan matches.
 ///
 /// Tasks that start from the same folder share one walk. Every walk uses the
 /// same exclude patterns, which, as in fast-glob, match names starting with
 /// `.` too. An exclude pattern removes a file whose path it matches, and
 /// prunes a folder whose path it matches, with everything in it, wherever
 /// that folder is on the way to the file. The results are absolute paths,
-/// each listed once, sorted as JavaScript sorts strings.
-///
-/// # Arguments
-///
-/// * `plan` - The tasks to walk and the patterns to exclude.
-/// * `cwd` - The absolute working folder.
-///
-/// # Returns
-///
-/// The matching files.
+/// each listed once, sorted as JavaScript sorts strings. `cwd` is the
+/// absolute working folder.
 ///
 /// # Errors
 ///
-/// Any error reading a folder, other than its not existing.
+/// Returns [`GetFilesError::Io`] for any error reading a folder, other than
+/// its not existing.
 pub(super) fn find_files(plan: &GlobPlan, cwd: &Path) -> Result<Vec<PathBuf>, GetFilesError> {
     let excludes = compile_exclude_globs(&plan.excludes, cwd);
     let mut patterns_by_base: BTreeMap<&str, Vec<&str>> = BTreeMap::new();

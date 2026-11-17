@@ -3,8 +3,9 @@
 //! This follows checksync's JavaScript implementation, which finds files with
 //! fast-glob: include patterns are planned into folders to walk, the folders
 //! are walked without following links, and files are filtered by exclude
-//! patterns and `.gitignore`-style files. Matching uses the crate's `glob`
-//! module, and ignore files use its `gitignore` module.
+//! patterns and `.gitignore`-style files. Matching uses the crate's
+//! [`glob`](crate::glob) module, and ignore files use its
+//! [`gitignore`](crate::gitignore) module.
 
 mod absolute_glob_text;
 mod bracket_may_match_dot;
@@ -37,9 +38,10 @@ use crate::glob::{GlobOptions, HiddenNames};
 pub use get_files::get_files;
 pub use types::GetFilesError;
 
-/// How include patterns match paths: by folder, case-sensitively, by whole
-/// characters, and without wildcards matching names that start with `.`, or
-/// running over `.` or `..`, as fast-glob does by default.
+/// How include patterns match paths, as fast-glob does by default.
+///
+/// They match by folder, case-sensitively, by whole characters, and without
+/// wildcards matching names that start with `.`, or running over `.` or `..`.
 const INCLUDE_GLOB_OPTIONS: GlobOptions = GlobOptions {
     pathname: true,
     casefold: false,
@@ -47,9 +49,10 @@ const INCLUDE_GLOB_OPTIONS: GlobOptions = GlobOptions {
     unicode: true,
 };
 
-/// How exclude patterns match paths: as include patterns do, except that
-/// wildcards match names that start with `.` too, as fast-glob's do. They
-/// still don't run over `.` or `..`.
+/// How exclude patterns match paths, as fast-glob's do.
+///
+/// They match as include patterns do, except that wildcards match names that
+/// start with `.` too. They still don't run over `.` or `..`.
 const EXCLUDE_GLOB_OPTIONS: GlobOptions = GlobOptions {
     pathname: true,
     casefold: false,

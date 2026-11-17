@@ -4,27 +4,21 @@ use super::glob_base::glob_base;
 use super::strip_leading_dot_slash::strip_leading_dot_slash;
 use super::types::{GetFilesError, GlobPlan, GlobTask};
 
-/// Plan a search: which folders to walk, for which patterns, excluding what.
+/// Plans a search: which folders to walk, for which patterns, excluding what.
 ///
-/// Each include pattern's brace groups are expanded, and each result becomes
-/// a task that walks the folder before its first glob character. An include
-/// pattern starting with `!` excludes instead, and an exclude pattern
-/// starting with `!` excludes all the same, as in fast-glob. Every pattern
-/// has its repeated slashes collapsed and leading `./`s dropped.
-///
-/// # Arguments
-///
-/// * `includes` - The include patterns, relative to the working folder.
-/// * `excludes` - The exclude patterns, relative to the working folder or absolute.
-///
-/// # Returns
-///
-/// The tasks and the exclude patterns.
+/// Include patterns are relative to the working folder, and exclude patterns
+/// are relative to it or absolute. Each include pattern's brace groups are
+/// expanded, and each result becomes a task that walks the folder before its
+/// first glob character. An include pattern starting with `!` excludes
+/// instead, and an exclude pattern starting with `!` excludes all the same,
+/// as in fast-glob. Every pattern has its repeated slashes collapsed and
+/// leading `./`s dropped.
 ///
 /// # Errors
 ///
-/// A pattern whose braces can't be expanded, because it's too long or
-/// expands to too many patterns.
+/// Returns [`GetFilesError::PatternTooLong`] for a pattern too long to expand
+/// its braces, and [`GetFilesError::TooManyPatterns`] for one whose braces
+/// expand to too many patterns.
 pub(super) fn plan_glob_tasks(
     includes: &[String],
     excludes: &[String],
@@ -60,7 +54,7 @@ pub(super) fn plan_glob_tasks(
     Ok(plan)
 }
 
-/// Collapse a pattern's repeated slashes and drop its leading `./`s.
+/// Collapses a pattern's repeated slashes and drops its leading `./`s.
 fn tidy(pattern: &str) -> String {
     strip_leading_dot_slash(&collapse_slashes(pattern)).to_owned()
 }

@@ -1,17 +1,9 @@
 use crate::is_js_whitespace::is_js_whitespace;
 
-/// Remove leading and trailing whitespace the way JavaScript's `trim()` does.
+/// Removes leading and trailing whitespace the way JavaScript's `trim()` does.
 ///
 /// Unlike [`str::trim`], this removes a byte order mark (U+FEFF) and keeps
 /// NEL (U+0085). See [`is_js_whitespace`].
-///
-/// # Arguments
-///
-/// * `text` - The text to trim.
-///
-/// # Returns
-///
-/// `text` without its leading and trailing whitespace.
 #[must_use]
 pub fn js_trim(text: &str) -> &str {
     text.trim_matches(is_js_whitespace)

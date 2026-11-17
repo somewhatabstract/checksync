@@ -1,17 +1,9 @@
-/// Decode a file's bytes as UTF-8 the way the original JavaScript does.
+/// Decodes a file's bytes as UTF-8 the way the original JavaScript does.
 ///
 /// Node.js reads files through `readline`, which decodes them as UTF-8:
 /// each maximal invalid subpart becomes one U+FFFD, the same as
 /// [`String::from_utf8_lossy`], except that an incomplete sequence at the very
 /// end of the input is dropped rather than replaced.
-///
-/// # Arguments
-///
-/// * `bytes` - The file's contents.
-///
-/// # Returns
-///
-/// The decoded text.
 #[must_use]
 pub fn decode_utf8(bytes: &[u8]) -> String {
     let mut text = String::with_capacity(bytes.len());

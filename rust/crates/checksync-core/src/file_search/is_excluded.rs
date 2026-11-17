@@ -2,21 +2,13 @@ use super::absolute_glob_text::absolute_glob_text;
 use super::matches_pattern_set::matches_pattern_set;
 use super::types::{ExcludeGlobs, ExcludePatterns};
 
-/// Check whether an exclude pattern removes a file or prunes a folder.
+/// Checks whether an exclude pattern removes a file or prunes a folder.
 ///
-/// Relative patterns are matched against the path's text, and absolute ones
-/// against its absolute path. A pattern ending in `/**` also prunes the
-/// folder before it, so `node_modules/**` prunes `node_modules`.
-///
-/// # Arguments
-///
-/// * `excludes` - The compiled exclude patterns.
-/// * `text` - The path's text, relative to the working folder or absolute.
-/// * `folder` - Whether the path is a folder.
-///
-/// # Returns
-///
-/// Whether the path is excluded.
+/// `text` is the path's text, relative to the working folder or absolute,
+/// and `folder` says whether the path is a folder. Relative patterns are
+/// matched against the path's text, and absolute ones against its absolute
+/// path. A pattern ending in `/**` also prunes the folder before it, so
+/// `node_modules/**` prunes `node_modules`.
 #[must_use]
 pub(super) fn is_excluded(excludes: &ExcludeGlobs, text: &[u8], folder: bool) -> bool {
     let matches = |patterns: &ExcludePatterns, text: &[u8]| {

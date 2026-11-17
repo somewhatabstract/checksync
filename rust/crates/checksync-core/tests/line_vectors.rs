@@ -1,11 +1,15 @@
-//! Check `decode_utf8` and `split_lines` against the line vectors shared with
-//! the TypeScript implementation, so both read files into identical lines.
+//! Checks [`decode_utf8`] and [`split_lines`] against the shared line vectors.
+//!
+//! The vectors are shared with the TypeScript implementation, so both read
+//! files into identical lines.
 
 use checksync_core::{decode_utf8, split_lines};
 use serde::Deserialize;
 
-/// One piece of a vector's bytes: UTF-8 text (optionally repeated) or raw
-/// bytes in hex, for input that isn't valid UTF-8.
+/// One piece of a vector's bytes.
+///
+/// It's UTF-8 text (optionally repeated) or raw bytes in hex, for input that
+/// isn't valid UTF-8.
 #[derive(Deserialize)]
 #[serde(untagged)]
 enum Part {
@@ -41,7 +45,7 @@ const VECTORS: &str = include_str!(concat!(
     "/../../../__conformance__/line-vectors.json"
 ));
 
-/// Join parts into the bytes they describe.
+/// Joins parts into the bytes they describe.
 fn to_bytes(parts: &Parts) -> Vec<u8> {
     match parts {
         Parts::Plain(text) => text.as_bytes().to_vec(),

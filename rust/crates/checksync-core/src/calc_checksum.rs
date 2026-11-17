@@ -1,4 +1,4 @@
-/// Calculate the checksum of a sync-tagged block's lines.
+/// Calculates the checksum of a sync-tagged block's lines.
 ///
 /// The lines are joined as they are. Callers must normalize line endings
 /// first: strip each line's original ending (`\r\n`, `\n` or a lone `\r`)
@@ -9,14 +9,9 @@
 /// result's UTF-8 bytes, read as a signed 32-bit integer and written without
 /// its sign, matching the original JavaScript implementation.
 ///
-/// # Arguments
-///
-/// * `lines` - The lines to checksum, each ending in `\n`, except that a
-///   self checksum ends with a file path that has no line ending.
-///
-/// # Returns
-///
-/// The checksum as a string of decimal digits.
+/// Each line should end in `\n`, except that a self checksum ends with a
+/// file path that has no line ending. The checksum is returned as a string
+/// of decimal digits.
 pub fn calc_checksum<S: AsRef<str>>(lines: &[S]) -> String {
     let mut adler = adler2::Adler32::new();
     adler.write_slice(b"\n");

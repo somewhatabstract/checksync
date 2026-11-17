@@ -1,6 +1,6 @@
 use crate::types::{Line, LineEnding};
 
-/// Split text into lines the way the original JavaScript does.
+/// Splits text into lines the way the original JavaScript does.
 ///
 /// `\r\n`, `\n` and a lone `\r` each end a line, and nothing else does, as in
 /// Node.js 22 `readline` with `crlfDelay: Infinity`, which checksync used to
@@ -13,14 +13,6 @@ use crate::types::{Line, LineEnding};
 /// different checksums when run on Node.js 24. Keeping them in the line
 /// matches those versions on Node.js 22, checksync 11.0.1 and later, and the
 /// original Python sync linter.
-///
-/// # Arguments
-///
-/// * `text` - The decoded file contents.
-///
-/// # Returns
-///
-/// The lines, in order.
 #[must_use]
 pub fn split_lines(text: &str) -> Vec<Line> {
     let mut lines = Vec::new();

@@ -3,24 +3,14 @@ use std::path::{Component, Path, PathBuf};
 
 use crate::node_normalize::node_normalize;
 
-/// Find the relative path from one path to another, as Node.js's
-/// `path.relative` does.
+/// Finds the relative path from one path to another, as Node.js's `path.relative` does.
 ///
 /// Both paths are normalized first (see [`node_normalize`]), and a relative
-/// path is taken as relative to `cwd`. The result climbs out of `from` with
-/// `..` as far as needed, then descends into `to`; it's empty when the two
-/// are the same. On Windows, segments are compared ignoring case, and a path
-/// on another drive is returned as it is, as Node.js does there.
-///
-/// # Arguments
-///
-/// * `cwd` - The absolute folder that relative paths are resolved against.
-/// * `from` - The path to start from.
-/// * `to` - The path to reach.
-///
-/// # Returns
-///
-/// The path from `from` to `to`.
+/// path is taken as relative to `cwd`, which is absolute. The result climbs
+/// out of `from` with `..` as far as needed, then descends into `to`; it's
+/// empty when the two are the same. On Windows, segments are compared
+/// ignoring case, and a path on another drive is returned as it is, as
+/// Node.js does there.
 pub(crate) fn node_relative(cwd: &Path, from: &Path, to: &Path) -> PathBuf {
     let from = node_normalize(&cwd.join(from));
     let to = node_normalize(&cwd.join(to));
@@ -55,13 +45,13 @@ pub(crate) fn node_relative(cwd: &Path, from: &Path, to: &Path) -> PathBuf {
     PathBuf::from(relative)
 }
 
-/// Compare two path segments, ignoring case, as Node.js does on Windows.
+/// Compares two path segments, ignoring case, as Node.js does on Windows.
 #[cfg(windows)]
 fn same_segment(a: &Component, b: &Component) -> bool {
     a.as_os_str().to_string_lossy().to_lowercase() == b.as_os_str().to_string_lossy().to_lowercase()
 }
 
-/// Compare two path segments exactly.
+/// Compares two path segments exactly.
 #[cfg(not(windows))]
 fn same_segment(a: &Component, b: &Component) -> bool {
     a == b
@@ -73,12 +63,12 @@ mod tests {
 
     use super::node_relative;
 
-    /// Build a path from `/`-separated parts, so tests run on any platform.
+    /// Builds a path from `/`-separated parts, so tests run on any platform.
     fn path(parts: &str) -> PathBuf {
         PathBuf::from(parts.replace('/', MAIN_SEPARATOR_STR))
     }
 
-    /// An absolute folder to resolve relative paths against.
+    /// Returns an absolute folder to resolve relative paths against.
     fn cwd() -> PathBuf {
         std::env::temp_dir().join("cwd")
     }

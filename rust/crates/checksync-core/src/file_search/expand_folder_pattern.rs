@@ -1,20 +1,11 @@
 use std::path::Path;
 
-/// Turn an include pattern naming a folder into one for everything below it.
+/// Turns an include pattern naming a folder into one for everything below it.
 ///
-/// A pattern without a `*` that names a folder (not a link to one) becomes
-/// `folder/**`, so `src` finds every file below `src`, as checksync's
-/// JavaScript implementation does. A trailing `/` is dropped first. Anything
-/// else is returned as it is.
-///
-/// # Arguments
-///
-/// * `pattern` - The include pattern, relative to `cwd`.
-/// * `cwd` - The working folder.
-///
-/// # Returns
-///
-/// The pattern to search with.
+/// The pattern is relative to `cwd`, the working folder. A pattern without a
+/// `*` that names a folder (not a link to one) becomes `folder/**`, so `src`
+/// finds every file below `src`, as checksync's JavaScript implementation
+/// does. A trailing `/` is dropped first. Anything else is returned as it is.
 #[must_use]
 pub(super) fn expand_folder_pattern(pattern: &str, cwd: &Path) -> String {
     let names_folder = !pattern.contains('*')

@@ -1,5 +1,6 @@
-//! Check `root_relative_path` against the root-relative path vectors shared
-//! with the TypeScript implementation.
+//! Checks [`root_relative_path`] against the root-relative path vectors.
+//!
+//! The vectors are shared with the TypeScript implementation.
 
 use std::fs;
 use std::path::{MAIN_SEPARATOR_STR, Path};
@@ -24,8 +25,9 @@ struct Vector {
     expected: Expected,
 }
 
-/// The shared table: the markers to create (a folder when it ends with `/`),
-/// and the vectors.
+/// The shared table: the markers to create, and the vectors.
+///
+/// A marker that ends with `/` is created as a folder.
 #[derive(Deserialize)]
 struct Table {
     markers: Vec<String>,

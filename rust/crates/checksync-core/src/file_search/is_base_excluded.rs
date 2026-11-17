@@ -1,7 +1,7 @@
 use super::is_excluded::is_excluded;
 use super::types::ExcludeGlobs;
 
-/// Check whether an exclude pattern prunes a task's folder or one above it.
+/// Checks whether an exclude pattern prunes a task's folder or one above it.
 ///
 /// Walking starts at the task's folder, so the folders on the way to it are
 /// never visited and checked. If an exclude pattern prunes any of them, as
@@ -9,15 +9,8 @@ use super::types::ExcludeGlobs;
 /// step up or a `.` on the way doesn't name a folder the files are in, so
 /// `..` isn't checked for a task walking `../other`.
 ///
-/// # Arguments
-///
-/// * `base` - The task's folder, relative to the working folder, with `/`
-///   between names; `.` for the working folder itself.
-/// * `excludes` - The compiled exclude patterns.
-///
-/// # Returns
-///
-/// Whether the task's folder is pruned.
+/// `base` is the task's folder, relative to the working folder, with `/`
+/// between names, and is `.` for the working folder itself.
 #[must_use]
 pub(super) fn is_base_excluded(base: &str, excludes: &ExcludeGlobs) -> bool {
     base != "."

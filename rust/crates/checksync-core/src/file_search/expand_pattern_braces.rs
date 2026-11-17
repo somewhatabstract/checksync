@@ -2,19 +2,16 @@ use crate::glob::{BraceExpansionError, expand_braces};
 
 use super::types::GetFilesError;
 
-/// Expand a pattern's brace groups into the patterns they stand for.
+/// Expands a pattern's brace groups into the patterns they stand for.
 ///
-/// # Arguments
-///
-/// * `pattern` - The pattern.
-///
-/// # Returns
-///
-/// The expanded patterns, in order; just the pattern if it has no groups.
+/// The results keep the pattern's order, and a pattern with no groups gives
+/// just itself.
 ///
 /// # Errors
 ///
-/// A pattern too long to expand, or one that expands to too many patterns.
+/// Returns [`GetFilesError::PatternTooLong`] for a pattern too long to expand
+/// its braces, and [`GetFilesError::TooManyPatterns`] for one whose braces
+/// expand to too many patterns.
 pub(super) fn expand_pattern_braces(pattern: &str) -> Result<Vec<String>, GetFilesError> {
     // Brace expansion only splits at ASCII bytes, so the results are as valid
     // as the pattern.

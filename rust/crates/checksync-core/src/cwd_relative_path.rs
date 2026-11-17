@@ -3,22 +3,14 @@ use std::path::{Path, PathBuf};
 
 use crate::node_relative::node_relative;
 
-/// Make a path relative to the current working folder.
+/// Makes a path relative to the current working folder.
 ///
 /// This is Node.js's `path.relative(process.cwd(), file_path)`, which
 /// checksync uses to show paths in its messages.
 ///
-/// # Arguments
-///
-/// * `file_path` - The path to show.
-///
-/// # Returns
-///
-/// The path relative to the current working folder.
-///
 /// # Errors
 ///
-/// Any error reading the current working folder.
+/// Returns any error from reading the current working folder.
 pub fn cwd_relative_path(file_path: &Path) -> io::Result<PathBuf> {
     std::env::current_dir().map(|cwd| node_relative(&cwd, &cwd, file_path))
 }

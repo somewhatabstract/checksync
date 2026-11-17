@@ -4,25 +4,19 @@ use crate::closesdir::{DEFAULT_ROOT_MARKER, closesdir};
 use crate::node_relative::node_relative;
 use crate::types::RootMarkerError;
 
-/// Make an absolute file path relative to the root folder it's under.
+/// Makes an absolute file path relative to the root folder it's under.
 ///
 /// The root is the closest folder at or above the file with the root marker
-/// (see [`closesdir`]). The result is worked out as Node.js's `path.relative`
+/// (see [`closesdir`]), which is `marker`, or [`DEFAULT_ROOT_MARKER`] when
+/// that's `None`. The result is worked out as Node.js's `path.relative`
 /// would, so `.`, `..` and repeated separators in the file path are resolved
-/// as text. A path that's already relative is returned as it is.
-///
-/// # Arguments
-///
-/// * `file_path` - The file's path.
-/// * `marker` - The root marker, or `None` for [`DEFAULT_ROOT_MARKER`].
-///
-/// # Returns
-///
-/// The path relative to the root, using the platform's separators.
+/// as text, and it uses the platform's separators. A path that's already
+/// relative is returned as it is.
 ///
 /// # Errors
 ///
-/// [`RootMarkerError::NotFound`] if no folder above the file has the marker.
+/// Returns [`RootMarkerError::NotFound`] if no folder above the file has the
+/// marker.
 pub fn root_relative_path(
     file_path: &Path,
     marker: Option<&str>,

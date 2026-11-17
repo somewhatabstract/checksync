@@ -1,21 +1,17 @@
 use std::path::{Path, PathBuf};
 
-/// Sort paths as JavaScript sorts strings, and drop duplicates.
+/// Sorts paths as JavaScript sorts strings, and drops duplicates.
 ///
 /// JavaScript compares strings by UTF-16 code unit, which orders some text
 /// differently from comparing bytes or characters. Each path is compared as
 /// text with `/` between names, which is how checksync's JavaScript
 /// implementation sorts the paths fast-glob gives it.
-///
-/// # Arguments
-///
-/// * `paths` - The paths to sort.
 pub(super) fn sort_paths_like_javascript(paths: &mut Vec<PathBuf>) {
     paths.sort_by_cached_key(|path| utf16_key(path));
     paths.dedup();
 }
 
-/// Get a path's text, with `/` between names, as UTF-16 code units.
+/// Gets a path's text, with `/` between names, as UTF-16 code units.
 fn utf16_key(path: &Path) -> Vec<u16> {
     let text = path.to_string_lossy();
     #[cfg(not(unix))]

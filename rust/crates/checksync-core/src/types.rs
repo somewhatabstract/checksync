@@ -22,7 +22,7 @@ pub enum LineEnding {
 }
 
 impl LineEnding {
-    /// The characters this ending stands for.
+    /// Returns the characters this ending stands for.
     #[must_use]
     pub fn as_str(self) -> &'static str {
         match self {
@@ -48,8 +48,9 @@ pub struct Line {
 pub enum TargetType {
     /// A file, which checksync parses for the tag pointing back.
     Local,
-    /// A URL, which checksync can't read, so it checks the tag's own content
-    /// and file path instead.
+    /// A URL, which checksync can't read.
+    ///
+    /// checksync checks the tag's own content and file path instead.
     Remote,
 }
 
@@ -76,8 +77,9 @@ pub struct Target {
 /// come out in the same order as in checksync's JavaScript implementation.
 pub type Targets = BTreeMap<usize, Target>;
 
-/// A parsed sync marker: a tagged block of content and the targets it syncs
-/// with.
+/// A parsed sync marker.
+///
+/// It's a tagged block of content and the targets it syncs with.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Marker {
     /// The checksum of the block's content.
@@ -85,8 +87,10 @@ pub struct Marker {
     /// `None` for a sync-end tag with no matching sync-start tag, which has
     /// no content. Output formats show this as `"No checksum"`.
     pub content_checksum: Option<String>,
-    /// The checksum of the block's content followed by the path of its file
-    /// relative to the root, which remote targets are checked against.
+    /// The checksum remote targets are checked against.
+    ///
+    /// It covers the block's content followed by the path of its file
+    /// relative to the root.
     pub self_checksum: String,
     /// The targets the marker syncs with.
     pub targets: Targets,
@@ -94,9 +98,10 @@ pub struct Marker {
     ///
     /// `None` for a sync-end tag with no matching sync-start tag.
     pub comment_start: Option<String>,
-    /// The text after the target on the marker's first sync-start line, such
-    /// as ` */`, including the whitespace before it, or empty if there is
-    /// none.
+    /// The text after the target on the marker's first sync-start line.
+    ///
+    /// This is text such as ` */`, including the whitespace before it, or
+    /// empty if there is none.
     ///
     /// `None` for a sync-end tag with no matching sync-start tag.
     pub comment_end: Option<String>,
@@ -164,7 +169,7 @@ impl ErrorCode {
         Self::PendingMigration,
     ];
 
-    /// The code as it appears in checksync's output.
+    /// Returns the code as it appears in checksync's output.
     #[must_use]
     pub fn as_str(self) -> &'static str {
         match self {
@@ -200,7 +205,7 @@ pub struct ErrorLocation {
 }
 
 impl ErrorLocation {
-    /// A location covering a whole line.
+    /// Creates a location covering a whole line.
     #[must_use]
     pub fn at_line(line: usize) -> Self {
         Self {
@@ -214,7 +219,7 @@ impl ErrorLocation {
 /// A change to one line of a file that fixes an error.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum FixAction {
-    /// Delete the line.
+    /// Deletes the line.
     Delete {
         /// The 1-based line to delete.
         line: usize,
@@ -223,7 +228,7 @@ pub enum FixAction {
         /// The line's current text, the tag declaration being deleted.
         declaration: String,
     },
-    /// Replace the line with new text.
+    /// Replaces the line with new text.
     Replace {
         /// The 1-based line to replace.
         line: usize,
@@ -239,8 +244,9 @@ pub enum FixAction {
 /// A problem checksync found, with where it is and how to fix it.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ErrorDetails {
-    /// The id of the marker the error belongs to, or `None` if it doesn't
-    /// belong to one, such as a malformed tag.
+    /// The id of the marker the error belongs to.
+    ///
+    /// `None` if it doesn't belong to one, such as a malformed tag.
     pub marker_id: Option<String>,
     /// The message shown to the user.
     pub reason: String,
@@ -263,21 +269,25 @@ pub struct NormalizedPathInfo {
     pub kind: TargetType,
 }
 
-/// A marker the parser has read to the end of, before any checksums are
-/// worked out.
+/// A marker the parser has read to the end of.
+///
+/// No checksums have been worked out for it yet.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ParsedMarker {
     /// The marker's id.
     pub id: String,
-    /// The block's content lines, each ending with `\n`, or `None` for a
-    /// sync-end tag with no matching sync-start tag.
+    /// The block's content lines, each ending with `\n`.
+    ///
+    /// `None` for a sync-end tag with no matching sync-start tag.
     pub content: Option<Vec<String>>,
     /// The marker's targets, keyed by the line of each sync-start tag.
     pub targets: Targets,
-    /// The comment syntax that starts the marker's first sync-start tag, or
+    /// The comment syntax that starts the marker's first sync-start tag.
+    ///
     /// `None` for a sync-end tag with no matching sync-start tag.
     pub comment_start: Option<String>,
-    /// The text after the target on the marker's first sync-start tag, or
+    /// The text after the target on the marker's first sync-start tag.
+    ///
     /// `None` for a sync-end tag with no matching sync-start tag.
     pub comment_end: Option<String>,
 }
@@ -379,7 +389,8 @@ pub enum IgnoreDecision {
     Ignored,
     /// The path is explicitly unignored by a negated pattern.
     Unignored,
-    /// The ignore file says nothing about the path, or the path isn't
-    /// inside the ignore file's folder.
+    /// The ignore file says nothing about the path.
+    ///
+    /// This includes a path that isn't inside the ignore file's folder.
     NoOpinion,
 }

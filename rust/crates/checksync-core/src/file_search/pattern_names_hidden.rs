@@ -1,20 +1,12 @@
 use super::bracket_may_match_dot::bracket_may_match_dot;
 
-/// Check whether a pattern names a hidden folder, so hidden folders matter.
+/// Checks whether a pattern names a hidden folder, so hidden folders matter.
 ///
-/// Wildcards never match a `.` that starts a name, so only a folder name in
-/// the pattern that starts with a literal or escaped `.`, or with a bracket
-/// set that may match one, can match a hidden folder. The last name is a file's, so it
-/// doesn't count, and nor do the names `.` and `..`, which never name a
-/// hidden folder.
-///
-/// # Arguments
-///
-/// * `pattern` - The pattern, with `/` between names.
-///
-/// # Returns
-///
-/// Whether walking needs to look inside hidden folders.
+/// The pattern has `/` between names. Wildcards never match a `.` that starts
+/// a name, so only a folder name in the pattern that starts with a literal or
+/// escaped `.`, or with a bracket set that may match one, can match a hidden
+/// folder. The last name is a file's, so it doesn't count, and nor do the
+/// names `.` and `..`, which never name a hidden folder.
 #[must_use]
 pub(super) fn pattern_names_hidden(pattern: &str) -> bool {
     let folders = pattern.rsplit_once('/').map_or("", |(folders, _)| folders);

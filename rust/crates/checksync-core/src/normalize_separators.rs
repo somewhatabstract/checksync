@@ -1,18 +1,10 @@
 use std::path::MAIN_SEPARATOR;
 
-/// Replace the platform's path separator with `/`.
+/// Replaces the platform's path separator with `/`.
 ///
 /// On Windows this turns `\` into `/`; elsewhere the separator is already
 /// `/`, so the text is unchanged. Checksums and output use `/` so they're
 /// the same on every platform.
-///
-/// # Arguments
-///
-/// * `path` - The path to convert.
-///
-/// # Returns
-///
-/// The path with `/` separators.
 #[must_use]
 pub fn normalize_separators(path: &str) -> String {
     path.replace(MAIN_SEPARATOR, "/")

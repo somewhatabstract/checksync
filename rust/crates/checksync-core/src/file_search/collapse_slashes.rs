@@ -1,14 +1,6 @@
-/// Turn runs of `/` inside a pattern into one, as paths have.
+/// Turns runs of `/` inside a pattern into one, as paths have.
 ///
 /// A leading `//`, which names a network share on Windows, is kept.
-///
-/// # Arguments
-///
-/// * `pattern` - The pattern.
-///
-/// # Returns
-///
-/// The pattern with single slashes between names.
 #[must_use]
 pub(super) fn collapse_slashes(pattern: &str) -> String {
     let (lead, rest) = if pattern.starts_with("//") {

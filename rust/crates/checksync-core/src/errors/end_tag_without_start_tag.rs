@@ -1,15 +1,8 @@
 use crate::types::{ErrorCode, ErrorDetails, ErrorLocation};
 
-/// Create the error for a sync-end tag with no matching sync-start tag.
+/// Creates the error for a sync-end tag with no matching sync-start tag.
 ///
-/// # Arguments
-///
-/// * `marker_id` - The id of the marker the error belongs to.
-/// * `line` - The 1-based line of the tag.
-///
-/// # Returns
-///
-/// The error details.
+/// The error is located at `line`, the 1-based line of the tag.
 #[must_use]
 pub fn end_tag_without_start_tag(marker_id: &str, line: usize) -> ErrorDetails {
     ErrorDetails {

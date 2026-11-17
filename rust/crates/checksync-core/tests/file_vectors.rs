@@ -1,4 +1,4 @@
-//! Check `get_files` against the file-finding vectors shared with TypeScript.
+//! Checks [`get_files`] against the file-finding vectors shared with TypeScript.
 //!
 //! Both implementations find the same files in the same order, apart from
 //! the deliberate differences recorded in the vectors' `rust` fields.
@@ -26,8 +26,9 @@ struct RustDivergence {
     reason: String,
 }
 
-/// One search, run from `cwd`, and the files it should find, relative to the
-/// tree's root.
+/// One search, run from `cwd`, and the files it should find.
+///
+/// The files are relative to the tree's root.
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct Vector {
@@ -41,7 +42,7 @@ struct Vector {
 }
 
 impl Vector {
-    /// The files the Rust implementation should find.
+    /// Returns the files the Rust implementation should find.
     fn rust_expected(&self) -> &[String] {
         self.rust
             .as_ref()
@@ -62,8 +63,9 @@ fn load_table() -> Table {
     table
 }
 
-/// Make a link at `link` to the relative `target`, as a folder link when the
-/// target is a folder.
+/// Makes a link at `link` to the relative `target`.
+///
+/// The link is a folder link when the target is a folder.
 fn make_link(link: &Path, target: &str) {
     #[cfg(unix)]
     std::os::unix::fs::symlink(target, link).expect("make link");
@@ -80,7 +82,7 @@ fn make_link(link: &Path, target: &str) {
     }
 }
 
-/// Create the table's tree under a new root folder.
+/// Creates the table's tree under a new root folder.
 fn create_tree(table: &Table) -> (TempDir, PathBuf) {
     let dir = TempDir::new().expect("temporary folder");
     // Paths come back as the working folder names them, so use the folder's
@@ -102,7 +104,7 @@ fn create_tree(table: &Table) -> (TempDir, PathBuf) {
     (dir, root)
 }
 
-/// Write a found file relative to the tree's root, with `/` between names.
+/// Writes a found file relative to the tree's root, with `/` between names.
 fn relative_to_root(root: &Path, file: &Path) -> String {
     file.strip_prefix(root)
         .expect("file inside the root")

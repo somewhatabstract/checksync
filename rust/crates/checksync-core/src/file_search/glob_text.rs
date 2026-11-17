@@ -1,19 +1,11 @@
 use std::borrow::Cow;
 use std::ffi::OsStr;
 
-/// Get the bytes a glob pattern is matched against for a file or folder name.
+/// Gets the bytes a glob pattern is matched against for a file or folder name.
 ///
 /// On Unix, a name is matched by its raw bytes, so names that aren't valid
 /// UTF-8 can still match. Elsewhere, its text is used, with anything that
 /// isn't valid Unicode replaced.
-///
-/// # Arguments
-///
-/// * `name` - The file or folder name.
-///
-/// # Returns
-///
-/// The bytes to match.
 #[must_use]
 pub(super) fn glob_text(name: &OsStr) -> Cow<'_, [u8]> {
     #[cfg(unix)]

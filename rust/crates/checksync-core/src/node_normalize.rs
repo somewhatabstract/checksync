@@ -1,19 +1,11 @@
 use std::path::{Component, Path, PathBuf};
 
-/// Normalize a path the way Node.js's `path.normalize` does.
+/// Normalizes a path the way Node.js's `path.normalize` does.
 ///
 /// `.` segments are dropped and each `..` removes the segment before it, by
 /// looking at the text only, without touching the file system. A `..` at the
 /// start of a relative path is kept, and one directly under the root is
 /// dropped. An empty result is `.`, and a trailing separator is kept.
-///
-/// # Arguments
-///
-/// * `path` - The path to normalize.
-///
-/// # Returns
-///
-/// The normalized path.
 pub(crate) fn node_normalize(path: &Path) -> PathBuf {
     let mut parts: Vec<Component> = Vec::new();
     for component in path.components() {
@@ -69,7 +61,7 @@ mod tests {
 
     use super::node_normalize;
 
-    /// Build a path from `/`-separated parts, so tests run on any platform.
+    /// Builds a path from `/`-separated parts, so tests run on any platform.
     fn path(parts: &str) -> PathBuf {
         PathBuf::from(parts.replace('/', MAIN_SEPARATOR_STR))
     }

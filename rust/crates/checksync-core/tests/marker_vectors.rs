@@ -1,5 +1,7 @@
-//! Check `MarkerParser` against the marker-parser vectors shared with the
-//! TypeScript implementation, so both parse tags identically.
+//! Checks [`MarkerParser`] against the shared marker-parser vectors.
+//!
+//! The vectors are shared with the TypeScript implementation, so both parse
+//! tags identically.
 
 use checksync_core::{
     ErrorDetails, FixAction, MarkerParser, NormalizedPathInfo, ParseEvent, TargetType,
@@ -31,8 +33,9 @@ fn load_vectors() -> Vec<Vector> {
     vectors
 }
 
-/// Write an error the way the TypeScript `ErrorDetails` serializes, leaving
-/// out fields that are `undefined` there.
+/// Writes an error the way the TypeScript `ErrorDetails` serializes.
+///
+/// Fields that are `undefined` there are left out.
 fn error_to_json(error: &ErrorDetails) -> Value {
     let mut object = Map::new();
     object.insert("markerID".into(), json!(error.marker_id));
@@ -79,7 +82,7 @@ fn error_to_json(error: &ErrorDetails) -> Value {
     Value::Object(object)
 }
 
-/// Write an event in the vector table's format.
+/// Writes an event in the vector table's format.
 fn event_to_json(event: &ParseEvent) -> Value {
     match event {
         ParseEvent::Error(error) => json!({ "error": error_to_json(error) }),
@@ -116,7 +119,7 @@ fn event_to_json(event: &ParseEvent) -> Value {
     }
 }
 
-/// Parse a vector's lines and return what the parser reported.
+/// Parses a vector's lines and returns what the parser reported.
 fn parse(vector: &Vector) -> Vec<Value> {
     let mut parser = MarkerParser::new(&vector.comments, |target: &str| {
         let remote = target.contains("://");

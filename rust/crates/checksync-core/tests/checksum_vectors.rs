@@ -1,5 +1,7 @@
-//! Check `calc_checksum` against the checksum vectors shared with the
-//! TypeScript implementation, so both produce identical checksums.
+//! Checks [`calc_checksum`] against the shared checksum vectors.
+//!
+//! The vectors are shared with the TypeScript implementation, so both
+//! produce identical checksums.
 
 use checksync_core::calc_checksum;
 use serde::Deserialize;

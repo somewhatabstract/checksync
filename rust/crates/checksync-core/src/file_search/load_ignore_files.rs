@@ -7,26 +7,20 @@ use super::load_found_ignore_files::load_found_ignore_files;
 use super::plan_glob_tasks::plan_glob_tasks;
 use super::types::GetFilesError;
 
-/// Find and load the ignore files that some paths or globs name.
+/// Finds and loads the ignore files that some paths or globs name.
 ///
+/// The paths and globs are relative to `cwd`, the absolute working folder.
 /// The globs are matched as include patterns are, and the files are loaded
-/// in path order, so an ignore file in a folder comes after those above it
-/// and its patterns win. A path that names no file loads nothing.
-///
-/// # Arguments
-///
-/// * `ignore_file_globs` - Paths or globs naming the ignore files, relative
-///   to `cwd`.
-/// * `cwd` - The absolute working folder.
-///
-/// # Returns
-///
-/// The loaded ignore files, from the top folder down.
+/// in path order, from the top folder down, so an ignore file in a folder
+/// comes after those above it and its patterns win. A path that names no
+/// file loads nothing.
 ///
 /// # Errors
 ///
-/// A glob whose braces can't be expanded, or any error finding or reading
-/// the ignore files.
+/// Returns [`GetFilesError::PatternTooLong`] or
+/// [`GetFilesError::TooManyPatterns`] for a glob whose braces can't be
+/// expanded, and [`GetFilesError::Io`] for any error finding or reading the
+/// ignore files.
 pub(super) fn load_ignore_files(
     ignore_file_globs: &[String],
     cwd: &Path,
