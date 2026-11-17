@@ -2,7 +2,8 @@
 //! answers recorded from git's matcher and fast-glob's micromatch.
 
 mod match_vectors {
-    use super::super::compiled_glob::{GlobOptions, compile_glob, compiled_glob_matches};
+    use super::super::compiled_glob::tests::matches;
+    use super::super::compiled_glob::{CompiledGlob, GlobOptions};
     use super::super::hidden_names::HiddenNames;
     use serde::Deserialize;
 
@@ -80,11 +81,6 @@ mod match_vectors {
         serde_json::from_str(FAST_GLOB_VECTORS).expect("valid fast-glob vector table")
     }
 
-    /// Compiles `pattern` and checks whether `text` matches it.
-    fn matches(pattern: &[u8], text: &[u8], options: GlobOptions) -> bool {
-        compiled_glob_matches(&compile_glob(pattern, options).unwrap(), text)
-    }
-
     /// Reads the glob vector table.
     fn load_table() -> Table {
         serde_json::from_str(VECTORS).expect("valid glob vector table")
@@ -135,8 +131,8 @@ mod match_vectors {
                         hidden: HiddenNames::MatchAll,
                         unicode: false,
                     };
-                    let actual = compile_glob(case.pattern.as_bytes(), options)
-                        .is_some_and(|glob| compiled_glob_matches(&glob, case.text.as_bytes()));
+                    let actual = CompiledGlob::try_new(case.pattern.as_bytes(), options)
+                        .is_some_and(|glob| glob.matches(case.text.as_bytes()));
                     let entry = (
                         vector.description.as_str(),
                         case.pattern.as_str(),
@@ -257,7 +253,7 @@ mod match_vectors {
 }
 
 mod expansion_vectors {
-    use super::super::braces::{BraceExpansionError, expand_braces};
+    use super::super::braces::tests::{Expansion, expand};
     use serde::Deserialize;
 
     /// The fast-glob vector table, of which these tests read the expansions.
@@ -298,19 +294,6 @@ mod expansion_vectors {
     /// Reads the fast-glob vector table.
     fn load_table() -> Table {
         serde_json::from_str(VECTORS).expect("valid fast-glob vector table")
-    }
-
-    /// What `expand` gives: the expanded patterns as strings, or the error.
-    type Expansion = Result<Vec<String>, BraceExpansionError>;
-
-    /// Expands `pattern` and turns the results into strings for comparing.
-    fn expand(pattern: &str) -> Expansion {
-        expand_braces(pattern.as_bytes()).map(|results| {
-            results
-                .iter()
-                .map(|result| String::from_utf8_lossy(result).into_owned())
-                .collect()
-        })
     }
 
     #[test]

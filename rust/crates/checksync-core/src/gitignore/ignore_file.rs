@@ -1,7 +1,7 @@
 //! Loaded ignore files, and how they decide about paths in their folder.
 
 use super::decide::decide_path;
-use super::pattern::{GitignorePattern, parse_line};
+use super::pattern::GitignorePattern;
 use crate::node_path::node_relative;
 use crate::types::IgnoreDecision;
 use std::path::{Component, Path, PathBuf};
@@ -66,7 +66,7 @@ pub(super) fn parse(contents: &[u8]) -> Vec<GitignorePattern> {
     let contents = contents.strip_prefix(b"\xEF\xBB\xBF").unwrap_or(contents);
     contents
         .split(|&byte| byte == b'\n')
-        .filter_map(parse_line)
+        .filter_map(GitignorePattern::parse)
         .collect()
 }
 
@@ -104,7 +104,7 @@ fn path_bytes(path: &Path) -> Vec<u8> {
 mod tests {
     use super::super::pattern::GLOB_OPTIONS;
     use super::{IgnoreFile, parse, relative_path};
-    use crate::glob::{CompiledGlob, compile_glob};
+    use crate::glob::CompiledGlob;
     use crate::types::IgnoreDecision;
     use std::fs;
     use std::path::{Path, PathBuf};
@@ -316,7 +316,7 @@ mod tests {
     fn compiled(patterns: &[&[u8]]) -> Vec<CompiledGlob> {
         patterns
             .iter()
-            .map(|pattern| compile_glob(pattern, GLOB_OPTIONS).unwrap())
+            .map(|pattern| CompiledGlob::try_new(pattern, GLOB_OPTIONS).unwrap())
             .collect()
     }
 

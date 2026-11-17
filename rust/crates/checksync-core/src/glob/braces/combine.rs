@@ -1,7 +1,7 @@
 //! Combining expansion results with a piece's texts, within the result limits.
 
 use super::BraceExpansionError;
-use super::budget::{BraceBudget, release_brace_budget, take_brace_budget};
+use super::budget::BraceBudget;
 
 /// Follows each brace expansion result so far with each of a piece's texts.
 ///
@@ -33,17 +33,17 @@ pub(super) fn combine_brace_texts(
         return Err(BraceExpansionError::TooManyResults);
     }
     if let [text] = texts {
-        take_brace_budget(budget, 0, bytes - result_bytes)?;
+        budget.take(0, bytes - result_bytes)?;
         for result in results.iter_mut() {
             result.extend_from_slice(text);
         }
-        release_brace_budget(budget, texts);
+        budget.release(texts);
         return Ok(());
     }
-    take_brace_budget(budget, count, bytes)?;
+    budget.take(count, bytes)?;
     let old = std::mem::take(results);
-    release_brace_budget(budget, &old);
-    release_brace_budget(budget, texts);
+    budget.release(&old);
+    budget.release(texts);
     *results = old
         .into_iter()
         .flat_map(|prefix| {

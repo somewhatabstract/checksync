@@ -1,6 +1,10 @@
-//! Splitting a glob pattern into the tokens that match parts of a text.
+//! Glob tokens: splitting a pattern into them, and moving the reachable text
+//! positions past them.
 
-use super::bracket_set::parse_bracket_set;
+mod advance;
+mod wildcards;
+
+use super::bracket_set::BracketSet;
 use super::compiled_glob::GlobOptions;
 use super::unit_matcher::UnitMatcher;
 use super::units::read_glob_char;
@@ -36,7 +40,7 @@ pub(super) fn tokenize_glob(pattern: &[u8], options: GlobOptions) -> Option<Vec<
             b'?' => (GlobToken::One(UnitMatcher::Any), index + 1),
             b'*' => read_star_run(pattern, index, options),
             b'[' => {
-                let (set, next) = parse_bracket_set(pattern, index, options.unicode)?;
+                let (set, next) = BracketSet::parse(pattern, index, options.unicode)?;
                 (GlobToken::One(UnitMatcher::Set(set)), next)
             }
             first => {

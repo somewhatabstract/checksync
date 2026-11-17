@@ -1,9 +1,8 @@
 //! Compiled glob patterns: the options they're compiled with, compiling them,
 //! and matching texts against them.
 
-use super::advance::advance_glob_positions;
 use super::hidden_names::HiddenNames;
-use super::tokenize::{GlobToken, tokenize_glob};
+use super::token::{GlobToken, tokenize_glob};
 use super::units::bytes_before_nul;
 
 /// How a glob pattern treats slashes, letter case and hidden names.
@@ -53,58 +52,60 @@ pub(crate) struct CompiledGlob {
     pub(super) hidden: HiddenNames,
 }
 
-/// Compiles a glob pattern so it can be matched against many texts.
-///
-/// `options` says how to treat slashes, letter case, hidden names and characters.
-/// A NUL byte ends the pattern, as it would a C string. Returns `None` if the
-/// pattern can never match anything: it ends with a `\`, or has a malformed
-/// bracket set.
-#[must_use]
-pub(crate) fn compile_glob(pattern: &[u8], options: GlobOptions) -> Option<CompiledGlob> {
-    let tokens = tokenize_glob(bytes_before_nul(pattern), options)?;
-    Some(CompiledGlob {
-        tokens,
-        options,
-        hidden: if options.pathname {
-            options.hidden
-        } else {
-            HiddenNames::MatchAll
-        },
-    })
-}
+impl CompiledGlob {
+    /// Compiles a glob pattern so it can be matched against many texts.
+    ///
+    /// `options` says how to treat slashes, letter case, hidden names and characters.
+    /// A NUL byte ends the pattern, as it would a C string. Returns `None` if the
+    /// pattern can never match anything: it ends with a `\`, or has a malformed
+    /// bracket set.
+    #[must_use]
+    pub(crate) fn try_new(pattern: &[u8], options: GlobOptions) -> Option<Self> {
+        let tokens = tokenize_glob(bytes_before_nul(pattern), options)?;
+        Some(CompiledGlob {
+            tokens,
+            options,
+            hidden: if options.pathname {
+                options.hidden
+            } else {
+                HiddenNames::MatchAll
+            },
+        })
+    }
 
-/// Checks whether the whole of a text matches a compiled glob pattern.
-///
-/// Matching works on bytes, the way git matches its globs, or with `unicode` on
-/// whole characters. `?` matches any one unit, `*` any run of them, `[...]` one
-/// unit from a set, and `\` makes the next unit literal. A NUL byte ends the
-/// text, as it would a C string. [`GlobOptions`] describes how `pathname`,
-/// `casefold`, `hidden` and `unicode` change this.
-///
-/// Rather than backtracking, matching tracks every position in the text that the
-/// pattern so far can reach, so it takes time proportional to the pattern's
-/// length times the text's, however many stars there are. It stops as soon as no
-/// position is reachable.
-///
-/// [`GlobOptions`]: GlobOptions
-#[must_use]
-pub(crate) fn compiled_glob_matches(glob: &CompiledGlob, text: &[u8]) -> bool {
-    let text = bytes_before_nul(text);
-    let mut positions = vec![false; text.len() + 1];
-    positions[0] = true;
-    glob.tokens
-        .iter()
-        .all(|token| advance_glob_positions(token, text, &mut positions, glob.options, glob.hidden))
-        && positions[text.len()]
+    /// Checks whether the whole of a text matches this compiled glob.
+    ///
+    /// Matching works on bytes, the way git matches its globs, or with `unicode` on
+    /// whole characters. `?` matches any one unit, `*` any run of them, `[...]` one
+    /// unit from a set, and `\` makes the next unit literal. A NUL byte ends the
+    /// text, as it would a C string. [`GlobOptions`] describes how `pathname`,
+    /// `casefold`, `hidden` and `unicode` change this.
+    ///
+    /// Rather than backtracking, matching tracks every position in the text that the
+    /// pattern so far can reach, so it takes time proportional to the pattern's
+    /// length times the text's, however many stars there are. It stops as soon as no
+    /// position is reachable.
+    ///
+    /// [`GlobOptions`]: GlobOptions
+    #[must_use]
+    pub(crate) fn matches(&self, text: &[u8]) -> bool {
+        let text = bytes_before_nul(text);
+        let mut positions = vec![false; text.len() + 1];
+        positions[0] = true;
+        self.tokens
+            .iter()
+            .all(|token| token.advance(text, &mut positions, self.options, self.hidden))
+            && positions[text.len()]
+    }
 }
 
 #[cfg(test)]
-mod tests {
+pub(super) mod tests {
     use super::super::hidden_names::HiddenNames;
-    use super::super::tokenize::GlobToken;
+    use super::super::token::GlobToken;
     use super::super::unit_matcher::UnitMatcher;
     use super::super::{TEST_OPTIONS, TEST_PATHNAME_OPTIONS};
-    use super::{CompiledGlob, GlobOptions, compile_glob, compiled_glob_matches};
+    use super::{CompiledGlob, GlobOptions};
 
     /// Compiles `?` with the given options and returns the hidden names kept.
     fn hidden(pathname: bool, hidden: HiddenNames) -> Option<HiddenNames> {
@@ -114,7 +115,7 @@ mod tests {
             hidden,
             unicode: false,
         };
-        compile_glob(b"?", options).map(|glob| glob.hidden)
+        CompiledGlob::try_new(b"?", options).map(|glob| glob.hidden)
     }
 
     #[test]
@@ -123,7 +124,7 @@ mod tests {
         let pattern = b"?";
 
         // Act
-        let result = compile_glob(pattern, TEST_OPTIONS);
+        let result = CompiledGlob::try_new(pattern, TEST_OPTIONS);
 
         // Assert
         assert_eq!(
@@ -142,7 +143,7 @@ mod tests {
         let pattern = b"?\0[";
 
         // Act
-        let result = compile_glob(pattern, TEST_OPTIONS).map(|glob| glob.tokens);
+        let result = CompiledGlob::try_new(pattern, TEST_OPTIONS).map(|glob| glob.tokens);
 
         // Assert
         assert_eq!(result, Some(vec![GlobToken::One(UnitMatcher::Any)]));
@@ -154,7 +155,7 @@ mod tests {
         let pattern = b"[ab";
 
         // Act
-        let result = compile_glob(pattern, TEST_OPTIONS);
+        let result = CompiledGlob::try_new(pattern, TEST_OPTIONS);
 
         // Assert
         assert_eq!(result, None);
@@ -185,8 +186,8 @@ mod tests {
     }
 
     /// Compiles `pattern` and checks whether `text` matches it.
-    fn matches(pattern: &[u8], text: &[u8], options: GlobOptions) -> bool {
-        compiled_glob_matches(&compile_glob(pattern, options).unwrap(), text)
+    pub(in crate::glob) fn matches(pattern: &[u8], text: &[u8], options: GlobOptions) -> bool {
+        (CompiledGlob::try_new(pattern, options).unwrap()).matches(text)
     }
 
     const HIDING_DOTS: GlobOptions = GlobOptions {

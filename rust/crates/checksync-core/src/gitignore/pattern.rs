@@ -1,6 +1,8 @@
 //! Ignore-file patterns: the glob options they use and reading them from lines.
 
-use crate::glob::{CompiledGlob, GlobOptions, HiddenNames, compile_glob};
+mod matches;
+
+use crate::glob::{CompiledGlob, GlobOptions, HiddenNames};
 
 /// One pattern read from a `.gitignore`-style file.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -21,6 +23,46 @@ pub(super) struct GitignorePattern {
     pub(super) anchored: bool,
 }
 
+impl GitignorePattern {
+    /// Reads one line of a `.gitignore`-style file, without its line feed, as a pattern.
+    ///
+    /// One `\r` directly before the line feed is dropped, and then a NUL byte ends
+    /// the line, so a `\r` just before a NUL is kept. A line starting with `#` is a
+    /// comment, and trailing unescaped spaces are dropped. A leading `!` negates the
+    /// pattern and one trailing `/` limits it to folders. A `/` anywhere else anchors
+    /// the pattern to the ignore file's folder, and a leading `/` is then dropped.
+    ///
+    /// Returns `None` if the line is a comment, holds no pattern, or holds one that
+    /// can never match anything, which has no effect.
+    #[must_use]
+    pub(super) fn parse(line: &[u8]) -> Option<Self> {
+        let line = bytes_before_nul(line.strip_suffix(b"\r").unwrap_or(line));
+        if line.first() == Some(&b'#') {
+            return None;
+        }
+        let line = trim_trailing_spaces(line);
+        let negated = line.first() == Some(&b'!');
+        let line = if negated { &line[1..] } else { line };
+        let folders_only = line.last() == Some(&b'/');
+        let line = if folders_only {
+            &line[..line.len() - 1]
+        } else {
+            line
+        };
+        if line.is_empty() {
+            return None;
+        }
+        let anchored = line.contains(&b'/');
+        let glob = line.strip_prefix(b"/").unwrap_or(line);
+        Some(GitignorePattern {
+            glob: CompiledGlob::try_new(glob, GLOB_OPTIONS)?,
+            negated,
+            folders_only,
+            anchored,
+        })
+    }
+}
+
 /// The options every ignore-file glob is matched with.
 ///
 /// `/` separates folders, ASCII case is always ignored, and wildcards match names
@@ -31,44 +73,6 @@ pub(super) const GLOB_OPTIONS: GlobOptions = GlobOptions {
     hidden: HiddenNames::MatchAll,
     unicode: false,
 };
-
-/// Reads one line of a `.gitignore`-style file, without its line feed, as a pattern.
-///
-/// One `\r` directly before the line feed is dropped, and then a NUL byte ends
-/// the line, so a `\r` just before a NUL is kept. A line starting with `#` is a
-/// comment, and trailing unescaped spaces are dropped. A leading `!` negates the
-/// pattern and one trailing `/` limits it to folders. A `/` anywhere else anchors
-/// the pattern to the ignore file's folder, and a leading `/` is then dropped.
-///
-/// Returns `None` if the line is a comment, holds no pattern, or holds one that
-/// can never match anything, which has no effect.
-#[must_use]
-pub(super) fn parse_line(line: &[u8]) -> Option<GitignorePattern> {
-    let line = bytes_before_nul(line.strip_suffix(b"\r").unwrap_or(line));
-    if line.first() == Some(&b'#') {
-        return None;
-    }
-    let line = trim_trailing_spaces(line);
-    let negated = line.first() == Some(&b'!');
-    let line = if negated { &line[1..] } else { line };
-    let folders_only = line.last() == Some(&b'/');
-    let line = if folders_only {
-        &line[..line.len() - 1]
-    } else {
-        line
-    };
-    if line.is_empty() {
-        return None;
-    }
-    let anchored = line.contains(&b'/');
-    let glob = line.strip_prefix(b"/").unwrap_or(line);
-    Some(GitignorePattern {
-        glob: compile_glob(glob, GLOB_OPTIONS)?,
-        negated,
-        folders_only,
-        anchored,
-    })
-}
 
 /// Returns a line of an ignore file without its trailing unescaped spaces.
 ///
@@ -105,12 +109,12 @@ fn bytes_before_nul(bytes: &[u8]) -> &[u8] {
 
 #[cfg(test)]
 mod tests {
-    use super::{GLOB_OPTIONS, GitignorePattern, bytes_before_nul, parse_line};
-    use crate::glob::compile_glob;
+    use super::{GLOB_OPTIONS, GitignorePattern, bytes_before_nul, trim_trailing_spaces};
+    use crate::glob::CompiledGlob;
 
     fn pattern(glob: &[u8], negated: bool, folders_only: bool, anchored: bool) -> GitignorePattern {
         GitignorePattern {
-            glob: compile_glob(glob, GLOB_OPTIONS).unwrap(),
+            glob: CompiledGlob::try_new(glob, GLOB_OPTIONS).unwrap(),
             negated,
             folders_only,
             anchored,
@@ -123,7 +127,7 @@ mod tests {
         let line = b"*.log";
 
         // Act
-        let result = parse_line(line);
+        let result = GitignorePattern::parse(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"*.log", false, false, false)));
@@ -135,7 +139,7 @@ mod tests {
         let line = b"";
 
         // Act
-        let result = parse_line(line);
+        let result = GitignorePattern::parse(line);
 
         // Assert
         assert_eq!(result, None);
@@ -147,7 +151,7 @@ mod tests {
         let line = b"   ";
 
         // Act
-        let result = parse_line(line);
+        let result = GitignorePattern::parse(line);
 
         // Assert
         assert_eq!(result, None);
@@ -159,7 +163,7 @@ mod tests {
         let line = b"# *.js";
 
         // Act
-        let result = parse_line(line);
+        let result = GitignorePattern::parse(line);
 
         // Assert
         assert_eq!(result, None);
@@ -171,7 +175,7 @@ mod tests {
         let line = b"\\#a";
 
         // Act
-        let result = parse_line(line);
+        let result = GitignorePattern::parse(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"\\#a", false, false, false)));
@@ -183,19 +187,19 @@ mod tests {
         let line = b" #a";
 
         // Act
-        let result = parse_line(line);
+        let result = GitignorePattern::parse(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b" #a", false, false, false)));
     }
 
     #[test]
-    fn drops_trailing_spaces() {
+    fn parse_drops_trailing_spaces() {
         // Arrange
         let line = b"a  ";
 
         // Act
-        let result = parse_line(line);
+        let result = GitignorePattern::parse(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"a", false, false, false)));
@@ -207,7 +211,7 @@ mod tests {
         let line = b"a\r\r";
 
         // Act
-        let result = parse_line(line);
+        let result = GitignorePattern::parse(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"a\r", false, false, false)));
@@ -219,7 +223,7 @@ mod tests {
         let line = b"a \r";
 
         // Act
-        let result = parse_line(line);
+        let result = GitignorePattern::parse(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"a", false, false, false)));
@@ -231,7 +235,7 @@ mod tests {
         let line = b"a \0/b";
 
         // Act
-        let result = parse_line(line);
+        let result = GitignorePattern::parse(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"a", false, false, false)));
@@ -243,7 +247,7 @@ mod tests {
         let line = b"a\0x\r";
 
         // Act
-        let result = parse_line(line);
+        let result = GitignorePattern::parse(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"a", false, false, false)));
@@ -255,7 +259,7 @@ mod tests {
         let line = b"a\r\0x";
 
         // Act
-        let result = parse_line(line);
+        let result = GitignorePattern::parse(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"a\r", false, false, false)));
@@ -267,7 +271,7 @@ mod tests {
         let line = b"!a";
 
         // Act
-        let result = parse_line(line);
+        let result = GitignorePattern::parse(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"a", true, false, false)));
@@ -279,7 +283,7 @@ mod tests {
         let line = b"\\!a";
 
         // Act
-        let result = parse_line(line);
+        let result = GitignorePattern::parse(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"\\!a", false, false, false)));
@@ -291,7 +295,7 @@ mod tests {
         let line = b"!";
 
         // Act
-        let result = parse_line(line);
+        let result = GitignorePattern::parse(line);
 
         // Assert
         assert_eq!(result, None);
@@ -303,7 +307,7 @@ mod tests {
         let line = b"build/";
 
         // Act
-        let result = parse_line(line);
+        let result = GitignorePattern::parse(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"build", false, true, false)));
@@ -315,7 +319,7 @@ mod tests {
         let line = b"/";
 
         // Act
-        let result = parse_line(line);
+        let result = GitignorePattern::parse(line);
 
         // Assert
         assert_eq!(result, None);
@@ -327,7 +331,7 @@ mod tests {
         let line = b"foo[ab";
 
         // Act
-        let result = parse_line(line);
+        let result = GitignorePattern::parse(line);
 
         // Assert
         assert_eq!(result, None);
@@ -339,7 +343,7 @@ mod tests {
         let line = b"/build";
 
         // Act
-        let result = parse_line(line);
+        let result = GitignorePattern::parse(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"build", false, false, true)));
@@ -351,7 +355,7 @@ mod tests {
         let line = b"/**b";
 
         // Act
-        let result = parse_line(line);
+        let result = GitignorePattern::parse(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"**b", false, false, true)));
@@ -363,7 +367,7 @@ mod tests {
         let line = b"doc/frotz/";
 
         // Act
-        let result = parse_line(line);
+        let result = GitignorePattern::parse(line);
 
         // Assert
         assert_eq!(result, Some(pattern(b"doc/frotz", false, true, true)));
@@ -392,14 +396,9 @@ mod tests {
         // Assert
         assert_eq!(result, b"abc");
     }
-}
-
-#[cfg(test)]
-mod trim_trailing_spaces_tests {
-    use super::trim_trailing_spaces;
 
     #[test]
-    fn drops_trailing_spaces() {
+    fn trim_drops_trailing_spaces() {
         // Arrange
         let line = b"a.js   ";
 

@@ -11,6 +11,51 @@ pub(super) struct BraceGroup {
     pub(super) end: usize,
 }
 
+impl BraceGroup {
+    /// Returns the brace group that the `{` at `open` starts, if it starts one.
+    ///
+    /// A `{` starts a group when a matching `}` follows, with nested braces balanced,
+    /// and at least one comma lies between them outside any nested braces. A `\`
+    /// escapes the byte after it, and braces and commas inside a `[...]` region don't
+    /// count; an unclosed region means no group. Returns the group's alternatives and
+    /// end, or `None` if the `{` is just a literal byte.
+    #[must_use]
+    fn find(pattern: &[u8], open: usize) -> Option<Self> {
+        let mut depth = 0_usize;
+        let mut alternatives = Vec::new();
+        let mut start = open + 1;
+        let mut index = start;
+        while index < pattern.len() {
+            match pattern[index] {
+                b'\\' => index += 1,
+                b'[' => {
+                    index = brace_bracket_end(pattern, index)?;
+                    continue;
+                }
+                b'{' => depth += 1,
+                b'}' if depth > 0 => depth -= 1,
+                b'}' => {
+                    if alternatives.is_empty() {
+                        return None;
+                    }
+                    alternatives.push(start..index);
+                    return Some(BraceGroup {
+                        alternatives,
+                        end: index + 1,
+                    });
+                }
+                b',' if depth == 0 => {
+                    alternatives.push(start..index);
+                    start = index + 1;
+                }
+                _ => {}
+            }
+            index += 1;
+        }
+        None
+    }
+}
+
 /// What the next piece of a pattern being brace-expanded is.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(super) enum BracePiece {
@@ -20,77 +65,36 @@ pub(super) enum BracePiece {
     Group(BraceGroup),
 }
 
-/// Returns what the next piece of a pattern being brace-expanded is.
-///
-/// `pattern` ends where the run being expanded ends, and `index`, where the piece
-/// starts, must be within it. A piece is a brace group; a `\` and the byte after
-/// it; a `[...]` region, or the rest of the pattern if the region is never
-/// closed; a `{` that starts no group; or a run of other bytes. Everything but a
-/// group is kept exactly as written, so for those this returns where the text
-/// kept as written ends.
-#[must_use]
-pub(super) fn next_brace_piece(pattern: &[u8], index: usize) -> BracePiece {
-    let end = match pattern[index] {
-        b'\\' => (index + 2).min(pattern.len()),
-        b'[' => brace_bracket_end(pattern, index).unwrap_or(pattern.len()),
-        b'{' => {
-            return find_brace_group(pattern, index)
-                .map_or(BracePiece::Text(index + 1), BracePiece::Group);
-        }
-        _ => pattern[index..]
-            .iter()
-            .position(|byte| matches!(byte, b'\\' | b'[' | b'{'))
-            .map_or(pattern.len(), |offset| index + offset),
-    };
-    BracePiece::Text(end)
-}
-
-/// Returns the brace group that the `{` at `open` starts, if it starts one.
-///
-/// A `{` starts a group when a matching `}` follows, with nested braces balanced,
-/// and at least one comma lies between them outside any nested braces. A `\`
-/// escapes the byte after it, and braces and commas inside a `[...]` region don't
-/// count; an unclosed region means no group. Returns the group's alternatives and
-/// end, or `None` if the `{` is just a literal byte.
-#[must_use]
-fn find_brace_group(pattern: &[u8], open: usize) -> Option<BraceGroup> {
-    let mut depth = 0_usize;
-    let mut alternatives = Vec::new();
-    let mut start = open + 1;
-    let mut index = start;
-    while index < pattern.len() {
-        match pattern[index] {
-            b'\\' => index += 1,
-            b'[' => {
-                index = brace_bracket_end(pattern, index)?;
-                continue;
+impl BracePiece {
+    /// Returns what the next piece of a pattern being brace-expanded is.
+    ///
+    /// `pattern` ends where the run being expanded ends, and `index`, where the piece
+    /// starts, must be within it. A piece is a brace group; a `\` and the byte after
+    /// it; a `[...]` region, or the rest of the pattern if the region is never
+    /// closed; a `{` that starts no group; or a run of other bytes. Everything but a
+    /// group is kept exactly as written, so for those this returns where the text
+    /// kept as written ends.
+    #[must_use]
+    pub(super) fn read(pattern: &[u8], index: usize) -> Self {
+        let end = match pattern[index] {
+            b'\\' => (index + 2).min(pattern.len()),
+            b'[' => brace_bracket_end(pattern, index).unwrap_or(pattern.len()),
+            b'{' => {
+                return BraceGroup::find(pattern, index)
+                    .map_or(BracePiece::Text(index + 1), BracePiece::Group);
             }
-            b'{' => depth += 1,
-            b'}' if depth > 0 => depth -= 1,
-            b'}' => {
-                if alternatives.is_empty() {
-                    return None;
-                }
-                alternatives.push(start..index);
-                return Some(BraceGroup {
-                    alternatives,
-                    end: index + 1,
-                });
-            }
-            b',' if depth == 0 => {
-                alternatives.push(start..index);
-                start = index + 1;
-            }
-            _ => {}
-        }
-        index += 1;
+            _ => pattern[index..]
+                .iter()
+                .position(|byte| matches!(byte, b'\\' | b'[' | b'{'))
+                .map_or(pattern.len(), |offset| index + offset),
+        };
+        BracePiece::Text(end)
     }
-    None
 }
 
 #[cfg(test)]
 mod tests {
-    use super::{BraceGroup, BracePiece, find_brace_group, next_brace_piece};
+    use super::{BraceGroup, BracePiece};
 
     #[test]
     fn finds_a_run_of_ordinary_bytes() {
@@ -98,7 +102,7 @@ mod tests {
         let pattern = b"ab,}{c,d}";
 
         // Act
-        let result = next_brace_piece(pattern, 0);
+        let result = BracePiece::read(pattern, 0);
 
         // Assert
         assert_eq!(result, BracePiece::Text(4));
@@ -110,7 +114,7 @@ mod tests {
         let pattern = b"ab";
 
         // Act
-        let result = next_brace_piece(pattern, 0);
+        let result = BracePiece::read(pattern, 0);
 
         // Assert
         assert_eq!(result, BracePiece::Text(2));
@@ -122,7 +126,7 @@ mod tests {
         let pattern = b"\\{a";
 
         // Act
-        let result = next_brace_piece(pattern, 0);
+        let result = BracePiece::read(pattern, 0);
 
         // Assert
         assert_eq!(result, BracePiece::Text(2));
@@ -134,7 +138,7 @@ mod tests {
         let pattern = b"a\\";
 
         // Act
-        let result = next_brace_piece(pattern, 1);
+        let result = BracePiece::read(pattern, 1);
 
         // Assert
         assert_eq!(result, BracePiece::Text(2));
@@ -146,7 +150,7 @@ mod tests {
         let pattern = b"[{a,b}]c";
 
         // Act
-        let result = next_brace_piece(pattern, 0);
+        let result = BracePiece::read(pattern, 0);
 
         // Assert
         assert_eq!(result, BracePiece::Text(7));
@@ -158,7 +162,7 @@ mod tests {
         let pattern = b"[{a,b}";
 
         // Act
-        let result = next_brace_piece(pattern, 0);
+        let result = BracePiece::read(pattern, 0);
 
         // Assert
         assert_eq!(result, BracePiece::Text(6));
@@ -170,7 +174,7 @@ mod tests {
         let pattern = b"{a,b}e";
 
         // Act
-        let result = next_brace_piece(pattern, 0);
+        let result = BracePiece::read(pattern, 0);
 
         // Assert
         assert_eq!(
@@ -188,7 +192,7 @@ mod tests {
         let pattern = b"{a}";
 
         // Act
-        let result = next_brace_piece(pattern, 0);
+        let result = BracePiece::read(pattern, 0);
 
         // Assert
         assert_eq!(result, BracePiece::Text(1));
@@ -200,7 +204,7 @@ mod tests {
         let pattern = b"x{a,bc}y";
 
         // Act
-        let result = find_brace_group(pattern, 1);
+        let result = BraceGroup::find(pattern, 1);
 
         // Assert
         assert_eq!(
@@ -218,7 +222,7 @@ mod tests {
         let pattern = b"{a,b{c,d}}";
 
         // Act
-        let result = find_brace_group(pattern, 0);
+        let result = BraceGroup::find(pattern, 0);
 
         // Assert
         assert_eq!(
@@ -236,7 +240,7 @@ mod tests {
         let pattern = b"{a}";
 
         // Act
-        let result = find_brace_group(pattern, 0);
+        let result = BraceGroup::find(pattern, 0);
 
         // Assert
         assert_eq!(result, None);
@@ -248,7 +252,7 @@ mod tests {
         let pattern = b"{a,b{c}";
 
         // Act
-        let result = find_brace_group(pattern, 0);
+        let result = BraceGroup::find(pattern, 0);
 
         // Assert
         assert_eq!(result, None);
@@ -260,7 +264,7 @@ mod tests {
         let pattern = b"{a\\,b\\},c}";
 
         // Act
-        let result = find_brace_group(pattern, 0);
+        let result = BraceGroup::find(pattern, 0);
 
         // Assert
         assert_eq!(
@@ -278,7 +282,7 @@ mod tests {
         let pattern = b"{[a,b]}";
 
         // Act
-        let result = find_brace_group(pattern, 0);
+        let result = BraceGroup::find(pattern, 0);
 
         // Assert
         assert_eq!(result, None);
@@ -290,7 +294,7 @@ mod tests {
         let pattern = b"{a,[b}";
 
         // Act
-        let result = find_brace_group(pattern, 0);
+        let result = BraceGroup::find(pattern, 0);
 
         // Assert
         assert_eq!(result, None);

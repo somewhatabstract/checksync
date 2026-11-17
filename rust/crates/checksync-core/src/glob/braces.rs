@@ -35,7 +35,7 @@ const MAX_PATTERN_LENGTH: usize = 10_000;
 /// Duplicates, such as the two `a`s from `{a,a}`, are kept; callers that need
 /// unique patterns must remove them.
 ///
-/// A NUL byte ends the pattern, as it does for [`compile_glob`], so nothing after
+/// A NUL byte ends the pattern, as it does for [`CompiledGlob::try_new`], so nothing after
 /// it is expanded or counted against the limits.
 ///
 /// A pattern with no brace group always gives just itself, at any length. To stay
@@ -45,7 +45,7 @@ const MAX_PATTERN_LENGTH: usize = 10_000;
 /// [`MAX_RESULT_BYTES`] (10,000,000) bytes. Any
 /// expansion within those limits is accepted, whatever order its groups come in,
 /// and while working it holds at most about twice its output, as
-/// [`take_brace_budget`] checks. Groups may nest to any depth: expansion keeps its
+/// [`BraceBudget::take`] checks. Groups may nest to any depth: expansion keeps its
 /// work on the heap, so its use of the call stack doesn't grow with the nesting.
 ///
 /// # Errors
@@ -54,10 +54,10 @@ const MAX_PATTERN_LENGTH: usize = 10_000;
 /// the length limit, and [`BraceExpansionError::TooManyResults`] when the groups
 /// would expand past the result limits.
 ///
-/// [`compile_glob`]: super::compiled_glob::compile_glob
+/// [`CompiledGlob::try_new`]: super::compiled_glob::CompiledGlob::try_new
 /// [`MAX_RESULTS`]: combine::MAX_RESULTS
 /// [`MAX_RESULT_BYTES`]: combine::MAX_RESULT_BYTES
-/// [`take_brace_budget`]: budget::take_brace_budget
+/// [`BraceBudget::take`]: budget::BraceBudget::take
 pub(crate) fn expand_braces(pattern: &[u8]) -> Result<Vec<Vec<u8>>, BraceExpansionError> {
     let pattern = bytes_before_nul(pattern);
     if !contains_brace_group(pattern) {
@@ -80,18 +80,18 @@ pub(crate) enum BraceExpansionError {
     ///
     /// The result limits, [`MAX_RESULTS`](combine::MAX_RESULTS) and
     /// [`MAX_RESULT_BYTES`](combine::MAX_RESULT_BYTES), and
-    /// [`take_brace_budget`](budget::take_brace_budget) set the limits, counting
+    /// [`BraceBudget::take`](budget::BraceBudget::take) set the limits, counting
     /// every pattern and byte held at once, including partial results while
     /// groups nest.
     TooManyResults,
 }
 
 #[cfg(test)]
-mod tests {
+pub(super) mod tests {
     use super::{BraceExpansionError, MAX_PATTERN_LENGTH, expand_braces};
 
     /// What `expand` gives: the expanded patterns as strings, or the error.
-    type Expansion = Result<Vec<String>, BraceExpansionError>;
+    pub(in crate::glob) type Expansion = Result<Vec<String>, BraceExpansionError>;
 
     /// Turns string slices into owned strings, for comparing with `expand`.
     fn strings(items: &[&str]) -> Vec<String> {
@@ -99,7 +99,7 @@ mod tests {
     }
 
     /// Expands `pattern` and turns the results into strings for comparing.
-    fn expand(pattern: &str) -> Expansion {
+    pub(in crate::glob) fn expand(pattern: &str) -> Expansion {
         expand_braces(pattern.as_bytes()).map(|results| {
             results
                 .iter()

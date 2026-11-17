@@ -30,6 +30,54 @@ pub(super) enum PosixClass {
     Xdigit,
 }
 
+impl PosixClass {
+    /// Returns the POSIX character class named between `[:` and `:]`, if it's known.
+    ///
+    /// Names are case-sensitive, so `ALPHA` isn't a class. Returns `None` if the name
+    /// isn't one of the twelve known classes.
+    #[must_use]
+    fn from_name(name: &[u8]) -> Option<Self> {
+        match name {
+            b"alnum" => Some(PosixClass::Alnum),
+            b"alpha" => Some(PosixClass::Alpha),
+            b"blank" => Some(PosixClass::Blank),
+            b"cntrl" => Some(PosixClass::Cntrl),
+            b"digit" => Some(PosixClass::Digit),
+            b"graph" => Some(PosixClass::Graph),
+            b"lower" => Some(PosixClass::Lower),
+            b"print" => Some(PosixClass::Print),
+            b"punct" => Some(PosixClass::Punct),
+            b"space" => Some(PosixClass::Space),
+            b"upper" => Some(PosixClass::Upper),
+            b"xdigit" => Some(PosixClass::Xdigit),
+            _ => None,
+        }
+    }
+
+    /// Checks whether a byte belongs to this POSIX character class.
+    ///
+    /// The byte is compared exactly, without folding case. Only ASCII bytes belong to
+    /// any class. Space counts only space, tab, line feed and carriage return, not
+    /// vertical tab or form feed.
+    #[must_use]
+    pub(super) fn contains(self, byte: u8) -> bool {
+        match self {
+            PosixClass::Alnum => byte.is_ascii_alphanumeric(),
+            PosixClass::Alpha => byte.is_ascii_alphabetic(),
+            PosixClass::Blank => matches!(byte, b' ' | b'\t'),
+            PosixClass::Cntrl => byte.is_ascii_control(),
+            PosixClass::Digit => byte.is_ascii_digit(),
+            PosixClass::Graph => byte.is_ascii_graphic(),
+            PosixClass::Lower => byte.is_ascii_lowercase(),
+            PosixClass::Print => byte.is_ascii_graphic() || byte == b' ',
+            PosixClass::Punct => byte.is_ascii_punctuation(),
+            PosixClass::Space => matches!(byte, b' ' | b'\t' | b'\n' | b'\r'),
+            PosixClass::Upper => byte.is_ascii_uppercase(),
+            PosixClass::Xdigit => byte.is_ascii_hexdigit(),
+        }
+    }
+}
+
 /// What a `[:` inside a bracket set turned out to start.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub(super) enum ClassSyntax {
@@ -41,82 +89,36 @@ pub(super) enum ClassSyntax {
     Unknown,
 }
 
-/// Works out whether the `[:` at `index`, inside a bracket set, starts a POSIX class.
-///
-/// It does when the first `]` after the `[:` comes straight after a `:` that
-/// isn't part of the `[:` itself. The name is whatever lies between, so `[:a]b:]`
-/// isn't a class (its first `]` follows `a`), while `[::]` is a class with an
-/// empty, unknown name. Returns [`ClassSyntax::Known`] with the class and the
-/// index just past its `:]`, [`ClassSyntax::Unknown`] if the name isn't a known
-/// class, or [`ClassSyntax::NotAClass`] if the `[` is just an ordinary member of
-/// the set.
-#[must_use]
-pub(super) fn read_bracket_class(pattern: &[u8], index: usize) -> ClassSyntax {
-    let name_start = index + 2;
-    let Some(offset) = pattern[name_start..].iter().position(|&byte| byte == b']') else {
-        return ClassSyntax::NotAClass;
-    };
-    let close = name_start + offset;
-    if close == name_start || pattern[close - 1] != b':' {
-        return ClassSyntax::NotAClass;
-    }
-    match posix_class_from_name(&pattern[name_start..close - 1]) {
-        Some(class) => ClassSyntax::Known(class, close + 1),
-        None => ClassSyntax::Unknown,
-    }
-}
-
-/// Returns the POSIX character class named between `[:` and `:]`, if it's known.
-///
-/// Names are case-sensitive, so `ALPHA` isn't a class. Returns `None` if the name
-/// isn't one of the twelve known classes.
-#[must_use]
-fn posix_class_from_name(name: &[u8]) -> Option<PosixClass> {
-    match name {
-        b"alnum" => Some(PosixClass::Alnum),
-        b"alpha" => Some(PosixClass::Alpha),
-        b"blank" => Some(PosixClass::Blank),
-        b"cntrl" => Some(PosixClass::Cntrl),
-        b"digit" => Some(PosixClass::Digit),
-        b"graph" => Some(PosixClass::Graph),
-        b"lower" => Some(PosixClass::Lower),
-        b"print" => Some(PosixClass::Print),
-        b"punct" => Some(PosixClass::Punct),
-        b"space" => Some(PosixClass::Space),
-        b"upper" => Some(PosixClass::Upper),
-        b"xdigit" => Some(PosixClass::Xdigit),
-        _ => None,
-    }
-}
-
-/// Checks whether a byte belongs to a POSIX character class.
-///
-/// The byte is compared exactly, without folding case. Only ASCII bytes belong to
-/// any class. Space counts only space, tab, line feed and carriage return, not
-/// vertical tab or form feed.
-#[must_use]
-pub(super) fn posix_class_contains(class: PosixClass, byte: u8) -> bool {
-    match class {
-        PosixClass::Alnum => byte.is_ascii_alphanumeric(),
-        PosixClass::Alpha => byte.is_ascii_alphabetic(),
-        PosixClass::Blank => matches!(byte, b' ' | b'\t'),
-        PosixClass::Cntrl => byte.is_ascii_control(),
-        PosixClass::Digit => byte.is_ascii_digit(),
-        PosixClass::Graph => byte.is_ascii_graphic(),
-        PosixClass::Lower => byte.is_ascii_lowercase(),
-        PosixClass::Print => byte.is_ascii_graphic() || byte == b' ',
-        PosixClass::Punct => byte.is_ascii_punctuation(),
-        PosixClass::Space => matches!(byte, b' ' | b'\t' | b'\n' | b'\r'),
-        PosixClass::Upper => byte.is_ascii_uppercase(),
-        PosixClass::Xdigit => byte.is_ascii_hexdigit(),
+impl ClassSyntax {
+    /// Works out whether the `[:` at `index`, inside a bracket set, starts a POSIX class.
+    ///
+    /// It does when the first `]` after the `[:` comes straight after a `:` that
+    /// isn't part of the `[:` itself. The name is whatever lies between, so `[:a]b:]`
+    /// isn't a class (its first `]` follows `a`), while `[::]` is a class with an
+    /// empty, unknown name. Returns [`ClassSyntax::Known`] with the class and the
+    /// index just past its `:]`, [`ClassSyntax::Unknown`] if the name isn't a known
+    /// class, or [`ClassSyntax::NotAClass`] if the `[` is just an ordinary member of
+    /// the set.
+    #[must_use]
+    pub(super) fn read(pattern: &[u8], index: usize) -> Self {
+        let name_start = index + 2;
+        let Some(offset) = pattern[name_start..].iter().position(|&byte| byte == b']') else {
+            return ClassSyntax::NotAClass;
+        };
+        let close = name_start + offset;
+        if close == name_start || pattern[close - 1] != b':' {
+            return ClassSyntax::NotAClass;
+        }
+        match PosixClass::from_name(&pattern[name_start..close - 1]) {
+            Some(class) => ClassSyntax::Known(class, close + 1),
+            None => ClassSyntax::Unknown,
+        }
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use super::{
-        ClassSyntax, PosixClass, posix_class_contains, posix_class_from_name, read_bracket_class,
-    };
+    use super::{ClassSyntax, PosixClass};
 
     #[test]
     fn reads_a_known_class() {
@@ -124,7 +126,7 @@ mod tests {
         let pattern = b"[[:alpha:]]";
 
         // Act
-        let result = read_bracket_class(pattern, 1);
+        let result = ClassSyntax::read(pattern, 1);
 
         // Assert
         assert_eq!(result, ClassSyntax::Known(PosixClass::Alpha, 10));
@@ -136,7 +138,7 @@ mod tests {
         let pattern = b"[[:foo:]]";
 
         // Act
-        let result = read_bracket_class(pattern, 1);
+        let result = ClassSyntax::read(pattern, 1);
 
         // Assert
         assert_eq!(result, ClassSyntax::Unknown);
@@ -148,7 +150,7 @@ mod tests {
         let pattern = b"[[::]]";
 
         // Act
-        let result = read_bracket_class(pattern, 1);
+        let result = ClassSyntax::read(pattern, 1);
 
         // Assert
         assert_eq!(result, ClassSyntax::Unknown);
@@ -160,7 +162,7 @@ mod tests {
         let pattern = b"[[:alpha";
 
         // Act
-        let result = read_bracket_class(pattern, 1);
+        let result = ClassSyntax::read(pattern, 1);
 
         // Assert
         assert_eq!(result, ClassSyntax::NotAClass);
@@ -172,7 +174,7 @@ mod tests {
         let pattern = b"[[:a]b:]]";
 
         // Act
-        let result = read_bracket_class(pattern, 1);
+        let result = ClassSyntax::read(pattern, 1);
 
         // Assert
         assert_eq!(result, ClassSyntax::NotAClass);
@@ -184,7 +186,7 @@ mod tests {
         let pattern = b"[[:]]";
 
         // Act
-        let result = read_bracket_class(pattern, 1);
+        let result = ClassSyntax::read(pattern, 1);
 
         // Assert
         assert_eq!(result, ClassSyntax::NotAClass);
@@ -201,7 +203,7 @@ mod tests {
         // Act
         let result: Vec<Option<PosixClass>> = names
             .iter()
-            .map(|name| posix_class_from_name(name))
+            .map(|name| PosixClass::from_name(name))
             .collect();
 
         // Assert
@@ -230,7 +232,7 @@ mod tests {
         let name = b"foo";
 
         // Act
-        let result = posix_class_from_name(name);
+        let result = PosixClass::from_name(name);
 
         // Assert
         assert_eq!(result, None);
@@ -242,7 +244,7 @@ mod tests {
         let name = b"ALPHA";
 
         // Act
-        let result = posix_class_from_name(name);
+        let result = PosixClass::from_name(name);
 
         // Assert
         assert_eq!(result, None);
@@ -250,9 +252,7 @@ mod tests {
 
     /// Returns the bytes from 1 to 255 that belong to a class.
     fn members(class: PosixClass) -> Vec<u8> {
-        (1..=255)
-            .filter(|&byte| posix_class_contains(class, byte))
-            .collect()
+        (1..=255).filter(|&byte| class.contains(byte)).collect()
     }
 
     #[test]
