@@ -1,11 +1,9 @@
 use indexmap::IndexMap;
 use regex::Regex;
 
-use crate::errors;
+use crate::errors::ErrorDetails;
 use crate::js::{JS_WHITESPACE_CLASS, js_object_keys, js_trim};
-use crate::types::{
-    ErrorDetails, NormalizedPathInfo, ParseEvent, ParsedMarker, Target, TargetType, Targets,
-};
+use crate::types::{NormalizedPathInfo, ParseEvent, ParsedMarker, Target, TargetType, Targets};
 
 /// A sync-start tag recorded for an open marker.
 struct TrackedTarget {
@@ -103,7 +101,7 @@ where
             let comment_start = start.get(1).map_or("", |m| m.as_str());
             let details = start.get(2).map_or("", |m| m.as_str());
             match self.start_tag_decode.captures(details) {
-                None => self.report(errors::malformed_start_tag(line_number)),
+                None => self.report(ErrorDetails::malformed_start_tag(line_number)),
                 Some(decoded) => {
                     let group = |index: usize| decoded.get(index).map_or("", |m| m.as_str());
                     let (id, checksum, target, comment_end) =
@@ -125,7 +123,7 @@ where
         if let Some(end) = self.end_tag.captures(tag_search) {
             let details = end.get(1).map_or("", |m| m.as_str());
             match self.end_tag_decode.captures(details) {
-                None => self.report(errors::malformed_end_tag(line_number)),
+                None => self.report(ErrorDetails::malformed_end_tag(line_number)),
                 Some(decoded) => {
                     let id = decoded.get(1).map_or("", |m| m.as_str());
                     self.record_marker_end(id, line_number);
@@ -153,7 +151,7 @@ where
                 .first()
                 .map(|path| &marker.targets[*path]);
             for target in first_target.into_iter().flatten() {
-                self.report(errors::start_tag_without_end_tag(id, target.line));
+                self.report(ErrorDetails::start_tag_without_end_tag(id, target.line));
             }
         }
         self.events
@@ -190,16 +188,16 @@ where
 
         let mut found = Vec::new();
         if marker.comment_start != comment_start {
-            found.push(errors::different_comment_syntax(id, line));
+            found.push(ErrorDetails::different_comment_syntax(id, line));
         }
         if !normalized.exists {
-            found.push(errors::file_does_not_exist(id, line, target_path));
+            found.push(ErrorDetails::file_does_not_exist(id, line, target_path));
         }
         if marker.targets.contains_key(&normalized.path) {
-            found.push(errors::duplicate_target(id, line, declaration));
+            found.push(ErrorDetails::duplicate_target(id, line, declaration));
         }
         if !marker.content.is_empty() {
-            found.push(errors::start_tag_after_content(id, line));
+            found.push(ErrorDetails::start_tag_after_content(id, line));
         }
         marker
             .targets
@@ -217,7 +215,7 @@ where
     fn record_marker_end(&mut self, id: &str, line: usize) {
         let marker = self.open_markers.shift_remove(id);
         if marker.is_none() {
-            self.report(errors::end_tag_without_start_tag(id, line));
+            self.report(ErrorDetails::end_tag_without_start_tag(id, line));
         }
         let parsed = match marker {
             None => ParsedMarker {
@@ -258,7 +256,7 @@ where
 #[cfg(test)]
 mod tests {
     use super::MarkerParser;
-    use crate::errors;
+    use crate::errors::ErrorDetails;
     use crate::types::{NormalizedPathInfo, ParseEvent, ParsedMarker, Target, TargetType, Targets};
 
     /// Resolves every target as an existing local file.
@@ -333,7 +331,9 @@ mod tests {
         // Assert
         assert_eq!(
             result,
-            [ParseEvent::Error(errors::start_tag_without_end_tag("x", 1))]
+            [ParseEvent::Error(ErrorDetails::start_tag_without_end_tag(
+                "x", 1
+            ))]
         );
     }
 

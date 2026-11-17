@@ -1,5 +1,7 @@
 //! Planning a search: which folders to walk for which include patterns.
 
+mod find_files;
+
 use crate::glob::{BraceExpansionError, expand_braces};
 
 use super::GetFilesError;
@@ -28,54 +30,53 @@ pub(super) struct GlobPlan {
     pub excludes: Vec<String>,
 }
 
-/// Plans a search: which folders to walk, for which patterns, excluding what.
-///
-/// Include patterns are relative to the working folder, and exclude patterns
-/// are relative to it or absolute. Each include pattern's brace groups are
-/// expanded, and each result becomes a task that walks the folder before its
-/// first glob character. An include pattern starting with `!` excludes
-/// instead, and an exclude pattern starting with `!` excludes all the same,
-/// as in fast-glob. Every pattern has its repeated slashes collapsed and
-/// leading `./`s dropped.
-///
-/// # Errors
-///
-/// Returns [`GetFilesError::PatternTooLong`] for a pattern too long to expand
-/// its braces, and [`GetFilesError::TooManyPatterns`] for one whose braces
-/// expand to too many patterns.
-pub(super) fn plan_glob_tasks(
-    includes: &[String],
-    excludes: &[String],
-) -> Result<GlobPlan, GetFilesError> {
-    let mut plan = GlobPlan {
-        tasks: Vec::new(),
-        excludes: Vec::new(),
-    };
-    let mut exclude_sources: Vec<&str> = Vec::new();
-    for include in includes {
-        if let Some(negated) = include.strip_prefix('!') {
-            exclude_sources.push(negated);
-            continue;
+impl GlobPlan {
+    /// Plans a search: which folders to walk, for which patterns, excluding what.
+    ///
+    /// Include patterns are relative to the working folder, and exclude
+    /// patterns are relative to it or absolute. Each include pattern's brace
+    /// groups are expanded, and each result becomes a task that walks the
+    /// folder before its first glob character. An include pattern starting
+    /// with `!` excludes instead, and an exclude pattern starting with `!`
+    /// excludes all the same, as in fast-glob. Every pattern has its repeated
+    /// slashes collapsed and leading `./`s dropped.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`GetFilesError::PatternTooLong`] for a pattern too long to
+    /// expand its braces, and [`GetFilesError::TooManyPatterns`] for one whose
+    /// braces expand to too many patterns.
+    pub(super) fn try_new(includes: &[String], excludes: &[String]) -> Result<Self, GetFilesError> {
+        let mut plan = Self {
+            tasks: Vec::new(),
+            excludes: Vec::new(),
+        };
+        let mut exclude_sources: Vec<&str> = Vec::new();
+        for include in includes {
+            if let Some(negated) = include.strip_prefix('!') {
+                exclude_sources.push(negated);
+                continue;
+            }
+            for pattern in expand_pattern_braces(include)? {
+                let pattern = tidy_pattern(&pattern);
+                plan.tasks.push(GlobTask {
+                    base: glob_base(&pattern),
+                    pattern,
+                });
+            }
         }
-        for pattern in expand_pattern_braces(include)? {
-            let pattern = tidy_pattern(&pattern);
-            plan.tasks.push(GlobTask {
-                base: glob_base(&pattern),
-                pattern,
-            });
+        exclude_sources.extend(
+            excludes
+                .iter()
+                .map(|exclude| exclude.strip_prefix('!').unwrap_or(exclude)),
+        );
+        for source in exclude_sources {
+            for pattern in expand_pattern_braces(source)? {
+                plan.excludes.push(tidy_pattern(&pattern));
+            }
         }
+        Ok(plan)
     }
-    exclude_sources.extend(
-        excludes
-            .iter()
-            .map(|exclude| exclude.strip_prefix('!').unwrap_or(exclude)),
-    );
-    for source in exclude_sources {
-        for pattern in expand_pattern_braces(source)? {
-            plan.excludes.push(tidy_pattern(&pattern));
-        }
-    }
-    Ok(plan)
 }
 
 /// Expands a pattern's brace groups into the patterns they stand for.
@@ -110,7 +111,7 @@ fn expand_pattern_braces(pattern: &str) -> Result<Vec<String>, GetFilesError> {
 
 #[cfg(test)]
 mod tests {
-    use super::{GlobPlan, GlobTask, expand_pattern_braces, plan_glob_tasks};
+    use super::{GlobPlan, GlobTask, expand_pattern_braces};
 
     fn strings(values: &[&str]) -> Vec<String> {
         values.iter().map(|&value| value.to_owned()).collect()
@@ -133,7 +134,7 @@ mod tests {
         let includes = strings(&["src/*.js", "**/*.ts"]);
 
         // Act
-        let result = plan_glob_tasks(&includes, &[]).unwrap();
+        let result = GlobPlan::try_new(&includes, &[]).unwrap();
 
         // Assert
         assert_eq!(
@@ -151,7 +152,7 @@ mod tests {
         let includes = strings(&["{src,lib}/*.js"]);
 
         // Act
-        let result = plan_glob_tasks(&includes, &[]).unwrap();
+        let result = GlobPlan::try_new(&includes, &[]).unwrap();
 
         // Assert
         assert_eq!(
@@ -166,7 +167,7 @@ mod tests {
         let includes = strings(&[".//src//a.js"]);
 
         // Act
-        let result = plan_glob_tasks(&includes, &[]).unwrap();
+        let result = GlobPlan::try_new(&includes, &[]).unwrap();
 
         // Assert
         assert_eq!(result.tasks, vec![task("src", "src/a.js")]);
@@ -178,7 +179,7 @@ mod tests {
         let includes = strings(&["src/**", "!./src/nested/**"]);
 
         // Act
-        let result = plan_glob_tasks(&includes, &[]).unwrap();
+        let result = GlobPlan::try_new(&includes, &[]).unwrap();
 
         // Assert
         assert_eq!(
@@ -196,7 +197,7 @@ mod tests {
         let excludes = strings(&["./{a,b}//**"]);
 
         // Act
-        let result = plan_glob_tasks(&[], &excludes).unwrap();
+        let result = GlobPlan::try_new(&[], &excludes).unwrap();
 
         // Assert
         assert_eq!(result.excludes, strings(&["a/**", "b/**"]));
@@ -208,7 +209,7 @@ mod tests {
         let excludes = strings(&["!src/a.js"]);
 
         // Act
-        let result = plan_glob_tasks(&[], &excludes).unwrap();
+        let result = GlobPlan::try_new(&[], &excludes).unwrap();
 
         // Assert
         assert_eq!(result.excludes, strings(&["src/a.js"]));
@@ -220,7 +221,7 @@ mod tests {
         let includes = vec!["{a,b}".repeat(20)];
 
         // Act
-        let result = plan_glob_tasks(&includes, &[]).map(|_| ());
+        let result = GlobPlan::try_new(&includes, &[]).map(|_| ());
 
         // Assert
         assert_eq!(
@@ -235,7 +236,7 @@ mod tests {
         let includes = vec![format!("!{}", "{a,b}".repeat(20))];
 
         // Act
-        let result = plan_glob_tasks(&includes, &[]).map(|_| ());
+        let result = GlobPlan::try_new(&includes, &[]).map(|_| ());
 
         // Assert
         assert_eq!(
@@ -250,7 +251,7 @@ mod tests {
         let excludes = vec!["{a,b}".repeat(20)];
 
         // Act
-        let result = plan_glob_tasks(&[], &excludes).map(|_| ());
+        let result = GlobPlan::try_new(&[], &excludes).map(|_| ());
 
         // Assert
         assert_eq!(

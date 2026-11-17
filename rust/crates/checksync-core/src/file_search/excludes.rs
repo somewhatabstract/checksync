@@ -6,7 +6,7 @@ use crate::node_path::node_normalize;
 
 use super::EXCLUDE_GLOB_OPTIONS;
 use super::glob_text::glob_text;
-use super::pattern_set::{PatternSet, compile_pattern_set, matches_pattern_set};
+use super::pattern_set::PatternSet;
 
 /// Exclude patterns compiled for checking files and folders.
 #[derive(Debug, Clone, Default)]
@@ -36,55 +36,82 @@ pub(super) struct ExcludeGlobs {
     cwd: PathBuf,
 }
 
-/// Compiles exclude patterns, keeping absolute ones apart.
-///
-/// Relative patterns are matched against paths relative to `cwd`, the
-/// absolute working folder, and absolute ones against absolute paths, as in
-/// fast-glob. The patterns have `/` between names.
-#[must_use]
-pub(super) fn compile_exclude_globs(excludes: &[String], cwd: &Path) -> ExcludeGlobs {
-    let (absolute, relative): (Vec<&str>, Vec<&str>) = excludes
-        .iter()
-        .map(String::as_str)
-        .partition(|pattern| Path::new(pattern).is_absolute());
-    ExcludeGlobs {
-        relative: compile_exclude_patterns(&relative),
-        absolute: (!absolute.is_empty()).then(|| compile_exclude_patterns(&absolute)),
-        cwd: cwd.to_path_buf(),
+impl ExcludePatterns {
+    /// Compiles patterns for files, and the folders before any trailing `/**`.
+    fn new(patterns: &[&str]) -> Self {
+        Self {
+            paths: PatternSet::new(patterns.iter().copied(), EXCLUDE_GLOB_OPTIONS),
+            folders: PatternSet::new(
+                patterns
+                    .iter()
+                    .filter_map(|pattern| pattern.strip_suffix("/**")),
+                EXCLUDE_GLOB_OPTIONS,
+            ),
+        }
     }
 }
 
-/// Compiles patterns for files, and the folders before any trailing `/**`.
-fn compile_exclude_patterns(patterns: &[&str]) -> ExcludePatterns {
-    ExcludePatterns {
-        paths: compile_pattern_set(patterns.iter().copied(), EXCLUDE_GLOB_OPTIONS),
-        folders: compile_pattern_set(
-            patterns
-                .iter()
-                .filter_map(|pattern| pattern.strip_suffix("/**")),
-            EXCLUDE_GLOB_OPTIONS,
-        ),
+impl ExcludeGlobs {
+    /// Compiles exclude patterns, keeping absolute ones apart.
+    ///
+    /// Relative patterns are matched against paths relative to `cwd`, the
+    /// absolute working folder, and absolute ones against absolute paths, as
+    /// in fast-glob. The patterns have `/` between names.
+    #[must_use]
+    pub(super) fn new(excludes: &[String], cwd: &Path) -> Self {
+        let (absolute, relative): (Vec<&str>, Vec<&str>) = excludes
+            .iter()
+            .map(String::as_str)
+            .partition(|pattern| Path::new(pattern).is_absolute());
+        Self {
+            relative: ExcludePatterns::new(&relative),
+            absolute: (!absolute.is_empty()).then(|| ExcludePatterns::new(&absolute)),
+            cwd: cwd.to_path_buf(),
+        }
     }
-}
 
-/// Checks whether an exclude pattern removes a file or prunes a folder.
-///
-/// `text` is the path's text, relative to the working folder or absolute,
-/// and `folder` says whether the path is a folder. Relative patterns are
-/// matched against the path's text, and absolute ones against its absolute
-/// path. A pattern ending in `/**` also prunes the folder before it, so
-/// `node_modules/**` prunes `node_modules`.
-#[must_use]
-pub(super) fn is_excluded(excludes: &ExcludeGlobs, text: &[u8], folder: bool) -> bool {
-    let matches = |patterns: &ExcludePatterns, text: &[u8]| {
-        matches_pattern_set(&patterns.paths, text)
-            || (folder && matches_pattern_set(&patterns.folders, text))
-    };
-    matches(&excludes.relative, text)
-        || excludes
-            .absolute
-            .as_ref()
-            .is_some_and(|absolute| matches(absolute, &absolute_glob_text(&excludes.cwd, text)))
+    /// Checks whether an exclude pattern removes a file or prunes a folder.
+    ///
+    /// `text` is the path's text, relative to the working folder or absolute,
+    /// and `folder` says whether the path is a folder. Relative patterns are
+    /// matched against the path's text, and absolute ones against its
+    /// absolute path. A pattern ending in `/**` also prunes the folder before
+    /// it, so `node_modules/**` prunes `node_modules`.
+    #[must_use]
+    pub(super) fn is_excluded(&self, text: &[u8], folder: bool) -> bool {
+        let matches = |patterns: &ExcludePatterns, text: &[u8]| {
+            patterns.paths.matches(text) || (folder && patterns.folders.matches(text))
+        };
+        matches(&self.relative, text)
+            || self
+                .absolute
+                .as_ref()
+                .is_some_and(|absolute| matches(absolute, &absolute_glob_text(&self.cwd, text)))
+    }
+
+    /// Checks whether an exclude pattern prunes a task's folder or one above it.
+    ///
+    /// Walking starts at the task's folder, so the folders on the way to it
+    /// are never visited and checked. If an exclude pattern prunes any of
+    /// them, as `lib` does for a task walking `lib/src`, nothing below can be
+    /// found. A step up or a `.` on the way doesn't name a folder the files
+    /// are in, so `..` isn't checked for a task walking `../other`.
+    ///
+    /// `base` is the task's folder, relative to the working folder, with `/`
+    /// between names, and is `.` for the working folder itself.
+    #[must_use]
+    pub(super) fn is_base_excluded(&self, base: &str) -> bool {
+        base != "."
+            && base
+                .match_indices('/')
+                .map(|(slash, _)| &base[..slash])
+                .chain(std::iter::once(base))
+                .filter(|folder| {
+                    let name = folder.rsplit('/').next().unwrap_or(folder);
+                    !matches!(name, "" | "." | "..")
+                })
+                .any(|folder| self.is_excluded(folder.as_bytes(), true))
+    }
 }
 
 /// Turns a path's glob text into the glob text of its absolute path.
@@ -123,7 +150,7 @@ fn text_path(text: &[u8]) -> PathBuf {
 mod tests {
     use std::path::Path;
 
-    use super::{ExcludeGlobs, absolute_glob_text, compile_exclude_globs, is_excluded};
+    use super::{ExcludeGlobs, absolute_glob_text};
 
     fn strings(values: &[&str]) -> Vec<String> {
         values.iter().map(|&value| value.to_owned()).collect()
@@ -135,7 +162,7 @@ mod tests {
         let excludes = strings(&["a/**", "b"]);
 
         // Act
-        let result = compile_exclude_globs(&excludes, Path::new("/repo"));
+        let result = ExcludeGlobs::new(&excludes, Path::new("/repo"));
 
         // Assert
         assert_eq!(
@@ -150,7 +177,7 @@ mod tests {
         let excludes = strings(&["a/**", "b"]);
 
         // Act
-        let result = compile_exclude_globs(&excludes, Path::new("/repo"));
+        let result = ExcludeGlobs::new(&excludes, Path::new("/repo"));
 
         // Assert
         assert_eq!(result.relative.folders.literals, vec![b"a".to_vec()]);
@@ -162,7 +189,7 @@ mod tests {
         let excludes = strings(&["a"]);
 
         // Act
-        let result = compile_exclude_globs(&excludes, Path::new("/repo"));
+        let result = ExcludeGlobs::new(&excludes, Path::new("/repo"));
 
         // Assert
         assert!(result.absolute.is_none());
@@ -175,7 +202,7 @@ mod tests {
         let excludes = strings(&["a", "/repo/**/gen/**"]);
 
         // Act
-        let result = compile_exclude_globs(&excludes, Path::new("/repo"));
+        let result = ExcludeGlobs::new(&excludes, Path::new("/repo"));
 
         // Assert
         assert_eq!(
@@ -186,7 +213,7 @@ mod tests {
 
     fn excludes(patterns: &[&str]) -> ExcludeGlobs {
         let patterns: Vec<String> = patterns.iter().map(|&pattern| pattern.to_owned()).collect();
-        compile_exclude_globs(&patterns, Path::new("/repo/src"))
+        ExcludeGlobs::new(&patterns, Path::new("/repo/src"))
     }
 
     #[test]
@@ -195,7 +222,7 @@ mod tests {
         let excludes = excludes(&["**/gen/**"]);
 
         // Act
-        let result = is_excluded(&excludes, b"x/gen/a.js", false);
+        let result = excludes.is_excluded(b"x/gen/a.js", false);
 
         // Assert
         assert!(result);
@@ -207,7 +234,7 @@ mod tests {
         let excludes = excludes(&["**/gen/**"]);
 
         // Act
-        let result = is_excluded(&excludes, b"x/a.js", false);
+        let result = excludes.is_excluded(b"x/a.js", false);
 
         // Assert
         assert!(!result);
@@ -219,7 +246,7 @@ mod tests {
         let excludes = excludes(&["gen/**"]);
 
         // Act
-        let result = is_excluded(&excludes, b"gen", true);
+        let result = excludes.is_excluded(b"gen", true);
 
         // Assert
         assert!(result);
@@ -231,7 +258,7 @@ mod tests {
         let excludes = excludes(&["gen/**"]);
 
         // Act
-        let result = is_excluded(&excludes, b"gen", false);
+        let result = excludes.is_excluded(b"gen", false);
 
         // Assert
         assert!(!result);
@@ -244,7 +271,7 @@ mod tests {
         let excludes = excludes(&["/repo/**/gen/**"]);
 
         // Act
-        let result = is_excluded(&excludes, b"x/gen/a.js", false);
+        let result = excludes.is_excluded(b"x/gen/a.js", false);
 
         // Assert
         assert!(result);
@@ -257,7 +284,7 @@ mod tests {
         let excludes = excludes(&["/repo/**/gen/**"]);
 
         // Act
-        let result = is_excluded(&excludes, b"x/a.js", false);
+        let result = excludes.is_excluded(b"x/a.js", false);
 
         // Assert
         assert!(!result);
@@ -270,7 +297,110 @@ mod tests {
         let excludes = excludes(&["/repo/lib/**"]);
 
         // Act
-        let result = is_excluded(&excludes, b"../lib", true);
+        let result = excludes.is_excluded(b"../lib", true);
+
+        // Assert
+        assert!(result);
+    }
+
+    fn excludes_at_repo(patterns: &[&str]) -> ExcludeGlobs {
+        let patterns: Vec<String> = patterns.iter().map(|&pattern| pattern.to_owned()).collect();
+        ExcludeGlobs::new(&patterns, Path::new("/repo"))
+    }
+
+    #[test]
+    fn prunes_a_folder_an_exclude_names() {
+        // Arrange
+        let excludes = excludes_at_repo(&["lib"]);
+
+        // Act
+        let result = excludes.is_base_excluded("lib");
+
+        // Assert
+        assert!(result);
+    }
+
+    #[test]
+    fn prunes_a_folder_below_one_an_exclude_names() {
+        // Arrange
+        let excludes = excludes_at_repo(&["lib"]);
+
+        // Act
+        let result = excludes.is_base_excluded("lib/src");
+
+        // Assert
+        assert!(result);
+    }
+
+    #[test]
+    fn keeps_a_folder_no_exclude_names() {
+        // Arrange
+        let excludes = excludes_at_repo(&["lib"]);
+
+        // Act
+        let result = excludes.is_base_excluded("src/lib2");
+
+        // Assert
+        assert!(!result);
+    }
+
+    #[test]
+    fn never_prunes_the_working_folder() {
+        // Arrange
+        let excludes = excludes_at_repo(&["**"]);
+
+        // Act
+        let result = excludes.is_base_excluded(".");
+
+        // Assert
+        assert!(!result);
+    }
+
+    #[test]
+    fn checks_the_folders_of_an_absolute_base() {
+        // Arrange
+        let excludes = excludes_at_repo(&["/a"]);
+
+        // Act
+        let result = excludes.is_base_excluded("/a/b");
+
+        // Assert
+        assert!(result);
+    }
+
+    #[test]
+    fn does_not_check_steps_up_on_the_way() {
+        // Arrange
+        let excludes = excludes_at_repo(&[".."]);
+
+        // Act
+        let result = excludes.is_base_excluded("../other");
+
+        // Assert
+        assert!(!result);
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn does_not_check_the_absolute_folder_a_step_up_names() {
+        // Arrange
+        let excludes = excludes_at_repo(&["/"]);
+
+        // Act
+        let result = excludes.is_base_excluded("../../other");
+
+        // Assert
+        assert!(!result);
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn prunes_a_folder_an_absolute_exclude_names_after_a_step_up() {
+        // Arrange
+        let excludes = excludes_at_repo(&["/other"]);
+
+        // Act
+        let result = excludes.is_base_excluded("../../other");
 
         // Assert
         assert!(result);

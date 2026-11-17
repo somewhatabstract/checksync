@@ -6,12 +6,10 @@ use std::path::{Path, PathBuf};
 
 use crate::node_path::node_normalize;
 
-use super::excludes::{ExcludeGlobs, is_excluded};
+use super::excludes::ExcludeGlobs;
 use super::glob_text::glob_text;
-use super::pattern_set::{compile_pattern_set, matches_pattern_set};
-use super::walk_limits::{
-    is_base_excluded, pattern_name_limit, pattern_names_hidden, should_walk_folder,
-};
+use super::pattern_set::PatternSet;
+use super::walk_limits::{pattern_name_limit, pattern_names_hidden, should_walk_folder};
 use super::{GetFilesError, INCLUDE_GLOB_OPTIONS};
 
 /// Walks a folder and collects the files any of its include patterns match.
@@ -40,10 +38,10 @@ pub(super) fn walk_glob_folder(
     cwd: &Path,
     found: &mut Vec<PathBuf>,
 ) -> Result<(), GetFilesError> {
-    if is_base_excluded(base, excludes) {
+    if excludes.is_base_excluded(base) {
         return Ok(());
     }
-    let includes = compile_pattern_set(patterns.iter().copied(), INCLUDE_GLOB_OPTIONS);
+    let includes = PatternSet::new(patterns.iter().copied(), INCLUDE_GLOB_OPTIONS);
     let limits: Option<Vec<usize>> = patterns
         .iter()
         .map(|pattern| pattern_name_limit(pattern))
@@ -82,8 +80,8 @@ pub(super) fn walk_glob_folder(
                     folders.push((entry.path(), text));
                 }
             } else if file_type.is_file()
-                && matches_pattern_set(&includes, &text)
-                && !is_excluded(excludes, &text, false)
+                && includes.matches(&text)
+                && !excludes.is_excluded(&text, false)
             {
                 found.push(node_normalize(&entry.path()));
             }
@@ -116,11 +114,11 @@ mod tests {
     use tempfile::TempDir;
 
     use super::{join_glob_text, walk_glob_folder};
-    use crate::file_search::excludes::{ExcludeGlobs, compile_exclude_globs};
+    use crate::file_search::excludes::ExcludeGlobs;
 
     fn excludes(patterns: &[&str]) -> ExcludeGlobs {
         let patterns: Vec<String> = patterns.iter().map(|&pattern| pattern.to_owned()).collect();
-        compile_exclude_globs(&patterns, Path::new("/repo"))
+        ExcludeGlobs::new(&patterns, Path::new("/repo"))
     }
 
     fn write(root: &Path, file: &str) {

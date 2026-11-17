@@ -8,7 +8,6 @@
 //! [`gitignore`](crate::gitignore) module.
 
 mod excludes;
-mod find_files;
 mod glob_base;
 mod glob_text;
 mod ignore_files;
@@ -24,9 +23,8 @@ use std::path::{Path, PathBuf};
 
 use crate::glob::{GlobOptions, HiddenNames};
 
-use find_files::find_files;
 use ignore_files::load_ignore_files;
-use plan::plan_glob_tasks;
+use plan::GlobPlan;
 
 pub use ignore_files::is_allowed_by_ignore_files;
 
@@ -144,8 +142,8 @@ pub fn get_files(
         .map(|pattern| expand_folder_pattern(pattern, cwd))
         .collect();
     let ignore_files = load_ignore_files(ignore_file_globs, cwd)?;
-    let plan = plan_glob_tasks(&includes, exclude_globs)?;
-    let mut files = find_files(&plan, cwd)?;
+    let plan = GlobPlan::try_new(&includes, exclude_globs)?;
+    let mut files = plan.find_files(cwd)?;
     files.retain(|file| is_allowed_by_ignore_files(&ignore_files, file));
     Ok(files)
 }
