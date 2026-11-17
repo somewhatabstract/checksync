@@ -39,7 +39,7 @@ impl BraceGroup {
                         return None;
                     }
                     alternatives.push(start..index);
-                    return Some(BraceGroup {
+                    return Some(Self {
                         alternatives,
                         end: index + 1,
                     });
@@ -80,15 +80,14 @@ impl BracePiece {
             b'\\' => (index + 2).min(pattern.len()),
             b'[' => brace_bracket_end(pattern, index).unwrap_or(pattern.len()),
             b'{' => {
-                return BraceGroup::find(pattern, index)
-                    .map_or(BracePiece::Text(index + 1), BracePiece::Group);
+                return BraceGroup::find(pattern, index).map_or(Self::Text(index + 1), Self::Group);
             }
             _ => pattern[index..]
                 .iter()
                 .position(|byte| matches!(byte, b'\\' | b'[' | b'{'))
                 .map_or(pattern.len(), |offset| index + offset),
         };
-        BracePiece::Text(end)
+        Self::Text(end)
     }
 }
 

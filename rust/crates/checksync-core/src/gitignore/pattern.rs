@@ -54,7 +54,7 @@ impl GitignorePattern {
         }
         let anchored = line.contains(&b'/');
         let glob = line.strip_prefix(b"/").unwrap_or(line);
-        Some(GitignorePattern {
+        Some(Self {
             glob: CompiledGlob::try_new(glob, GLOB_OPTIONS)?,
             negated,
             folders_only,

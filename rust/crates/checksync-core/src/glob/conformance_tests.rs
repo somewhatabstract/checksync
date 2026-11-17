@@ -2,9 +2,9 @@
 //! answers recorded from git's matcher and fast-glob's micromatch.
 
 mod match_vectors {
-    use super::super::compiled_glob::tests::matches;
     use super::super::compiled_glob::{CompiledGlob, GlobOptions};
     use super::super::hidden_names::HiddenNames;
+    use super::super::test_support::matches;
     use serde::Deserialize;
 
     /// The glob vector table: what it holds, and the vectors themselves.
@@ -253,7 +253,7 @@ mod match_vectors {
 }
 
 mod expansion_vectors {
-    use super::super::braces::tests::{Expansion, expand};
+    use super::super::test_support::{Expansion, expand};
     use serde::Deserialize;
 
     /// The fast-glob vector table, of which these tests read the expansions.

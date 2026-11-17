@@ -38,19 +38,17 @@ impl UnitMatcher {
     fn matches(&self, unit: &[u8], code: u32, options: GlobOptions) -> bool {
         let is_separator = options.pathname && unit == b"/";
         match (self, unit) {
-            (UnitMatcher::Literal(expected), [byte]) if options.casefold => {
+            (Self::Literal(expected), [byte]) if options.casefold => {
                 expected.eq_ignore_ascii_case(byte)
             }
-            (UnitMatcher::Escaped(expected), [byte]) if options.casefold => {
+            (Self::Escaped(expected), [byte]) if options.casefold => {
                 *expected == byte.to_ascii_lowercase()
             }
-            (UnitMatcher::Literal(expected) | UnitMatcher::Escaped(expected), [byte]) => {
-                expected == byte
-            }
-            (UnitMatcher::Literal(_) | UnitMatcher::Escaped(_), _) => false,
-            (UnitMatcher::Character(expected), _) => expected == unit,
-            (UnitMatcher::Any, _) => !is_separator,
-            (UnitMatcher::Set(set), _) => !is_separator && set.contains(code, options.casefold),
+            (Self::Literal(expected) | Self::Escaped(expected), [byte]) => expected == byte,
+            (Self::Literal(_) | Self::Escaped(_), _) => false,
+            (Self::Character(expected), _) => expected == unit,
+            (Self::Any, _) => !is_separator,
+            (Self::Set(set), _) => !is_separator && set.contains(code, options.casefold),
         }
     }
 
@@ -62,9 +60,9 @@ impl UnitMatcher {
     #[must_use]
     fn matches_hidden_dot(&self) -> bool {
         match self {
-            UnitMatcher::Literal(_) | UnitMatcher::Escaped(_) | UnitMatcher::Character(_) => true,
-            UnitMatcher::Any => false,
-            UnitMatcher::Set(set) => !set.negated,
+            Self::Literal(_) | Self::Escaped(_) | Self::Character(_) => true,
+            Self::Any => false,
+            Self::Set(set) => !set.negated,
         }
     }
 }

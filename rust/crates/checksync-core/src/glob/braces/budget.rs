@@ -32,7 +32,7 @@ impl BraceBudget {
         if count > MAX_HELD || bytes > MAX_HELD_BYTES {
             return Err(BraceExpansionError::TooManyResults);
         }
-        *self = BraceBudget { count, bytes };
+        *self = Self { count, bytes };
         Ok(())
     }
 

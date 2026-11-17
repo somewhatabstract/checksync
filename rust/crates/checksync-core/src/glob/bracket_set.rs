@@ -31,7 +31,7 @@ impl BracketSet {
         loop {
             let byte = *pattern.get(next)?;
             if byte == b']' && next != first {
-                return Some((BracketSet { negated, items }, next + 1));
+                return Some((Self { negated, items }, next + 1));
             }
             let (item, after) = BracketItem::read(pattern, next, unicode)?;
             items.push(item);

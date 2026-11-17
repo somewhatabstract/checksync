@@ -31,7 +31,7 @@ impl BracketItem {
     pub(super) fn read(pattern: &[u8], index: usize, unicode: bool) -> Option<(Self, usize)> {
         if pattern[index] == b'[' && pattern.get(index + 1) == Some(&b':') {
             match ClassSyntax::read(pattern, index) {
-                ClassSyntax::Known(class, next) => return Some((BracketItem::Class(class), next)),
+                ClassSyntax::Known(class, next) => return Some((Self::Class(class), next)),
                 ClassSyntax::Unknown => return None,
                 ClassSyntax::NotAClass => {}
             }
@@ -41,10 +41,10 @@ impl BracketItem {
         let starts_range = pattern.get(next) == Some(&b'-')
             && pattern.get(next + 1).is_some_and(|&byte| byte != b']');
         if !starts_range {
-            return Some((BracketItem::Char(start), next));
+            return Some((Self::Char(start), next));
         }
         let (end, unit) = read_glob_char(pattern, next + 1, unicode)?;
-        Some((BracketItem::Range(start, end), unit.end))
+        Some((Self::Range(start, end), unit.end))
     }
 
     /// Checks whether a unit of the text matches this member of a bracket set.
@@ -63,14 +63,12 @@ impl BracketItem {
             u8::try_from(code).is_ok_and(|byte| class.contains(byte))
         };
         match self {
-            BracketItem::Char(member) => code == member,
-            BracketItem::Range(first, last) => {
+            Self::Char(member) => code == member,
+            Self::Range(first, last) => {
                 let range = first..=last;
                 code == first || range.contains(&code) || (casefold && range.contains(&upper))
             }
-            BracketItem::Class(class) => {
-                in_class(class, code) || (casefold && in_class(class, upper))
-            }
+            Self::Class(class) => in_class(class, code) || (casefold && in_class(class, upper)),
         }
     }
 }

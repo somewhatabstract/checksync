@@ -62,7 +62,7 @@ impl CompiledGlob {
     #[must_use]
     pub(crate) fn try_new(pattern: &[u8], options: GlobOptions) -> Option<Self> {
         let tokens = tokenize_glob(bytes_before_nul(pattern), options)?;
-        Some(CompiledGlob {
+        Some(Self {
             tokens,
             options,
             hidden: if options.pathname {
@@ -100,8 +100,9 @@ impl CompiledGlob {
 }
 
 #[cfg(test)]
-pub(super) mod tests {
+mod tests {
     use super::super::hidden_names::HiddenNames;
+    use super::super::test_support::matches;
     use super::super::token::GlobToken;
     use super::super::unit_matcher::UnitMatcher;
     use super::super::{TEST_OPTIONS, TEST_PATHNAME_OPTIONS};
@@ -183,11 +184,6 @@ pub(super) mod tests {
 
         // Assert
         assert_eq!(result, Some(HiddenNames::MatchAll));
-    }
-
-    /// Compiles `pattern` and checks whether `text` matches it.
-    pub(in crate::glob) fn matches(pattern: &[u8], text: &[u8], options: GlobOptions) -> bool {
-        (CompiledGlob::try_new(pattern, options).unwrap()).matches(text)
     }
 
     const HIDING_DOTS: GlobOptions = GlobOptions {

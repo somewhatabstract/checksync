@@ -4,8 +4,8 @@
 //! against any number of texts with [`CompiledGlob::matches`]. Matching works on
 //! bytes, as git's does, or on whole characters, as fast-glob's does, with the
 //! options in [`GlobOptions`]. [`expand_braces`] expands `{a,b}` groups first, as
-//! fast-glob does. The module depends on nothing else in the crate, so it could become a
-//! crate of its own.
+//! fast-glob does. The module depends on nothing else in the crate, so it could
+//! become a crate of its own.
 //!
 //! [`expand_braces`]: fn@expand_braces
 
@@ -17,6 +17,8 @@ mod compiled_glob;
 mod conformance_tests;
 mod hidden_names;
 mod posix_class;
+#[cfg(test)]
+mod test_support;
 mod token;
 mod unit_matcher;
 mod units;

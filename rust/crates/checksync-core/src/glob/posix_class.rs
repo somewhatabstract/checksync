@@ -38,18 +38,18 @@ impl PosixClass {
     #[must_use]
     fn from_name(name: &[u8]) -> Option<Self> {
         match name {
-            b"alnum" => Some(PosixClass::Alnum),
-            b"alpha" => Some(PosixClass::Alpha),
-            b"blank" => Some(PosixClass::Blank),
-            b"cntrl" => Some(PosixClass::Cntrl),
-            b"digit" => Some(PosixClass::Digit),
-            b"graph" => Some(PosixClass::Graph),
-            b"lower" => Some(PosixClass::Lower),
-            b"print" => Some(PosixClass::Print),
-            b"punct" => Some(PosixClass::Punct),
-            b"space" => Some(PosixClass::Space),
-            b"upper" => Some(PosixClass::Upper),
-            b"xdigit" => Some(PosixClass::Xdigit),
+            b"alnum" => Some(Self::Alnum),
+            b"alpha" => Some(Self::Alpha),
+            b"blank" => Some(Self::Blank),
+            b"cntrl" => Some(Self::Cntrl),
+            b"digit" => Some(Self::Digit),
+            b"graph" => Some(Self::Graph),
+            b"lower" => Some(Self::Lower),
+            b"print" => Some(Self::Print),
+            b"punct" => Some(Self::Punct),
+            b"space" => Some(Self::Space),
+            b"upper" => Some(Self::Upper),
+            b"xdigit" => Some(Self::Xdigit),
             _ => None,
         }
     }
@@ -62,18 +62,18 @@ impl PosixClass {
     #[must_use]
     pub(super) fn contains(self, byte: u8) -> bool {
         match self {
-            PosixClass::Alnum => byte.is_ascii_alphanumeric(),
-            PosixClass::Alpha => byte.is_ascii_alphabetic(),
-            PosixClass::Blank => matches!(byte, b' ' | b'\t'),
-            PosixClass::Cntrl => byte.is_ascii_control(),
-            PosixClass::Digit => byte.is_ascii_digit(),
-            PosixClass::Graph => byte.is_ascii_graphic(),
-            PosixClass::Lower => byte.is_ascii_lowercase(),
-            PosixClass::Print => byte.is_ascii_graphic() || byte == b' ',
-            PosixClass::Punct => byte.is_ascii_punctuation(),
-            PosixClass::Space => matches!(byte, b' ' | b'\t' | b'\n' | b'\r'),
-            PosixClass::Upper => byte.is_ascii_uppercase(),
-            PosixClass::Xdigit => byte.is_ascii_hexdigit(),
+            Self::Alnum => byte.is_ascii_alphanumeric(),
+            Self::Alpha => byte.is_ascii_alphabetic(),
+            Self::Blank => matches!(byte, b' ' | b'\t'),
+            Self::Cntrl => byte.is_ascii_control(),
+            Self::Digit => byte.is_ascii_digit(),
+            Self::Graph => byte.is_ascii_graphic(),
+            Self::Lower => byte.is_ascii_lowercase(),
+            Self::Print => byte.is_ascii_graphic() || byte == b' ',
+            Self::Punct => byte.is_ascii_punctuation(),
+            Self::Space => matches!(byte, b' ' | b'\t' | b'\n' | b'\r'),
+            Self::Upper => byte.is_ascii_uppercase(),
+            Self::Xdigit => byte.is_ascii_hexdigit(),
         }
     }
 }
@@ -103,15 +103,15 @@ impl ClassSyntax {
     pub(super) fn read(pattern: &[u8], index: usize) -> Self {
         let name_start = index + 2;
         let Some(offset) = pattern[name_start..].iter().position(|&byte| byte == b']') else {
-            return ClassSyntax::NotAClass;
+            return Self::NotAClass;
         };
         let close = name_start + offset;
         if close == name_start || pattern[close - 1] != b':' {
-            return ClassSyntax::NotAClass;
+            return Self::NotAClass;
         }
         match PosixClass::from_name(&pattern[name_start..close - 1]) {
-            Some(class) => ClassSyntax::Known(class, close + 1),
-            None => ClassSyntax::Unknown,
+            Some(class) => Self::Known(class, close + 1),
+            None => Self::Unknown,
         }
     }
 }

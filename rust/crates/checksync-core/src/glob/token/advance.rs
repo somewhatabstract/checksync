@@ -25,14 +25,14 @@ impl GlobToken {
     ) -> bool {
         let hides_dots = hidden == HiddenNames::SkipDotNames;
         match self {
-            GlobToken::One(matcher) if options.unicode => {
+            Self::One(matcher) if options.unicode => {
                 matcher.advance_char(text, positions, options, hides_dots)
             }
-            GlobToken::One(matcher) => matcher.advance_byte(text, positions, options, hides_dots),
-            GlobToken::Star { crosses_slash } => {
+            Self::One(matcher) => matcher.advance_byte(text, positions, options, hides_dots),
+            Self::Star { crosses_slash } => {
                 advance_star(text, positions, *crosses_slash, hidden, options.unicode)
             }
-            GlobToken::AnyFolders => advance_any_folders(text, positions, hidden),
+            Self::AnyFolders => advance_any_folders(text, positions, hidden),
         }
     }
 }

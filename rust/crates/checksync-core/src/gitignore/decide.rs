@@ -1,7 +1,6 @@
 //! Deciding what an ignore file's patterns say about a path.
 
 use super::pattern::GitignorePattern;
-
 use crate::types::IgnoreDecision;
 
 /// Decides what an ignore file's patterns say about a file inside its folder.

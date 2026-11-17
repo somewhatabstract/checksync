@@ -119,8 +119,7 @@ mod tests {
         let mut positions = [false, false, true, false];
 
         // Act
-        let _ =
-            (UnitMatcher::Any).advance_byte(b"a/.", &mut positions, TEST_PATHNAME_OPTIONS, true);
+        let _ = UnitMatcher::Any.advance_byte(b"a/.", &mut positions, TEST_PATHNAME_OPTIONS, true);
 
         // Assert
         assert_eq!(positions, [false, false, false, false]);
@@ -149,7 +148,7 @@ mod tests {
         let mut positions = [true, false];
 
         // Act
-        let _ = (UnitMatcher::Any).advance_byte(b".", &mut positions, TEST_PATHNAME_OPTIONS, false);
+        let _ = UnitMatcher::Any.advance_byte(b".", &mut positions, TEST_PATHNAME_OPTIONS, false);
 
         // Assert
         assert_eq!(positions, [false, true]);
@@ -188,7 +187,7 @@ mod tests {
         let mut positions = [true, false, false, false, false, false, false];
 
         // Act
-        let _ = (UnitMatcher::Any).advance_char(text, &mut positions, TEST_UNICODE_OPTIONS, false);
+        let _ = UnitMatcher::Any.advance_char(text, &mut positions, TEST_UNICODE_OPTIONS, false);
 
         // Assert
         assert_eq!(positions, [false, false, true, false, false, false, false]);
@@ -201,7 +200,7 @@ mod tests {
         let mut positions = [false, false, true, false, false, false, false];
 
         // Act
-        let _ = (UnitMatcher::Any).advance_char(text, &mut positions, TEST_UNICODE_OPTIONS, false);
+        let _ = UnitMatcher::Any.advance_char(text, &mut positions, TEST_UNICODE_OPTIONS, false);
 
         // Assert
         assert_eq!(positions, [false, false, false, false, false, false, true]);
@@ -230,7 +229,7 @@ mod tests {
         let mut positions = [true, false];
 
         // Act
-        let _ = (UnitMatcher::Any).advance_char(b".", &mut positions, TEST_UNICODE_OPTIONS, true);
+        let _ = UnitMatcher::Any.advance_char(b".", &mut positions, TEST_UNICODE_OPTIONS, true);
 
         // Assert
         assert_eq!(positions, [false, false]);
@@ -260,7 +259,7 @@ mod tests {
 
         // Act
         let result =
-            (UnitMatcher::Any).advance_char(b"a", &mut positions, TEST_UNICODE_OPTIONS, false);
+            UnitMatcher::Any.advance_char(b"a", &mut positions, TEST_UNICODE_OPTIONS, false);
 
         // Assert
         assert!(result);

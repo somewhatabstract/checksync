@@ -63,7 +63,7 @@ impl BraceFrame {
         budget: &mut BraceBudget,
     ) -> Result<Option<Vec<Vec<u8>>>, BraceExpansionError> {
         match self {
-            BraceFrame::Sequence {
+            Self::Sequence {
                 end,
                 index,
                 mut results,
@@ -71,13 +71,13 @@ impl BraceFrame {
                 BracePiece::Text(next) => {
                     budget.take(1, next - index)?;
                     combine_brace_texts(&mut results, &[pattern[index..next].to_vec()], budget)?;
-                    stack.push(BraceFrame::Sequence {
+                    stack.push(Self::Sequence {
                         end,
                         index: next,
                         results,
                     });
                 }
-                BracePiece::Group(group) => stack.push(BraceFrame::Group {
+                BracePiece::Group(group) => stack.push(Self::Group {
                     alternatives: group.alternatives,
                     next: 0,
                     texts: Vec::new(),
@@ -86,11 +86,11 @@ impl BraceFrame {
                     resume: group.end,
                 }),
             },
-            BraceFrame::Sequence { results, .. } => match stack.last_mut() {
-                Some(BraceFrame::Group { texts, .. }) => texts.extend(results),
+            Self::Sequence { results, .. } => match stack.last_mut() {
+                Some(Self::Group { texts, .. }) => texts.extend(results),
                 _ => return Ok(Some(results)),
             },
-            BraceFrame::Group {
+            Self::Group {
                 alternatives,
                 next,
                 texts,
@@ -99,7 +99,7 @@ impl BraceFrame {
                 resume,
             } if next < alternatives.len() => {
                 let alternative = alternatives[next].clone();
-                stack.push(BraceFrame::Group {
+                stack.push(Self::Group {
                     alternatives,
                     next: next + 1,
                     texts,
@@ -107,9 +107,9 @@ impl BraceFrame {
                     end,
                     resume,
                 });
-                stack.push(BraceFrame::try_sequence(alternative, budget)?);
+                stack.push(Self::try_sequence(alternative, budget)?);
             }
-            BraceFrame::Group {
+            Self::Group {
                 texts,
                 mut results,
                 end,
@@ -117,7 +117,7 @@ impl BraceFrame {
                 ..
             } => {
                 combine_brace_texts(&mut results, &texts, budget)?;
-                stack.push(BraceFrame::Sequence {
+                stack.push(Self::Sequence {
                     end,
                     index: resume,
                     results,
@@ -142,7 +142,7 @@ impl BraceFrame {
         budget: &mut BraceBudget,
     ) -> Result<Self, BraceExpansionError> {
         budget.take(1, 0)?;
-        Ok(BraceFrame::Sequence {
+        Ok(Self::Sequence {
             end: run.end,
             index: run.start,
             results: vec![Vec::new()],
@@ -321,7 +321,7 @@ mod tests {
         let mut stack = Vec::new();
 
         // Act
-        let _ = (sequence(7, 0, &[b"x"])).step(b"ab{c,d}", &mut stack, &mut counted());
+        let _ = sequence(7, 0, &[b"x"]).step(b"ab{c,d}", &mut stack, &mut counted());
 
         // Assert
         assert_eq!(stack, vec![sequence(7, 2, &[b"xab"])]);
@@ -333,7 +333,7 @@ mod tests {
         let mut stack = Vec::new();
 
         // Act
-        let _ = (sequence(6, 0, &[b"x"])).step(b"{c,d}e", &mut stack, &mut counted());
+        let _ = sequence(6, 0, &[b"x"]).step(b"{c,d}e", &mut stack, &mut counted());
 
         // Assert
         assert_eq!(stack, vec![group(0, &[])]);
@@ -345,7 +345,7 @@ mod tests {
         let mut stack = Vec::new();
 
         // Act
-        let _ = (group(1, &[b"c"])).step(b"{c,d}e", &mut stack, &mut counted());
+        let _ = group(1, &[b"c"]).step(b"{c,d}e", &mut stack, &mut counted());
 
         // Assert
         assert_eq!(stack, vec![group(2, &[b"c"]), sequence(4, 3, &[b""])]);
@@ -357,7 +357,7 @@ mod tests {
         let mut stack = vec![group(2, &[b"c"])];
 
         // Act
-        let _ = (sequence(4, 4, &[b"d"])).step(b"{c,d}e", &mut stack, &mut counted());
+        let _ = sequence(4, 4, &[b"d"]).step(b"{c,d}e", &mut stack, &mut counted());
 
         // Assert
         assert_eq!(stack, vec![group(2, &[b"c", b"d"])]);
@@ -369,7 +369,7 @@ mod tests {
         let mut stack = Vec::new();
 
         // Act
-        let _ = (group(2, &[b"c", b"d"])).step(b"{c,d}e", &mut stack, &mut counted());
+        let _ = group(2, &[b"c", b"d"]).step(b"{c,d}e", &mut stack, &mut counted());
 
         // Assert
         assert_eq!(stack, vec![sequence(6, 5, &[b"xc", b"xd"])]);
@@ -381,7 +381,7 @@ mod tests {
         let mut stack = Vec::new();
 
         // Act
-        let result = (sequence(2, 0, &[b""])).step(b"ab", &mut stack, &mut counted());
+        let result = sequence(2, 0, &[b""]).step(b"ab", &mut stack, &mut counted());
 
         // Assert
         assert_eq!(result, Ok(None));
@@ -393,7 +393,7 @@ mod tests {
         let mut stack = Vec::new();
 
         // Act
-        let result = (sequence(2, 2, &[b"ab"])).step(b"ab", &mut stack, &mut counted());
+        let result = sequence(2, 2, &[b"ab"]).step(b"ab", &mut stack, &mut counted());
 
         // Assert
         assert_eq!(result, Ok(Some(vec![b"ab".to_vec()])));
@@ -408,7 +408,7 @@ mod tests {
         };
 
         // Act
-        let result = (sequence(2, 0, &[b""])).step(b"ab", &mut Vec::new(), &mut budget);
+        let result = sequence(2, 0, &[b""]).step(b"ab", &mut Vec::new(), &mut budget);
 
         // Assert
         assert_eq!(result, Err(BraceExpansionError::TooManyResults));
@@ -423,7 +423,7 @@ mod tests {
         };
 
         // Act
-        let result = (sequence(2, 0, &[b""])).step(b"ab", &mut Vec::new(), &mut budget);
+        let result = sequence(2, 0, &[b""]).step(b"ab", &mut Vec::new(), &mut budget);
 
         // Assert
         assert_eq!(result, Err(BraceExpansionError::TooManyResults));
@@ -438,7 +438,7 @@ mod tests {
         };
 
         // Act
-        let result = (group(0, &[])).step(b"{c,d}e", &mut Vec::new(), &mut budget);
+        let result = group(0, &[]).step(b"{c,d}e", &mut Vec::new(), &mut budget);
 
         // Assert
         assert_eq!(result, Err(BraceExpansionError::TooManyResults));
@@ -453,7 +453,7 @@ mod tests {
         };
 
         // Act
-        let result = (group(2, &[b"c", b"d"])).step(b"{c,d}e", &mut Vec::new(), &mut budget);
+        let result = group(2, &[b"c", b"d"]).step(b"{c,d}e", &mut Vec::new(), &mut budget);
 
         // Assert
         assert_eq!(result, Err(BraceExpansionError::TooManyResults));

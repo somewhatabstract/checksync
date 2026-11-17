@@ -87,25 +87,13 @@ pub(crate) enum BraceExpansionError {
 }
 
 #[cfg(test)]
-pub(super) mod tests {
+mod tests {
+    use super::super::test_support::expand;
     use super::{BraceExpansionError, MAX_PATTERN_LENGTH, expand_braces};
-
-    /// What `expand` gives: the expanded patterns as strings, or the error.
-    pub(in crate::glob) type Expansion = Result<Vec<String>, BraceExpansionError>;
 
     /// Turns string slices into owned strings, for comparing with `expand`.
     fn strings(items: &[&str]) -> Vec<String> {
         items.iter().map(|&item| item.to_owned()).collect()
-    }
-
-    /// Expands `pattern` and turns the results into strings for comparing.
-    pub(in crate::glob) fn expand(pattern: &str) -> Expansion {
-        expand_braces(pattern.as_bytes()).map(|results| {
-            results
-                .iter()
-                .map(|result| String::from_utf8_lossy(result).into_owned())
-                .collect()
-        })
     }
 
     #[test]
