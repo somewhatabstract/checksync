@@ -149,7 +149,7 @@ impl ErrorDetails {
     ///
     /// The error is located at `line`, the 1-based line of the tag.
     #[must_use]
-    pub fn different_comment_syntax(marker_id: &str, line: usize) -> Self {
+    pub(crate) fn different_comment_syntax(marker_id: &str, line: usize) -> Self {
         Self {
             marker_id: Some(marker_id.to_owned()),
             reason: format!(
@@ -167,7 +167,7 @@ impl ErrorDetails {
     /// sync-start tag, and its fix deletes that line, whose whole text is
     /// `declaration`.
     #[must_use]
-    pub fn duplicate_target(marker_id: &str, line: usize, declaration: &str) -> Self {
+    pub(crate) fn duplicate_target(marker_id: &str, line: usize, declaration: &str) -> Self {
         Self {
             marker_id: Some(marker_id.to_owned()),
             reason: format!("Duplicate target for sync-tag '{marker_id}'"),
@@ -185,7 +185,7 @@ impl ErrorDetails {
     ///
     /// The error is located at `line`, the 1-based line of the tag.
     #[must_use]
-    pub fn end_tag_without_start_tag(marker_id: &str, line: usize) -> Self {
+    pub(crate) fn end_tag_without_start_tag(marker_id: &str, line: usize) -> Self {
         Self {
             marker_id: Some(marker_id.to_owned()),
             reason: format!(
@@ -202,7 +202,7 @@ impl ErrorDetails {
     /// The error is located at `line`, the 1-based line of the tag, and its
     /// message names `target_path`, the target as written in the tag.
     #[must_use]
-    pub fn file_does_not_exist(marker_id: &str, line: usize, target_path: &str) -> Self {
+    pub(crate) fn file_does_not_exist(marker_id: &str, line: usize, target_path: &str) -> Self {
         Self {
             marker_id: Some(marker_id.to_owned()),
             reason: format!(
@@ -218,7 +218,7 @@ impl ErrorDetails {
     ///
     /// The error is located at `line`, the 1-based line of the tag.
     #[must_use]
-    pub fn malformed_end_tag(line: usize) -> Self {
+    pub(crate) fn malformed_end_tag(line: usize) -> Self {
         Self {
             marker_id: None,
             reason: "Malformed sync-end: format should be 'sync-end:<label>'".to_owned(),
@@ -232,7 +232,7 @@ impl ErrorDetails {
     ///
     /// The error is located at `line`, the 1-based line of the tag.
     #[must_use]
-    pub fn malformed_start_tag(line: usize) -> Self {
+    pub(crate) fn malformed_start_tag(line: usize) -> Self {
         Self {
             marker_id: None,
             reason: "Malformed sync-start: format should be 'sync-start:<label> [checksum] <filename> <optional_comment_end>'".to_owned(),
@@ -246,7 +246,7 @@ impl ErrorDetails {
     ///
     /// The error is located at `line`, the 1-based line of the tag.
     #[must_use]
-    pub fn start_tag_after_content(marker_id: &str, line: usize) -> Self {
+    pub(crate) fn start_tag_after_content(marker_id: &str, line: usize) -> Self {
         Self {
             marker_id: Some(marker_id.to_owned()),
             reason: format!("Sync-start for '{marker_id}' found after content started"),
@@ -260,7 +260,7 @@ impl ErrorDetails {
     ///
     /// The error is located at `line`, the 1-based line of the tag.
     #[must_use]
-    pub fn start_tag_without_end_tag(marker_id: &str, line: usize) -> Self {
+    pub(crate) fn start_tag_without_end_tag(marker_id: &str, line: usize) -> Self {
         Self {
             marker_id: Some(marker_id.to_owned()),
             reason: format!("Sync-start '{marker_id}' has no corresponding sync-end"),

@@ -211,15 +211,15 @@ mod tests {
         );
     }
 
-    fn excludes(patterns: &[&str]) -> ExcludeGlobs {
+    fn excludes(cwd: &str, patterns: &[&str]) -> ExcludeGlobs {
         let patterns: Vec<String> = patterns.iter().map(|&pattern| pattern.to_owned()).collect();
-        ExcludeGlobs::new(&patterns, Path::new("/repo/src"))
+        ExcludeGlobs::new(&patterns, Path::new(cwd))
     }
 
     #[test]
     fn excludes_a_path_a_relative_pattern_matches() {
         // Arrange
-        let excludes = excludes(&["**/gen/**"]);
+        let excludes = excludes("/repo/src", &["**/gen/**"]);
 
         // Act
         let result = excludes.is_excluded(b"x/gen/a.js", false);
@@ -231,7 +231,7 @@ mod tests {
     #[test]
     fn keeps_a_path_no_pattern_matches() {
         // Arrange
-        let excludes = excludes(&["**/gen/**"]);
+        let excludes = excludes("/repo/src", &["**/gen/**"]);
 
         // Act
         let result = excludes.is_excluded(b"x/a.js", false);
@@ -243,7 +243,7 @@ mod tests {
     #[test]
     fn prunes_the_folder_before_a_trailing_double_star() {
         // Arrange
-        let excludes = excludes(&["gen/**"]);
+        let excludes = excludes("/repo/src", &["gen/**"]);
 
         // Act
         let result = excludes.is_excluded(b"gen", true);
@@ -255,7 +255,7 @@ mod tests {
     #[test]
     fn keeps_a_file_named_like_the_folder_before_a_trailing_double_star() {
         // Arrange
-        let excludes = excludes(&["gen/**"]);
+        let excludes = excludes("/repo/src", &["gen/**"]);
 
         // Act
         let result = excludes.is_excluded(b"gen", false);
@@ -268,7 +268,7 @@ mod tests {
     #[test]
     fn excludes_a_path_an_absolute_pattern_matches() {
         // Arrange
-        let excludes = excludes(&["/repo/**/gen/**"]);
+        let excludes = excludes("/repo/src", &["/repo/**/gen/**"]);
 
         // Act
         let result = excludes.is_excluded(b"x/gen/a.js", false);
@@ -281,7 +281,7 @@ mod tests {
     #[test]
     fn keeps_a_path_no_absolute_pattern_matches() {
         // Arrange
-        let excludes = excludes(&["/repo/**/gen/**"]);
+        let excludes = excludes("/repo/src", &["/repo/**/gen/**"]);
 
         // Act
         let result = excludes.is_excluded(b"x/a.js", false);
@@ -294,7 +294,7 @@ mod tests {
     #[test]
     fn prunes_a_folder_before_an_absolute_trailing_double_star() {
         // Arrange
-        let excludes = excludes(&["/repo/lib/**"]);
+        let excludes = excludes("/repo/src", &["/repo/lib/**"]);
 
         // Act
         let result = excludes.is_excluded(b"../lib", true);
@@ -303,15 +303,10 @@ mod tests {
         assert!(result);
     }
 
-    fn excludes_at_repo(patterns: &[&str]) -> ExcludeGlobs {
-        let patterns: Vec<String> = patterns.iter().map(|&pattern| pattern.to_owned()).collect();
-        ExcludeGlobs::new(&patterns, Path::new("/repo"))
-    }
-
     #[test]
     fn prunes_a_folder_an_exclude_names() {
         // Arrange
-        let excludes = excludes_at_repo(&["lib"]);
+        let excludes = excludes("/repo", &["lib"]);
 
         // Act
         let result = excludes.is_base_excluded("lib");
@@ -323,7 +318,7 @@ mod tests {
     #[test]
     fn prunes_a_folder_below_one_an_exclude_names() {
         // Arrange
-        let excludes = excludes_at_repo(&["lib"]);
+        let excludes = excludes("/repo", &["lib"]);
 
         // Act
         let result = excludes.is_base_excluded("lib/src");
@@ -335,7 +330,7 @@ mod tests {
     #[test]
     fn keeps_a_folder_no_exclude_names() {
         // Arrange
-        let excludes = excludes_at_repo(&["lib"]);
+        let excludes = excludes("/repo", &["lib"]);
 
         // Act
         let result = excludes.is_base_excluded("src/lib2");
@@ -347,7 +342,7 @@ mod tests {
     #[test]
     fn never_prunes_the_working_folder() {
         // Arrange
-        let excludes = excludes_at_repo(&["**"]);
+        let excludes = excludes("/repo", &["**"]);
 
         // Act
         let result = excludes.is_base_excluded(".");
@@ -359,7 +354,7 @@ mod tests {
     #[test]
     fn checks_the_folders_of_an_absolute_base() {
         // Arrange
-        let excludes = excludes_at_repo(&["/a"]);
+        let excludes = excludes("/repo", &["/a"]);
 
         // Act
         let result = excludes.is_base_excluded("/a/b");
@@ -371,7 +366,7 @@ mod tests {
     #[test]
     fn does_not_check_steps_up_on_the_way() {
         // Arrange
-        let excludes = excludes_at_repo(&[".."]);
+        let excludes = excludes("/repo", &[".."]);
 
         // Act
         let result = excludes.is_base_excluded("../other");
@@ -384,7 +379,7 @@ mod tests {
     #[test]
     fn does_not_check_the_absolute_folder_a_step_up_names() {
         // Arrange
-        let excludes = excludes_at_repo(&["/"]);
+        let excludes = excludes("/repo", &["/"]);
 
         // Act
         let result = excludes.is_base_excluded("../../other");
@@ -397,7 +392,7 @@ mod tests {
     #[test]
     fn prunes_a_folder_an_absolute_exclude_names_after_a_step_up() {
         // Arrange
-        let excludes = excludes_at_repo(&["/other"]);
+        let excludes = excludes("/repo", &["/other"]);
 
         // Act
         let result = excludes.is_base_excluded("../../other");
