@@ -28,7 +28,7 @@ struct TrackedMarker {
     comment_end: String,
 }
 
-/// Reads sync tags from a file's lines, one line at a time.
+/// A reader of sync tags, fed a file's lines one at a time.
 ///
 /// Give it each line, in order, with [`MarkerParser::parse_line`], then call
 /// [`MarkerParser::finish`] to report markers that never ended and collect

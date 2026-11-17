@@ -219,7 +219,7 @@ impl ErrorLocation {
 /// A change to one line of a file that fixes an error.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum FixAction {
-    /// Deletes the line.
+    /// A fix that deletes the line.
     Delete {
         /// The 1-based line to delete.
         line: usize,
@@ -228,7 +228,7 @@ pub enum FixAction {
         /// The line's current text, the tag declaration being deleted.
         declaration: String,
     },
-    /// Replaces the line with new text.
+    /// A fix that replaces the line with new text.
     Replace {
         /// The 1-based line to replace.
         line: usize,
