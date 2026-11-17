@@ -4,42 +4,40 @@
 //! stdout or stderr. Presentation and process concerns belong to the CLI.
 
 mod calc_checksum;
-mod closesdir;
-mod cwd_relative_path;
-mod decode_utf8;
 pub mod errors;
 mod file_search;
 mod get_normalized_path_info;
 mod gitignore;
 mod glob;
-mod is_allowed_by_ignore_files;
-mod is_js_whitespace;
-mod js_object_keys;
-mod js_trim;
+mod js;
+mod lines;
 mod marker_parser;
-mod node_normalize;
-mod node_relative;
-mod normalize_separators;
-mod os_separators;
-mod root_relative_path;
-mod split_lines;
+mod node_path;
+mod relative_path;
+mod separators;
 mod types;
 
+// TEMPORARY: the gitignore module still imports these two functions by
+// their old module paths. Remove both once it imports them from `node_path`
+// and `separators`.
+mod node_relative {
+    pub(crate) use crate::node_path::node_relative;
+}
+
+#[cfg(not(unix))]
+mod normalize_separators {
+    pub(crate) use crate::separators::normalize_separators;
+}
+
 pub use calc_checksum::calc_checksum;
-pub use closesdir::{DEFAULT_ROOT_MARKER, closesdir};
-pub use cwd_relative_path::cwd_relative_path;
-pub use decode_utf8::decode_utf8;
-pub use file_search::{GetFilesError, get_files};
+pub use file_search::{GetFilesError, get_files, is_allowed_by_ignore_files};
 pub use get_normalized_path_info::get_normalized_path_info;
 pub use gitignore::IgnoreFile;
-pub use is_allowed_by_ignore_files::is_allowed_by_ignore_files;
-pub use is_js_whitespace::is_js_whitespace;
-pub use js_trim::js_trim;
+pub use js::{is_js_whitespace, js_trim};
+pub use lines::{decode_utf8, split_lines};
 pub use marker_parser::MarkerParser;
-pub use normalize_separators::normalize_separators;
-pub use os_separators::os_separators;
-pub use root_relative_path::root_relative_path;
-pub use split_lines::split_lines;
+pub use relative_path::{DEFAULT_ROOT_MARKER, closesdir, cwd_relative_path, root_relative_path};
+pub use separators::{normalize_separators, os_separators};
 pub use types::{
     ErrorCode, ErrorDetails, ErrorLocation, FixAction, IgnoreDecision, Line, LineEnding, Marker,
     Markers, NormalizedPathInfo, ParseEvent, ParsedMarker, RootMarkerError, Target, TargetType,

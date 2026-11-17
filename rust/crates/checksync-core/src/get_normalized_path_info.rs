@@ -1,7 +1,7 @@
 use std::path::{Path, PathBuf};
 
-use crate::node_normalize::node_normalize;
-use crate::os_separators::os_separators;
+use crate::node_path::node_normalize;
+use crate::separators::os_separators;
 use crate::types::{NormalizedPathInfo, TargetType};
 
 /// Resolves the target written in a sync-start tag.

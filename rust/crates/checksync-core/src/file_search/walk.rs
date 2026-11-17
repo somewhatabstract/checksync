@@ -1,20 +1,18 @@
+//! Walking a folder to collect the files its include patterns match.
+
 use std::fs;
 use std::io;
 use std::path::{Path, PathBuf};
 
-use crate::node_normalize::node_normalize;
+use crate::node_path::node_normalize;
 
-use super::INCLUDE_GLOB_OPTIONS;
-use super::compile_pattern_set::compile_pattern_set;
+use super::excludes::{ExcludeGlobs, is_excluded};
 use super::glob_text::glob_text;
-use super::is_base_excluded::is_base_excluded;
-use super::is_excluded::is_excluded;
-use super::join_glob_text::join_glob_text;
-use super::matches_pattern_set::matches_pattern_set;
-use super::pattern_name_limit::pattern_name_limit;
-use super::pattern_names_hidden::pattern_names_hidden;
-use super::should_walk_folder::should_walk_folder;
-use super::types::{ExcludeGlobs, GetFilesError};
+use super::pattern_set::{compile_pattern_set, matches_pattern_set};
+use super::walk_limits::{
+    is_base_excluded, pattern_name_limit, pattern_names_hidden, should_walk_folder,
+};
+use super::{GetFilesError, INCLUDE_GLOB_OPTIONS};
 
 /// Walks a folder and collects the files any of its include patterns match.
 ///
@@ -94,6 +92,22 @@ pub(super) fn walk_glob_folder(
     Ok(())
 }
 
+/// Adds a name to a folder's glob text, with a `/` between them.
+///
+/// The folder's text is relative to the working folder, whose own text is
+/// empty, so names in it have no folder part. A folder whose text already
+/// ends in `/`, such as the root, gets no second one.
+#[must_use]
+fn join_glob_text(folder: &[u8], name: &[u8]) -> Vec<u8> {
+    let mut text = Vec::with_capacity(folder.len() + 1 + name.len());
+    text.extend_from_slice(folder);
+    if !folder.is_empty() && !folder.ends_with(b"/") {
+        text.push(b'/');
+    }
+    text.extend_from_slice(name);
+    text
+}
+
 #[cfg(test)]
 mod tests {
     use std::fs;
@@ -101,9 +115,8 @@ mod tests {
 
     use tempfile::TempDir;
 
-    use super::walk_glob_folder;
-    use crate::file_search::compile_exclude_globs::compile_exclude_globs;
-    use crate::file_search::types::ExcludeGlobs;
+    use super::{join_glob_text, walk_glob_folder};
+    use crate::file_search::excludes::{ExcludeGlobs, compile_exclude_globs};
 
     fn excludes(patterns: &[&str]) -> ExcludeGlobs {
         let patterns: Vec<String> = patterns.iter().map(|&pattern| pattern.to_owned()).collect();
@@ -395,5 +408,41 @@ mod tests {
 
         // Assert
         assert_eq!(result, vec![cwd.path().join("link/a.js")]);
+    }
+
+    #[test]
+    fn puts_a_slash_between_folder_and_name() {
+        // Arrange
+        let folder = b"src";
+
+        // Act
+        let result = join_glob_text(folder, b"a.js");
+
+        // Assert
+        assert_eq!(result, b"src/a.js");
+    }
+
+    #[test]
+    fn uses_the_name_alone_in_the_working_folder() {
+        // Arrange
+        let folder = b"";
+
+        // Act
+        let result = join_glob_text(folder, b"a.js");
+
+        // Assert
+        assert_eq!(result, b"a.js");
+    }
+
+    #[test]
+    fn adds_no_second_slash_after_the_root() {
+        // Arrange
+        let folder = b"/";
+
+        // Act
+        let result = join_glob_text(folder, b"a.js");
+
+        // Assert
+        assert_eq!(result, b"/a.js");
     }
 }

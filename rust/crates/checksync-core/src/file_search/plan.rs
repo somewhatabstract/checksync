@@ -1,8 +1,32 @@
-use super::collapse_slashes::collapse_slashes;
-use super::expand_pattern_braces::expand_pattern_braces;
+//! Planning a search: which folders to walk for which include patterns.
+
+use crate::glob::{BraceExpansionError, expand_braces};
+
+use super::GetFilesError;
 use super::glob_base::glob_base;
-use super::strip_leading_dot_slash::strip_leading_dot_slash;
-use super::types::{GetFilesError, GlobPlan, GlobTask};
+use super::tidy_pattern::{collapse_slashes, strip_leading_dot_slash};
+
+/// An include pattern and the folder to start walking from to find its files.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(super) struct GlobTask {
+    /// The folder to walk, relative to the working folder.
+    ///
+    /// It has `/` between names, and is `.` for the working folder itself.
+    pub base: String,
+    /// The pattern, relative to the working folder, that files must match.
+    pub pattern: String,
+}
+
+/// The include tasks and exclude patterns for one search.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(super) struct GlobPlan {
+    /// The include patterns, each with the folder to walk.
+    pub tasks: Vec<GlobTask>,
+    /// The patterns that remove files and prune folders.
+    ///
+    /// They're relative to the working folder.
+    pub excludes: Vec<String>,
+}
 
 /// Plans a search: which folders to walk, for which patterns, excluding what.
 ///
@@ -59,10 +83,39 @@ fn tidy(pattern: &str) -> String {
     strip_leading_dot_slash(&collapse_slashes(pattern)).to_owned()
 }
 
+/// Expands a pattern's brace groups into the patterns they stand for.
+///
+/// The results keep the pattern's order, and a pattern with no groups gives
+/// just itself.
+///
+/// # Errors
+///
+/// Returns [`GetFilesError::PatternTooLong`] for a pattern too long to expand
+/// its braces, and [`GetFilesError::TooManyPatterns`] for one whose braces
+/// expand to too many patterns.
+fn expand_pattern_braces(pattern: &str) -> Result<Vec<String>, GetFilesError> {
+    // Brace expansion only splits at ASCII bytes, so the results are as valid
+    // as the pattern.
+    expand_braces(pattern.as_bytes())
+        .map(|expanded| {
+            expanded
+                .iter()
+                .map(|bytes| String::from_utf8_lossy(bytes).into_owned())
+                .collect()
+        })
+        .map_err(|error| match error {
+            BraceExpansionError::PatternTooLong => GetFilesError::PatternTooLong {
+                pattern: pattern.to_owned(),
+            },
+            BraceExpansionError::TooManyResults => GetFilesError::TooManyPatterns {
+                pattern: pattern.to_owned(),
+            },
+        })
+}
+
 #[cfg(test)]
 mod tests {
-    use super::plan_glob_tasks;
-    use crate::file_search::types::{GlobPlan, GlobTask};
+    use super::{GlobPlan, GlobTask, expand_pattern_braces, plan_glob_tasks};
 
     fn strings(values: &[&str]) -> Vec<String> {
         values.iter().map(|&value| value.to_owned()).collect()
@@ -208,6 +261,60 @@ mod tests {
         assert_eq!(
             result.unwrap_err().to_string(),
             too_many_message(&"{a,b}".repeat(20))
+        );
+    }
+
+    #[test]
+    fn expands_brace_groups() {
+        // Arrange
+        let pattern = "src/*.{js,ts}";
+
+        // Act
+        let result = expand_pattern_braces(pattern).unwrap();
+
+        // Assert
+        assert_eq!(result, vec!["src/*.js", "src/*.ts"]);
+    }
+
+    #[test]
+    fn keeps_a_pattern_without_groups() {
+        // Arrange
+        let pattern = "src/é.js";
+
+        // Act
+        let result = expand_pattern_braces(pattern).unwrap();
+
+        // Assert
+        assert_eq!(result, vec!["src/é.js"]);
+    }
+
+    #[test]
+    fn fails_for_a_pattern_too_long_to_expand() {
+        // Arrange
+        let pattern = format!("{{a,b}}{}", "x".repeat(10_000));
+
+        // Act
+        let result = expand_pattern_braces(&pattern);
+
+        // Assert
+        assert_eq!(
+            result.unwrap_err().to_string(),
+            format!("pattern is too long to expand its braces: {pattern}")
+        );
+    }
+
+    #[test]
+    fn fails_for_a_pattern_that_expands_too_far() {
+        // Arrange
+        let pattern = "{a,b}".repeat(20);
+
+        // Act
+        let result = expand_pattern_braces(&pattern);
+
+        // Assert
+        assert_eq!(
+            result.unwrap_err().to_string(),
+            format!("pattern's braces expand to too many patterns: {pattern}")
         );
     }
 }

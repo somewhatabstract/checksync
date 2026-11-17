@@ -1,10 +1,12 @@
+//! Finding the files a search plan matches, in JavaScript order.
+
 use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
 
-use super::compile_exclude_globs::compile_exclude_globs;
-use super::sort_paths_like_javascript::sort_paths_like_javascript;
-use super::types::{GetFilesError, GlobPlan};
-use super::walk_glob_folder::walk_glob_folder;
+use super::GetFilesError;
+use super::excludes::compile_exclude_globs;
+use super::plan::GlobPlan;
+use super::walk::walk_glob_folder;
 
 /// Finds the files a search plan matches.
 ///
@@ -37,15 +39,34 @@ pub(super) fn find_files(plan: &GlobPlan, cwd: &Path) -> Result<Vec<PathBuf>, Ge
     Ok(found)
 }
 
+/// Sorts paths as JavaScript sorts strings, and drops duplicates.
+///
+/// JavaScript compares strings by UTF-16 code unit, which orders some text
+/// differently from comparing bytes or characters. Each path is compared as
+/// text with `/` between names, which is how checksync's JavaScript
+/// implementation sorts the paths fast-glob gives it.
+fn sort_paths_like_javascript(paths: &mut Vec<PathBuf>) {
+    paths.sort_by_cached_key(|path| utf16_key(path));
+    paths.dedup();
+}
+
+/// Gets a path's text, with `/` between names, as UTF-16 code units.
+fn utf16_key(path: &Path) -> Vec<u16> {
+    let text = path.to_string_lossy();
+    #[cfg(not(unix))]
+    let text = text.replace('\\', "/");
+    text.encode_utf16().collect()
+}
+
 #[cfg(test)]
 mod tests {
     use std::fs;
-    use std::path::Path;
+    use std::path::{Path, PathBuf};
 
     use tempfile::TempDir;
 
-    use super::find_files;
-    use crate::file_search::types::{GlobPlan, GlobTask};
+    use super::{find_files, sort_paths_like_javascript};
+    use crate::file_search::plan::{GlobPlan, GlobTask};
 
     fn task(base: &str, pattern: &str) -> GlobTask {
         GlobTask {
@@ -170,5 +191,47 @@ mod tests {
 
         // Assert
         assert!(result.unwrap_err().to_string().starts_with("cannot read "));
+    }
+
+    fn paths(values: &[&str]) -> Vec<PathBuf> {
+        values.iter().map(PathBuf::from).collect()
+    }
+
+    #[test]
+    fn sorts_capital_letters_before_lowercase() {
+        // Arrange
+        let mut sorted = paths(&["/r/a.js", "/r/B.js"]);
+
+        // Act
+        sort_paths_like_javascript(&mut sorted);
+
+        // Assert
+        assert_eq!(sorted, paths(&["/r/B.js", "/r/a.js"]));
+    }
+
+    #[test]
+    fn sorts_by_utf16_code_unit_rather_than_character() {
+        // Arrange
+        // U+FF5E is one UTF-16 unit, 0xFF5E; U+1F600 is two, starting 0xD83D,
+        // so JavaScript puts the emoji first, unlike character order.
+        let mut sorted = paths(&["/r/\u{ff5e}", "/r/\u{1f600}"]);
+
+        // Act
+        sort_paths_like_javascript(&mut sorted);
+
+        // Assert
+        assert_eq!(sorted, paths(&["/r/\u{1f600}", "/r/\u{ff5e}"]));
+    }
+
+    #[test]
+    fn drops_duplicates() {
+        // Arrange
+        let mut sorted = paths(&["/r/a.js", "/r/b.js", "/r/a.js"]);
+
+        // Act
+        sort_paths_like_javascript(&mut sorted);
+
+        // Assert
+        assert_eq!(sorted, paths(&["/r/a.js", "/r/b.js"]));
     }
 }
