@@ -17,18 +17,6 @@ mod relative_path;
 mod separators;
 mod types;
 
-// TEMPORARY: the gitignore module still imports these two functions by
-// their old module paths. Remove both once it imports them from `node_path`
-// and `separators`.
-mod node_relative {
-    pub(crate) use crate::node_path::node_relative;
-}
-
-#[cfg(not(unix))]
-mod normalize_separators {
-    pub(crate) use crate::separators::normalize_separators;
-}
-
 pub use calc_checksum::calc_checksum;
 pub use file_search::{GetFilesError, get_files, is_allowed_by_ignore_files};
 pub use get_normalized_path_info::get_normalized_path_info;
