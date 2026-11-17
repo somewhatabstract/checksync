@@ -1,6 +1,6 @@
 //! Sets of patterns that match a path as a glob or by its text.
 
-use crate::glob::{CompiledGlob, GlobOptions, compile_glob, compiled_glob_matches};
+use crate::glob::{CompiledGlob, GlobOptions};
 
 /// Patterns that a path matches either as globs or as its literal text.
 ///
@@ -29,7 +29,8 @@ impl PatternSet {
     ) -> Self {
         let mut set = Self::default();
         for pattern in patterns {
-            set.globs.extend(compile_glob(pattern.as_bytes(), options));
+            set.globs
+                .extend(CompiledGlob::try_new(pattern.as_bytes(), options));
             set.literals.push(pattern.as_bytes().to_vec());
         }
         set
@@ -41,10 +42,7 @@ impl PatternSet {
     #[must_use]
     pub(super) fn matches(&self, text: &[u8]) -> bool {
         self.literals.iter().any(|literal| literal == text)
-            || self
-                .globs
-                .iter()
-                .any(|glob| compiled_glob_matches(glob, text))
+            || self.globs.iter().any(|glob| glob.matches(text))
     }
 }
 
