@@ -2,9 +2,7 @@ use indexmap::IndexMap;
 use regex::Regex;
 
 use crate::errors;
-use crate::is_js_whitespace::JS_WHITESPACE_CLASS;
-use crate::js_object_keys::js_object_keys;
-use crate::js_trim::js_trim;
+use crate::js::{JS_WHITESPACE_CLASS, js_object_keys, js_trim};
 use crate::types::{
     ErrorDetails, NormalizedPathInfo, ParseEvent, ParsedMarker, Target, TargetType, Targets,
 };

@@ -1,12 +1,11 @@
-use std::fs;
-use std::io;
-use std::path::{Path, PathBuf};
+//! Loaded ignore files, and how they decide about paths in their folder.
 
-use super::decide_path::decide_path;
-use super::parse::parse;
-use super::relative_path::relative_path;
-use super::types::GitignorePattern;
+use super::decide::decide_path;
+use super::pattern::{GitignorePattern, parse_line};
+use crate::node_path::node_relative;
 use crate::types::IgnoreDecision;
+use std::path::{Component, Path, PathBuf};
+use std::{fs, io};
 
 /// A loaded `.gitignore`-style file that decides about paths in its folder.
 ///
@@ -58,15 +57,58 @@ impl IgnoreFile {
     }
 }
 
+/// Returns the patterns in the raw contents of a `.gitignore`-style file.
+///
+/// A UTF-8 byte order mark at the very start is skipped, and lines end at each
+/// line feed. The patterns come in the order they appear.
+#[must_use]
+pub(super) fn parse(contents: &[u8]) -> Vec<GitignorePattern> {
+    let contents = contents.strip_prefix(b"\xEF\xBB\xBF").unwrap_or(contents);
+    contents
+        .split(|&byte| byte == b'\n')
+        .filter_map(parse_line)
+        .collect()
+}
+
+/// Returns a file's path inside an ignore file's folder, as patterns see it.
+///
+/// `folder` and `file_path` are absolute. Both are normalized first, so `..`
+/// segments are resolved. The result has `/` between names: on Unix, it's the
+/// path's raw bytes, so names that aren't valid UTF-8 are kept as they are;
+/// elsewhere it's the path's text with `/` separators. Returns `None` if the file
+/// isn't inside the folder, including when it is the folder itself.
+#[must_use]
+fn relative_path(folder: &Path, file_path: &Path) -> Option<Vec<u8>> {
+    let relative = node_relative(folder, folder, file_path);
+    let outside = matches!(
+        relative.components().next(),
+        None | Some(Component::ParentDir | Component::RootDir | Component::Prefix(_))
+    );
+    (!outside).then(|| path_bytes(&relative))
+}
+
+/// Returns a relative path's raw bytes, which already use `/` separators.
+#[cfg(unix)]
+fn path_bytes(path: &Path) -> Vec<u8> {
+    use std::os::unix::ffi::OsStrExt;
+    path.as_os_str().as_bytes().to_vec()
+}
+
+/// Returns a relative path's text with `/` separators.
+#[cfg(not(unix))]
+fn path_bytes(path: &Path) -> Vec<u8> {
+    crate::separators::normalize_separators(&path.to_string_lossy()).into_bytes()
+}
+
 #[cfg(test)]
 mod tests {
-    use std::fs;
-    use std::path::Path;
-
-    use tempfile::TempDir;
-
-    use super::IgnoreFile;
+    use super::super::pattern::GLOB_OPTIONS;
+    use super::{IgnoreFile, parse, relative_path};
+    use crate::glob::{CompiledGlob, compile_glob};
     use crate::types::IgnoreDecision;
+    use std::fs;
+    use std::path::{Path, PathBuf};
+    use tempfile::TempDir;
 
     /// Writes `contents` to `.gitignore` in `folder` and loads it.
     fn ignore_file(folder: &Path, contents: &str) -> IgnoreFile {
@@ -260,5 +302,161 @@ mod tests {
 
         // Assert
         assert!(result.is_err());
+    }
+
+    /// Returns the globs of the patterns read from `contents`.
+    fn globs(contents: &[u8]) -> Vec<CompiledGlob> {
+        parse(contents)
+            .into_iter()
+            .map(|pattern| pattern.glob)
+            .collect()
+    }
+
+    /// Compiles each of `patterns` as an ignore file would.
+    fn compiled(patterns: &[&[u8]]) -> Vec<CompiledGlob> {
+        patterns
+            .iter()
+            .map(|pattern| compile_glob(pattern, GLOB_OPTIONS).unwrap())
+            .collect()
+    }
+
+    #[test]
+    fn reads_each_line_in_order() {
+        // Arrange
+        let contents = b"a\n\n# c\nb";
+
+        // Act
+        let result = globs(contents);
+
+        // Assert
+        assert_eq!(result, compiled(&[b"a", b"b"]));
+    }
+
+    #[test]
+    fn skips_a_byte_order_mark_at_the_start() {
+        // Arrange
+        let contents = b"\xEF\xBB\xBFa\n";
+
+        // Act
+        let result = globs(contents);
+
+        // Assert
+        assert_eq!(result, compiled(&[b"a"]));
+    }
+
+    #[test]
+    fn keeps_a_second_byte_order_mark() {
+        // Arrange
+        let contents = b"\xEF\xBB\xBF\xEF\xBB\xBFa\n";
+
+        // Act
+        let result = globs(contents);
+
+        // Assert
+        assert_eq!(result, compiled(&[b"\xEF\xBB\xBFa"]));
+    }
+
+    #[test]
+    fn keeps_a_byte_order_mark_after_the_first_line() {
+        // Arrange
+        let contents = b"x\n\xEF\xBB\xBFa\n";
+
+        // Act
+        let result = globs(contents);
+
+        // Assert
+        assert_eq!(result, compiled(&[b"x", b"\xEF\xBB\xBFa"]));
+    }
+
+    fn root() -> PathBuf {
+        std::env::temp_dir().join("root")
+    }
+
+    #[test]
+    fn finds_the_path_inside_the_folder_with_slashes() {
+        // Arrange
+        let file = root().join("a").join("b.js");
+
+        // Act
+        let result = relative_path(&root(), &file);
+
+        // Assert
+        assert_eq!(result, Some(b"a/b.js".to_vec()));
+    }
+
+    #[test]
+    fn resolves_parent_segments() {
+        // Arrange
+        let file = root().join("a").join("..").join("b.js");
+
+        // Act
+        let result = relative_path(&root(), &file);
+
+        // Assert
+        assert_eq!(result, Some(b"b.js".to_vec()));
+    }
+
+    #[test]
+    fn finds_nothing_for_a_file_outside_the_folder() {
+        // Arrange
+        let file = root().join("..").join("b.js");
+
+        // Act
+        let result = relative_path(&root(), &file);
+
+        // Assert
+        assert_eq!(result, None);
+    }
+
+    #[test]
+    fn finds_nothing_for_a_sibling_folder_sharing_its_name() {
+        // Arrange
+        let folder = root().join("a");
+        let file = root().join("ab").join("x.log");
+
+        // Act
+        let result = relative_path(&folder, &file);
+
+        // Assert
+        assert_eq!(result, None);
+    }
+
+    #[test]
+    fn finds_nothing_for_the_folder_itself() {
+        // Arrange
+        let folder = root();
+
+        // Act
+        let result = relative_path(&folder, &folder);
+
+        // Assert
+        assert_eq!(result, None);
+    }
+
+    #[test]
+    fn keeps_a_name_starting_with_two_dots() {
+        // Arrange
+        let file = root().join("..b");
+
+        // Act
+        let result = relative_path(&root(), &file);
+
+        // Assert
+        assert_eq!(result, Some(b"..b".to_vec()));
+    }
+
+    #[cfg(unix)]
+    #[test]
+    fn keeps_the_raw_bytes_of_a_name_that_is_not_utf8() {
+        // Arrange
+        use std::ffi::OsStr;
+        use std::os::unix::ffi::OsStrExt;
+        let file = root().join(OsStr::from_bytes(b"caf\xE9"));
+
+        // Act
+        let result = relative_path(Path::new(&root()), &file);
+
+        // Assert
+        assert_eq!(result, Some(b"caf\xE9".to_vec()));
     }
 }
