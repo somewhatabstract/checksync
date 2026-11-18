@@ -5,9 +5,11 @@
 )]
 
 mod build;
+#[cfg(all(test, unix))]
+mod link_tests;
+mod real_path;
 
-use std::collections::HashMap;
-use std::fs;
+use std::collections::{HashMap, HashSet};
 use std::io;
 use std::path::{Path, PathBuf};
 
@@ -18,6 +20,8 @@ use crate::errors::ErrorDetails;
 use crate::options::Options;
 use crate::parse_file::ParsedFile;
 use crate::types::{Markers, RootMarkerError};
+
+use self::real_path::real_path;
 
 /// One file's entry in the cache.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -119,12 +123,14 @@ impl MarkerCache {
     ) -> Vec<String> {
         let real_paths: Vec<io::Result<PathBuf>> =
             files.par_iter().map(|file| real_path(file)).collect();
-        let mut to_parse: Vec<&PathBuf> = Vec::new();
-        for real in real_paths.iter().flatten() {
-            if !self.entries.contains_key(real) && !to_parse.contains(&real) {
-                to_parse.push(real);
-            }
-        }
+        // Each real path not yet in the cache is read once, however many of
+        // the files reach it.
+        let mut seen = HashSet::new();
+        let to_parse: Vec<&PathBuf> = real_paths
+            .iter()
+            .flatten()
+            .filter(|real| !self.entries.contains_key(*real) && seen.insert(*real))
+            .collect();
         let mut parsed: HashMap<&PathBuf, Result<ParsedFile, RootMarkerError>> = to_parse
             .into_par_iter()
             .map(|real| (real, ParsedFile::parse(options, real, read_only)))
@@ -198,42 +204,6 @@ impl MarkerCache {
     }
 }
 
-/// Returns a path with every link in it resolved, as Node.js's `fs.realpathSync` does.
-fn real_path(path: &Path) -> io::Result<PathBuf> {
-    fs::canonicalize(path).map(strip_verbatim_prefix)
-}
-
-/// Removes the `\\?\` prefix Windows gives a resolved path, which Node.js doesn't show.
-#[cfg(windows)]
-fn strip_verbatim_prefix(path: PathBuf) -> PathBuf {
-    use std::path::{Component, Prefix};
-
-    let mut components = path.components();
-    let start = match components.next() {
-        Some(Component::Prefix(prefix)) => match prefix.kind() {
-            Prefix::VerbatimDisk(letter) => format!("{}:", char::from(letter)),
-            Prefix::VerbatimUNC(server, share) => {
-                format!(
-                    r"\\{}\{}",
-                    server.to_string_lossy(),
-                    share.to_string_lossy()
-                )
-            }
-            _ => return path,
-        },
-        _ => return path,
-    };
-    let mut stripped = PathBuf::from(start);
-    stripped.extend(components);
-    stripped
-}
-
-/// Returns the path as it is: only Windows adds a prefix to resolved paths.
-#[cfg(not(windows))]
-fn strip_verbatim_prefix(path: PathBuf) -> PathBuf {
-    path
-}
-
 #[cfg(test)]
 mod tests {
     use std::fs;
@@ -241,11 +211,12 @@ mod tests {
 
     use tempfile::TempDir;
 
-    use super::{MarkerCache, real_path};
+    use super::MarkerCache;
+    use super::real_path::real_path;
     use crate::errors::ErrorDetails;
     use crate::options::Options;
 
-    fn options() -> Options {
+    pub(super) fn options() -> Options {
         Options {
             include_globs: vec!["**/*.js".to_owned()],
             exclude_globs: Vec::new(),
@@ -260,7 +231,7 @@ mod tests {
     ///
     /// The folder's path has its links resolved, so paths in the cache,
     /// which are resolved too, compare equal to paths built from it.
-    fn root(files: &[(&str, &str)]) -> (TempDir, PathBuf) {
+    pub(super) fn root(files: &[(&str, &str)]) -> (TempDir, PathBuf) {
         let dir = TempDir::new().unwrap();
         let path = real_path(dir.path()).unwrap();
         fs::write(path.join("package.json"), "{}").unwrap();
@@ -272,7 +243,7 @@ mod tests {
         (dir, path)
     }
 
-    fn keys(cache: &MarkerCache) -> Vec<&Path> {
+    pub(super) fn keys(cache: &MarkerCache) -> Vec<&Path> {
         cache.iter().map(|(path, _)| path).collect()
     }
 
@@ -395,7 +366,7 @@ mod tests {
         // Arrange
         let (_dir, root) = root(&[]);
         let missing = root.join("missing.js");
-        let detail = fs::canonicalize(&missing).unwrap_err().to_string();
+        let detail = real_path(&missing).unwrap_err().to_string();
 
         // Act
         let cache = MarkerCache::from_files(&options(), std::slice::from_ref(&missing));
@@ -434,111 +405,25 @@ mod tests {
         );
     }
 
-    #[cfg(unix)]
-    mod links {
-        use std::os::unix::fs::symlink;
-        use std::path::Path;
+    #[test]
+    fn adds_a_path_that_differs_from_its_real_path_as_read_only() {
+        // Arrange
+        let (_dir, root) = root(&[("a.js", "")]);
+        let given = root.join("sub").join("..").join("a.js");
 
-        use super::{TAGGED_A, TAGGED_B, keys, options, root};
-        use crate::marker_cache::MarkerCache;
+        // Act
+        let cache = MarkerCache::from_files(&options(), std::slice::from_ref(&given));
 
-        #[test]
-        fn adds_a_link_after_its_real_file() {
-            // Arrange
-            let (_dir, root) = root(&[("a.js", "")]);
-            symlink(root.join("a.js"), root.join("link.js")).unwrap();
-
-            // Act
-            let cache = MarkerCache::from_files(&options(), &[root.join("link.js")]);
-
-            // Assert
-            assert_eq!(
-                keys(&cache),
-                vec![root.join("a.js").as_path(), root.join("link.js").as_path()]
-            );
-        }
-
-        #[test]
-        fn makes_a_link_read_only() {
-            // Arrange
-            let (_dir, root) = root(&[("a.js", "")]);
-            symlink(root.join("a.js"), root.join("link.js")).unwrap();
-
-            // Act
-            let cache = MarkerCache::from_files(&options(), &[root.join("link.js")]);
-
-            // Assert
-            assert!(cache.get(&root.join("link.js")).unwrap().read_only);
-        }
-
-        #[test]
-        fn shares_the_aliases_of_a_link_and_its_file() {
-            // Arrange
-            let (_dir, root) = root(&[("a.js", "")]);
-            symlink(root.join("a.js"), root.join("link.js")).unwrap();
-
-            // Act
-            let cache = MarkerCache::from_files(&options(), &[root.join("link.js")]);
-
-            // Assert
-            assert_eq!(
-                cache.get(&root.join("a.js")).unwrap().aliases,
-                [root.join("a.js"), root.join("link.js")]
-            );
-        }
-
-        #[test]
-        fn reads_a_file_once_when_two_paths_reach_it() {
-            // Arrange
-            let (_dir, root) = root(&[("a.js", TAGGED_A), ("b.js", TAGGED_B)]);
-            symlink(root.join("a.js"), root.join("link.js")).unwrap();
-
-            // Act
-            let cache =
-                MarkerCache::from_files(&options(), &[root.join("a.js"), root.join("link.js")]);
-
-            // Assert
-            assert_eq!(
-                cache.get(&root.join("a.js")).unwrap().aliases,
-                [root.join("a.js"), root.join("link.js")]
-            );
-        }
-
-        #[test]
-        fn keeps_a_real_file_fixable_when_a_link_reaches_it_first() {
-            // Arrange
-            let (_dir, root) = root(&[("a.js", "")]);
-            symlink(root.join("a.js"), root.join("link.js")).unwrap();
-
-            // Act
-            let cache = MarkerCache::from_files(&options(), &[root.join("link.js")]);
-
-            // Assert
-            assert!(!cache.get(&root.join("a.js")).unwrap().read_only);
-        }
-
-        #[test]
-        fn reports_a_link_whose_root_cannot_be_found_by_the_link() {
-            // Arrange
-            let (_dir, root) = root(&[("a.js", "")]);
-            symlink(root.join("a.js"), root.join("link.js")).unwrap();
-            let options = crate::options::Options {
-                root_marker: Some("no-such-marker-anywhere.txt".to_owned()),
-                ..options()
-            };
-
-            // Act
-            let cache = MarkerCache::from_files(&options, &[root.join("link.js")]);
-
-            // Assert
-            assert!(
-                cache.get(Path::new(&root.join("a.js"))).unwrap().errors[0]
-                    .reason
-                    .starts_with(&format!(
-                        "Could not parse {}:",
-                        root.join("link.js").display()
-                    ))
-            );
-        }
+        // Assert
+        assert_eq!(
+            cache
+                .iter()
+                .map(|(path, info)| (path, info.read_only))
+                .collect::<Vec<_>>(),
+            vec![
+                (root.join("a.js").as_path(), false),
+                (given.as_path(), true)
+            ]
+        );
     }
 }
