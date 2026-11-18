@@ -12,6 +12,7 @@ mod glob;
 mod js;
 mod lines;
 mod marker_parser;
+mod migration;
 mod node_path;
 mod relative_path;
 mod separators;
