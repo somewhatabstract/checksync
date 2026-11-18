@@ -59,7 +59,9 @@ pub enum TargetType {
 /// A target named by one sync-start tag.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Target {
-    /// The file path or URL the tag names, as written in the tag.
+    /// The path the tag names, resolved against the root, or its URL.
+    ///
+    /// See [`crate::get_normalized_path_info()`] for how a path is resolved.
     pub target: String,
     /// Whether the target is a file or a URL.
     pub kind: TargetType,
