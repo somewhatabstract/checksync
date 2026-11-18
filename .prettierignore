@@ -5,6 +5,8 @@ dist
 *.json
 *.yml
 *.md
+# Changesets formats the changelog with prettier when it versions a release.
+!CHANGELOG.md
 *.py
 __examples__
 .flowconfig
