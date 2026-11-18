@@ -193,6 +193,9 @@ mod tests {
 
     fn options() -> Options {
         Options {
+            include_globs: Vec::new(),
+            exclude_globs: Vec::new(),
+            ignore_files: Vec::new(),
             comments: vec!["//".to_owned()],
             allow_empty_tags: false,
             root_marker: None,

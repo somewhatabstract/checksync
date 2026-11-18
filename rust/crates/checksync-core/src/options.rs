@@ -9,6 +9,12 @@
 )]
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(crate) struct Options {
+    /// The paths and globs of the files to check.
+    pub include_globs: Vec<String>,
+    /// The globs of files and folders to leave out.
+    pub exclude_globs: Vec<String>,
+    /// The paths and globs of `.gitignore`-style files naming files to leave out.
+    pub ignore_files: Vec<String>,
     /// The strings that can start a tag's line, such as `//` or `#`.
     pub comments: Vec<String>,
     /// Whether a tagged block may have no content.
