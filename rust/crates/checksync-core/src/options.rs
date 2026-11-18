@@ -1,5 +1,7 @@
 //! The settings for a checksync run.
 
+use crate::migration::MigrationOptions;
+
 /// The settings for a checksync run that the core logic reads.
 ///
 /// Fields are added here as each part of the run is ported.
@@ -23,4 +25,6 @@ pub(crate) struct Options {
     ///
     /// `None` uses the default, [`crate::DEFAULT_ROOT_MARKER`].
     pub root_marker: Option<String>,
+    /// The migration to suggest for tags whose targets it matches, if any.
+    pub migration: Option<MigrationOptions>,
 }

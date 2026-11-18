@@ -5,6 +5,7 @@
 )]
 
 mod build;
+mod file_errors;
 #[cfg(all(test, unix))]
 mod link_tests;
 mod real_path;
@@ -224,6 +225,7 @@ mod tests {
             comments: vec!["//".to_owned()],
             allow_empty_tags: false,
             root_marker: None,
+            migration: None,
         }
     }
 
