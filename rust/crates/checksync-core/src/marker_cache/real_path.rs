@@ -18,9 +18,10 @@ use crate::node_path::node_normalize;
 /// # Errors
 ///
 /// Returns the error for a name that doesn't exist, or for a link that's
-/// broken or part of a loop.
+/// broken or part of a loop. A path that goes through more than 40 links
+/// fails with the same message as a loop, where Node.js would never finish.
 pub(super) fn real_path(path: &Path) -> io::Result<PathBuf> {
-    let mut path = node_normalize(path);
+    let mut path = resolve_as_text(path);
     #[cfg(windows)]
     {
         // Node.js checks that the root exists on Windows.
@@ -28,6 +29,7 @@ pub(super) fn real_path(path: &Path) -> io::Result<PathBuf> {
             fs::symlink_metadata(root)?;
         }
     }
+    let mut links_followed = 0;
     'resolve: loop {
         let components: Vec<Component> = path.components().collect();
         let mut current = PathBuf::new();
@@ -48,11 +50,30 @@ pub(super) fn real_path(path: &Path) -> io::Result<PathBuf> {
             next.pop();
             next.push(target);
             next.extend(&components[index + 1..]);
-            path = node_normalize(&next);
+            links_followed += 1;
+            if links_followed > MAX_LINKS {
+                return Err(io::Error::other("Too many levels of symbolic links"));
+            }
+            path = resolve_as_text(&next);
             continue 'resolve;
         }
         return Ok(path);
     }
+}
+
+/// How many links one path may go through before resolving it gives up.
+///
+/// Node.js has no limit, and never finishes a path whose links lead back to
+/// themselves only when `..` is worked out as text, such as a link to
+/// `l/../link` where `l` is a link to a folder. Following a link fails for an
+/// ordinary loop, so the limit only stops paths that Node.js never resolves.
+/// 40 is Linux's limit for the links a single path may go through.
+const MAX_LINKS: usize = 40;
+
+/// Works out `.` and `..` in a path as text, and drops a trailing separator,
+/// as Node.js's `path.resolve` does for an absolute path.
+fn resolve_as_text(path: &Path) -> PathBuf {
+    node_normalize(path).components().collect()
 }
 
 /// Removes the `\\?\` prefix Windows can give a link's target, which Node.js doesn't show.
@@ -126,6 +147,21 @@ mod tests {
 
         // Assert
         assert_eq!(result, root.join("a.js"));
+    }
+
+    #[test]
+    fn drops_a_trailing_separator() {
+        // Arrange
+        let (_dir, root) = folder();
+        fs::create_dir(root.join("sub")).unwrap();
+        let mut given = root.join("sub").into_os_string();
+        given.push(std::path::MAIN_SEPARATOR_STR);
+
+        // Act
+        let result = real_path(std::path::Path::new(&given)).unwrap();
+
+        // Assert
+        assert_eq!(result, root.join("sub"));
     }
 
     #[test]
@@ -230,7 +266,68 @@ mod tests {
             let result = real_path(&root.join("one.js"));
 
             // Assert
-            assert!(result.is_err());
+            assert!(
+                result
+                    .unwrap_err()
+                    .to_string()
+                    .starts_with("Too many levels of symbolic links")
+            );
+        }
+
+        #[test]
+        fn works_out_parent_folders_after_a_linked_folder_as_text() {
+            // Arrange
+            let (_dir, root) = folder();
+            fs::create_dir_all(root.join("real/inner")).unwrap();
+            fs::create_dir(root.join("deep")).unwrap();
+            fs::write(root.join("deep/l"), "").unwrap();
+            // Following `climb` has to succeed on the file system first, where
+            // `linked/..` is `real`, before its target is worked out as text.
+            fs::create_dir(root.join("real/deep")).unwrap();
+            fs::write(root.join("real/deep/l"), "").unwrap();
+            symlink(root.join("real/inner"), root.join("linked")).unwrap();
+            symlink("linked/../deep/l", root.join("climb")).unwrap();
+
+            // Act
+            let result = real_path(&root.join("climb")).unwrap();
+
+            // Assert
+            assert_eq!(result, root.join("deep/l"));
+        }
+
+        #[test]
+        fn drops_a_trailing_separator_from_a_link_target() {
+            // Arrange
+            let (_dir, root) = folder();
+            fs::create_dir(root.join("real")).unwrap();
+            symlink("real/", root.join("trail")).unwrap();
+
+            // Act
+            let result = real_path(&root.join("trail")).unwrap();
+
+            // Assert
+            assert_eq!(result, root.join("real"));
+        }
+
+        #[test]
+        fn gives_up_on_links_that_only_loop_as_text() {
+            // Arrange
+            let (_dir, root) = folder();
+            fs::create_dir_all(root.join("deep/q")).unwrap();
+            fs::write(root.join("deep/hit"), "").unwrap();
+            symlink("deep/q", root.join("dq")).unwrap();
+            symlink("dq/../hit", root.join("hit")).unwrap();
+
+            // Act
+            let result = real_path(&root.join("hit"));
+
+            // Assert
+            assert!(
+                result
+                    .unwrap_err()
+                    .to_string()
+                    .starts_with("Too many levels of symbolic links")
+            );
         }
     }
 
