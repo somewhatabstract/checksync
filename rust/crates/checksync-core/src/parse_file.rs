@@ -69,8 +69,9 @@ impl ParsedFile {
             .unwrap_or(DEFAULT_ROOT_MARKER);
         let root = closesdir(file, marker_name)?;
         let file_text = file.to_string_lossy();
-        let bytes = match fs::read(file) {
-            Ok(bytes) => bytes,
+        // The bytes are only needed until the lines are split out.
+        let lines = match fs::read(file) {
+            Ok(bytes) => split_lines(&decode_utf8(&bytes)),
             Err(error) => {
                 return Ok(Self {
                     markers: Markers::new(),
@@ -84,7 +85,6 @@ impl ParsedFile {
                 });
             }
         };
-        let lines = split_lines(&decode_utf8(&bytes));
 
         let mut referenced_files = Vec::new();
         let mut parser = MarkerParser::new(&options.comments, |target: &str| {
@@ -183,7 +183,6 @@ fn add_marker(
 #[cfg(test)]
 mod tests {
     use std::fs;
-    use std::path::Path;
 
     use tempfile::TempDir;
 
@@ -526,10 +525,61 @@ mod tests {
             ..options()
         };
 
+        let dir = root(&[]);
+
         // Act
-        let result = ParsedFile::parse(&options, Path::new("/a.js"), false);
+        let result = ParsedFile::parse(&options, &dir.path().join("a.js"), false);
 
         // Assert
-        assert!(result.is_err());
+        assert!(
+            result
+                .unwrap_err()
+                .to_string()
+                .starts_with("Could not find marker, \"no-such-marker-anywhere.txt\"")
+        );
+    }
+
+    #[test]
+    fn stores_an_end_tag_without_a_start_tag_as_a_marker_without_content() {
+        // Arrange
+        let dir = root(&[("src/a.js", "// sync-end:x\n")]);
+
+        // Act
+        let result = parse(&dir, "src/a.js", false);
+
+        // Assert
+        assert_eq!(
+            result.markers["x"],
+            crate::types::Marker {
+                content_checksum: None,
+                self_checksum: calc_checksum(&["src/a.js"]),
+                targets: crate::types::Targets::new(),
+                comment_start: None,
+                comment_end: None,
+            }
+        );
+    }
+
+    #[test]
+    fn replaces_a_marker_with_a_later_end_tag_without_reporting_it() {
+        // Arrange
+        let dir = root(&[(
+            "a.js",
+            concat!(
+                "// sync-start:x https://example.com/b\n",
+                "content\n",
+                "// sync-end:x\n",
+                "// sync-end:x\n",
+            ),
+        )]);
+
+        // Act
+        let result = parse(&dir, "a.js", false);
+
+        // Assert
+        assert_eq!(
+            result.errors,
+            vec![ErrorDetails::end_tag_without_start_tag("x", 4)]
+        );
     }
 }
