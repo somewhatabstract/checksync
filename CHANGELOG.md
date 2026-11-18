@@ -1,5 +1,18 @@
 # checksync
 
+## 11.0.3
+
+### Patch Changes
+
+- 728dd5c: Fix three problems loading a configuration file:
+
+    - A configuration that fails schema validation now says what is wrong instead of exiting with no message.
+    - A configuration whose top level isn't a JSON object, such as `[]`, is now rejected instead of being treated as empty.
+    - A relative `--config` path to a file in another folder now works; it was being opened again after changing to that folder.
+
+- 3d467ac: Fix running checksync with no include paths. It now checks every file below the current working directory, as the help says, instead of failing with "No matching files". That includes the folder given by `--cwd`, and still holds when a configuration file is found in a folder above.
+- e4aa2ac: Report a clear error when files from more than one root are checked in the same run, instead of "File has already been drained to the output sink".
+
 ## 11.0.2
 
 ### Patch Changes
