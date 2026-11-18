@@ -14,6 +14,7 @@ workspace = true
 [dependencies]
 adler2 = "2"
 indexmap = "2"
+rayon = "1"
 regex = "1"
 
 [dev-dependencies]

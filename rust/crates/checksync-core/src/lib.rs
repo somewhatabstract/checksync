@@ -11,6 +11,7 @@ mod gitignore;
 mod glob;
 mod js;
 mod lines;
+mod marker_cache;
 mod marker_parser;
 mod migration;
 mod node_path;
