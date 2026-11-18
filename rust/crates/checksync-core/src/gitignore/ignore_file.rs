@@ -10,10 +10,9 @@ use crate::types::IgnoreDecision;
 
 /// A loaded `.gitignore`-style file that decides about paths in its folder.
 ///
-/// Patterns are read and matched as git reads and matches them, ignoring
-/// the case of ASCII letters. A path inside an
-/// ignored folder stays ignored even if a later pattern negates the path
-/// itself.
+/// Patterns are read and matched as git reads and matches them, ignoring the case
+/// of ASCII letters. A path inside an ignored folder stays ignored even if a later
+/// pattern negates the path itself.
 #[derive(Debug)]
 pub struct IgnoreFile {
     /// The folder the ignore file is in, which it governs.
@@ -23,26 +22,18 @@ pub struct IgnoreFile {
 }
 
 impl IgnoreFile {
-    /// Read an ignore file.
+    /// Reads the ignore file at `path`, an absolute path, to govern its folder.
     ///
-    /// Two things differ from checksync's JavaScript implementation, which
-    /// uses the `ignore` package; in both, this follows git:
+    /// Two things differ from checksync's JavaScript implementation, which uses the
+    /// `ignore` package; in both, this follows git:
     ///
     /// - Ignoring case applies only to ASCII letters.
-    /// - On Unix, a file name that isn't valid UTF-8 is matched by its bytes.
-    ///   The JavaScript decodes it first, turning the bad bytes into U+FFFD.
-    ///
-    /// # Arguments
-    ///
-    /// * `path` - The absolute path of the ignore file.
-    ///
-    /// # Returns
-    ///
-    /// The ignore file, governing the folder it's in.
+    /// - On Unix, a file name that isn't valid UTF-8 is matched by its bytes. The
+    ///   JavaScript decodes it first, turning the bad bytes into U+FFFD.
     ///
     /// # Errors
     ///
-    /// Any error reading the file.
+    /// Returns any error from reading the file.
     pub fn load(path: &Path) -> io::Result<Self> {
         let contents = fs::read(path)?;
         Ok(Self {
@@ -51,22 +42,14 @@ impl IgnoreFile {
         })
     }
 
-    /// Decide what this ignore file says about a file.
+    /// Decides what this ignore file says about the file at `file_path`, an absolute path.
     ///
-    /// Only files inside the ignore file's folder get an opinion; anything
-    /// beside or above it, including a sibling folder whose name merely
-    /// starts with this folder's name, gets [`IgnoreDecision::NoOpinion`].
-    /// The folders above the file are checked first: if any is ignored, so
-    /// is the file, even if a later pattern negates the file itself, as in
-    /// git. Otherwise the last pattern that matches the file decides.
-    ///
-    /// # Arguments
-    ///
-    /// * `file_path` - The absolute path of the file.
-    ///
-    /// # Returns
-    ///
-    /// Whether the file is ignored, unignored, or neither.
+    /// Only files inside the ignore file's folder get an opinion; anything beside or
+    /// above it, including a sibling folder whose name merely starts with this
+    /// folder's name, gets [`IgnoreDecision::NoOpinion`]. The folders above the file
+    /// are checked first: if any is ignored, so is the file, even if a later pattern
+    /// negates the file itself, as in git. Otherwise the last pattern that matches
+    /// the file decides.
     #[must_use]
     pub fn decide(&self, file_path: &Path) -> IgnoreDecision {
         relative_path(&self.folder, file_path).map_or(IgnoreDecision::NoOpinion, |relative| {
@@ -85,7 +68,7 @@ mod tests {
     use super::IgnoreFile;
     use crate::types::IgnoreDecision;
 
-    /// Write `contents` to `.gitignore` in `folder` and load it.
+    /// Writes `contents` to `.gitignore` in `folder` and loads it.
     fn ignore_file(folder: &Path, contents: &str) -> IgnoreFile {
         fs::create_dir_all(folder).unwrap();
         let path = folder.join(".gitignore");

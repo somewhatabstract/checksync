@@ -1,14 +1,8 @@
 use crate::types::{ErrorCode, ErrorDetails, ErrorLocation};
 
-/// Create the error for a sync-end tag that can't be decoded.
+/// Creates the error for a sync-end tag that can't be decoded.
 ///
-/// # Arguments
-///
-/// * `line` - The 1-based line of the tag.
-///
-/// # Returns
-///
-/// The error details.
+/// The error is located at `line`, the 1-based line of the tag.
 #[must_use]
 pub fn malformed_end_tag(line: usize) -> ErrorDetails {
     ErrorDetails {

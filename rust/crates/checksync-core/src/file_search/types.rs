@@ -7,8 +7,9 @@ use crate::glob::CompiledGlob;
 /// An include pattern and the folder to start walking from to find its files.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(super) struct GlobTask {
-    /// The folder to walk, relative to the working folder, with `/` between
-    /// names; `.` for the working folder itself.
+    /// The folder to walk, relative to the working folder.
+    ///
+    /// It has `/` between names, and is `.` for the working folder itself.
     pub base: String,
     /// The pattern, relative to the working folder, that files must match.
     pub pattern: String,
@@ -19,8 +20,9 @@ pub(super) struct GlobTask {
 pub(super) struct GlobPlan {
     /// The include patterns, each with the folder to walk.
     pub tasks: Vec<GlobTask>,
-    /// The patterns that remove files and prune folders, relative to the
-    /// working folder.
+    /// The patterns that remove files and prune folders.
+    ///
+    /// They're relative to the working folder.
     pub excludes: Vec<String>,
 }
 
@@ -31,8 +33,9 @@ pub(super) struct GlobPlan {
 /// a bracket set.
 #[derive(Debug, Clone, Default)]
 pub(super) struct PatternSet {
-    /// The patterns compiled as globs; those that can never match are left
-    /// out.
+    /// The patterns compiled as globs.
+    ///
+    /// Those that can never match are left out.
     pub globs: Vec<CompiledGlob>,
     /// The patterns as literal text.
     pub literals: Vec<Vec<u8>>,
@@ -41,28 +44,32 @@ pub(super) struct PatternSet {
 /// Exclude patterns compiled for checking files and folders.
 #[derive(Debug, Clone, Default)]
 pub(super) struct ExcludePatterns {
-    /// The patterns as given, which remove a file or prune a folder whose
-    /// path they match.
+    /// The patterns as given.
+    ///
+    /// They remove a file or prune a folder whose path they match.
     pub paths: PatternSet,
-    /// The folder before each trailing `/**`, which prunes a folder whose
-    /// path it matches, with everything in it.
+    /// The folder before each trailing `/**`.
+    ///
+    /// It prunes a folder whose path it matches, with everything in it.
     pub folders: PatternSet,
 }
 
 /// The compiled exclude patterns, with absolute ones kept apart.
 #[derive(Debug, Clone, Default)]
 pub(super) struct ExcludeGlobs {
-    /// The relative patterns, matched against paths relative to the working
-    /// folder.
+    /// The relative patterns.
+    ///
+    /// They're matched against paths relative to the working folder.
     pub relative: ExcludePatterns,
-    /// The absolute patterns, matched against absolute paths, if there are
-    /// any.
+    /// The absolute patterns, if there are any.
+    ///
+    /// They're matched against absolute paths.
     pub absolute: Option<ExcludePatterns>,
     /// The absolute working folder, for making paths absolute.
     pub cwd: PathBuf,
 }
 
-/// Why `get_files` couldn't find files.
+/// Why [`get_files`](crate::get_files) couldn't find files.
 #[derive(Debug)]
 pub enum GetFilesError {
     /// A pattern is too long to expand its brace groups.

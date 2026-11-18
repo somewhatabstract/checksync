@@ -1,18 +1,10 @@
 use super::parse_line::parse_line;
 use super::types::GitignorePattern;
 
-/// Read the patterns from the contents of a `.gitignore`-style file.
+/// Returns the patterns in the raw contents of a `.gitignore`-style file.
 ///
-/// A UTF-8 byte order mark at the very start is skipped, and lines end at
-/// each line feed.
-///
-/// # Arguments
-///
-/// * `contents` - The raw bytes of the file.
-///
-/// # Returns
-///
-/// The patterns, in the order they appear.
+/// A UTF-8 byte order mark at the very start is skipped, and lines end at each
+/// line feed. The patterns come in the order they appear.
 #[must_use]
 pub(super) fn parse(contents: &[u8]) -> Vec<GitignorePattern> {
     let contents = contents.strip_prefix(b"\xEF\xBB\xBF").unwrap_or(contents);
@@ -29,7 +21,7 @@ mod tests {
     use crate::glob::CompiledGlob;
     use crate::glob::compile_glob;
 
-    /// List the globs of the patterns read from `contents`.
+    /// Returns the globs of the patterns read from `contents`.
     fn globs(contents: &[u8]) -> Vec<CompiledGlob> {
         parse(contents)
             .into_iter()
@@ -37,7 +29,7 @@ mod tests {
             .collect()
     }
 
-    /// Compile each of `patterns` as an ignore file would.
+    /// Compiles each of `patterns` as an ignore file would.
     fn compiled(patterns: &[&[u8]]) -> Vec<CompiledGlob> {
         patterns
             .iter()

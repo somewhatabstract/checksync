@@ -1,16 +1,9 @@
-/// Find how many names deep a pattern's files can be, if there's a limit.
+/// Finds how many names deep a pattern's files can be, if there's a limit.
 ///
-/// Without `**`, each name in a pattern matches exactly one name in a path,
-/// so a file can't be deeper than the pattern has names, and walking can stop
-/// there. With `**`, files can be any depth.
-///
-/// # Arguments
-///
-/// * `pattern` - The pattern, with `/` between names.
-///
-/// # Returns
-///
-/// How many names a matching path has, or `None` if there's no limit.
+/// The pattern has `/` between names. Without `**`, each name in a pattern
+/// matches exactly one name in a path, so a file can't be deeper than the
+/// pattern has names, and walking can stop there. With `**`, files can be any
+/// depth, so this returns `None`.
 #[must_use]
 pub(super) fn pattern_name_limit(pattern: &str) -> Option<usize> {
     if pattern.contains("**") {

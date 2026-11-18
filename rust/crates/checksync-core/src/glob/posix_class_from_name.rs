@@ -1,16 +1,9 @@
 use super::types::PosixClass;
 
-/// Look up a POSIX character class by the name written between `[:` and `:]`.
+/// Returns the POSIX character class named between `[:` and `:]`, if it's known.
 ///
-/// Names are case-sensitive, so `ALPHA` isn't a class.
-///
-/// # Arguments
-///
-/// * `name` - The class name, such as `alpha`.
-///
-/// # Returns
-///
-/// The class, or `None` if the name isn't one of the twelve known classes.
+/// Names are case-sensitive, so `ALPHA` isn't a class. Returns `None` if the name
+/// isn't one of the twelve known classes.
 #[must_use]
 pub(super) fn posix_class_from_name(name: &[u8]) -> Option<PosixClass> {
     match name {

@@ -1,17 +1,8 @@
-/// Add a name to a folder's glob text, with a `/` between them.
+/// Adds a name to a folder's glob text, with a `/` between them.
 ///
-/// The working folder's text is empty, so names in it have no folder part,
-/// and a folder whose text already ends in `/`, such as the root, gets no
-/// second one.
-///
-/// # Arguments
-///
-/// * `folder` - The folder's text, relative to the working folder.
-/// * `name` - The name to add.
-///
-/// # Returns
-///
-/// The text for the name inside the folder.
+/// The folder's text is relative to the working folder, whose own text is
+/// empty, so names in it have no folder part. A folder whose text already
+/// ends in `/`, such as the root, gets no second one.
 #[must_use]
 pub(super) fn join_glob_text(folder: &[u8], name: &[u8]) -> Vec<u8> {
     let mut text = Vec::with_capacity(folder.len() + 1 + name.len());

@@ -4,7 +4,7 @@ use crate::node_normalize::node_normalize;
 use crate::os_separators::os_separators;
 use crate::types::{NormalizedPathInfo, TargetType};
 
-/// Resolve the target written in a sync-start tag.
+/// Resolves the target written in a sync-start tag.
 ///
 /// A target containing `://` is a URL: it's returned as written, and always
 /// counts as existing, since checksync doesn't fetch URLs. Any other target
@@ -16,14 +16,8 @@ use crate::types::{NormalizedPathInfo, TargetType};
 /// folder, or a symbolic link even to a file, doesn't count, as in
 /// checksync's JavaScript implementation, which checks with `lstat`.
 ///
-/// # Arguments
-///
-/// * `root_path` - The absolute path of the root folder.
-/// * `target` - The target as written in the tag.
-///
-/// # Returns
-///
-/// The resolved path or URL, whether it exists, and whether it's local.
+/// `root_path` is the absolute path of the root folder. The result holds the
+/// resolved path or URL, whether it exists, and whether it's local.
 #[must_use]
 pub fn get_normalized_path_info(root_path: &Path, target: &str) -> NormalizedPathInfo {
     if target.contains("://") {

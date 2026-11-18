@@ -1,4 +1,4 @@
-//! Check that the `checksync` binary builds and runs.
+//! Checks that the `checksync` binary builds and runs.
 
 use std::process::Command;
 

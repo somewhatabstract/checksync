@@ -1,23 +1,13 @@
 use super::bracket_set_contains::bracket_set_contains;
 use super::types::{GlobOptions, UnitMatcher};
 
-/// Check whether one unit of the text matches a single-unit glob token.
+/// Checks whether one unit of the text matches a single-unit glob token.
 ///
-/// A unit is a byte, or a whole character in unicode mode. With `pathname`
-/// set, `?` and bracket sets never match `/`; only a literal `/` does. With
-/// `casefold` set, a literal matches in either case, but an escaped byte is
-/// compared with the text's byte lowercased.
-///
-/// # Arguments
-///
-/// * `matcher` - What the unit has to be.
-/// * `unit` - The unit's bytes in the text.
-/// * `code` - The unit's code: the byte, or the character's code point.
-/// * `options` - How to treat slashes and letter case.
-///
-/// # Returns
-///
-/// `true` if the unit matches.
+/// A unit is a byte, or a whole character in unicode mode; `unit` holds its bytes
+/// in the text and `code` its code, the byte or the character's code point. With
+/// `pathname` set in `options`, `?` and bracket sets never match `/`; only a
+/// literal `/` does. With `casefold` set, a literal matches in either case, but
+/// an escaped byte is compared with the text's byte lowercased.
 #[must_use]
 pub(super) fn unit_matcher_matches(
     matcher: &UnitMatcher,

@@ -7,27 +7,28 @@
 pub(crate) struct GlobOptions {
     /// Whether `/` separates folders.
     ///
-    /// When set, `?`, `*` and bracket sets never match `/`, and a `**` that
-    /// makes up a whole folder name matches any number of folders.
+    /// When set, `?`, `*` and bracket sets never match `/`, and a `**` that makes up a
+    /// whole folder name matches any number of folders.
     pub pathname: bool,
     /// Whether ASCII letters match regardless of case.
     ///
-    /// After a `\` or inside a bracket set, the text's byte is lowercased
-    /// and compared with the pattern as written, so `\A` and `[A]` match
-    /// nothing, though ranges and classes such as `[A-Z]` and `[:upper:]`
-    /// still match lowercase letters.
+    /// After a `\` or inside a bracket set, the text's byte is lowercased and
+    /// compared with the pattern as written, so `\A` and `[A]` match nothing, though
+    /// ranges and classes such as `[A-Z]` and `[:upper:]` still match lowercase
+    /// letters.
     pub casefold: bool,
     /// Which hidden names wildcards may match, in pathname mode.
     ///
-    /// Without `pathname`, this has no effect: wildcards match everything.
+    /// Without [`pathname`](Self::pathname), this has no effect: wildcards match
+    /// everything.
     pub hidden: HiddenNames,
     /// Whether `?` and bracket sets match whole UTF-8 characters.
     ///
-    /// When on, as in fast-glob, `?` and a bracket set match one character
-    /// of 1 to 4 bytes, bracket sets compare code points, and `*` never stops
-    /// inside a character. A byte that isn't part of valid UTF-8, in the
-    /// pattern or the text, counts as one character on its own. When off,
-    /// as in git, everything matches single bytes.
+    /// When on, as in fast-glob, `?` and a bracket set match one character of 1 to 4
+    /// bytes, bracket sets compare code points, and `*` never stops inside a
+    /// character. A byte that isn't part of valid UTF-8, in the pattern or the text,
+    /// counts as one character on its own. When off, as in git, everything matches
+    /// single bytes.
     pub unicode: bool,
 }
 
@@ -36,36 +37,37 @@ pub(crate) struct GlobOptions {
 pub(crate) struct CompiledGlob {
     /// The pattern's tokens, in order.
     pub(super) tokens: Vec<GlobToken>,
-    /// How the pattern treats slashes, letter case and hidden names.
+    /// How the pattern treats slashes, letter case, hidden names and characters.
     pub(super) options: GlobOptions,
     /// Which hidden names wildcards may match.
     ///
-    /// Worked out once from `options`: `options.hidden` in pathname mode, and
-    /// `HiddenNames::MatchAll` otherwise.
+    /// Worked out once from [`options`](Self::options): its
+    /// [`hidden`](GlobOptions::hidden) choice in pathname mode, and
+    /// [`HiddenNames::MatchAll`] otherwise.
     pub(super) hidden: HiddenNames,
 }
 
 /// Which names starting with `.` a glob's wildcards may match.
 ///
-/// A literal `.` in the pattern always matches, so `.git/**` and `../*`
-/// still match names starting with `.`, whichever is chosen.
+/// A literal `.` in the pattern always matches, so `.git/**` and `../*` still
+/// match names starting with `.`, whichever is chosen.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub(crate) enum HiddenNames {
     /// Wildcards match every name, as in git.
     MatchAll,
     /// Wildcards match names starting with `.`, but not `.` or `..`.
     ///
-    /// As in fast-glob with `dot: true`, a `*` or `**` can't run over any
-    /// part of a name that is exactly `.` or `..`, or start at one. `?` and
-    /// bracket sets still match a `.`.
+    /// As in fast-glob with `dot: true`, a `*` or `**` can't run over any part of a
+    /// name that is exactly `.` or `..`, or start at one. `?` and bracket sets still
+    /// match a `.`.
     SkipDotSegments,
     /// Wildcards match no name starting with `.`, as in fast-glob's default.
     ///
-    /// A name starting with `.` can only be matched by a pattern name
-    /// starting with a literal `.` or a bracket set that isn't negated: `?`,
-    /// `*`, `**` and negated sets don't match its `.`, and a `*` can't even
-    /// match nothing in front of it. As with `SkipDotSegments`, a `*` or
-    /// `**` can't touch a name that is exactly `.` or `..`.
+    /// A name starting with `.` can only be matched by a pattern name starting with a
+    /// literal `.` or a bracket set that isn't negated: `?`, `*`, `**` and negated
+    /// sets don't match its `.`, and a `*` can't even match nothing in front of it.
+    /// As with [`SkipDotSegments`](Self::SkipDotSegments), a `*` or `**` can't touch a
+    /// name that is exactly `.` or `..`.
     SkipDotNames,
 }
 
@@ -94,8 +96,8 @@ pub(super) enum UnitMatcher {
     Literal(u8),
     /// This byte, written after a `\`.
     ///
-    /// When folding case, the text's byte is lowercased and then compared
-    /// exactly, so an escaped uppercase letter matches nothing.
+    /// When folding case, the text's byte is lowercased and then compared exactly, so
+    /// an escaped uppercase letter matches nothing.
     Escaped(u8),
     /// This character of several bytes, escaped or not, in unicode mode.
     Character(Vec<u8>),
@@ -177,12 +179,17 @@ pub(super) struct BraceGroup {
 /// Why a pattern's brace groups couldn't be expanded.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub(crate) enum BraceExpansionError {
-    /// The pattern is longer than `expand_braces` accepts.
+    /// The pattern has brace groups and is longer than allowed.
+    ///
+    /// [`expand_braces`](super::expand_braces::expand_braces) accepts at most
+    /// 10,000 bytes in a pattern with groups.
     PatternTooLong,
     /// The expansion would hold more output at once than allowed.
     ///
-    /// `take_brace_budget` sets the limits, counting every pattern and byte
-    /// held at once, including partial results while groups nest.
+    /// [`brace_results_fit`](super::brace_results_fit::brace_results_fit) and
+    /// [`take_brace_budget`](super::take_brace_budget::take_brace_budget) set the
+    /// limits, counting every pattern and byte held at once, including partial
+    /// results while groups nest.
     TooManyResults,
 }
 
@@ -218,8 +225,8 @@ pub(super) enum BraceFrame {
     },
     /// Expanding a group's alternatives one after another.
     ///
-    /// It holds the state of the run it's in, which carries on once the
-    /// group's alternatives are all expanded.
+    /// It holds the state of the run it's in, which carries on once the group's
+    /// alternatives are all expanded.
     Group {
         /// Where each alternative lies in the pattern.
         alternatives: Vec<std::ops::Range<usize>>,

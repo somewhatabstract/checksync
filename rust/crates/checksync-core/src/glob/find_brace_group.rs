@@ -1,22 +1,13 @@
 use super::brace_bracket_end::brace_bracket_end;
 use super::types::BraceGroup;
 
-/// Find the brace group that a `{` starts, if it starts one.
+/// Returns the brace group that the `{` at `open` starts, if it starts one.
 ///
-/// A `{` starts a group when a matching `}` follows, with nested braces
-/// balanced, and at least one comma lies between them outside any nested
-/// braces. A `\` escapes the byte after it, and braces and commas inside a
-/// `[...]` region don't count; an unclosed region means no group.
-///
-/// # Arguments
-///
-/// * `pattern` - The pattern.
-/// * `open` - Where the `{` is in the pattern.
-///
-/// # Returns
-///
-/// The group's alternatives and end, or `None` if the `{` doesn't start a
-/// group and is just a literal byte.
+/// A `{` starts a group when a matching `}` follows, with nested braces balanced,
+/// and at least one comma lies between them outside any nested braces. A `\`
+/// escapes the byte after it, and braces and commas inside a `[...]` region don't
+/// count; an unclosed region means no group. Returns the group's alternatives and
+/// end, or `None` if the `{` is just a literal byte.
 #[must_use]
 pub(super) fn find_brace_group(pattern: &[u8], open: usize) -> Option<BraceGroup> {
     let mut depth = 0_usize;

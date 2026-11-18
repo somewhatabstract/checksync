@@ -1,28 +1,19 @@
 use super::types::{GlobOptions, GlobToken};
 
-/// Read a run of `*` from a glob pattern and work out what it matches.
+/// Reads the run of `*` at `index` in a glob pattern and works out what it matches.
 ///
-/// Without `pathname`, any run matches any bytes. With it, a run of two or
-/// more that starts the pattern or follows a `/` (escaped or not) can be
+/// Without `options.pathname`, any run matches any bytes. With it, a run of two
+/// or more that starts the pattern or follows a `/` (escaped or not) can be
 /// special, depending on what comes after it:
 ///
 /// * a `/`: the run takes that `/` with it and matches any number of whole
 ///   folders;
-/// * the end of the pattern, or an escaped `/`: the run matches any bytes,
-///   and an escaped `/` is left to match a `/` of its own;
+/// * the end of the pattern, or an escaped `/`: the run matches any bytes, and an
+///   escaped `/` is left to match a `/` of its own;
 /// * anything else: the run acts like a single `*`.
 ///
-/// Any other run acts like a single `*`, which doesn't match `/`.
-///
-/// # Arguments
-///
-/// * `pattern` - The glob pattern.
-/// * `index` - Where the first `*` of the run is in the pattern.
-/// * `options` - How to treat slashes.
-///
-/// # Returns
-///
-/// The token the run stands for and the index just past what it used up.
+/// Any other run acts like a single `*`, which doesn't match `/`. Returns the
+/// token the run stands for and the index just past what it used up.
 #[must_use]
 pub(super) fn read_star_run(
     pattern: &[u8],

@@ -3,30 +3,21 @@ use super::release_brace_budget::release_brace_budget;
 use super::take_brace_budget::take_brace_budget;
 use super::types::{BraceBudget, BraceExpansionError};
 
-/// Follow each brace expansion result so far with each of a piece's texts.
+/// Follows each brace expansion result so far with each of a piece's texts.
 ///
-/// The earlier results vary slowest. A single text is appended to every
-/// result in place; otherwise the old results are consumed one by one as
-/// the new ones are built. Before anything is built, the combined results
-/// are checked with `brace_results_fit` and counted against `budget`; the
-/// old results and the texts are released from it afterwards.
-///
-/// # Arguments
-///
-/// * `results` - The results so far, replaced by the combined results.
-/// * `texts` - The texts the next piece stands for, already counted in
-///   `budget`. Must not be empty.
-/// * `budget` - The output the whole expansion holds at once.
-///
-/// # Returns
-///
-/// Nothing, once `results` has been updated.
+/// `results` is replaced by the combined results, with the earlier results varying
+/// slowest. `texts`, which must not be empty, are what the next piece stands for,
+/// and are already counted in `budget`, the output the whole expansion holds at
+/// once. A single text is appended to every result in place; otherwise the old
+/// results are consumed one by one as the new ones are built. Before anything is
+/// built, the combined results are checked with [`brace_results_fit`] and counted
+/// against `budget`; the old results and the texts are released from it
+/// afterwards.
 ///
 /// # Errors
 ///
-/// `BraceExpansionError::TooManyResults` if the combined results are too
-/// large, or don't fit `budget`, leaving `results` and `budget` as they
-/// were.
+/// Returns [`BraceExpansionError::TooManyResults`] if the combined results are too
+/// large, or don't fit `budget`, leaving `results` and `budget` as they were.
 pub(super) fn combine_brace_texts(
     results: &mut Vec<Vec<u8>>,
     texts: &[Vec<u8>],

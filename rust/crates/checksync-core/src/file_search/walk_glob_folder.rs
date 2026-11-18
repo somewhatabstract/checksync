@@ -16,7 +16,7 @@ use super::pattern_names_hidden::pattern_names_hidden;
 use super::should_walk_folder::should_walk_folder;
 use super::types::{ExcludeGlobs, GetFilesError};
 
-/// Walk a folder and collect the files any of its include patterns match.
+/// Walks a folder and collects the files any of its include patterns match.
 ///
 /// The folder may be reached through a link, but links found while walking
 /// are neither followed nor listed, so only regular files are found. A file
@@ -26,19 +26,15 @@ use super::types::{ExcludeGlobs, GetFilesError};
 /// or if the folder doesn't exist or isn't a folder. An entry that can't be
 /// read is skipped.
 ///
-/// # Arguments
-///
-/// * `base` - The folder to walk, relative to the working folder, with `/`
-///   between names; `.` for the working folder itself.
-/// * `patterns` - The include patterns whose files are below `base`.
-/// * `excludes` - The compiled exclude patterns, for files and folders.
-/// * `cwd` - The absolute working folder.
-/// * `found` - Where to add the absolute paths of matching files.
+/// `base` is relative to `cwd`, the absolute working folder, with `/` between
+/// names, and is `.` for the working folder itself. The patterns are those
+/// whose files are below `base`, and the absolute paths of matching files are
+/// added to `found`.
 ///
 /// # Errors
 ///
-/// Any error reading a folder, other than its not existing or not being a
-/// folder.
+/// Returns [`GetFilesError::Io`] for any error reading a folder, other than
+/// its not existing or not being a folder.
 pub(super) fn walk_glob_folder(
     base: &str,
     patterns: &[&str],

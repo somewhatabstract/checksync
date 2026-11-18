@@ -3,21 +3,14 @@ use std::path::Path;
 use crate::gitignore::IgnoreFile;
 use crate::types::IgnoreDecision;
 
-/// Decide whether a set of ignore files lets checksync process a file.
+/// Checks whether a set of ignore files lets checksync process a file.
 ///
 /// Each ignore file with an opinion replaces the previous one's, so with the
 /// files ordered from the top folder down, an ignore file closer to the file
-/// overrides one further up. A file no ignore file has an opinion on is
-/// allowed.
+/// overrides one further up. `file_path` is the file's absolute path.
 ///
-/// # Arguments
-///
-/// * `ignore_files` - The ignore files, from the top folder down.
-/// * `file_path` - The absolute path of the file.
-///
-/// # Returns
-///
-/// `false` if the last opinion is that the file is ignored, `true` otherwise.
+/// Returns `false` if the last opinion is that the file is ignored, and
+/// `true` otherwise, including when no ignore file has an opinion on it.
 #[must_use]
 pub fn is_allowed_by_ignore_files(ignore_files: &[IgnoreFile], file_path: &Path) -> bool {
     // The last ignore file with an opinion wins, so look from the end.
@@ -39,7 +32,7 @@ mod tests {
     use super::is_allowed_by_ignore_files;
     use crate::gitignore::IgnoreFile;
 
-    /// Write `contents` to `.gitignore` in `folder` and load it.
+    /// Writes `contents` to `.gitignore` in `folder` and loads it.
     fn ignore_file(folder: &Path, contents: &str) -> IgnoreFile {
         fs::create_dir_all(folder).unwrap();
         let path = folder.join(".gitignore");

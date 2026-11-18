@@ -1,20 +1,12 @@
 use indexmap::IndexMap;
 
-/// List a map's keys in the order a JavaScript object would list them.
+/// Lists a map's keys in the order a JavaScript object would list them.
 ///
 /// A JavaScript object lists keys that are array indices (`"0"`, `"7"`,
 /// `"42"`, but not `"07"` or `"-1"`) first, in numeric order, and every other
 /// key after them, in the order it was added. An [`IndexMap`] keeps only the
 /// order keys were added, so code that has to report things in the same order
 /// as checksync's JavaScript implementation sorts its keys with this.
-///
-/// # Arguments
-///
-/// * `map` - The map whose keys to list.
-///
-/// # Returns
-///
-/// The keys, in JavaScript's order.
 pub(crate) fn js_object_keys<V>(map: &IndexMap<String, V>) -> Vec<&str> {
     let mut indices: Vec<(u32, &str)> = Vec::new();
     let mut others: Vec<&str> = Vec::new();
@@ -32,8 +24,10 @@ pub(crate) fn js_object_keys<V>(map: &IndexMap<String, V>) -> Vec<&str> {
         .collect()
 }
 
-/// Parse a key as a JavaScript array index: a whole number from 0 to
-/// 2^32 - 2, written without a sign or leading zeros.
+/// Parses a key as a JavaScript array index.
+///
+/// An array index is a whole number from 0 to 2^32 - 2, written without a
+/// sign or leading zeros.
 fn array_index(key: &str) -> Option<u32> {
     let canonical = key == "0" || (!key.starts_with('0') && !key.is_empty());
     if !canonical || !key.bytes().all(|b| b.is_ascii_digit()) {
@@ -48,7 +42,7 @@ mod tests {
 
     use super::js_object_keys;
 
-    /// Build a map with the given keys, added in order.
+    /// Builds a map with the given keys, added in order.
     fn map_of(keys: &[&str]) -> IndexMap<String, ()> {
         keys.iter().map(|&key| (key.to_owned(), ())).collect()
     }

@@ -1,17 +1,9 @@
-/// Check whether a name starts with a bracket set that may match a `.`.
+/// Checks whether a name starts with a bracket set that may match a `.`.
 ///
 /// A set that isn't negated may match a `.` when it lists one or has a range
 /// that covers one. A character class or an escape is taken to match one
 /// too, as this only decides whether hidden folders are worth walking, so it
 /// errs towards yes.
-///
-/// # Arguments
-///
-/// * `name` - One name from a pattern.
-///
-/// # Returns
-///
-/// Whether the name starts with such a set.
 #[must_use]
 pub(super) fn bracket_may_match_dot(name: &str) -> bool {
     let Some(set) = name.strip_prefix('[') else {

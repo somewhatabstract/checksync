@@ -8,19 +8,24 @@ use super::load_ignore_files::load_ignore_files;
 use super::plan_glob_tasks::plan_glob_tasks;
 use super::types::GetFilesError;
 
-/// Find the files to check, as checksync's JavaScript implementation does.
+/// Finds the files to check, as checksync's JavaScript implementation does.
 ///
-/// Include patterns are globs relative to `cwd`, matched case-sensitively
-/// against regular files; links found while walking are neither followed nor
-/// listed. A folder named without a `*` stands for everything below it.
-/// Wildcards don't match names starting with `.`, so hidden files and folders
-/// are only found when a pattern names them. `{a,b}` groups are expanded, and
-/// an include pattern starting with `!` excludes instead. Files that an
-/// exclude pattern or an ignore file rules out are dropped.
+/// Include patterns are globs relative to `cwd`, the absolute working folder,
+/// matched case-sensitively against regular files; links found while walking
+/// are neither followed nor listed. A folder named without a `*` stands for
+/// everything below it. Wildcards don't match names starting with `.`, so
+/// hidden files and folders are only found when a pattern names them.
+/// `{a,b}` groups are expanded, and an include pattern starting with `!`
+/// excludes instead. Files that an exclude pattern or an ignore file rules
+/// out are dropped. `ignore_file_globs` are paths or globs naming
+/// `.gitignore`-style files.
 ///
 /// An exclude pattern removes a file whose path it matches, and a folder
 /// whose path it matches, with everything in it, wherever that folder is on
 /// the way to the file. Exclude patterns match names starting with `.` too.
+///
+/// The result is the files' absolute paths, each listed once, sorted as
+/// JavaScript sorts strings.
 ///
 /// Deliberate differences from the JavaScript implementation, which uses
 /// fast-glob:
@@ -33,22 +38,12 @@ use super::types::GetFilesError;
 ///   aren't supported, and patterns otherwise follow git's glob rules where
 ///   fast-glob's differ.
 ///
-/// # Arguments
-///
-/// * `include_globs` - The patterns of files to check.
-/// * `exclude_globs` - The patterns of files and folders to leave out.
-/// * `ignore_file_globs` - Paths or globs naming `.gitignore`-style files.
-/// * `cwd` - The absolute working folder the patterns are relative to.
-///
-/// # Returns
-///
-/// The absolute paths of the files, each listed once, sorted as JavaScript
-/// sorts strings.
-///
 /// # Errors
 ///
-/// A pattern whose braces can't be expanded, or any error reading a folder
-/// or an ignore file.
+/// Returns [`GetFilesError::PatternTooLong`] or
+/// [`GetFilesError::TooManyPatterns`] for a pattern whose braces can't be
+/// expanded, and [`GetFilesError::Io`] for any error reading a folder or an
+/// ignore file.
 pub fn get_files(
     include_globs: &[String],
     exclude_globs: &[String],

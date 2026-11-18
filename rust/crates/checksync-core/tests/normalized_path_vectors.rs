@@ -1,5 +1,6 @@
-//! Check `get_normalized_path_info` against the target-resolution vectors
-//! shared with the TypeScript implementation.
+//! Checks [`get_normalized_path_info`] against the target-resolution vectors.
+//!
+//! The vectors are shared with the TypeScript implementation.
 
 use std::fs;
 use std::path::{MAIN_SEPARATOR_STR, Path};
@@ -37,7 +38,7 @@ const TABLE: &str = include_str!(concat!(
     "/../../../__conformance__/normalized-path-vectors.json"
 ));
 
-/// Swap the table's placeholders for the real folders.
+/// Swaps the table's placeholders for the real folders.
 fn expand(value: &str, root: &Path, parent: &Path) -> String {
     value
         .replace("<root>", &root.display().to_string())

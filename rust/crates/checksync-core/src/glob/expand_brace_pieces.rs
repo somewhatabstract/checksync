@@ -2,24 +2,19 @@ use super::start_brace_sequence::start_brace_sequence;
 use super::step_brace_frame::step_brace_frame;
 use super::types::{BraceBudget, BraceExpansionError};
 
-/// Expand a pattern's brace groups with a heap stack, within a budget.
+/// Expands a pattern's brace groups with a heap stack, within a budget.
 ///
-/// `expand_braces` checks the pattern's length first. Nested groups are
+/// [`expand_braces`] checks the pattern's length first. Nested groups are
 /// expanded through frames on a stack kept on the heap rather than through
-/// recursion, so the call stack stays the same size whatever the input.
-///
-/// # Arguments
-///
-/// * `pattern` - The pattern.
-/// * `budget` - The output the whole expansion holds at once.
-///
-/// # Returns
-///
-/// The expanded patterns, in order.
+/// recursion, so the call stack stays the same size whatever the input. Returns
+/// the expanded patterns, in order; they stay counted in `budget`, the output the
+/// whole expansion holds at once, until the caller releases them.
 ///
 /// # Errors
 ///
-/// `BraceExpansionError::TooManyResults` if the output doesn't fit.
+/// Returns [`BraceExpansionError::TooManyResults`] if the output doesn't fit.
+///
+/// [`expand_braces`]: super::expand_braces::expand_braces
 pub(super) fn expand_brace_pieces(
     pattern: &[u8],
     budget: &mut BraceBudget,

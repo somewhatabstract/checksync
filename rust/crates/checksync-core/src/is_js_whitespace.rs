@@ -1,26 +1,18 @@
-/// The characters [`is_js_whitespace`] accepts, written for use inside a
-/// regular-expression character class such as `[...]` or `[^...]`.
+/// The characters [`is_js_whitespace`] accepts, for a regex character class.
 ///
+/// They're written for use inside a class such as `[...]` or `[^...]`.
 /// Written out because the `regex` crate's Unicode `\s` is Rust's whitespace,
 /// not JavaScript's.
 pub(crate) const JS_WHITESPACE_CLASS: &str =
     r"\t\n\x0B\x0C\r \xA0\x{1680}\x{2000}-\x{200A}\x{2028}\x{2029}\x{202F}\x{205F}\x{3000}\x{FEFF}";
 
-/// Check whether a character is whitespace the way JavaScript defines it.
+/// Checks whether a character is whitespace the way JavaScript defines it.
 ///
 /// This is what `\s` matches in a JavaScript regular expression, with or
 /// without the `u` flag, and what `String.prototype.trim()` removes: the
 /// ECMAScript `WhiteSpace` and `LineTerminator` characters. It differs from
 /// Rust's [`char::is_whitespace`] in two places: it includes U+FEFF, the byte
 /// order mark, and leaves out U+0085, NEL.
-///
-/// # Arguments
-///
-/// * `c` - The character to check.
-///
-/// # Returns
-///
-/// `true` if JavaScript treats the character as whitespace.
 #[must_use]
 pub fn is_js_whitespace(c: char) -> bool {
     matches!(

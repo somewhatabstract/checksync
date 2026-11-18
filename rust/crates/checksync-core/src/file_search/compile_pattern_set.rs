@@ -2,16 +2,10 @@ use crate::glob::{GlobOptions, compile_glob};
 
 use super::types::PatternSet;
 
-/// Compile patterns into a set that matches a path as a glob or by its text.
+/// Compiles patterns into a set that matches a path as a glob or by its text.
 ///
-/// # Arguments
-///
-/// * `patterns` - The patterns, relative to the working folder.
-/// * `options` - How to match the patterns as globs.
-///
-/// # Returns
-///
-/// The pattern set.
+/// The patterns are relative to the working folder, and `options` say how to
+/// match them as globs.
 #[must_use]
 pub(super) fn compile_pattern_set<'a>(
     patterns: impl IntoIterator<Item = &'a str>,

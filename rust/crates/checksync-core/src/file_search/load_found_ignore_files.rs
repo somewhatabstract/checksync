@@ -4,19 +4,14 @@ use crate::gitignore::IgnoreFile;
 
 use super::types::GetFilesError;
 
-/// Load ignore files that have been found, in the order given.
+/// Loads ignore files that have been found, in the order given.
 ///
-/// # Arguments
-///
-/// * `files` - The absolute paths of the ignore files.
-///
-/// # Returns
-///
-/// The loaded ignore files.
+/// The files are given by their absolute paths.
 ///
 /// # Errors
 ///
-/// The first ignore file that can't be read, with its path.
+/// Returns [`GetFilesError::Io`], with its path, for the first ignore file
+/// that can't be read.
 pub(super) fn load_found_ignore_files(files: &[PathBuf]) -> Result<Vec<IgnoreFile>, GetFilesError> {
     files
         .iter()

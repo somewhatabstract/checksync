@@ -1,21 +1,16 @@
 use super::take_brace_budget::take_brace_budget;
 use super::types::{BraceBudget, BraceExpansionError, BraceFrame};
 
-/// Start expanding a run of a pattern, with one empty result so far.
+/// Returns a frame that starts expanding a run of a pattern.
 ///
-/// # Arguments
-///
-/// * `run` - Where the run lies in the pattern.
-/// * `budget` - The output the whole expansion holds at once, which gains
-///   the empty result.
-///
-/// # Returns
-///
-/// The frame that expands the run.
+/// The run is where `run` lies in the pattern, and the frame starts with one
+/// empty result so far, which `budget`, the output the whole expansion holds at
+/// once, gains.
 ///
 /// # Errors
 ///
-/// `BraceExpansionError::TooManyResults` if the empty result doesn't fit.
+/// Returns [`BraceExpansionError::TooManyResults`] if the empty result doesn't
+/// fit.
 pub(super) fn start_brace_sequence(
     run: std::ops::Range<usize>,
     budget: &mut BraceBudget,

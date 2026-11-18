@@ -1,16 +1,9 @@
 use crate::types::{ErrorCode, ErrorDetails, ErrorLocation};
 
-/// Create the error for a sync-start tag whose target file doesn't exist.
+/// Creates the error for a sync-start tag whose target file doesn't exist.
 ///
-/// # Arguments
-///
-/// * `marker_id` - The id of the marker the error belongs to.
-/// * `line` - The 1-based line of the tag.
-/// * `target_path` - The target as written in the tag.
-///
-/// # Returns
-///
-/// The error details.
+/// The error is located at `line`, the 1-based line of the tag, and its
+/// message names `target_path`, the target as written in the tag.
 #[must_use]
 pub fn file_does_not_exist(marker_id: &str, line: usize, target_path: &str) -> ErrorDetails {
     ErrorDetails {

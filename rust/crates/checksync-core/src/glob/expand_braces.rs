@@ -3,56 +3,50 @@ use super::contains_brace_group::contains_brace_group;
 use super::expand_brace_pieces::expand_brace_pieces;
 use super::types::{BraceBudget, BraceExpansionError};
 
-/// The longest pattern with brace groups that `expand_braces` accepts.
+/// The longest pattern with brace groups that [`expand_braces`] accepts.
 ///
 /// micromatch's braces has a 10,000-byte limit too, but applies it to more
 /// patterns, including ones with braces that form no group.
 const MAX_PATTERN_LENGTH: usize = 10_000;
 
-/// Expand the `{a,b}` brace groups in a pattern into separate patterns.
+/// Returns the patterns a pattern's `{a,b}` brace groups stand for.
 ///
-/// This follows the brace expansion fast-glob applies through micromatch.
-/// Each group stands for each of its comma-separated alternatives in turn,
-/// and groups can nest. With several groups, the earlier group varies
-/// slowest. A `{` that doesn't start a group, such as in `{a}` or an
-/// unclosed `{`, and a stray `}` stay literal. A `\` escapes the byte after
-/// it, and braces and commas inside `[...]` don't count. Everything but the
-/// groups is kept exactly as written, escapes included, so each result is
-/// still a glob pattern, as fast-glob's own expanded patterns are.
+/// This follows the brace expansion fast-glob applies through micromatch. Each
+/// group stands for each of its comma-separated alternatives in turn, and groups
+/// can nest. With several groups, the earlier group varies slowest, and the
+/// results come in that order. A `{` that doesn't start a group, such as in `{a}`
+/// or an unclosed `{`, and a stray `}` stay literal. A `\` escapes the byte after
+/// it, and braces and commas inside `[...]` don't count. Everything but the groups
+/// is kept exactly as written, escapes included, so each result is still a glob
+/// pattern, as fast-glob's own expanded patterns are.
 ///
-/// Unlike micromatch, ranges such as `{1..3}` or `{a..c}` aren't expanded:
-/// with no comma, they stay literal.
+/// Unlike micromatch, ranges such as `{1..3}` or `{a..c}` aren't expanded: with
+/// no comma, they stay literal.
 ///
-/// Duplicates, such as the two `a`s from `{a,a}`, are kept; callers that
-/// need unique patterns must remove them.
+/// Duplicates, such as the two `a`s from `{a,a}`, are kept; callers that need
+/// unique patterns must remove them.
 ///
-/// A NUL byte ends the pattern, as it does for `compile_glob`, so nothing
-/// after it is expanded or counted against the limits.
+/// A NUL byte ends the pattern, as it does for [`compile_glob`], so nothing after
+/// it is expanded or counted against the limits.
 ///
-/// A pattern with no brace group always gives just itself, at any length.
-/// To stay within time and memory, a pattern with groups may be at most
-/// 10,000 bytes long, and its expansion may give at most what
-/// `brace_results_fit` allows: 100,000 patterns and 10,000,000 bytes. Any
-/// expansion within those limits is accepted, whatever order its groups
-/// come in, and while working it holds at most about twice its output, as
-/// `take_brace_budget` checks.
-/// Groups may nest to any depth: expansion keeps its work on the heap, so
-/// its use of the call stack doesn't grow with the nesting.
-///
-/// # Arguments
-///
-/// * `pattern` - The pattern to expand.
-///
-/// # Returns
-///
-/// The expanded patterns, in order. A pattern with no groups gives just
-/// itself.
+/// A pattern with no brace group always gives just itself, at any length. To stay
+/// within time and memory, a pattern with groups may be at most
+/// [`MAX_PATTERN_LENGTH`] (10,000) bytes long, and its expansion may give at most
+/// what [`brace_results_fit`] allows: 100,000 patterns and 10,000,000 bytes. Any
+/// expansion within those limits is accepted, whatever order its groups come in,
+/// and while working it holds at most about twice its output, as
+/// [`take_brace_budget`] checks. Groups may nest to any depth: expansion keeps its
+/// work on the heap, so its use of the call stack doesn't grow with the nesting.
 ///
 /// # Errors
 ///
-/// `BraceExpansionError::PatternTooLong` or
-/// `BraceExpansionError::TooManyResults` if the pattern is beyond one of the
-/// limits.
+/// Returns [`BraceExpansionError::PatternTooLong`] for a pattern with groups over
+/// the length limit, and [`BraceExpansionError::TooManyResults`] when the groups
+/// would expand past the result limits.
+///
+/// [`compile_glob`]: super::compile_glob::compile_glob
+/// [`brace_results_fit`]: super::brace_results_fit::brace_results_fit
+/// [`take_brace_budget`]: super::take_brace_budget::take_brace_budget
 pub(crate) fn expand_braces(pattern: &[u8]) -> Result<Vec<Vec<u8>>, BraceExpansionError> {
     let pattern = bytes_before_nul(pattern);
     if !contains_brace_group(pattern) {
@@ -106,7 +100,7 @@ mod tests {
         "/../../../__conformance__/fastglob-vectors.json"
     ));
 
-    /// Read the fast-glob vector table.
+    /// Reads the fast-glob vector table.
     fn load_table() -> Table {
         serde_json::from_str(VECTORS).expect("valid fast-glob vector table")
     }
@@ -114,12 +108,12 @@ mod tests {
     /// What `expand` gives: the expanded patterns as strings, or the error.
     type Expansion = Result<Vec<String>, BraceExpansionError>;
 
-    /// Turn string slices into owned strings, for comparing with `expand`.
+    /// Turns string slices into owned strings, for comparing with `expand`.
     fn strings(items: &[&str]) -> Vec<String> {
         items.iter().map(|&item| item.to_owned()).collect()
     }
 
-    /// Expand `pattern` and turn the results into strings for comparing.
+    /// Expands `pattern` and turns the results into strings for comparing.
     fn expand(pattern: &str) -> Expansion {
         expand_braces(pattern.as_bytes()).map(|results| {
             results
@@ -357,7 +351,7 @@ mod tests {
         assert_eq!(result, Ok(vec![pattern.into_bytes()]));
     }
 
-    /// Expand `pattern` on a thread with a deliberately small stack.
+    /// Expands `pattern` on a thread with a deliberately small stack.
     fn expand_on_small_stack(pattern: String) -> Result<usize, BraceExpansionError> {
         std::thread::Builder::new()
             .stack_size(64 * 1024)

@@ -4,22 +4,13 @@ use crate::node_normalize::node_normalize;
 
 use super::glob_text::glob_text;
 
-/// Turn a path's glob text into the glob text of its absolute path.
+/// Turns a path's glob text into the glob text of its absolute path.
 ///
-/// The text is resolved against the working folder the way Node.js's
-/// `path.resolve` does, so `.` and `..` names are worked out and an absolute
-/// text stays as it is. As in fast-glob, absolute exclude patterns are
-/// matched against this form of a path.
-///
-/// # Arguments
-///
-/// * `cwd` - The absolute working folder.
-/// * `text` - The path's text, relative to the working folder or absolute,
-///   with `/` between names.
-///
-/// # Returns
-///
-/// The absolute path's text, with `/` between names.
+/// The text is resolved against `cwd`, the absolute working folder, the way
+/// Node.js's `path.resolve` does, so `.` and `..` names are worked out and an
+/// absolute text stays as it is. As in fast-glob, absolute exclude patterns
+/// are matched against this form of a path. Both texts have `/` between
+/// names.
 #[must_use]
 pub(super) fn absolute_glob_text(cwd: &Path, text: &[u8]) -> Vec<u8> {
     let path = node_normalize(&cwd.join(text_path(text)));
@@ -32,7 +23,7 @@ pub(super) fn absolute_glob_text(cwd: &Path, text: &[u8]) -> Vec<u8> {
     absolute
 }
 
-/// Turn glob text back into a path.
+/// Turns glob text back into a path.
 fn text_path(text: &[u8]) -> PathBuf {
     #[cfg(unix)]
     {

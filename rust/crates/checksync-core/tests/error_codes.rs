@@ -1,11 +1,11 @@
-//! Check that the Rust error codes match checksync's JavaScript ones.
+//! Checks that the Rust error codes match checksync's JavaScript ones.
 
 use checksync_core::ErrorCode;
 
 /// The JavaScript `ErrorCode` enum, which the published output uses.
 const JS_ERROR_CODES: &str = include_str!("../../../../src/error-codes.ts");
 
-/// Pull the string value out of each `name = "value",` line of the enum.
+/// Pulls the string value out of each `name = "value",` line of the enum.
 fn js_codes() -> Vec<&'static str> {
     JS_ERROR_CODES
         .lines()

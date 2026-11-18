@@ -4,32 +4,25 @@ use super::start_brace_sequence::start_brace_sequence;
 use super::take_brace_budget::take_brace_budget;
 use super::types::{BraceBudget, BraceExpansionError, BraceFrame, BracePiece};
 
-/// Take one step of brace expansion on the frame popped from the stack.
+/// Takes one step of brace expansion on the frame popped from the stack.
 ///
-/// A run with pieces left reads the next one: text is appended to its
-/// results, and a group takes over the run's state while its alternatives
-/// are expanded. A group with alternatives left pushes a run for the next
-/// one. A finished run hands its results to the group below it, or, with
-/// nothing below it, is the whole expansion. A finished group combines its
-/// texts into the run's results, and the run carries on after the group.
-/// Nothing recurses, so the call stack stays the same size however deeply
+/// `frame` is the frame popped from the top of the stack, `stack` holds the
+/// frames below it, which this step may push onto, and `budget` is the output the
+/// whole expansion holds at once. A run with pieces left reads the next one of
+/// `pattern`: text is appended to its results, and a group takes over the run's
+/// state while its alternatives are expanded. A group with alternatives left
+/// pushes a run for the next one. A finished run hands its results to the group
+/// below it, or, with nothing below it, is the whole expansion. A finished group
+/// combines its texts into the run's results, and the run carries on after the
+/// group. Nothing recurses, so the call stack stays the same size however deeply
 /// groups nest.
 ///
-/// # Arguments
-///
-/// * `pattern` - The whole pattern.
-/// * `frame` - The frame popped from the top of the stack.
-/// * `stack` - The frames below it, which this step may push onto.
-/// * `budget` - The output the whole expansion holds at once.
-///
-/// # Returns
-///
-/// The expanded patterns if this step finished the whole expansion, or
+/// Returns the expanded patterns if this step finished the whole expansion, or
 /// `None` if there's more to do.
 ///
 /// # Errors
 ///
-/// `BraceExpansionError::TooManyResults` if the output doesn't fit.
+/// Returns [`BraceExpansionError::TooManyResults`] if the output doesn't fit.
 pub(super) fn step_brace_frame(
     pattern: &[u8],
     frame: BraceFrame,
@@ -107,7 +100,7 @@ mod tests {
     use super::super::types::{BraceBudget, BraceExpansionError, BraceFrame};
     use super::step_brace_frame;
 
-    /// A budget that already counts more than any frame in these tests holds.
+    /// Returns a budget that already counts more than any frame in these tests holds.
     fn counted() -> BraceBudget {
         BraceBudget {
             count: 100,

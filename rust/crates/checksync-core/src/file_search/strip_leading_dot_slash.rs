@@ -1,15 +1,7 @@
-/// Remove any leading `./` from a pattern.
+/// Removes any leading `./` from a pattern.
 ///
 /// A pattern relative to the working folder may start with `./`, or several,
 /// which name the working folder itself and so change nothing.
-///
-/// # Arguments
-///
-/// * `pattern` - The pattern.
-///
-/// # Returns
-///
-/// The pattern without its leading `./`s.
 #[must_use]
 pub(super) fn strip_leading_dot_slash(pattern: &str) -> &str {
     let mut rest = pattern;

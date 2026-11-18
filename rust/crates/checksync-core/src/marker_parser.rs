@@ -20,14 +20,15 @@ struct TrackedTarget {
 /// A marker whose sync-start tags have been read but not its sync-end tag.
 struct TrackedMarker {
     content: Vec<String>,
-    /// Sync-start tags by normalized target path, in the order each path
-    /// first appeared.
+    /// Sync-start tags by normalized target path.
+    ///
+    /// The paths are in the order each first appeared.
     targets: IndexMap<String, Vec<TrackedTarget>>,
     comment_start: String,
     comment_end: String,
 }
 
-/// Read sync tags from a file's lines, one line at a time.
+/// A reader of sync tags, fed a file's lines one at a time.
 ///
 /// Give it each line, in order, with [`MarkerParser::parse_line`], then call
 /// [`MarkerParser::finish`] to report markers that never ended and collect
@@ -35,7 +36,7 @@ struct TrackedMarker {
 ///
 /// It matches checksync's JavaScript parser, including where JavaScript's
 /// regular expressions differ from Rust's: whitespace is JavaScript's (see
-/// [`crate::is_js_whitespace`]), word characters and digits are ASCII-only,
+/// [`crate::is_js_whitespace()`]), word characters and digits are ASCII-only,
 /// and a tag line can't contain U+2028 or U+2029 except at its ends.
 pub struct MarkerParser<F>
 where
@@ -55,16 +56,11 @@ impl<F> MarkerParser<F>
 where
     F: FnMut(&str) -> NormalizedPathInfo,
 {
-    /// Create a parser for the given comment styles.
+    /// Creates a parser for the given comment styles.
     ///
-    /// # Arguments
-    ///
-    /// * `comments` - The strings that can start a tag's line, such as `//`.
-    /// * `normalize_path` - Resolves the target written in a sync-start tag.
-    ///
-    /// # Returns
-    ///
-    /// The parser, ready for the file's first line.
+    /// `comments` are the strings that can start a tag's line, such as `//`,
+    /// and `normalize_path` resolves the target written in a sync-start tag.
+    /// The parser is ready for the file's first line.
     ///
     /// # Panics
     ///
@@ -97,11 +93,9 @@ where
         }
     }
 
-    /// Parse the file's next line.
+    /// Parses the file's next line.
     ///
-    /// # Arguments
-    ///
-    /// * `content` - The line's text, without its line ending.
+    /// `content` is the line's text, without its line ending.
     pub fn parse_line(&mut self, content: &str) {
         let line_number = self.line_number;
         self.line_number += 1;
@@ -147,14 +141,11 @@ where
         }
     }
 
-    /// Report markers that never ended, and return everything reported.
+    /// Reports markers that never ended, and returns everything reported.
     ///
     /// Each unterminated marker gets an error on each sync-start tag for its
-    /// first target only, as in checksync's JavaScript parser.
-    ///
-    /// # Returns
-    ///
-    /// Every marker and error reported while parsing, in order.
+    /// first target only, as in checksync's JavaScript parser. The result is
+    /// every marker and error reported while parsing, in order.
     #[must_use]
     pub fn finish(mut self) -> Vec<ParseEvent> {
         let open_markers = std::mem::take(&mut self.open_markers);
@@ -272,7 +263,7 @@ mod tests {
     use crate::errors;
     use crate::types::{NormalizedPathInfo, ParseEvent, ParsedMarker, Target, TargetType, Targets};
 
-    /// Resolve every target as an existing local file.
+    /// Resolves every target as an existing local file.
     fn existing(target: &str) -> NormalizedPathInfo {
         NormalizedPathInfo {
             path: target.to_owned(),

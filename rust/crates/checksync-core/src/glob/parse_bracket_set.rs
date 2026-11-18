@@ -1,21 +1,13 @@
 use super::read_bracket_item::read_bracket_item;
 use super::types::BracketSet;
 
-/// Parse a bracket expression, such as `[!a-z]`, from a glob pattern.
+/// Parses the bracket expression, such as `[!a-z]`, whose `[` is at `index`.
 ///
-/// A leading `!` or `^` negates the set. A `]` straight after the `[`, or
-/// after the negation, is a member rather than the end of the set.
-///
-/// # Arguments
-///
-/// * `pattern` - The glob pattern.
-/// * `index` - Where the opening `[` is in the pattern.
-/// * `unicode` - Whether members are characters rather than bytes.
-///
-/// # Returns
-///
-/// The set and the index just past its closing `]`, or `None` if the set is
-/// malformed: never closed, or holding a malformed member.
+/// A leading `!` or `^` negates the set. A `]` straight after the `[`, or after
+/// the negation, is a member rather than the end of the set. With `unicode`, the
+/// members are characters rather than bytes. Returns the set and the index just
+/// past its closing `]`, or `None` if the set is malformed: never closed, or
+/// holding a malformed member.
 #[must_use]
 pub(super) fn parse_bracket_set(
     pattern: &[u8],

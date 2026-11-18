@@ -1,14 +1,15 @@
 use super::types::BraceBudget;
 
-/// Stop counting output a brace expansion no longer holds.
+/// Stops counting output a brace expansion no longer holds.
 ///
-/// Debug builds check that the budget covers the released output, which
-/// catches output released twice; release builds stop at zero instead.
+/// `budget` is reduced by the patterns no longer held. Debug builds check that
+/// the budget covers the released output, which catches output released twice;
+/// release builds stop at zero instead.
 ///
-/// # Arguments
+/// # Panics
 ///
-/// * `budget` - The output held so far, reduced by the released output.
-/// * `patterns` - The patterns no longer held.
+/// In debug builds, panics if `budget` holds fewer patterns or bytes than are
+/// being released.
 pub(super) fn release_brace_budget(budget: &mut BraceBudget, patterns: &[Vec<u8>]) {
     let bytes: usize = patterns.iter().map(Vec::len).sum();
     debug_assert!(

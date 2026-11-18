@@ -5,26 +5,18 @@ use crate::types::RootMarkerError;
 /// The root marker checksync looks for when none is configured.
 pub const DEFAULT_ROOT_MARKER: &str = "package.json";
 
-/// Find the closest folder at or above a path that contains a root marker.
+/// Finds the closest folder at or above a path that contains a root marker.
 ///
 /// The search checks `from` itself, then each folder above it, up to the
-/// file system root. The marker can be a file or a folder. This matches
+/// file system root, and returns the first folder that contains `marker`.
+/// `from` is an absolute path to a folder, or to a file whose folders are
+/// searched. The marker is the name of a file or a folder. This matches
 /// `closesdir` from the `ancesdir` package, which checksync's JavaScript
 /// implementation uses.
 ///
-/// # Arguments
-///
-/// * `from` - The absolute path to start from: a folder, or a file whose
-///   folders are searched.
-/// * `marker` - The name of the file or folder that marks the root.
-///
-/// # Returns
-///
-/// The first folder that contains `marker`.
-///
 /// # Errors
 ///
-/// [`RootMarkerError::RelativeStart`] if `from` isn't absolute, and
+/// Returns [`RootMarkerError::RelativeStart`] if `from` isn't absolute, and
 /// [`RootMarkerError::NotFound`] if no folder up to the root has the marker.
 pub fn closesdir(from: &Path, marker: &str) -> Result<PathBuf, RootMarkerError> {
     if !from.is_absolute() {
@@ -55,7 +47,7 @@ mod tests {
     use super::closesdir;
     use crate::types::RootMarkerError;
 
-    /// Make a temporary folder tree of `a/b/c` with `marker` in `a`.
+    /// Creates a temporary folder tree of `a/b/c` with `marker` in `a`.
     fn tree_with_marker_in_a(marker: &str) -> TempDir {
         let dir = TempDir::new().unwrap();
         fs::create_dir_all(dir.path().join("a/b/c")).unwrap();

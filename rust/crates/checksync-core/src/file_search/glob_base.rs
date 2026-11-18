@@ -1,17 +1,12 @@
-/// Find the folder a pattern's files must be in, before any glob characters.
+/// Finds the folder a pattern's files must be in, before any glob characters.
 ///
 /// The names before the first one with a glob character (`*`, `?`, `[` or a
 /// `\` escape) can only match themselves, so walking can start there. The
 /// last name is never part of the folder, since it's what files must match.
 ///
-/// # Arguments
-///
-/// * `pattern` - The pattern, relative to the working folder, with `/`
-///   between names and no leading `./`.
-///
-/// # Returns
-///
-/// The folder, with `/` between names, or `.` for the working folder.
+/// The pattern is relative to the working folder, with `/` between names and
+/// no leading `./`. The folder has `/` between names too, and is `.` for the
+/// working folder.
 #[must_use]
 pub(super) fn glob_base(pattern: &str) -> String {
     let names: Vec<&str> = pattern.split('/').collect();

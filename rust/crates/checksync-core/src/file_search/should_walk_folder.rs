@@ -1,24 +1,13 @@
 use super::is_excluded::is_excluded;
 use super::types::ExcludeGlobs;
 
-/// Decide whether a folder found while walking could hold matching files.
+/// Decides whether a folder found while walking could hold matching files.
 ///
-/// A hidden folder is skipped unless the pattern names something hidden,
-/// since wildcards never match inside one. A folder already as deep as the
-/// pattern allows is skipped, since its files would be too deep. A folder an
-/// exclude pattern prunes is skipped too.
-///
-/// # Arguments
-///
-/// * `text` - The folder's text, relative to the working folder.
-/// * `name` - The folder's own name.
-/// * `excludes` - The compiled exclude patterns.
-/// * `name_limit` - How many names deep a matching file can be, if limited.
-/// * `enter_hidden` - Whether the pattern names something hidden.
-///
-/// # Returns
-///
-/// Whether to walk the folder.
+/// `text` is the folder's text, relative to the working folder, and `name` is
+/// its own name. A hidden folder is skipped unless `enter_hidden` says the
+/// pattern names something hidden, since wildcards never match inside one. A
+/// folder already as deep as `name_limit` allows is skipped, since its files
+/// would be too deep. A folder an exclude pattern prunes is skipped too.
 #[must_use]
 pub(super) fn should_walk_folder(
     text: &[u8],

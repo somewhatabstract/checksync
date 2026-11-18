@@ -3,18 +3,12 @@ use super::read_glob_char::read_glob_char;
 use super::read_star_run::read_star_run;
 use super::types::{GlobOptions, GlobToken, UnitMatcher};
 
-/// Split a glob pattern into the tokens that each match part of the text.
+/// Splits a glob pattern into the tokens that each match part of the text.
 ///
-/// # Arguments
-///
-/// * `pattern` - The glob pattern, without any NUL byte.
-/// * `options` - How to treat slashes, which decides what `**` means, and
-///   whether literals and bracket sets work on characters or bytes.
-///
-/// # Returns
-///
-/// The tokens, in order, or `None` if the pattern can never match anything:
-/// it ends with a `\`, or has a malformed bracket set.
+/// The pattern has no NUL byte. `options` says how to treat slashes, which
+/// decides what `**` means, and whether literals and bracket sets work on
+/// characters or bytes. Returns the tokens, in order, or `None` if the pattern
+/// can never match anything: it ends with a `\`, or has a malformed bracket set.
 #[must_use]
 pub(super) fn tokenize_glob(pattern: &[u8], options: GlobOptions) -> Option<Vec<GlobToken>> {
     let mut tokens = Vec::new();

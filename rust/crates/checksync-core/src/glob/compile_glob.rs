@@ -2,19 +2,12 @@ use super::bytes_before_nul::bytes_before_nul;
 use super::tokenize_glob::tokenize_glob;
 use super::types::{CompiledGlob, GlobOptions, HiddenNames};
 
-/// Compile a glob pattern so it can be matched against many texts.
+/// Compiles a glob pattern so it can be matched against many texts.
 ///
-/// A NUL byte ends the pattern, as it would a C string.
-///
-/// # Arguments
-///
-/// * `pattern` - The glob pattern.
-/// * `options` - How to treat slashes, letter case and hidden names.
-///
-/// # Returns
-///
-/// The compiled pattern, or `None` if it can never match anything: it ends
-/// with a `\`, or has a malformed bracket set.
+/// `options` says how to treat slashes, letter case, hidden names and characters.
+/// A NUL byte ends the pattern, as it would a C string. Returns `None` if the
+/// pattern can never match anything: it ends with a `\`, or has a malformed
+/// bracket set.
 #[must_use]
 pub(crate) fn compile_glob(pattern: &[u8], options: GlobOptions) -> Option<CompiledGlob> {
     let tokens = tokenize_glob(bytes_before_nul(pattern), options)?;
@@ -35,7 +28,7 @@ mod tests {
     use super::super::types::{CompiledGlob, GlobOptions, GlobToken, HiddenNames, UnitMatcher};
     use super::compile_glob;
 
-    /// Compile `?` with the given options and report the hidden names kept.
+    /// Compiles `?` with the given options and returns the hidden names kept.
     fn hidden(pathname: bool, hidden: HiddenNames) -> Option<HiddenNames> {
         let options = GlobOptions {
             pathname,

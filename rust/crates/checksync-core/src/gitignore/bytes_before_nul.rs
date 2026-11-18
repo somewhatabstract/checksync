@@ -1,12 +1,6 @@
-/// Cut bytes off at the first NUL, as a C string would end there.
+/// Returns the bytes before the first NUL, as a C string would end there.
 ///
-/// # Arguments
-///
-/// * `bytes` - The bytes to cut.
-///
-/// # Returns
-///
-/// The bytes before the first NUL, or all of them if there is none.
+/// Bytes with no NUL are returned whole.
 #[must_use]
 pub(super) fn bytes_before_nul(bytes: &[u8]) -> &[u8] {
     bytes

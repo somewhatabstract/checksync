@@ -2,21 +2,14 @@ use super::brace_bracket_end::brace_bracket_end;
 use super::find_brace_group::find_brace_group;
 use super::types::BracePiece;
 
-/// Find what the next piece of a pattern being brace-expanded is.
+/// Returns what the next piece of a pattern being brace-expanded is.
 ///
-/// A piece is a brace group; a `\` and the byte after it; a `[...]` region,
-/// or the rest of the pattern if the region is never closed; a `{` that
-/// starts no group; or a run of other bytes. Everything but a group is
-/// kept exactly as written.
-///
-/// # Arguments
-///
-/// * `pattern` - The pattern, ending where the run being expanded ends.
-/// * `index` - Where the piece starts. Must be within the pattern.
-///
-/// # Returns
-///
-/// The group, or where the text kept as written ends.
+/// `pattern` ends where the run being expanded ends, and `index`, where the piece
+/// starts, must be within it. A piece is a brace group; a `\` and the byte after
+/// it; a `[...]` region, or the rest of the pattern if the region is never
+/// closed; a `{` that starts no group; or a run of other bytes. Everything but a
+/// group is kept exactly as written, so for those this returns where the text
+/// kept as written ends.
 #[must_use]
 pub(super) fn next_brace_piece(pattern: &[u8], index: usize) -> BracePiece {
     let end = match pattern[index] {

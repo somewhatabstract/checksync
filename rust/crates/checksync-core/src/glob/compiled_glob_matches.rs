@@ -2,27 +2,20 @@ use super::advance_glob_positions::advance_glob_positions;
 use super::bytes_before_nul::bytes_before_nul;
 use super::types::CompiledGlob;
 
-/// Check whether the whole of a text matches a compiled glob pattern.
+/// Checks whether the whole of a text matches a compiled glob pattern.
 ///
-/// Matching works on bytes, the way git matches its globs, or with
-/// `unicode` on whole characters. `?` matches any one unit, `*` any run of
-/// them, `[...]` one unit from a set, and `\` makes the next unit literal.
-/// A NUL byte ends the text, as it would a C string. `GlobOptions`
-/// describes how `pathname`, `casefold`, `hidden` and `unicode` change this.
+/// Matching works on bytes, the way git matches its globs, or with `unicode` on
+/// whole characters. `?` matches any one unit, `*` any run of them, `[...]` one
+/// unit from a set, and `\` makes the next unit literal. A NUL byte ends the
+/// text, as it would a C string. [`GlobOptions`] describes how `pathname`,
+/// `casefold`, `hidden` and `unicode` change this.
 ///
-/// Rather than backtracking, matching tracks every position in the text
-/// that the pattern so far can reach, so it takes time proportional to the
-/// pattern's length times the text's, however many stars there are. It
-/// stops as soon as no position is reachable.
+/// Rather than backtracking, matching tracks every position in the text that the
+/// pattern so far can reach, so it takes time proportional to the pattern's
+/// length times the text's, however many stars there are. It stops as soon as no
+/// position is reachable.
 ///
-/// # Arguments
-///
-/// * `glob` - The compiled pattern.
-/// * `text` - The text to match against it.
-///
-/// # Returns
-///
-/// `true` if the pattern matches the whole text.
+/// [`GlobOptions`]: super::types::GlobOptions
 #[must_use]
 pub(crate) fn compiled_glob_matches(glob: &CompiledGlob, text: &[u8]) -> bool {
     let text = bytes_before_nul(text);
@@ -113,12 +106,12 @@ mod tests {
         "/../../../__conformance__/fastglob-vectors.json"
     ));
 
-    /// Read the fast-glob vector table.
+    /// Reads the fast-glob vector table.
     fn load_fast_glob_table() -> FastGlobTable {
         serde_json::from_str(FAST_GLOB_VECTORS).expect("valid fast-glob vector table")
     }
 
-    /// Compile `pattern` and match `text` against it.
+    /// Compiles `pattern` and checks whether `text` matches it.
     fn matches(pattern: &[u8], text: &[u8], options: GlobOptions) -> bool {
         compiled_glob_matches(&compile_glob(pattern, options).unwrap(), text)
     }
@@ -401,7 +394,7 @@ mod tests {
         assert!(!result);
     }
 
-    /// Read the glob vector table.
+    /// Reads the glob vector table.
     fn load_table() -> Table {
         serde_json::from_str(VECTORS).expect("valid glob vector table")
     }

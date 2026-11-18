@@ -2,16 +2,9 @@ use crate::glob::compiled_glob_matches;
 
 use super::types::PatternSet;
 
-/// Check whether a path matches any pattern in a set, as a glob or by its text.
+/// Checks whether a path matches any pattern in a set, as a glob or by its text.
 ///
-/// # Arguments
-///
-/// * `set` - The patterns.
-/// * `text` - The path's text, relative to the working folder.
-///
-/// # Returns
-///
-/// Whether any pattern matches.
+/// The path's text is relative to the working folder.
 #[must_use]
 pub(super) fn matches_pattern_set(set: &PatternSet, text: &[u8]) -> bool {
     set.literals.iter().any(|literal| literal == text)

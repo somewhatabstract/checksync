@@ -2,22 +2,13 @@ use std::path::{Component, Path};
 
 use crate::node_relative::node_relative;
 
-/// Find a file's path inside an ignore file's folder, as patterns see it.
+/// Returns a file's path inside an ignore file's folder, as patterns see it.
 ///
-/// Both paths are normalized first, so `..` segments are resolved. On Unix
-/// the result is the path's raw bytes, so names that aren't valid UTF-8 are
-/// kept as they are; elsewhere it's the path's text with `/` separators.
-///
-/// # Arguments
-///
-/// * `folder` - The absolute path of the ignore file's folder.
-/// * `file_path` - The absolute path of the file.
-///
-/// # Returns
-///
-/// The file's path relative to the folder, with `/` between names, or
-/// `None` if the file isn't inside the folder (including when it is the
-/// folder itself).
+/// `folder` and `file_path` are absolute. Both are normalized first, so `..`
+/// segments are resolved. The result has `/` between names: on Unix, it's the
+/// path's raw bytes, so names that aren't valid UTF-8 are kept as they are;
+/// elsewhere it's the path's text with `/` separators. Returns `None` if the file
+/// isn't inside the folder, including when it is the folder itself.
 #[must_use]
 pub(super) fn relative_path(folder: &Path, file_path: &Path) -> Option<Vec<u8>> {
     let relative = node_relative(folder, folder, file_path);
@@ -28,14 +19,14 @@ pub(super) fn relative_path(folder: &Path, file_path: &Path) -> Option<Vec<u8>> 
     (!outside).then(|| path_bytes(&relative))
 }
 
-/// Get a relative path's raw bytes, which already use `/` separators.
+/// Returns a relative path's raw bytes, which already use `/` separators.
 #[cfg(unix)]
 fn path_bytes(path: &Path) -> Vec<u8> {
     use std::os::unix::ffi::OsStrExt;
     path.as_os_str().as_bytes().to_vec()
 }
 
-/// Get a relative path's text with `/` separators.
+/// Returns a relative path's text with `/` separators.
 #[cfg(not(unix))]
 fn path_bytes(path: &Path) -> Vec<u8> {
     crate::normalize_separators::normalize_separators(&path.to_string_lossy()).into_bytes()

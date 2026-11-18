@@ -1,17 +1,9 @@
-/// Check whether a position in a text is inside a name that is `.` or `..`.
+/// Checks whether a position in a text is inside a name that is `.` or `..`.
 ///
-/// A name starts at the beginning of the text or just after a `/`, and ends
-/// at the next `/` or the end of the text.
-///
-/// # Arguments
-///
-/// * `text` - The text being matched.
-/// * `position` - The position to check, which may be the text's length.
-///
-/// # Returns
-///
-/// `true` if the byte at the position is a `.` of a name that is exactly
-/// `.` or `..`.
+/// It is when the byte at `position` is a `.` of a name that is exactly `.` or
+/// `..`. A name starts at the beginning of the text or just after a `/`, and ends
+/// at the next `/` or the end of the text. `position` may be the text's length,
+/// which is never inside a name.
 #[must_use]
 pub(super) fn in_dot_segment(text: &[u8], position: usize) -> bool {
     if text.get(position) != Some(&b'.') {
@@ -23,6 +15,8 @@ pub(super) fn in_dot_segment(text: &[u8], position: usize) -> bool {
         position
     };
     let starts_name = start == 0 || text[start - 1] == b'/';
+    // The index just past the dots: 2 past the start for `..`, 1 for `.`. The
+    // name is a dot name only if a `/` or the end of the text comes there.
     let end = if text.get(start + 1) == Some(&b'.') {
         start + 2
     } else {

@@ -4,19 +4,11 @@ use super::EXCLUDE_GLOB_OPTIONS;
 use super::compile_pattern_set::compile_pattern_set;
 use super::types::{ExcludeGlobs, ExcludePatterns};
 
-/// Compile exclude patterns, keeping absolute ones apart.
+/// Compiles exclude patterns, keeping absolute ones apart.
 ///
-/// Relative patterns are matched against paths relative to the working
-/// folder, and absolute ones against absolute paths, as in fast-glob.
-///
-/// # Arguments
-///
-/// * `excludes` - The exclude patterns, with `/` between names.
-/// * `cwd` - The absolute working folder.
-///
-/// # Returns
-///
-/// The compiled patterns.
+/// Relative patterns are matched against paths relative to `cwd`, the
+/// absolute working folder, and absolute ones against absolute paths, as in
+/// fast-glob. The patterns have `/` between names.
 #[must_use]
 pub(super) fn compile_exclude_globs(excludes: &[String], cwd: &Path) -> ExcludeGlobs {
     let (absolute, relative): (Vec<&str>, Vec<&str>) = excludes
@@ -30,7 +22,7 @@ pub(super) fn compile_exclude_globs(excludes: &[String], cwd: &Path) -> ExcludeG
     }
 }
 
-/// Compile patterns for files, and the folders before any trailing `/**`.
+/// Compiles patterns for files, and the folders before any trailing `/**`.
 fn compile_exclude_patterns(patterns: &[&str]) -> ExcludePatterns {
     ExcludePatterns {
         paths: compile_pattern_set(patterns.iter().copied(), EXCLUDE_GLOB_OPTIONS),
