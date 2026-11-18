@@ -1,7 +1,7 @@
 //! Moving the reachable text positions past `*` and whole-folder `**/` tokens.
 
-use super::hidden_names::{HiddenNames, in_dot_segment, starts_hidden_name};
-use super::units::decode_glob_char;
+use super::super::hidden_names::{HiddenNames, in_dot_segment, starts_hidden_name};
+use super::super::units::decode_glob_char;
 
 /// Moves the reachable text positions past a `*`, in place.
 ///
@@ -90,8 +90,8 @@ pub(super) fn advance_any_folders(
 
 #[cfg(test)]
 mod tests {
-    use super::super::hidden_names::HiddenNames;
-    use super::advance_star;
+    use super::super::super::hidden_names::HiddenNames;
+    use super::{advance_any_folders, advance_star};
 
     #[test]
     fn reaches_every_later_position() {
@@ -214,7 +214,7 @@ mod tests {
     }
 
     #[test]
-    fn reports_a_reachable_position() {
+    fn reports_a_reachable_position_after_a_star() {
         // Arrange
         let mut positions = [false, true];
 
@@ -226,7 +226,7 @@ mod tests {
     }
 
     #[test]
-    fn reports_when_no_position_is_reachable() {
+    fn reports_when_no_position_is_reachable_after_a_star() {
         // Arrange
         let mut positions = [false, false];
 
@@ -316,12 +316,6 @@ mod tests {
         // Assert
         assert_eq!(positions, [true, true, true, false, false]);
     }
-}
-
-#[cfg(test)]
-mod advance_any_folders_tests {
-    use super::super::hidden_names::HiddenNames;
-    use super::advance_any_folders;
 
     #[test]
     fn keeps_each_reachable_position() {
@@ -396,7 +390,7 @@ mod advance_any_folders_tests {
     }
 
     #[test]
-    fn reports_a_reachable_position() {
+    fn reports_a_reachable_position_after_any_folders() {
         // Arrange
         let mut positions = [false, true];
 
@@ -408,7 +402,7 @@ mod advance_any_folders_tests {
     }
 
     #[test]
-    fn reports_when_no_position_is_reachable() {
+    fn reports_when_no_position_is_reachable_after_any_folders() {
         // Arrange
         let mut positions = [false, false];
 

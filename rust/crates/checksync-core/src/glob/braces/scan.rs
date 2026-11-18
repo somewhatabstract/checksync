@@ -2,13 +2,13 @@
 
 /// Checks whether a pattern holds any brace group, in one pass.
 ///
-/// A `{` starts a group, as [`next_brace_piece`] decides, when a matching `}`
+/// A `{` starts a group, as [`BracePiece::read`] decides, when a matching `}`
 /// follows with a comma directly between them. A `\` escapes the byte after it,
 /// braces and commas inside `[...]` don't count, and an unclosed `[` hides the
 /// rest of the pattern, as in brace expansion. The time taken grows only with the
 /// pattern's length.
 ///
-/// [`next_brace_piece`]: super::group::next_brace_piece
+/// [`BracePiece::read`]: super::group::BracePiece::read
 #[must_use]
 pub(super) fn contains_brace_group(pattern: &[u8]) -> bool {
     // For each `{` still waiting for its `}`, whether a comma has been seen

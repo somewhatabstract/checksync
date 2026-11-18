@@ -62,7 +62,7 @@ pub(super) fn in_dot_segment(text: &[u8], position: usize) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use super::starts_hidden_name;
+    use super::{in_dot_segment, starts_hidden_name};
 
     #[test]
     fn finds_a_dot_at_the_start_of_the_text() {
@@ -113,7 +113,7 @@ mod tests {
     }
 
     #[test]
-    fn ignores_the_end_of_the_text() {
+    fn does_not_start_a_hidden_name_at_the_end_of_the_text() {
         // Arrange
         let text = b"a/";
 
@@ -123,11 +123,6 @@ mod tests {
         // Assert
         assert!(!result);
     }
-}
-
-#[cfg(test)]
-mod in_dot_segment_tests {
-    use super::in_dot_segment;
 
     #[test]
     fn finds_a_dot_name() {
@@ -218,7 +213,7 @@ mod in_dot_segment_tests {
     }
 
     #[test]
-    fn ignores_the_end_of_the_text() {
+    fn does_not_find_a_dot_segment_at_the_end_of_the_text() {
         // Arrange
         let text = b"..";
 

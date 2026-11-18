@@ -6,8 +6,7 @@ use crate::gitignore::IgnoreFile;
 use crate::types::IgnoreDecision;
 
 use super::GetFilesError;
-use super::find_files::find_files;
-use super::plan::plan_glob_tasks;
+use super::plan::GlobPlan;
 
 /// Finds and loads the ignore files that some paths or globs name.
 ///
@@ -27,8 +26,8 @@ pub(super) fn load_ignore_files(
     ignore_file_globs: &[String],
     cwd: &Path,
 ) -> Result<Vec<IgnoreFile>, GetFilesError> {
-    let plan = plan_glob_tasks(ignore_file_globs, &[])?;
-    load_found_ignore_files(&find_files(&plan, cwd)?)
+    let plan = GlobPlan::try_new(ignore_file_globs, &[])?;
+    load_found_ignore_files(&plan.find_files(cwd)?)
 }
 
 /// Loads ignore files that have been found, in the order given.

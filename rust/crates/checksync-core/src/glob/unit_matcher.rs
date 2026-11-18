@@ -1,7 +1,9 @@
 //! Matching one unit of a text, a byte or a character, against a single-unit
 //! token.
 
-use super::bracket_set::{BracketSet, bracket_set_contains};
+mod advance;
+
+use super::bracket_set::BracketSet;
 use super::compiled_glob::GlobOptions;
 
 /// What one unit of the text has to be to match one glob token.
@@ -24,51 +26,44 @@ pub(super) enum UnitMatcher {
     Set(BracketSet),
 }
 
-/// Checks whether one unit of the text matches a single-unit glob token.
-///
-/// A unit is a byte, or a whole character in unicode mode; `unit` holds its bytes
-/// in the text and `code` its code, the byte or the character's code point. With
-/// `pathname` set in `options`, `?` and bracket sets never match `/`; only a
-/// literal `/` does. With `casefold` set, a literal matches in either case, but
-/// an escaped byte is compared with the text's byte lowercased.
-#[must_use]
-pub(super) fn unit_matcher_matches(
-    matcher: &UnitMatcher,
-    unit: &[u8],
-    code: u32,
-    options: GlobOptions,
-) -> bool {
-    let is_separator = options.pathname && unit == b"/";
-    match (matcher, unit) {
-        (UnitMatcher::Literal(expected), [byte]) if options.casefold => {
-            expected.eq_ignore_ascii_case(byte)
-        }
-        (UnitMatcher::Escaped(expected), [byte]) if options.casefold => {
-            *expected == byte.to_ascii_lowercase()
-        }
-        (UnitMatcher::Literal(expected) | UnitMatcher::Escaped(expected), [byte]) => {
-            expected == byte
-        }
-        (UnitMatcher::Literal(_) | UnitMatcher::Escaped(_), _) => false,
-        (UnitMatcher::Character(expected), _) => expected == unit,
-        (UnitMatcher::Any, _) => !is_separator,
-        (UnitMatcher::Set(set), _) => {
-            !is_separator && bracket_set_contains(set, code, options.casefold)
+impl UnitMatcher {
+    /// Checks whether one unit of the text matches this single-unit token.
+    ///
+    /// A unit is a byte, or a whole character in unicode mode; `unit` holds its bytes
+    /// in the text and `code` its code, the byte or the character's code point. With
+    /// `pathname` set in `options`, `?` and bracket sets never match `/`; only a
+    /// literal `/` does. With `casefold` set, a literal matches in either case, but
+    /// an escaped byte is compared with the text's byte lowercased.
+    #[must_use]
+    fn matches(&self, unit: &[u8], code: u32, options: GlobOptions) -> bool {
+        let is_separator = options.pathname && unit == b"/";
+        match (self, unit) {
+            (Self::Literal(expected), [byte]) if options.casefold => {
+                expected.eq_ignore_ascii_case(byte)
+            }
+            (Self::Escaped(expected), [byte]) if options.casefold => {
+                *expected == byte.to_ascii_lowercase()
+            }
+            (Self::Literal(expected) | Self::Escaped(expected), [byte]) => expected == byte,
+            (Self::Literal(_) | Self::Escaped(_), _) => false,
+            (Self::Character(expected), _) => expected == unit,
+            (Self::Any, _) => !is_separator,
+            (Self::Set(set), _) => !is_separator && set.contains(code, options.casefold),
         }
     }
-}
 
-/// Checks whether a single-unit token may match a hidden name's leading `.`.
-///
-/// This applies when hidden names are protected. A literal or escaped unit and a
-/// bracket set that isn't negated may, so they match it if they match a `.` at
-/// all; `?` and negated sets may not.
-#[must_use]
-pub(super) fn unit_matcher_matches_hidden_dot(matcher: &UnitMatcher) -> bool {
-    match matcher {
-        UnitMatcher::Literal(_) | UnitMatcher::Escaped(_) | UnitMatcher::Character(_) => true,
-        UnitMatcher::Any => false,
-        UnitMatcher::Set(set) => !set.negated,
+    /// Checks whether this token may match a hidden name's leading `.`.
+    ///
+    /// This applies when hidden names are protected. A literal or escaped unit and a
+    /// bracket set that isn't negated may, so they match it if they match a `.` at
+    /// all; `?` and negated sets may not.
+    #[must_use]
+    fn matches_hidden_dot(&self) -> bool {
+        match self {
+            Self::Literal(_) | Self::Escaped(_) | Self::Character(_) => true,
+            Self::Any => false,
+            Self::Set(set) => !set.negated,
+        }
     }
 }
 
@@ -79,7 +74,7 @@ mod tests {
     use super::super::compiled_glob::GlobOptions;
     use super::super::hidden_names::HiddenNames;
     use super::super::{TEST_OPTIONS, TEST_PATHNAME_OPTIONS};
-    use super::{UnitMatcher, unit_matcher_matches, unit_matcher_matches_hidden_dot};
+    use super::UnitMatcher;
 
     const CASEFOLD: GlobOptions = GlobOptions {
         pathname: false,
@@ -101,7 +96,7 @@ mod tests {
         let matcher = UnitMatcher::Literal(b'a');
 
         // Act
-        let result = unit_matcher_matches(&matcher, b"a", u32::from(b'a'), TEST_OPTIONS);
+        let result = matcher.matches(b"a", u32::from(b'a'), TEST_OPTIONS);
 
         // Assert
         assert!(result);
@@ -113,7 +108,7 @@ mod tests {
         let matcher = UnitMatcher::Literal(b'a');
 
         // Act
-        let result = unit_matcher_matches(&matcher, b"A", u32::from(b'A'), TEST_OPTIONS);
+        let result = matcher.matches(b"A", u32::from(b'A'), TEST_OPTIONS);
 
         // Assert
         assert!(!result);
@@ -125,7 +120,7 @@ mod tests {
         let matcher = UnitMatcher::Literal(b'A');
 
         // Act
-        let result = unit_matcher_matches(&matcher, b"a", u32::from(b'a'), CASEFOLD);
+        let result = matcher.matches(b"a", u32::from(b'a'), CASEFOLD);
 
         // Assert
         assert!(result);
@@ -137,7 +132,7 @@ mod tests {
         let matcher = UnitMatcher::Escaped(b'A');
 
         // Act
-        let result = unit_matcher_matches(&matcher, b"A", u32::from(b'A'), TEST_OPTIONS);
+        let result = matcher.matches(b"A", u32::from(b'A'), TEST_OPTIONS);
 
         // Assert
         assert!(result);
@@ -149,7 +144,7 @@ mod tests {
         let matcher = UnitMatcher::Escaped(b'a');
 
         // Act
-        let result = unit_matcher_matches(&matcher, b"A", u32::from(b'A'), CASEFOLD);
+        let result = matcher.matches(b"A", u32::from(b'A'), CASEFOLD);
 
         // Assert
         assert!(result);
@@ -161,7 +156,7 @@ mod tests {
         let matcher = UnitMatcher::Escaped(b'A');
 
         // Act
-        let result = unit_matcher_matches(&matcher, b"A", u32::from(b'A'), CASEFOLD);
+        let result = matcher.matches(b"A", u32::from(b'A'), CASEFOLD);
 
         // Assert
         assert!(!result);
@@ -173,7 +168,7 @@ mod tests {
         let matcher = UnitMatcher::Literal(b'/');
 
         // Act
-        let result = unit_matcher_matches(&matcher, b"/", u32::from(b'/'), TEST_PATHNAME_OPTIONS);
+        let result = matcher.matches(b"/", u32::from(b'/'), TEST_PATHNAME_OPTIONS);
 
         // Assert
         assert!(result);
@@ -185,7 +180,7 @@ mod tests {
         let matcher = UnitMatcher::Any;
 
         // Act
-        let result = unit_matcher_matches(&matcher, b"/", u32::from(b'/'), TEST_OPTIONS);
+        let result = matcher.matches(b"/", u32::from(b'/'), TEST_OPTIONS);
 
         // Assert
         assert!(result);
@@ -197,7 +192,7 @@ mod tests {
         let matcher = UnitMatcher::Any;
 
         // Act
-        let result = unit_matcher_matches(&matcher, b"/", u32::from(b'/'), TEST_PATHNAME_OPTIONS);
+        let result = matcher.matches(b"/", u32::from(b'/'), TEST_PATHNAME_OPTIONS);
 
         // Assert
         assert!(!result);
@@ -209,7 +204,7 @@ mod tests {
         let matcher = slash_set();
 
         // Act
-        let result = unit_matcher_matches(&matcher, b"/", u32::from(b'/'), TEST_OPTIONS);
+        let result = matcher.matches(b"/", u32::from(b'/'), TEST_OPTIONS);
 
         // Assert
         assert!(result);
@@ -221,7 +216,7 @@ mod tests {
         let matcher = slash_set();
 
         // Act
-        let result = unit_matcher_matches(&matcher, b"/", u32::from(b'/'), TEST_PATHNAME_OPTIONS);
+        let result = matcher.matches(b"/", u32::from(b'/'), TEST_PATHNAME_OPTIONS);
 
         // Assert
         assert!(!result);
@@ -233,7 +228,7 @@ mod tests {
         let matcher = UnitMatcher::Literal(0xC3);
 
         // Act
-        let result = unit_matcher_matches(&matcher, "é".as_bytes(), u32::from('é'), TEST_OPTIONS);
+        let result = matcher.matches("é".as_bytes(), u32::from('é'), TEST_OPTIONS);
 
         // Assert
         assert!(!result);
@@ -245,7 +240,7 @@ mod tests {
         let matcher = UnitMatcher::Character("é".as_bytes().to_vec());
 
         // Act
-        let result = unit_matcher_matches(&matcher, "é".as_bytes(), u32::from('é'), TEST_OPTIONS);
+        let result = matcher.matches("é".as_bytes(), u32::from('é'), TEST_OPTIONS);
 
         // Assert
         assert!(result);
@@ -257,7 +252,7 @@ mod tests {
         let matcher = UnitMatcher::Character("é".as_bytes().to_vec());
 
         // Act
-        let result = unit_matcher_matches(&matcher, "è".as_bytes(), u32::from('è'), TEST_OPTIONS);
+        let result = matcher.matches("è".as_bytes(), u32::from('è'), TEST_OPTIONS);
 
         // Assert
         assert!(!result);
@@ -272,7 +267,7 @@ mod tests {
         });
 
         // Act
-        let result = unit_matcher_matches(&matcher, "é".as_bytes(), u32::from('é'), TEST_OPTIONS);
+        let result = matcher.matches("é".as_bytes(), u32::from('é'), TEST_OPTIONS);
 
         // Assert
         assert!(result);
@@ -291,7 +286,7 @@ mod tests {
         let matcher = UnitMatcher::Literal(b'.');
 
         // Act
-        let result = unit_matcher_matches_hidden_dot(&matcher);
+        let result = matcher.matches_hidden_dot();
 
         // Assert
         assert!(result);
@@ -303,7 +298,7 @@ mod tests {
         let matcher = UnitMatcher::Escaped(b'.');
 
         // Act
-        let result = unit_matcher_matches_hidden_dot(&matcher);
+        let result = matcher.matches_hidden_dot();
 
         // Assert
         assert!(result);
@@ -315,7 +310,7 @@ mod tests {
         let matcher = UnitMatcher::Any;
 
         // Act
-        let result = unit_matcher_matches_hidden_dot(&matcher);
+        let result = matcher.matches_hidden_dot();
 
         // Assert
         assert!(!result);
@@ -327,7 +322,7 @@ mod tests {
         let matcher = set(false);
 
         // Act
-        let result = unit_matcher_matches_hidden_dot(&matcher);
+        let result = matcher.matches_hidden_dot();
 
         // Assert
         assert!(result);
@@ -339,7 +334,7 @@ mod tests {
         let matcher = set(true);
 
         // Act
-        let result = unit_matcher_matches_hidden_dot(&matcher);
+        let result = matcher.matches_hidden_dot();
 
         // Assert
         assert!(!result);

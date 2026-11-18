@@ -1,18 +1,14 @@
 //! A matcher for git-style glob patterns, plus fast-glob's brace expansion.
 //!
-//! Patterns are compiled once with [`compile_glob`] and then matched against any
-//! number of texts with [`compiled_glob_matches`]. Matching works on bytes, as
-//! git's does, or on whole characters, as fast-glob's does, with the options in
-//! [`GlobOptions`]. [`expand_braces`] expands `{a,b}` groups first, as fast-glob
-//! does. The module depends on nothing else in the crate, so it could become a
-//! crate of its own.
+//! Patterns are compiled once with [`CompiledGlob::try_new`] and then matched
+//! against any number of texts with [`CompiledGlob::matches`]. Matching works on
+//! bytes, as git's does, or on whole characters, as fast-glob's does, with the
+//! options in [`GlobOptions`]. [`expand_braces`] expands `{a,b}` groups first, as
+//! fast-glob does. The module depends on nothing else in the crate, so it could
+//! become a crate of its own.
 //!
-//! [`compile_glob`]: fn@compile_glob
-//! [`compiled_glob_matches`]: fn@compiled_glob_matches
 //! [`expand_braces`]: fn@expand_braces
 
-mod advance;
-mod advance_wildcards;
 mod braces;
 mod bracket_item;
 mod bracket_set;
@@ -21,12 +17,14 @@ mod compiled_glob;
 mod conformance_tests;
 mod hidden_names;
 mod posix_class;
-mod tokenize;
+#[cfg(test)]
+mod test_support;
+mod token;
 mod unit_matcher;
 mod units;
 
 pub(crate) use braces::{BraceExpansionError, expand_braces};
-pub(crate) use compiled_glob::{CompiledGlob, GlobOptions, compile_glob, compiled_glob_matches};
+pub(crate) use compiled_glob::{CompiledGlob, GlobOptions};
 pub(crate) use hidden_names::HiddenNames;
 
 /// The options for tests whose results don't depend on them.

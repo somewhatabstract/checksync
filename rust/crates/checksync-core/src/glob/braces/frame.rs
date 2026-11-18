@@ -1,9 +1,9 @@
 //! Expanding brace groups step by step, with the work kept on a heap stack.
 
 use super::BraceExpansionError;
-use super::budget::{BraceBudget, take_brace_budget};
+use super::budget::BraceBudget;
 use super::combine::combine_brace_texts;
-use super::group::{BracePiece, next_brace_piece};
+use super::group::BracePiece;
 
 /// A step of brace expansion still in progress, kept on a heap stack.
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -37,6 +37,119 @@ enum BraceFrame {
     },
 }
 
+impl BraceFrame {
+    /// Takes one step of brace expansion on this frame, just popped from the stack.
+    ///
+    /// `stack` holds the frames below this one, which this step may push onto, and
+    /// `budget` is the output the whole expansion holds at once. A run with pieces left
+    /// reads the next one of `pattern`: text is appended to its results, and a group
+    /// takes over the run's state while its alternatives are expanded. A group with
+    /// alternatives left pushes a run for the next one. A finished run hands its
+    /// results to the group below it, or, with nothing below it, is the whole
+    /// expansion. A finished group combines its texts into the run's results, and the
+    /// run carries on after the group. Nothing recurses, so the call stack stays the
+    /// same size however deeply groups nest.
+    ///
+    /// Returns the expanded patterns if this step finished the whole expansion, or
+    /// `None` if there's more to do.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`BraceExpansionError::TooManyResults`] if the output doesn't fit.
+    fn step(
+        self,
+        pattern: &[u8],
+        stack: &mut Vec<BraceFrame>,
+        budget: &mut BraceBudget,
+    ) -> Result<Option<Vec<Vec<u8>>>, BraceExpansionError> {
+        match self {
+            Self::Sequence {
+                end,
+                index,
+                mut results,
+            } if index < end => match BracePiece::read(&pattern[..end], index) {
+                BracePiece::Text(next) => {
+                    budget.take(1, next - index)?;
+                    combine_brace_texts(&mut results, &[pattern[index..next].to_vec()], budget)?;
+                    stack.push(Self::Sequence {
+                        end,
+                        index: next,
+                        results,
+                    });
+                }
+                BracePiece::Group(group) => stack.push(Self::Group {
+                    alternatives: group.alternatives,
+                    next: 0,
+                    texts: Vec::new(),
+                    results,
+                    end,
+                    resume: group.end,
+                }),
+            },
+            Self::Sequence { results, .. } => match stack.last_mut() {
+                Some(Self::Group { texts, .. }) => texts.extend(results),
+                _ => return Ok(Some(results)),
+            },
+            Self::Group {
+                alternatives,
+                next,
+                texts,
+                results,
+                end,
+                resume,
+            } if next < alternatives.len() => {
+                let alternative = alternatives[next].clone();
+                stack.push(Self::Group {
+                    alternatives,
+                    next: next + 1,
+                    texts,
+                    results,
+                    end,
+                    resume,
+                });
+                stack.push(Self::try_sequence(alternative, budget)?);
+            }
+            Self::Group {
+                texts,
+                mut results,
+                end,
+                resume,
+                ..
+            } => {
+                combine_brace_texts(&mut results, &texts, budget)?;
+                stack.push(Self::Sequence {
+                    end,
+                    index: resume,
+                    results,
+                });
+            }
+        }
+        Ok(None)
+    }
+
+    /// Returns a frame that starts expanding a run of a pattern.
+    ///
+    /// The run is where `run` lies in the pattern, and the frame starts with one
+    /// empty result so far, which `budget`, the output the whole expansion holds at
+    /// once, gains.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`BraceExpansionError::TooManyResults`] if the empty result doesn't
+    /// fit.
+    fn try_sequence(
+        run: std::ops::Range<usize>,
+        budget: &mut BraceBudget,
+    ) -> Result<Self, BraceExpansionError> {
+        budget.take(1, 0)?;
+        Ok(Self::Sequence {
+            end: run.end,
+            index: run.start,
+            results: vec![Vec::new()],
+        })
+    }
+}
+
 /// Expands a pattern's brace groups with a heap stack, within a budget.
 ///
 /// [`expand_braces`] checks the pattern's length first. Nested groups are
@@ -54,134 +167,22 @@ pub(super) fn expand_brace_pieces(
     pattern: &[u8],
     budget: &mut BraceBudget,
 ) -> Result<Vec<Vec<u8>>, BraceExpansionError> {
-    let mut stack = vec![start_brace_sequence(0..pattern.len(), budget)?];
+    let mut stack = vec![BraceFrame::try_sequence(0..pattern.len(), budget)?];
     let mut expanded = Vec::new();
     // The stack empties just after the step that finishes the expansion.
     while let Some(frame) = stack.pop() {
-        if let Some(results) = step_brace_frame(pattern, frame, &mut stack, budget)? {
+        if let Some(results) = frame.step(pattern, &mut stack, budget)? {
             expanded = results;
         }
     }
     Ok(expanded)
 }
 
-/// Takes one step of brace expansion on the frame popped from the stack.
-///
-/// `frame` is the frame popped from the top of the stack, `stack` holds the
-/// frames below it, which this step may push onto, and `budget` is the output the
-/// whole expansion holds at once. A run with pieces left reads the next one of
-/// `pattern`: text is appended to its results, and a group takes over the run's
-/// state while its alternatives are expanded. A group with alternatives left
-/// pushes a run for the next one. A finished run hands its results to the group
-/// below it, or, with nothing below it, is the whole expansion. A finished group
-/// combines its texts into the run's results, and the run carries on after the
-/// group. Nothing recurses, so the call stack stays the same size however deeply
-/// groups nest.
-///
-/// Returns the expanded patterns if this step finished the whole expansion, or
-/// `None` if there's more to do.
-///
-/// # Errors
-///
-/// Returns [`BraceExpansionError::TooManyResults`] if the output doesn't fit.
-fn step_brace_frame(
-    pattern: &[u8],
-    frame: BraceFrame,
-    stack: &mut Vec<BraceFrame>,
-    budget: &mut BraceBudget,
-) -> Result<Option<Vec<Vec<u8>>>, BraceExpansionError> {
-    match frame {
-        BraceFrame::Sequence {
-            end,
-            index,
-            mut results,
-        } if index < end => match next_brace_piece(&pattern[..end], index) {
-            BracePiece::Text(next) => {
-                take_brace_budget(budget, 1, next - index)?;
-                combine_brace_texts(&mut results, &[pattern[index..next].to_vec()], budget)?;
-                stack.push(BraceFrame::Sequence {
-                    end,
-                    index: next,
-                    results,
-                });
-            }
-            BracePiece::Group(group) => stack.push(BraceFrame::Group {
-                alternatives: group.alternatives,
-                next: 0,
-                texts: Vec::new(),
-                results,
-                end,
-                resume: group.end,
-            }),
-        },
-        BraceFrame::Sequence { results, .. } => match stack.last_mut() {
-            Some(BraceFrame::Group { texts, .. }) => texts.extend(results),
-            _ => return Ok(Some(results)),
-        },
-        BraceFrame::Group {
-            alternatives,
-            next,
-            texts,
-            results,
-            end,
-            resume,
-        } if next < alternatives.len() => {
-            let alternative = alternatives[next].clone();
-            stack.push(BraceFrame::Group {
-                alternatives,
-                next: next + 1,
-                texts,
-                results,
-                end,
-                resume,
-            });
-            stack.push(start_brace_sequence(alternative, budget)?);
-        }
-        BraceFrame::Group {
-            texts,
-            mut results,
-            end,
-            resume,
-            ..
-        } => {
-            combine_brace_texts(&mut results, &texts, budget)?;
-            stack.push(BraceFrame::Sequence {
-                end,
-                index: resume,
-                results,
-            });
-        }
-    }
-    Ok(None)
-}
-
-/// Returns a frame that starts expanding a run of a pattern.
-///
-/// The run is where `run` lies in the pattern, and the frame starts with one
-/// empty result so far, which `budget`, the output the whole expansion holds at
-/// once, gains.
-///
-/// # Errors
-///
-/// Returns [`BraceExpansionError::TooManyResults`] if the empty result doesn't
-/// fit.
-fn start_brace_sequence(
-    run: std::ops::Range<usize>,
-    budget: &mut BraceBudget,
-) -> Result<BraceFrame, BraceExpansionError> {
-    take_brace_budget(budget, 1, 0)?;
-    Ok(BraceFrame::Sequence {
-        end: run.end,
-        index: run.start,
-        results: vec![Vec::new()],
-    })
-}
-
 #[cfg(test)]
 mod tests {
     use super::super::BraceExpansionError;
     use super::super::budget::{BraceBudget, MAX_HELD, MAX_HELD_BYTES};
-    use super::{BraceFrame, expand_brace_pieces, step_brace_frame};
+    use super::{BraceFrame, expand_brace_pieces};
 
     #[test]
     fn combines_the_pieces_in_order() {
@@ -235,7 +236,7 @@ mod tests {
     }
 
     #[test]
-    fn rejects_a_start_that_does_not_fit() {
+    fn rejects_pieces_that_do_not_fit() {
         // Arrange
         let mut budget = BraceBudget {
             count: MAX_HELD,
@@ -320,12 +321,7 @@ mod tests {
         let mut stack = Vec::new();
 
         // Act
-        let _ = step_brace_frame(
-            b"ab{c,d}",
-            sequence(7, 0, &[b"x"]),
-            &mut stack,
-            &mut counted(),
-        );
+        let _ = sequence(7, 0, &[b"x"]).step(b"ab{c,d}", &mut stack, &mut counted());
 
         // Assert
         assert_eq!(stack, vec![sequence(7, 2, &[b"xab"])]);
@@ -337,12 +333,7 @@ mod tests {
         let mut stack = Vec::new();
 
         // Act
-        let _ = step_brace_frame(
-            b"{c,d}e",
-            sequence(6, 0, &[b"x"]),
-            &mut stack,
-            &mut counted(),
-        );
+        let _ = sequence(6, 0, &[b"x"]).step(b"{c,d}e", &mut stack, &mut counted());
 
         // Assert
         assert_eq!(stack, vec![group(0, &[])]);
@@ -354,7 +345,7 @@ mod tests {
         let mut stack = Vec::new();
 
         // Act
-        let _ = step_brace_frame(b"{c,d}e", group(1, &[b"c"]), &mut stack, &mut counted());
+        let _ = group(1, &[b"c"]).step(b"{c,d}e", &mut stack, &mut counted());
 
         // Assert
         assert_eq!(stack, vec![group(2, &[b"c"]), sequence(4, 3, &[b""])]);
@@ -366,12 +357,7 @@ mod tests {
         let mut stack = vec![group(2, &[b"c"])];
 
         // Act
-        let _ = step_brace_frame(
-            b"{c,d}e",
-            sequence(4, 4, &[b"d"]),
-            &mut stack,
-            &mut counted(),
-        );
+        let _ = sequence(4, 4, &[b"d"]).step(b"{c,d}e", &mut stack, &mut counted());
 
         // Assert
         assert_eq!(stack, vec![group(2, &[b"c", b"d"])]);
@@ -383,12 +369,7 @@ mod tests {
         let mut stack = Vec::new();
 
         // Act
-        let _ = step_brace_frame(
-            b"{c,d}e",
-            group(2, &[b"c", b"d"]),
-            &mut stack,
-            &mut counted(),
-        );
+        let _ = group(2, &[b"c", b"d"]).step(b"{c,d}e", &mut stack, &mut counted());
 
         // Assert
         assert_eq!(stack, vec![sequence(6, 5, &[b"xc", b"xd"])]);
@@ -400,7 +381,7 @@ mod tests {
         let mut stack = Vec::new();
 
         // Act
-        let result = step_brace_frame(b"ab", sequence(2, 0, &[b""]), &mut stack, &mut counted());
+        let result = sequence(2, 0, &[b""]).step(b"ab", &mut stack, &mut counted());
 
         // Assert
         assert_eq!(result, Ok(None));
@@ -412,7 +393,7 @@ mod tests {
         let mut stack = Vec::new();
 
         // Act
-        let result = step_brace_frame(b"ab", sequence(2, 2, &[b"ab"]), &mut stack, &mut counted());
+        let result = sequence(2, 2, &[b"ab"]).step(b"ab", &mut stack, &mut counted());
 
         // Assert
         assert_eq!(result, Ok(Some(vec![b"ab".to_vec()])));
@@ -427,7 +408,7 @@ mod tests {
         };
 
         // Act
-        let result = step_brace_frame(b"ab", sequence(2, 0, &[b""]), &mut Vec::new(), &mut budget);
+        let result = sequence(2, 0, &[b""]).step(b"ab", &mut Vec::new(), &mut budget);
 
         // Assert
         assert_eq!(result, Err(BraceExpansionError::TooManyResults));
@@ -442,7 +423,7 @@ mod tests {
         };
 
         // Act
-        let result = step_brace_frame(b"ab", sequence(2, 0, &[b""]), &mut Vec::new(), &mut budget);
+        let result = sequence(2, 0, &[b""]).step(b"ab", &mut Vec::new(), &mut budget);
 
         // Assert
         assert_eq!(result, Err(BraceExpansionError::TooManyResults));
@@ -457,7 +438,7 @@ mod tests {
         };
 
         // Act
-        let result = step_brace_frame(b"{c,d}e", group(0, &[]), &mut Vec::new(), &mut budget);
+        let result = group(0, &[]).step(b"{c,d}e", &mut Vec::new(), &mut budget);
 
         // Assert
         assert_eq!(result, Err(BraceExpansionError::TooManyResults));
@@ -472,23 +453,11 @@ mod tests {
         };
 
         // Act
-        let result = step_brace_frame(
-            b"{c,d}e",
-            group(2, &[b"c", b"d"]),
-            &mut Vec::new(),
-            &mut budget,
-        );
+        let result = group(2, &[b"c", b"d"]).step(b"{c,d}e", &mut Vec::new(), &mut budget);
 
         // Assert
         assert_eq!(result, Err(BraceExpansionError::TooManyResults));
     }
-}
-
-#[cfg(test)]
-mod start_brace_sequence_tests {
-    use super::super::BraceExpansionError;
-    use super::super::budget::{BraceBudget, MAX_HELD};
-    use super::{BraceFrame, start_brace_sequence};
 
     #[test]
     fn starts_with_one_empty_result() {
@@ -496,7 +465,7 @@ mod start_brace_sequence_tests {
         let mut budget = BraceBudget::default();
 
         // Act
-        let result = start_brace_sequence(2..5, &mut budget);
+        let result = BraceFrame::try_sequence(2..5, &mut budget);
 
         // Assert
         assert_eq!(
@@ -515,14 +484,14 @@ mod start_brace_sequence_tests {
         let mut budget = BraceBudget::default();
 
         // Act
-        let _ = start_brace_sequence(0..1, &mut budget);
+        let _ = BraceFrame::try_sequence(0..1, &mut budget);
 
         // Assert
         assert_eq!(budget, BraceBudget { count: 1, bytes: 0 });
     }
 
     #[test]
-    fn rejects_a_start_that_does_not_fit() {
+    fn rejects_a_sequence_that_does_not_fit() {
         // Arrange
         let mut budget = BraceBudget {
             count: MAX_HELD,
@@ -530,7 +499,7 @@ mod start_brace_sequence_tests {
         };
 
         // Act
-        let result = start_brace_sequence(0..1, &mut budget);
+        let result = BraceFrame::try_sequence(0..1, &mut budget);
 
         // Assert
         assert_eq!(result, Err(BraceExpansionError::TooManyResults));

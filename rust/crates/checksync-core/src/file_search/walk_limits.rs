@@ -1,6 +1,6 @@
 //! Deciding which folders a walk needs to enter.
 
-use super::excludes::{ExcludeGlobs, is_excluded};
+use super::excludes::ExcludeGlobs;
 
 /// Decides whether a folder found while walking could hold matching files.
 ///
@@ -20,31 +20,7 @@ pub(super) fn should_walk_folder(
     let can_enter = enter_hidden || !name.starts_with(b".");
     let too_deep =
         name_limit.is_some_and(|limit| text.split(|&byte| byte == b'/').count() >= limit);
-    can_enter && !too_deep && !is_excluded(excludes, text, true)
-}
-
-/// Checks whether an exclude pattern prunes a task's folder or one above it.
-///
-/// Walking starts at the task's folder, so the folders on the way to it are
-/// never visited and checked. If an exclude pattern prunes any of them, as
-/// `lib` does for a task walking `lib/src`, nothing below can be found. A
-/// step up or a `.` on the way doesn't name a folder the files are in, so
-/// `..` isn't checked for a task walking `../other`.
-///
-/// `base` is the task's folder, relative to the working folder, with `/`
-/// between names, and is `.` for the working folder itself.
-#[must_use]
-pub(super) fn is_base_excluded(base: &str, excludes: &ExcludeGlobs) -> bool {
-    base != "."
-        && base
-            .match_indices('/')
-            .map(|(slash, _)| &base[..slash])
-            .chain(std::iter::once(base))
-            .filter(|folder| {
-                let name = folder.rsplit('/').next().unwrap_or(folder);
-                !matches!(name, "" | "." | "..")
-            })
-            .any(|folder| is_excluded(excludes, folder.as_bytes(), true))
+    can_enter && !too_deep && !excludes.is_excluded(text, true)
 }
 
 /// Finds how many names deep a pattern's files can be, if there's a limit.
@@ -127,14 +103,13 @@ mod tests {
     use std::path::Path;
 
     use super::{
-        bracket_may_match_dot, is_base_excluded, pattern_name_limit, pattern_names_hidden,
-        should_walk_folder,
+        bracket_may_match_dot, pattern_name_limit, pattern_names_hidden, should_walk_folder,
     };
-    use crate::file_search::excludes::{ExcludeGlobs, compile_exclude_globs};
+    use crate::file_search::excludes::ExcludeGlobs;
 
     fn excludes(patterns: &[&str]) -> ExcludeGlobs {
         let patterns: Vec<String> = patterns.iter().map(|&pattern| pattern.to_owned()).collect();
-        compile_exclude_globs(&patterns, Path::new("/repo"))
+        ExcludeGlobs::new(&patterns, Path::new("/repo"))
     }
 
     #[test]
@@ -207,104 +182,6 @@ mod tests {
 
         // Assert
         assert!(!result);
-    }
-
-    #[test]
-    fn prunes_a_folder_an_exclude_names() {
-        // Arrange
-        let excludes = excludes(&["lib"]);
-
-        // Act
-        let result = is_base_excluded("lib", &excludes);
-
-        // Assert
-        assert!(result);
-    }
-
-    #[test]
-    fn prunes_a_folder_below_one_an_exclude_names() {
-        // Arrange
-        let excludes = excludes(&["lib"]);
-
-        // Act
-        let result = is_base_excluded("lib/src", &excludes);
-
-        // Assert
-        assert!(result);
-    }
-
-    #[test]
-    fn keeps_a_folder_no_exclude_names() {
-        // Arrange
-        let excludes = excludes(&["lib"]);
-
-        // Act
-        let result = is_base_excluded("src/lib2", &excludes);
-
-        // Assert
-        assert!(!result);
-    }
-
-    #[test]
-    fn never_prunes_the_working_folder() {
-        // Arrange
-        let excludes = excludes(&["**"]);
-
-        // Act
-        let result = is_base_excluded(".", &excludes);
-
-        // Assert
-        assert!(!result);
-    }
-
-    #[test]
-    fn checks_the_folders_of_an_absolute_base() {
-        // Arrange
-        let excludes = excludes(&["/a"]);
-
-        // Act
-        let result = is_base_excluded("/a/b", &excludes);
-
-        // Assert
-        assert!(result);
-    }
-
-    #[test]
-    fn does_not_check_steps_up_on_the_way() {
-        // Arrange
-        let excludes = excludes(&[".."]);
-
-        // Act
-        let result = is_base_excluded("../other", &excludes);
-
-        // Assert
-        assert!(!result);
-    }
-
-    #[cfg(unix)]
-    #[test]
-    fn does_not_check_the_absolute_folder_a_step_up_names() {
-        // Arrange
-        let excludes = excludes(&["/"]);
-
-        // Act
-        let result = is_base_excluded("../../other", &excludes);
-
-        // Assert
-        assert!(!result);
-    }
-
-    #[cfg(unix)]
-    #[test]
-    fn prunes_a_folder_an_absolute_exclude_names_after_a_step_up() {
-        // Arrange
-        let excludes = excludes(&["/other"]);
-
-        // Act
-        let result = is_base_excluded("../../other", &excludes);
-
-        // Assert
-        assert!(result);
     }
 
     #[test]
