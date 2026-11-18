@@ -3,12 +3,19 @@
 use indexmap::IndexMap;
 
 /// Which tags a migration applies to.
-#[expect(dead_code, reason = "error generation uses it in a later change")]
+#[cfg_attr(
+    not(test),
+    expect(dead_code, reason = "error generation uses it in a later change")
+)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub(crate) enum MigrationMode {
     /// Every tag whose target a mapping matches.
     All,
     /// Only tags whose target has no tag pointing back.
+    #[cfg_attr(
+        test,
+        expect(dead_code, reason = "error generation uses it in a later change")
+    )]
     Missing,
 }
 

@@ -22,6 +22,11 @@ pub(crate) struct ChecksumUpdate<'a> {
 }
 
 impl ChecksumUpdate<'_> {
+    /// Returns the current checksum in lowercase, as fix descriptions show it.
+    fn lowercase_incorrect_checksum(&self) -> String {
+        self.incorrect_checksum.to_lowercase()
+    }
+
     /// Returns the fix that replaces the tag's line with the fixed tag.
     fn fix(&self, description: String) -> FixAction {
         FixAction::Replace {
@@ -54,7 +59,7 @@ impl ErrorDetails {
             incorrect_checksum,
             correct_checksum,
             ..
-        } = update;
+        } = *update;
         Self {
             marker_id: Some(marker_id.to_owned()),
             reason: format!(
@@ -64,7 +69,7 @@ impl ErrorDetails {
             location: Some(ErrorLocation::at_line(target_line)),
             fix: Some(update.fix(format!(
                 "Updated checksum for sync-tag '{marker_id}' referencing '{target_path}:{target_line}' from {} to {correct_checksum}.",
-                incorrect_checksum.to_lowercase()
+                update.lowercase_incorrect_checksum()
             ))),
         }
     }
@@ -87,7 +92,7 @@ impl ErrorDetails {
             incorrect_checksum,
             correct_checksum,
             ..
-        } = update;
+        } = *update;
         Self {
             marker_id: Some(marker_id.to_owned()),
             reason: format!(
@@ -97,7 +102,7 @@ impl ErrorDetails {
             location: Some(ErrorLocation::at_line(update.line)),
             fix: Some(update.fix(format!(
                 "Updated checksum for sync-tag '{marker_id}' referencing '{target_path}' from {} to {correct_checksum}.",
-                incorrect_checksum.to_lowercase()
+                update.lowercase_incorrect_checksum()
             ))),
         }
     }
@@ -138,7 +143,9 @@ impl ErrorDetails {
         migrated_target: &str,
         update: &ChecksumUpdate<'_>,
     ) -> Self {
-        let correct_checksum = update.correct_checksum;
+        let ChecksumUpdate {
+            correct_checksum, ..
+        } = *update;
         Self {
             marker_id: Some(marker_id.to_owned()),
             reason: format!(
@@ -148,7 +155,7 @@ impl ErrorDetails {
             location: Some(ErrorLocation::at_line(update.line)),
             fix: Some(update.fix(format!(
                 "Migrated sync-tag '{marker_id}'. Target changed from '{old_target}' to '{migrated_target}'. Checksum updated from {} to {correct_checksum}",
-                update.incorrect_checksum.to_lowercase()
+                update.lowercase_incorrect_checksum()
             ))),
         }
     }
@@ -172,7 +179,9 @@ impl ErrorDetails {
         migrated_target: &str,
         update: &ChecksumUpdate<'_>,
     ) -> Self {
-        let correct_checksum = update.correct_checksum;
+        let ChecksumUpdate {
+            correct_checksum, ..
+        } = *update;
         Self {
             marker_id: Some(marker_id.to_owned()),
             reason: format!(
@@ -182,7 +191,7 @@ impl ErrorDetails {
             location: Some(ErrorLocation::at_line(update.line)),
             fix: Some(update.fix(format!(
                 "Migrated sync-tag '{marker_id}'. Target changed from '{root_target_path}' to '{migrated_target}'. Checksum updated from {} to {correct_checksum}",
-                update.incorrect_checksum.to_lowercase()
+                update.lowercase_incorrect_checksum()
             ))),
         }
     }
