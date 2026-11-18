@@ -14,6 +14,8 @@ mod lines;
 mod marker_parser;
 mod migration;
 mod node_path;
+mod options;
+mod parse_file;
 mod relative_path;
 mod separators;
 mod types;

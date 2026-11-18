@@ -134,7 +134,7 @@ impl ErrorDetails {
     /// failed. The error belongs to no marker and has no location.
     #[cfg_attr(
         not(test),
-        expect(dead_code, reason = "parsing a file calls it in a later change")
+        expect(dead_code, reason = "the marker cache reaches it in a later change")
     )]
     #[must_use]
     pub(crate) fn could_not_parse(file: &str, detail: &str) -> Self {
@@ -152,7 +152,7 @@ impl ErrorDetails {
     /// The error is located at `line`, the 1-based line of the repeated tag.
     #[cfg_attr(
         not(test),
-        expect(dead_code, reason = "parsing a file calls it in a later change")
+        expect(dead_code, reason = "the marker cache reaches it in a later change")
     )]
     #[must_use]
     pub(crate) fn duplicate_marker(marker_id: &str, line: usize) -> Self {
@@ -170,7 +170,7 @@ impl ErrorDetails {
     /// The error is located at `line`, the 1-based line of the tag.
     #[cfg_attr(
         not(test),
-        expect(dead_code, reason = "parsing a file calls it in a later change")
+        expect(dead_code, reason = "the marker cache reaches it in a later change")
     )]
     #[must_use]
     pub(crate) fn empty_marker(marker_id: &str, line: usize) -> Self {
@@ -188,7 +188,7 @@ impl ErrorDetails {
     /// The error is located at `line`, the 1-based line of the tag.
     #[cfg_attr(
         not(test),
-        expect(dead_code, reason = "parsing a file calls it in a later change")
+        expect(dead_code, reason = "the marker cache reaches it in a later change")
     )]
     #[must_use]
     pub(crate) fn self_targeting(marker_id: &str, line: usize) -> Self {
