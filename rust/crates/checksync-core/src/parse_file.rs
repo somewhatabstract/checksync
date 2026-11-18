@@ -199,6 +199,7 @@ mod tests {
             comments: vec!["//".to_owned()],
             allow_empty_tags: false,
             root_marker: None,
+            migration: None,
         }
     }
 
@@ -507,6 +508,7 @@ mod tests {
         ]);
         let options = Options {
             root_marker: Some("marker.txt".to_owned()),
+            migration: None,
             ..options()
         };
 
@@ -525,6 +527,7 @@ mod tests {
         // Arrange
         let options = Options {
             root_marker: Some("no-such-marker-anywhere.txt".to_owned()),
+            migration: None,
             ..options()
         };
 

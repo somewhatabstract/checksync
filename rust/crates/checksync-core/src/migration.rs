@@ -5,24 +5,20 @@ use indexmap::IndexMap;
 /// Which tags a migration applies to.
 #[cfg_attr(
     not(test),
-    expect(dead_code, reason = "error generation uses it in a later change")
+    expect(dead_code, reason = "the command line builds it in a later change")
 )]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub(crate) enum MigrationMode {
     /// Every tag whose target a mapping matches.
     All,
     /// Only tags whose target has no tag pointing back.
-    #[cfg_attr(
-        test,
-        expect(dead_code, reason = "error generation uses it in a later change")
-    )]
     Missing,
 }
 
 /// The configured migration: which tags to change, and how.
 #[cfg_attr(
     not(test),
-    expect(dead_code, reason = "error generation uses it in a later change")
+    expect(dead_code, reason = "the command line builds it in a later change")
 )]
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub(crate) struct MigrationOptions {
@@ -44,10 +40,6 @@ impl MigrationOptions {
     /// The prefix is replaced by the mapping's replacement as written. The
     /// JavaScript uses `String.prototype.replace`, which also expands `$&`,
     /// `` $` ``, `$'` and `$$` in the replacement; that isn't copied.
-    #[cfg_attr(
-        not(test),
-        expect(dead_code, reason = "error generation calls it in a later change")
-    )]
     #[must_use]
     pub(crate) fn migrated_target(&self, target: &str) -> Option<String> {
         self.mappings

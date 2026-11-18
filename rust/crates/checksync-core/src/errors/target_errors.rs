@@ -46,7 +46,7 @@ impl ErrorDetails {
     /// located. The fix updates the checksum of the tag in `update`.
     #[cfg_attr(
         not(test),
-        expect(dead_code, reason = "error generation calls it in a later change")
+        expect(dead_code, reason = "checking a run calls it in a later change")
     )]
     #[must_use]
     pub(crate) fn mismatched_checksum_for_local_target(
@@ -80,7 +80,7 @@ impl ErrorDetails {
     /// is located at the tag in `update`, and the fix updates its checksum.
     #[cfg_attr(
         not(test),
-        expect(dead_code, reason = "error generation calls it in a later change")
+        expect(dead_code, reason = "checking a run calls it in a later change")
     )]
     #[must_use]
     pub(crate) fn mismatched_checksum_for_remote_target(
@@ -113,7 +113,7 @@ impl ErrorDetails {
     /// message names `target_path`, the target file.
     #[cfg_attr(
         not(test),
-        expect(dead_code, reason = "error generation calls it in a later change")
+        expect(dead_code, reason = "checking a run calls it in a later change")
     )]
     #[must_use]
     pub(crate) fn no_return_tag(marker_id: &str, line: usize, target_path: &str) -> Self {
@@ -134,7 +134,7 @@ impl ErrorDetails {
     /// its checksum.
     #[cfg_attr(
         not(test),
-        expect(dead_code, reason = "error generation calls it in a later change")
+        expect(dead_code, reason = "checking a run calls it in a later change")
     )]
     #[must_use]
     pub(crate) fn pending_migration_for_matching_tag(
@@ -169,7 +169,7 @@ impl ErrorDetails {
     /// checksum.
     #[cfg_attr(
         not(test),
-        expect(dead_code, reason = "error generation calls it in a later change")
+        expect(dead_code, reason = "checking a run calls it in a later change")
     )]
     #[must_use]
     pub(crate) fn pending_migration_for_missing_target(

@@ -3,6 +3,8 @@
 mod tag_errors;
 mod target_errors;
 
+pub(crate) use target_errors::ChecksumUpdate;
+
 /// A kind of problem checksync reports.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ErrorCode {

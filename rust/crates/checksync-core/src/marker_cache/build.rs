@@ -78,6 +78,7 @@ mod tests {
             comments: vec!["//".to_owned()],
             allow_empty_tags: false,
             root_marker: None,
+            migration: None,
         }
     }
 
