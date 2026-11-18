@@ -79,7 +79,6 @@ fn keeps_a_real_file_fixable_when_a_link_reaches_it_first() {
 fn unrooted_options() -> crate::options::Options {
     crate::options::Options {
         root_marker: Some("no-such-marker-anywhere.txt".to_owned()),
-        migration: None,
         ..options()
     }
 }

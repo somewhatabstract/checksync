@@ -215,7 +215,7 @@ fn fails_when_the_root_of_a_missing_target_to_migrate_cannot_be_found() {
     let result = cache.errors_for_file(&options, &root, &root.join("a.js"));
 
     // Assert
-    assert_eq!(result.unwrap_err(), root_not_found(&root));
+    assert_eq!(result.failure, Some(root_not_found(&root)));
 }
 
 #[test]
@@ -233,7 +233,7 @@ fn fails_when_the_root_of_a_target_without_the_marker_cannot_be_found() {
     let result = cache.errors_for_file(&options, &root, &root.join("a.js"));
 
     // Assert
-    assert_eq!(result.unwrap_err(), root_not_found(&root));
+    assert_eq!(result.failure, Some(root_not_found(&root)));
 }
 
 #[test]
@@ -251,7 +251,7 @@ fn fails_when_the_root_of_a_target_cannot_be_found_in_all_mode() {
     let result = cache.errors_for_file(&options, &root, &root.join("a.js"));
 
     // Assert
-    assert_eq!(result.unwrap_err(), root_not_found(&root));
+    assert_eq!(result.failure, Some(root_not_found(&root)));
 }
 
 #[test]
@@ -285,5 +285,52 @@ fn fails_when_the_root_of_a_linked_target_with_another_checksum_cannot_be_found(
     let result = cache.errors_for_file(&options, &root, &root.join("a.js"));
 
     // Assert
-    assert_eq!(result.unwrap_err(), root_not_found(&root));
+    assert_eq!(result.failure, Some(root_not_found(&root)));
+}
+
+#[test]
+fn keeps_the_errors_found_before_a_root_that_cannot_be_found() {
+    // Arrange
+    let (_dir, root) = beside_unrooted_folder(&format!("// sync-end:y\n{TAG_OUTSIDE_ROOT}"));
+    let options = rooted(migrating(
+        MigrationMode::Missing,
+        &[("lib/", "https://example.com/")],
+    ));
+    let cache = MarkerCache::from_files(&options, &[root.join("a.js")]);
+
+    // Act
+    let result = cache.errors_for_file(&options, &root, &root.join("a.js"));
+
+    // Assert
+    assert_eq!(
+        result.errors,
+        vec![ErrorDetails::end_tag_without_start_tag("y", 1)]
+    );
+}
+
+#[test]
+fn reports_a_missing_target_in_an_earlier_block_with_the_same_id() {
+    // Arrange
+    let text = concat!(
+        "// sync-start:x 1 b.js\nc\n// sync-end:x\n",
+        "// sync-start:x 1 https://example.com\nc\n// sync-end:x\n",
+    );
+    let (_dir, root) = root(&[("a.js", text)]);
+    let options = migrating(
+        MigrationMode::Missing,
+        &[("b.js", "https://example.com/b.js")],
+    );
+
+    // Act
+    let result = errors(&options, &root, &["a.js"]);
+
+    // Assert
+    assert_eq!(
+        codes(&result),
+        vec![
+            ErrorCode::FileDoesNotExist,
+            ErrorCode::DuplicateMarker,
+            ErrorCode::MismatchedChecksum
+        ]
+    );
 }

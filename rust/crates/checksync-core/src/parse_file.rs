@@ -508,7 +508,6 @@ mod tests {
         ]);
         let options = Options {
             root_marker: Some("marker.txt".to_owned()),
-            migration: None,
             ..options()
         };
 
@@ -527,7 +526,6 @@ mod tests {
         // Arrange
         let options = Options {
             root_marker: Some("no-such-marker-anywhere.txt".to_owned()),
-            migration: None,
             ..options()
         };
 

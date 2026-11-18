@@ -390,7 +390,6 @@ mod tests {
         let file = root.join("a.js");
         let options = Options {
             root_marker: Some("no-such-marker-anywhere.txt".to_owned()),
-            migration: None,
             ..options()
         };
 

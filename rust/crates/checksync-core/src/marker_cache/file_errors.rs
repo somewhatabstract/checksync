@@ -1,5 +1,6 @@
 //! Finding the problems with one file's sync tags, using the markers of their targets.
 
+use std::ffi::OsStr;
 use std::path::{Path, PathBuf};
 
 use crate::errors::{ChecksumUpdate, ErrorCode, ErrorDetails};
@@ -16,6 +17,18 @@ use super::MarkerCache;
 /// What checksync's output shows in place of a tag's checksum when it has none.
 const NO_CHECKSUM: &str = "No checksum";
 
+/// The problems found with one file's sync tags, and why checking stopped early, if it did.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) struct FileErrors {
+    /// The problems found, in the order checksync's JavaScript reports them.
+    pub errors: Vec<ErrorDetails>,
+    /// The root that couldn't be found, if checking the file stopped there.
+    ///
+    /// The JavaScript throws at that point, and still reports and fixes the
+    /// problems it found before it.
+    pub failure: Option<RootMarkerError>,
+}
+
 impl MarkerCache {
     /// Returns the problems with one file's sync tags, as the JavaScript `generateErrors` does.
     ///
@@ -26,23 +39,38 @@ impl MarkerCache {
     /// back, or a remote target's checksum. A file that isn't in the cache has
     /// no problems.
     ///
+    /// Checking stops at a local target whose root can't be found, when the
+    /// migration has mappings or the target's checksum differs, and the
+    /// result keeps the problems found before it. A missing target is only
+    /// looked up in a migration's mappings when it's in the marker's own
+    /// targets. When a file has two blocks with the same id, the marker is
+    /// the last one, so a missing target in an earlier block is reported as
+    /// it is; the JavaScript throws a `TypeError` instead.
+    ///
     /// Paths in messages are relative to `cwd`, the working folder.
+    #[must_use]
+    pub(crate) fn errors_for_file(&self, options: &Options, cwd: &Path, file: &Path) -> FileErrors {
+        let mut errors = Vec::new();
+        let failure = self.collect_errors(options, cwd, file, &mut errors).err();
+        FileErrors { errors, failure }
+    }
+
+    /// Adds the problems with one file's sync tags to `errors`, as [`Self::errors_for_file`] does.
     ///
     /// # Errors
     ///
-    /// Returns the [`RootMarkerError`] when the migration has mappings and the
-    /// root of a local target can't be found. The JavaScript throws in that
-    /// case.
-    pub(crate) fn errors_for_file(
+    /// Returns the [`RootMarkerError`] for a local target whose root can't be
+    /// found, leaving the problems found before it in `errors`.
+    fn collect_errors(
         &self,
         options: &Options,
         cwd: &Path,
         file: &Path,
-    ) -> Result<Vec<ErrorDetails>, RootMarkerError> {
+        errors: &mut Vec<ErrorDetails>,
+    ) -> Result<(), RootMarkerError> {
         let Some(info) = self.get(file) else {
-            return Ok(Vec::new());
+            return Ok(());
         };
-        let mut errors = Vec::new();
         for error in info.errors {
             if error.code == ErrorCode::FileDoesNotExist {
                 let target = error
@@ -59,7 +87,7 @@ impl MarkerCache {
             errors.push(error.clone());
         }
         if info.read_only {
-            return Ok(errors);
+            return Ok(());
         }
         for marker_id in js_object_keys(info.markers) {
             let marker = &info.markers[marker_id];
@@ -73,12 +101,16 @@ impl MarkerCache {
                 errors.extend(self.tag_error(options, cwd, info.aliases, &tag)?);
             }
         }
-        Ok(errors)
+        Ok(())
     }
 
     /// Returns the problem with one sync-start tag, if it has one.
     ///
     /// `aliases` are the paths that reach the tag's file.
+    ///
+    /// # Errors
+    ///
+    /// Returns the [`RootMarkerError`] for a local target whose root can't be found.
     fn tag_error(
         &self,
         options: &Options,
@@ -221,13 +253,16 @@ impl SourceTag<'_> {
 /// Returns the line of a target marker's first tag that points back at one of
 /// `aliases`, with the marker's content checksum.
 ///
+/// A tag points back when its target is exactly the text of an alias, as in
+/// the JavaScript, so paths that differ only in spelling don't match.
+///
 /// `None` if no tag points back, or the marker has no content checksum.
 fn return_tag<'a>(target_marker: &'a Marker, aliases: &[PathBuf]) -> Option<(usize, &'a str)> {
     let checksum = target_marker.content_checksum.as_deref()?;
     let (&line, _) = target_marker.targets.iter().find(|(_, target)| {
         aliases
             .iter()
-            .any(|alias| alias == Path::new(&target.target))
+            .any(|alias| alias.as_os_str() == OsStr::new(&target.target))
     })?;
     Some((line, checksum))
 }

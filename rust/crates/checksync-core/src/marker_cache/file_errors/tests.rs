@@ -25,7 +25,7 @@ pub(super) fn migrating(mode: MigrationMode, mappings: &[(&str, &str)]) -> Optio
 pub(super) fn errors(options: &Options, root: &Path, files: &[&str]) -> Vec<ErrorDetails> {
     let paths: Vec<_> = files.iter().map(|file| root.join(file)).collect();
     let cache = MarkerCache::from_files(options, &paths);
-    cache.errors_for_file(options, root, &paths[0]).unwrap()
+    cache.errors_for_file(options, root, &paths[0]).errors
 }
 
 /// Returns the content and self checksums of a file's marker.
@@ -59,7 +59,7 @@ fn finds_nothing_for_a_file_not_in_the_cache() {
     // Act
     let result = cache
         .errors_for_file(&options(), &root, &root.join("missing.js"))
-        .unwrap();
+        .errors;
 
     // Assert
     assert_eq!(result, Vec::new());
@@ -114,7 +114,7 @@ fn reports_the_errors_found_reading_a_read_only_file() {
     // Act
     let result = cache
         .errors_for_file(&options(), &root, &root.join("b.js"))
-        .unwrap();
+        .errors;
 
     // Assert
     assert_eq!(
@@ -135,7 +135,7 @@ fn checks_no_tags_in_a_read_only_file() {
     // Act
     let result = cache
         .errors_for_file(&options(), &root, &root.join("b.js"))
-        .unwrap();
+        .errors;
 
     // Assert
     assert_eq!(result, Vec::new());
